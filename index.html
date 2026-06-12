@@ -13,7 +13,13 @@
 [data-theme="sakura"][data-mode="light"]{--bg:#fdf0f5;--surface:#fff5f8;--surface2:#f8e8f0;--surface3:#f0dce8;--border:#e0c0d0;--text:#1a0a10;--text2:#6a3a50;--text3:#a07088;--accent:#c45c7a;--accent2:#a04060;--accent-soft:rgba(196,92,122,0.1);--nav-bg:#f5e8f0;}
 [data-theme="ai"][data-mode="dark"]{--bg:#080c14;--surface:#0f1520;--surface2:#161d2a;--surface3:#1e2638;--border:#2a3448;--text:#f0f0e8;--text2:#8898b8;--text3:#4a5878;--accent:#c8a84a;--accent2:#a08838;--accent-soft:rgba(200,168,74,0.15);--nav-bg:#0b1018;}
 [data-theme="ai"][data-mode="light"]{--bg:#f0f4f8;--surface:#f8fafc;--surface2:#e8eef5;--surface3:#dce6f0;--border:#b8c8dc;--text:#080c18;--text2:#2a3a58;--text3:#6a7a98;--accent:#2a3a8a;--accent2:#1e2c6e;--accent-soft:rgba(42,58,138,0.1);--nav-bg:#e8eef8;}
-:root{--locked:#555570;--lvl-review:#c0392b;--lvl-apprentice:#e67e22;--lvl-guru:#8e44ad;--lvl-master:#2980b9;--lvl-enlightened:#27ae60;--correct:#27ae60;--incorrect:#c0392b;--reading-bg:rgba(41,128,185,0.15);--reading-border:#2980b9;--meaning-bg:rgba(142,68,173,0.15);--meaning-border:#8e44ad;--radius:12px;--radius-sm:8px;}
+:root{
+  --locked:#555570;--lvl-review:#c0392b;--lvl-apprentice:#e67e22;--lvl-guru:#8e44ad;--lvl-master:#2980b9;--lvl-enlightened:#27ae60;
+  --correct:#27ae60;--incorrect:#c0392b;
+  --reading-bg:rgba(41,128,185,0.15);--reading-border:#2980b9;
+  --meaning-bg:rgba(142,68,173,0.15);--meaning-border:#8e44ad;
+  --radius:12px;--radius-sm:8px;
+}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.25s,color 0.25s;}
 
@@ -44,7 +50,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .icon-btn:hover{border-color:var(--accent);color:var(--accent);}
 .nav-menu-dropdown{display:none;position:absolute;top:42px;right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:6px;min-width:200px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,0.3);}
 .nav-menu-dropdown.open{display:block;}
-.nav-menu-user{font-size:0.82rem;font-weight:600;color:var(--text2);padding:6px 10px;}
+.nav-menu-user{font-size:0.85rem;font-weight:600;color:var(--text);padding:6px 10px;}
+.nav-menu-email{font-size:0.72rem;color:var(--text3);padding:0 10px 6px;}
 .nav-menu-section{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);padding:6px 10px 2px;}
 .nav-menu-divider{border:none;border-top:1px solid var(--border);margin:4px 0;}
 .nav-menu-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius-sm);cursor:pointer;font-size:0.875rem;color:var(--text);transition:background 0.1s;}
@@ -80,11 +87,28 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .level-bar-fill{height:100%;border-radius:4px;transition:width 0.4s ease;}
 .level-bar-count{width:30px;text-align:right;font-size:0.78rem;color:var(--text2);}
 .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.quick-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all 0.15s;text-align:left;}
+.quick-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all 0.15s;text-align:left;position:relative;}
 .quick-btn:hover{border-color:var(--accent);background:var(--surface2);}
 .quick-btn .qb-icon{font-size:1.4rem;margin-bottom:5px;}
 .quick-btn .qb-title{font-size:0.875rem;font-weight:600;}
 .quick-btn .qb-sub{font-size:0.75rem;color:var(--text2);margin-top:2px;}
+.qb-count{position:absolute;top:10px;right:10px;font-size:0.68rem;background:var(--accent-soft);color:var(--accent);padding:2px 7px;border-radius:20px;font-weight:600;}
+
+/* ── QUICK START MODALS ── */
+.qs-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:flex-end;justify-content:center;}
+.qs-modal-overlay.open{display:flex;}
+.qs-modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;padding:24px;width:100%;max-width:500px;}
+.qs-modal-title{font-size:1.1rem;font-weight:700;margin-bottom:4px;}
+.qs-modal-sub{font-size:0.8rem;color:var(--text2);margin-bottom:20px;}
+.qs-field{margin-bottom:16px;}
+.qs-field label{display:block;font-size:0.78rem;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em;}
+.qs-select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-size:0.9rem;outline:none;}
+.qs-select:focus{border-color:var(--accent);}
+.qs-pool-info{font-size:0.78rem;color:var(--text2);margin-bottom:16px;text-align:center;}
+.qs-btn-row{display:flex;gap:8px;}
+.qs-start-btn{flex:1;padding:13px;background:var(--accent);border:none;border-radius:var(--radius);color:white;font-size:0.95rem;font-weight:600;cursor:pointer;}
+.qs-start-btn:disabled{background:var(--surface3);color:var(--text3);cursor:not-allowed;}
+.qs-cancel-btn{padding:13px 20px;background:var(--surface3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);font-size:0.95rem;cursor:pointer;}
 
 /* ── DICTIONARY ── */
 .dict-controls{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
@@ -96,6 +120,18 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .filter-sel:focus{border-color:var(--accent);}
 .dict-count{font-size:0.78rem;color:var(--text2);margin-bottom:8px;}
 .dict-list{display:flex;flex-direction:column;gap:7px;}
+
+/* Skeleton loading */
+.skeleton{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:11px 13px;display:flex;gap:11px;}
+.skel-block{background:var(--surface3);border-radius:4px;animation:shimmer 1.5s infinite;}
+.skel-kanji{width:45px;height:45px;border-radius:var(--radius-sm);flex-shrink:0;}
+.skel-lines{flex:1;display:flex;flex-direction:column;gap:6px;justify-content:center;}
+.skel-line{height:10px;}
+.skel-line.w60{width:60%;}
+.skel-line.w40{width:40%;}
+.skel-line.w80{width:80%;}
+@keyframes shimmer{0%{opacity:0.5;}50%{opacity:1;}100%{opacity:0.5;}}
+
 .dict-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:11px 13px;display:flex;align-items:center;gap:11px;cursor:pointer;transition:border-color 0.15s;}
 .dict-item:hover{border-color:var(--accent);background:var(--surface2);}
 .dict-item .kanji{font-size:1.35rem;min-width:55px;}
@@ -115,7 +151,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .gender-badge-Female{background:rgba(232,121,154,0.2);color:#e8799a;}
 .gender-badge-Unisex{background:rgba(39,174,96,0.2);color:#27ae60;}
 
-/* ── MODAL ── */
+/* ── ITEM MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:300;padding:20px;overflow-y:auto;}
 .modal-overlay.open{display:flex;align-items:flex-start;justify-content:center;padding-top:60px;}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;width:100%;max-width:480px;position:relative;}
@@ -148,7 +184,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .level-opt{padding:4px 10px;border-radius:20px;border:1px solid var(--border);font-size:0.75rem;cursor:pointer;background:var(--surface2);transition:all 0.15s;}
 .level-opt:hover{border-color:var(--accent);}
 
-/* ── QUIZ CONFIG ── */
+/* ── QUIZ ── */
 .quiz-config{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px;}
 .quiz-config h3{font-size:0.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:14px;}
 .config-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
@@ -163,8 +199,6 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .start-btn{width:100%;padding:13px;background:var(--accent);border:none;border-radius:var(--radius);color:white;font-size:0.95rem;font-weight:600;cursor:pointer;transition:background 0.15s;}
 .start-btn:hover{background:var(--accent2);}
 .start-btn:disabled{background:var(--surface3);color:var(--text3);cursor:not-allowed;}
-
-/* ── QUIZ ── */
 .quiz-active{display:none;}
 .quiz-active.show{display:block;}
 .quiz-config-panel.hide{display:none;}
@@ -200,7 +234,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .btn-next{background:var(--surface3);color:var(--text);border:1px solid var(--border);}
 .btn-next:hover{background:var(--surface2);}
 .btn-end{background:var(--surface3);color:var(--text2);border:1px solid var(--border);font-size:0.78rem;padding:8px;flex:0;white-space:nowrap;}
-.quiz-feedback{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;display:none;}
+.quiz-feedback{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;display:none;position:relative;overflow:hidden;}
 .quiz-feedback.show{display:block;}
 .feedback-result{font-size:0.95rem;font-weight:700;margin-bottom:6px;}
 .feedback-result.correct{color:var(--correct);}
@@ -215,6 +249,14 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .syn-inline-row{display:flex;gap:6px;margin-top:6px;}
 .syn-inline-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:5px 8px;color:var(--text);font-size:0.8rem;outline:none;}
 .syn-inline-save{background:var(--accent);border:none;color:white;border-radius:var(--radius-sm);padding:5px 10px;cursor:pointer;font-size:0.8rem;}
+
+/* Level up animations */
+@keyframes levelUpPulse{0%{transform:scale(1);}50%{transform:scale(1.03);}100%{transform:scale(1);}}
+@keyframes enlightenedBurst{0%{opacity:0;transform:scale(0.5);}50%{opacity:1;transform:scale(1.2);}100%{opacity:0;transform:scale(1.5);}}
+.feedback-levelup{animation:levelUpPulse 0.4s ease;}
+.enlightened-overlay{position:absolute;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center;font-size:2rem;opacity:0;}
+.enlightened-overlay.burst{animation:enlightenedBurst 0.8s ease forwards;}
+
 .quiz-results{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;text-align:center;display:none;}
 .quiz-results.show{display:block;}
 .results-score{font-size:2.8rem;font-weight:700;color:var(--accent);}
@@ -225,6 +267,21 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .results-kanji{font-size:1.15rem;min-width:48px;}
 .results-reading{flex:1;color:var(--text2);}
 .results-btn-row{display:flex;gap:9px;margin-top:14px;}
+
+/* ── SETTINGS ── */
+.settings-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;}
+.settings-section h3{font-size:0.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:16px;}
+.settings-field{margin-bottom:14px;}
+.settings-field label{display:block;font-size:0.78rem;color:var(--text2);margin-bottom:5px;}
+.settings-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-size:0.9rem;outline:none;}
+.settings-input:focus{border-color:var(--accent);}
+.settings-btn{padding:10px 20px;background:var(--accent);border:none;border-radius:var(--radius-sm);color:white;font-size:0.875rem;font-weight:600;cursor:pointer;margin-top:4px;}
+.settings-btn:hover{background:var(--accent2);}
+.settings-btn.danger{background:var(--incorrect);}
+.settings-msg{font-size:0.78rem;margin-top:8px;min-height:18px;}
+.settings-msg.success{color:var(--correct);}
+.settings-msg.error{color:var(--incorrect);}
+
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
@@ -236,38 +293,22 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
+<!-- AUTH -->
 <div class="auth-screen" id="auth-screen">
   <div class="auth-card">
     <div class="auth-title">日本語辞典</div>
     <div class="auth-subtitle">Japanese Study</div>
     <div id="auth-loading" class="auth-loading">Loading…</div>
-
-    <!-- Sign in form -->
     <div id="auth-form" style="display:none">
-      <div class="auth-field">
-        <label>Email</label>
-        <input class="auth-input" id="auth-email" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')signIn()">
-      </div>
-      <div class="auth-field">
-        <label>Password</label>
-        <input class="auth-input" id="auth-password" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')signIn()">
-      </div>
+      <div class="auth-field"><label>Email</label><input class="auth-input" id="auth-email" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')signIn()"></div>
+      <div class="auth-field"><label>Password</label><input class="auth-input" id="auth-password" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')signIn()"></div>
       <button class="auth-btn" id="auth-btn" onclick="signIn()">Sign In</button>
       <div class="auth-error" id="auth-error"></div>
     </div>
-
-    <!-- Set new password form (shown after password reset redirect) -->
     <div id="reset-form" style="display:none">
       <div class="auth-subtitle" style="margin-bottom:20px;">Set your new password</div>
-      <div class="auth-field">
-        <label>New Password</label>
-        <input class="auth-input" id="reset-password" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')setNewPassword()">
-      </div>
-      <div class="auth-field">
-        <label>Confirm Password</label>
-        <input class="auth-input" id="reset-password-confirm" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')setNewPassword()">
-      </div>
+      <div class="auth-field"><label>New Password</label><input class="auth-input" id="reset-password" type="password" placeholder="••••••••"></div>
+      <div class="auth-field"><label>Confirm Password</label><input class="auth-input" id="reset-confirm" type="password" placeholder="••••••••"></div>
       <button class="auth-btn" id="reset-btn" onclick="setNewPassword()">Set Password</button>
       <div class="auth-error" id="reset-error"></div>
     </div>
@@ -287,6 +328,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       <button class="icon-btn" onclick="toggleNavMenu()">⋮</button>
       <div class="nav-menu-dropdown" id="nav-menu-dropdown">
         <div class="nav-menu-user" id="nav-menu-user"></div>
+        <div class="nav-menu-email" id="nav-menu-email"></div>
         <div class="nav-menu-divider"></div>
         <div class="nav-menu-section">Theme</div>
         <div class="nav-menu-item" id="menu-theme-sumi" onclick="setTheme('sumi')"><div class="theme-swatch" style="background:linear-gradient(135deg,#0e0d0c 50%,#c0392b 50%)"></div>🖋️ Sumi</div>
@@ -295,24 +337,39 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
         <div class="nav-menu-divider"></div>
         <div class="nav-menu-item" onclick="toggleMode()" id="menu-mode-btn">🌙 Dark mode</div>
         <div class="nav-menu-divider"></div>
+        <div class="nav-menu-item" onclick="showView('settings');closeNavMenu()">⚙️ Settings</div>
         <div class="nav-menu-item danger" onclick="signOut()">🚪 Sign out</div>
       </div>
     </div>
   </nav>
   <div class="sync-bar" id="sync-bar"></div>
 
+  <!-- DASHBOARD -->
   <div id="view-dashboard" class="view active">
     <div class="stats-grid" id="stats-grid"></div>
     <div class="level-breakdown"><h3>Progress by Level</h3><div class="level-bars" id="level-bars"></div></div>
     <div class="section-title">Quick Start</div>
     <div class="quick-actions">
-      <div class="quick-btn" onclick="startQuickQuiz('review')"><div class="qb-icon">🔄</div><div class="qb-title">Review Quiz</div><div class="qb-sub">Practice unlocked items</div></div>
-      <div class="quick-btn" onclick="startQuickQuiz('new')"><div class="qb-icon">✨</div><div class="qb-title">New Quiz</div><div class="qb-sub">Unlock locked items</div></div>
-      <div class="quick-btn" onclick="showView('dictionary')"><div class="qb-icon">📖</div><div class="qb-title">Dictionary</div><div class="qb-sub">Browse all entries</div></div>
-      <div class="quick-btn" onclick="startQuickQuiz('all')"><div class="qb-icon">⚡</div><div class="qb-title">Mixed Quiz</div><div class="qb-sub">Everything together</div></div>
+      <div class="quick-btn" onclick="openQSModal('review')">
+        <div class="qb-icon">🔄</div><div class="qb-title">Review</div>
+        <div class="qb-sub">Practice unlocked items</div>
+      </div>
+      <div class="quick-btn" onclick="openQSModal('new')">
+        <div class="qb-icon">✨</div><div class="qb-title">New</div>
+        <div class="qb-sub">Unlock locked items</div>
+      </div>
+      <div class="quick-btn" onclick="startWeakItems()">
+        <div class="qb-icon">⚠️</div><div class="qb-title">Weak Items</div>
+        <div class="qb-sub" id="weak-sub">Level 1 — needs attention</div>
+      </div>
+      <div class="quick-btn" onclick="openQSModal('recent')">
+        <div class="qb-icon">📅</div><div class="qb-title">Recent</div>
+        <div class="qb-sub" id="recent-sub">Last 7 days</div>
+      </div>
     </div>
   </div>
 
+  <!-- DICTIONARY -->
   <div id="view-dictionary" class="view">
     <div class="dict-controls">
       <input class="search-input" id="dict-search" placeholder="Search kanji, reading, meaning…" oninput="renderDict()">
@@ -328,9 +385,13 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       </div>
     </div>
     <div class="dict-count" id="dict-count"></div>
-    <div class="dict-list" id="dict-list"></div>
+    <div class="dict-list" id="dict-list">
+      <!-- Skeleton -->
+      <div id="dict-skeleton">${Array(8).fill('<div class="skeleton"><div class="skel-block skel-kanji"></div><div class="skel-lines"><div class="skel-block skel-line w60"></div><div class="skel-block skel-line w40"></div><div class="skel-block skel-line w80"></div></div></div>').join('')}</div>
+    </div>
   </div>
 
+  <!-- QUIZ -->
   <div id="view-quiz" class="view">
     <div id="quiz-config-panel" class="quiz-config-panel">
       <div class="quiz-config">
@@ -369,6 +430,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
         <div class="quiz-step-indicator" id="quiz-step-indicator"></div>
       </div>
       <div class="quiz-feedback" id="quiz-feedback">
+        <div class="enlightened-overlay" id="enlightened-overlay">✨</div>
         <div class="feedback-result" id="feedback-result"></div>
         <div class="feedback-answer" id="feedback-answer"></div>
         <div class="feedback-notes" id="feedback-notes"></div>
@@ -394,9 +456,73 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       </div>
     </div>
   </div>
+
+  <!-- SETTINGS -->
+  <div id="view-settings" class="view">
+    <div class="section-title">Profile</div>
+    <div class="settings-section">
+      <h3>Display Name</h3>
+      <div class="settings-field">
+        <label>Name shown in the app</label>
+        <input class="settings-input" id="settings-name" placeholder="Your name">
+      </div>
+      <button class="settings-btn" onclick="saveDisplayName()">Save Name</button>
+      <div class="settings-msg" id="settings-name-msg"></div>
+    </div>
+
+    <div class="section-title">Security</div>
+    <div class="settings-section">
+      <h3>Change Password</h3>
+      <div class="settings-field">
+        <label>Current Password</label>
+        <input class="settings-input" id="settings-current-pw" type="password" placeholder="••••••••">
+      </div>
+      <div class="settings-field">
+        <label>New Password</label>
+        <input class="settings-input" id="settings-new-pw" type="password" placeholder="••••••••">
+      </div>
+      <div class="settings-field">
+        <label>Confirm New Password</label>
+        <input class="settings-input" id="settings-confirm-pw" type="password" placeholder="••••••••">
+      </div>
+      <button class="settings-btn" onclick="changePassword()">Update Password</button>
+      <div class="settings-msg" id="settings-pw-msg"></div>
+    </div>
+
+    <div class="section-title">Account</div>
+    <div class="settings-section">
+      <h3>Sign Out</h3>
+      <button class="settings-btn danger" onclick="signOut()">🚪 Sign Out</button>
+    </div>
+  </div>
 </div>
 
-<!-- DETAIL MODAL -->
+<!-- QUICK START MODAL -->
+<div class="qs-modal-overlay" id="qs-modal-overlay" onclick="closeQSModal(event)">
+  <div class="qs-modal">
+    <div class="qs-modal-title" id="qs-modal-title"></div>
+    <div class="qs-modal-sub" id="qs-modal-sub"></div>
+    <div class="qs-field" id="qs-cat-field">
+      <label>Category</label>
+      <select class="qs-select" id="qs-cat" onchange="updateQSPool()"><option value="">All Categories</option></select>
+    </div>
+    <div class="qs-field" id="qs-level-field" style="display:none">
+      <label>Max Level (show items below)</label>
+      <select class="qs-select" id="qs-level" onchange="updateQSPool()">
+        <option value="2">2 — Apprentice</option>
+        <option value="3" selected>3 — Guru</option>
+        <option value="4">4 — Master</option>
+      </select>
+    </div>
+    <div class="qs-pool-info" id="qs-pool-info"></div>
+    <div class="qs-btn-row">
+      <button class="qs-cancel-btn" onclick="closeQSModal()">Cancel</button>
+      <button class="qs-start-btn" id="qs-start-btn" onclick="startQSQuiz()">Start</button>
+    </div>
+  </div>
+</div>
+
+<!-- ITEM DETAIL MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal">
     <button class="modal-close" onclick="closeModalBtn()">✕</button>
@@ -408,34 +534,22 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       <div class="modal-readings-grid" id="modal-readings-grid"></div>
       <hr class="modal-divider">
     </div>
-    <div class="modal-field">
-      <div class="modal-field-label">Meaning</div>
-      <div class="modal-field-value" id="modal-meaning"></div>
-    </div>
-    <div class="modal-field">
-      <div class="modal-field-label">Category</div>
-      <div class="modal-field-value" id="modal-category"></div>
-    </div>
+    <div class="modal-field"><div class="modal-field-label">Meaning</div><div class="modal-field-value" id="modal-meaning"></div></div>
+    <div class="modal-field"><div class="modal-field-label">Category</div><div class="modal-field-value" id="modal-category"></div></div>
     <div class="modal-field">
       <div class="modal-field-label">Notes <button class="modal-edit-btn" onclick="toggleEdit('notes')">✏️ Edit</button></div>
-      <div class="modal-field-value" id="modal-notes-display" style="color:var(--text2);font-size:0.85rem;"></div>
+      <div id="modal-notes-display" style="color:var(--text2);font-size:0.85rem;"></div>
       <div id="modal-notes-edit" style="display:none">
         <textarea class="modal-edit-input" id="modal-notes-input" rows="3" style="resize:vertical;"></textarea>
-        <div class="modal-edit-row">
-          <button class="modal-save-btn" onclick="saveEdit('notes')">Save</button>
-          <button class="modal-cancel-btn" onclick="cancelEdit('notes')">Cancel</button>
-        </div>
+        <div class="modal-edit-row"><button class="modal-save-btn" onclick="saveEdit('notes')">Save</button><button class="modal-cancel-btn" onclick="cancelEdit('notes')">Cancel</button></div>
       </div>
     </div>
     <div class="modal-field">
       <div class="modal-field-label">Memory Hook <button class="modal-edit-btn" onclick="toggleEdit('hook')">✏️ Edit</button></div>
-      <div class="modal-field-value" id="modal-hook-display" style="color:var(--accent);font-size:0.85rem;"></div>
+      <div id="modal-hook-display" style="color:var(--accent);font-size:0.85rem;"></div>
       <div id="modal-hook-edit" style="display:none">
         <input class="modal-edit-input" id="modal-hook-input" placeholder="Add a memory hook…">
-        <div class="modal-edit-row">
-          <button class="modal-save-btn" onclick="saveEdit('hook')">Save</button>
-          <button class="modal-cancel-btn" onclick="cancelEdit('hook')">Cancel</button>
-        </div>
+        <div class="modal-edit-row"><button class="modal-save-btn" onclick="saveEdit('hook')">Save</button><button class="modal-cancel-btn" onclick="cancelEdit('hook')">Cancel</button></div>
       </div>
     </div>
     <div class="modal-field">
@@ -448,10 +562,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       </div>
     </div>
     <hr class="modal-divider">
-    <div class="modal-field">
-      <div class="modal-field-label">Level</div>
-      <div class="level-selector" id="modal-level-selector"></div>
-    </div>
+    <div class="modal-field"><div class="modal-field-label">Level</div><div class="level-selector" id="modal-level-selector"></div></div>
   </div>
 </div>
 
@@ -464,14 +575,17 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 // ── STATE ──
 let items = [];
 let currentUser = null;
-let userProgress = {};   // item_id -> level
-let userSynonyms = {};   // item_id -> [synonyms]
-let userNotes = {};      // item_id -> {note, hook}
+let userProgress = {};
+let userSynonyms = {};
+let userNotes = {};
+let userSettings = { streak: 0, last_study_date: null };
 let quizMode = 'review';
 let quizQueue = [], quizIndex = 0, quizScore = 0, quizResults = [];
 let currentItem = null, currentPrompts = [], currentPromptIndex = 0;
 let itemAnswered = false, itemCorrect = true;
 let currentModalId = null;
+let qsMode = null;
+let recentItemIds = new Set();
 
 const LEVEL_NAMES = ['Locked','Review','Apprentice','Guru','Master','Enlightened'];
 const LEVEL_COLORS = ['#555570','#c0392b','#e67e22','#8e44ad','#2980b9','#27ae60'];
@@ -486,51 +600,21 @@ const VOCAB_GROUPS = {
 
 // ── AUTH ──
 async function initAuth() {
-  // Check if this is a password reset / invite redirect
-  // Supabase puts #access_token=...&type=recovery or type=invite in the URL hash
   const hash = window.location.hash;
-  if (hash && hash.includes('type=recovery') || hash.includes('type=invite')) {
-    // Let Supabase process the token from the URL
-    const { data, error } = await sb.auth.getSession();
+  if (hash && (hash.includes('type=recovery') || hash.includes('type=invite'))) {
+    const { data } = await sb.auth.getSession();
     if (data?.session) {
-      // User is now in a password reset session — show set password form
       document.getElementById('auth-loading').style.display = 'none';
       document.getElementById('reset-form').style.display = 'block';
       return;
     }
   }
   const { data: { session } } = await sb.auth.getSession();
-  if (session) {
-    currentUser = session.user;
-    await launchApp();
-  } else {
+  if (session) { currentUser = session.user; await launchApp(); }
+  else {
     document.getElementById('auth-loading').style.display = 'none';
     document.getElementById('auth-form').style.display = 'block';
   }
-}
-
-async function setNewPassword() {
-  const pw = document.getElementById('reset-password').value;
-  const confirm = document.getElementById('reset-password-confirm').value;
-  const btn = document.getElementById('reset-btn');
-  const err = document.getElementById('reset-error');
-  err.textContent = '';
-  if (pw.length < 6) { err.textContent = 'Password must be at least 6 characters'; return; }
-  if (pw !== confirm) { err.textContent = 'Passwords do not match'; return; }
-  btn.disabled = true;
-  btn.textContent = 'Setting password…';
-  const { data, error } = await sb.auth.updateUser({ password: pw });
-  if (error) {
-    err.textContent = error.message;
-    btn.disabled = false;
-    btn.textContent = 'Set Password';
-    return;
-  }
-  // Password set — now signed in, launch app
-  currentUser = data.user;
-  // Clear the hash from the URL so it doesn't confuse on refresh
-  history.replaceState(null, '', window.location.pathname);
-  await launchApp();
 }
 
 async function signIn() {
@@ -538,25 +622,32 @@ async function signIn() {
   const password = document.getElementById('auth-password').value;
   const btn = document.getElementById('auth-btn');
   const err = document.getElementById('auth-error');
-  err.textContent = '';
-  btn.disabled = true;
-  btn.textContent = 'Signing in…';
+  err.textContent = ''; btn.disabled = true; btn.textContent = 'Signing in…';
   const { data, error } = await sb.auth.signInWithPassword({ email, password });
-  if (error) {
-    err.textContent = error.message;
-    btn.disabled = false;
-    btn.textContent = 'Sign In';
-    return;
-  }
+  if (error) { err.textContent = error.message; btn.disabled = false; btn.textContent = 'Sign In'; return; }
   currentUser = data.user;
+  await launchApp();
+}
+
+async function setNewPassword() {
+  const pw = document.getElementById('reset-password').value;
+  const confirm = document.getElementById('reset-confirm').value;
+  const err = document.getElementById('reset-error');
+  const btn = document.getElementById('reset-btn');
+  err.textContent = '';
+  if (pw.length < 6) { err.textContent = 'Password must be at least 6 characters'; return; }
+  if (pw !== confirm) { err.textContent = 'Passwords do not match'; return; }
+  btn.disabled = true; btn.textContent = 'Setting password…';
+  const { data, error } = await sb.auth.updateUser({ password: pw });
+  if (error) { err.textContent = error.message; btn.disabled = false; btn.textContent = 'Set Password'; return; }
+  currentUser = data.user;
+  history.replaceState(null, '', window.location.pathname);
   await launchApp();
 }
 
 async function signOut() {
   await sb.auth.signOut();
-  currentUser = null;
-  items = [];
-  userProgress = {}; userSynonyms = {}; userNotes = {};
+  currentUser = null; items = []; userProgress = {}; userSynonyms = {}; userNotes = {};
   document.getElementById('main-app').style.display = 'none';
   document.getElementById('auth-screen').style.display = 'flex';
   document.getElementById('auth-loading').style.display = 'none';
@@ -567,39 +658,39 @@ async function signOut() {
   closeNavMenu();
 }
 
-// ── LOAD APP ──
+// ── LAUNCH ──
 async function launchApp() {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('main-app').style.display = 'block';
   loadPrefs();
-  const email = currentUser.email;
-  document.getElementById('nav-menu-user').textContent = email;
-  showSync('Loading data…', 'syncing');
+  showSync('Loading…', 'syncing');
   await Promise.all([loadData(), loadUserProgress()]);
   applyProgress();
+  updateNavUser();
+  populateSettingsName();
   init();
   showSync('', '');
 }
 
+function updateNavUser() {
+  const name = currentUser.user_metadata?.display_name || '';
+  const email = currentUser.email || '';
+  document.getElementById('nav-menu-user').textContent = name || email;
+  document.getElementById('nav-menu-email').textContent = name ? email : '';
+}
+
 async function loadData() {
-  // Load data.json from Supabase Storage
   const { data, error } = await sb.storage.from('study-data').download('data.json');
-  if (error) throw new Error('Could not load data.json from storage: ' + error.message);
-  const text = await data.text();
-  const json = JSON.parse(text);
+  if (error) throw new Error('Could not load data.json: ' + error.message);
+  const json = JSON.parse(await data.text());
   items = json.items;
 }
 
 async function fetchAllRows(table, columns, userId) {
-  // Supabase default limit is 1000 rows — paginate to get all
   const pageSize = 1000;
-  let allRows = [];
-  let from = 0;
+  let allRows = [], from = 0;
   while (true) {
-    const { data, error } = await sb.from(table)
-      .select(columns)
-      .eq('user_id', userId)
-      .range(from, from + pageSize - 1);
+    const { data, error } = await sb.from(table).select(columns).eq('user_id', userId).range(from, from + pageSize - 1);
     if (error) throw error;
     allRows = allRows.concat(data || []);
     if (!data || data.length < pageSize) break;
@@ -610,22 +701,23 @@ async function fetchAllRows(table, columns, userId) {
 
 async function loadUserProgress() {
   const uid = currentUser.id;
-  const [progressRows, synonymRows, noteRows] = await Promise.all([
+  const [progressRows, synonymRows, noteRows, settingsRes, recentRes] = await Promise.all([
     fetchAllRows('progress', 'item_id,level', uid),
     fetchAllRows('synonyms', 'item_id,synonym', uid),
     fetchAllRows('notes', 'item_id,note,hook', uid),
+    sb.from('user_settings').select('streak,last_study_date').eq('user_id', uid).single(),
+    sb.from('progress').select('item_id').eq('user_id', uid)
+      .gte('last_quizzed', new Date(Date.now() - 7*24*60*60*1000).toISOString())
+      .lt('level', 5),
   ]);
-  // Build maps
   userProgress = {};
   progressRows.forEach(r => userProgress[r.item_id] = r.level);
   userSynonyms = {};
-  synonymRows.forEach(r => {
-    if (!userSynonyms[r.item_id]) userSynonyms[r.item_id] = [];
-    userSynonyms[r.item_id].push(r.synonym);
-  });
+  synonymRows.forEach(r => { if (!userSynonyms[r.item_id]) userSynonyms[r.item_id] = []; userSynonyms[r.item_id].push(r.synonym); });
   userNotes = {};
   noteRows.forEach(r => userNotes[r.item_id] = { note: r.note, hook: r.hook });
-  console.log(`Loaded: ${progressRows.length} progress, ${synonymRows.length} synonyms, ${noteRows.length} notes`);
+  if (settingsRes.data) userSettings = settingsRes.data;
+  recentItemIds = new Set((recentRes.data || []).map(r => r.item_id));
 }
 
 function applyProgress() {
@@ -642,49 +734,61 @@ function applyProgress() {
 // ── DB WRITES ──
 async function saveLevel(itemId, level) {
   const { error } = await sb.rpc('upsert_progress', { p_item_id: itemId, p_level: level });
-  if (error) console.error('saveLevel error:', error);
+  if (error) console.error('saveLevel:', error);
   else userProgress[itemId] = level;
 }
 
+async function saveLastQuizzed(itemIds) {
+  if (!itemIds.length) return;
+  const now = new Date().toISOString();
+  const uid = currentUser.id;
+  // Batch update last_quizzed for all quizzed items
+  await Promise.all(itemIds.map(id =>
+    sb.from('progress').upsert({ user_id: uid, item_id: id, level: userProgress[id] ?? 0, last_quizzed: now }, { onConflict: 'user_id,item_id' })
+  ));
+  // Add to recentItemIds
+  itemIds.forEach(id => { if ((userProgress[id] ?? 0) < 5) recentItemIds.add(id); });
+}
+
 async function saveLevelBatch(updates) {
-  // updates = [{item_id, level}]
   if (!updates.length) return;
   showSync('Saving…', 'syncing');
   try {
     await Promise.all(updates.map(u => saveLevel(u.item_id, u.level)));
+    await saveLastQuizzed(updates.map(u => u.item_id));
+    await updateStreak();
     showSync('Saved ✓', 'success');
     setTimeout(() => showSync('', ''), 2000);
-  } catch(e) {
-    showSync('Save failed', 'error');
-  }
+  } catch(e) { showSync('Save failed', 'error'); }
+}
+
+async function updateStreak() {
+  const today = new Date().toISOString().split('T')[0];
+  const last = userSettings.last_study_date;
+  let streak = userSettings.streak || 0;
+  if (last === today) return; // already studied today
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  streak = last === yesterday ? streak + 1 : 1;
+  userSettings = { streak, last_study_date: today };
+  await sb.rpc('upsert_user_settings', { p_streak: streak, p_last_study_date: today });
 }
 
 async function saveNote(itemId, note, hook) {
   const { error } = await sb.rpc('upsert_note', { p_item_id: itemId, p_note: note, p_hook: hook });
-  if (error) showSync('Save failed: ' + error.message, 'error');
-  else {
-    userNotes[itemId] = { note, hook };
-    showSync('Saved ✓', 'success');
-    setTimeout(() => showSync('', ''), 1500);
-  }
+  if (error) showSync('Save failed', 'error');
+  else { userNotes[itemId] = { note, hook }; showSync('Saved ✓', 'success'); setTimeout(() => showSync('', ''), 1500); }
 }
 
 async function addSynonymDB(itemId, synonym) {
   const { error } = await sb.from('synonyms').insert({ user_id: currentUser.id, item_id: itemId, synonym });
-  if (error && error.code !== '23505') console.error('addSynonym error:', error); // ignore duplicate
-  else {
-    if (!userSynonyms[itemId]) userSynonyms[itemId] = [];
-    if (!userSynonyms[itemId].includes(synonym)) userSynonyms[itemId].push(synonym);
-  }
+  if (error && error.code !== '23505') console.error('addSynonym:', error);
+  else { if (!userSynonyms[itemId]) userSynonyms[itemId] = []; if (!userSynonyms[itemId].includes(synonym)) userSynonyms[itemId].push(synonym); }
 }
 
 async function removeSynonymDB(itemId, synonym) {
-  const { error } = await sb.from('synonyms').delete()
-    .eq('user_id', currentUser.id).eq('item_id', itemId).eq('synonym', synonym);
-  if (error) console.error('removeSynonym error:', error);
-  else if (userSynonyms[itemId]) {
-    userSynonyms[itemId] = userSynonyms[itemId].filter(s => s !== synonym);
-  }
+  const { error } = await sb.from('synonyms').delete().eq('user_id', currentUser.id).eq('item_id', itemId).eq('synonym', synonym);
+  if (error) console.error('removeSynonym:', error);
+  else if (userSynonyms[itemId]) userSynonyms[itemId] = userSynonyms[itemId].filter(s => s !== synonym);
 }
 
 // ── SYNC BAR ──
@@ -696,36 +800,23 @@ function showSync(msg, state) {
 
 // ── THEME ──
 function loadPrefs() {
-  const prefs = JSON.parse(localStorage.getItem('jisho_prefs') || '{}');
-  document.documentElement.setAttribute('data-theme', prefs.theme || 'sumi');
-  document.documentElement.setAttribute('data-mode', prefs.mode || 'dark');
+  const p = JSON.parse(localStorage.getItem('jisho_prefs') || '{}');
+  document.documentElement.setAttribute('data-theme', p.theme || 'sumi');
+  document.documentElement.setAttribute('data-mode', p.mode || 'dark');
   updateMenuState();
 }
 function savePrefs() {
-  localStorage.setItem('jisho_prefs', JSON.stringify({
-    theme: document.documentElement.getAttribute('data-theme'),
-    mode: document.documentElement.getAttribute('data-mode')
-  }));
+  localStorage.setItem('jisho_prefs', JSON.stringify({ theme: document.documentElement.getAttribute('data-theme'), mode: document.documentElement.getAttribute('data-mode') }));
 }
 function updateMenuState() {
   const mode = document.documentElement.getAttribute('data-mode');
   const theme = document.documentElement.getAttribute('data-theme');
-  const modeBtn = document.getElementById('menu-mode-btn');
-  if (modeBtn) modeBtn.textContent = mode === 'dark' ? '🌙 Dark mode' : '☀️ Light mode';
-  ['sumi','sakura','ai'].forEach(t => {
-    const el = document.getElementById(`menu-theme-${t}`);
-    if (el) el.classList.toggle('active', theme === t);
-  });
+  const mb = document.getElementById('menu-mode-btn');
+  if (mb) mb.textContent = mode === 'dark' ? '🌙 Dark mode' : '☀️ Light mode';
+  ['sumi','sakura','ai'].forEach(t => { const el = document.getElementById(`menu-theme-${t}`); if (el) el.classList.toggle('active', theme === t); });
 }
-function toggleMode() {
-  const next = document.documentElement.getAttribute('data-mode') === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-mode', next);
-  savePrefs(); updateMenuState();
-}
-function setTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  savePrefs(); updateMenuState(); closeNavMenu();
-}
+function toggleMode() { const n = document.documentElement.getAttribute('data-mode')==='dark'?'light':'dark'; document.documentElement.setAttribute('data-mode',n); savePrefs(); updateMenuState(); }
+function setTheme(t) { document.documentElement.setAttribute('data-theme',t); savePrefs(); updateMenuState(); closeNavMenu(); }
 function toggleNavMenu() { document.getElementById('nav-menu-dropdown').classList.toggle('open'); }
 function closeNavMenu() { document.getElementById('nav-menu-dropdown').classList.remove('open'); }
 document.addEventListener('click', e => { if (!e.target.closest('.nav-menu-wrap')) closeNavMenu(); });
@@ -736,15 +827,19 @@ function init() {
   renderDashboard();
   renderDict();
   updateQuizPoolInfo();
+  updateQSDashboard();
 }
+
 function populateFilters() {
   const cats = [...new Set(items.map(i => i.category))].sort();
-  ['filter-cat','qconfig-cat'].forEach(id => {
+  ['filter-cat','qconfig-cat','qs-cat'].forEach(id => {
     const sel = document.getElementById(id);
+    if (!sel) return;
     sel.innerHTML = '<option value="">All Categories</option>';
     cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o); });
   });
 }
+
 function getSubcats(cat) {
   if (cat === 'Vocab') return Object.keys(VOCAB_GROUPS);
   return [...new Set(items.filter(i => !cat || i.category === cat).map(i => i.subcategory))].sort();
@@ -773,21 +868,22 @@ function showView(v) {
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
   document.getElementById('view-' + v).classList.add('active');
-  const idx = ['dashboard','dictionary','quiz'].indexOf(v);
-  if (idx >= 0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  const idx = ['dashboard','dictionary','quiz','settings'].indexOf(v);
+  if (idx >= 0 && idx < 3) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
   if (v === 'dashboard') renderDashboard();
   if (v === 'dictionary') renderDict();
+  if (v === 'settings') populateSettingsName();
 }
 
 // ── DASHBOARD ──
 function renderDashboard() {
-  const total = items.length;
-  const unlocked = items.filter(i => i.level > 0).length;
-  const enlightened = items.filter(i => i.level === 5).length;
+  const streak = userSettings.streak || 0;
+  const needsReview = items.filter(i => i.level === 1).length;
+  const mastered = items.filter(i => i.level >= 4).length;
   document.getElementById('stats-grid').innerHTML = `
-    <div class="stat-card"><div class="num" style="color:var(--accent)">${total}</div><div class="lbl">Total Items</div></div>
-    <div class="stat-card"><div class="num" style="color:var(--lvl-enlightened)">${unlocked}</div><div class="lbl">Unlocked</div></div>
-    <div class="stat-card"><div class="num" style="color:var(--lvl-master)">${enlightened}</div><div class="lbl">Enlightened</div></div>`;
+    <div class="stat-card"><div class="num" style="color:#e67e22">${streak}</div><div class="lbl">🔥 Day Streak</div></div>
+    <div class="stat-card"><div class="num" style="color:var(--lvl-review)">${needsReview}</div><div class="lbl">⚠️ Needs Review</div></div>
+    <div class="stat-card"><div class="num" style="color:var(--lvl-master)">${mastered}</div><div class="lbl">🏆 Mastered</div></div>`;
   const counts = [0,1,2,3,4,5].map(l => items.filter(i => i.level === l).length);
   const maxCount = Math.max(...counts, 1);
   document.getElementById('level-bars').innerHTML = counts.map((c, l) => `
@@ -796,15 +892,100 @@ function renderDashboard() {
       <div class="level-bar-track"><div class="level-bar-fill" style="width:${(c/maxCount)*100}%;background:${LEVEL_COLORS[l]}"></div></div>
       <div class="level-bar-count">${c}</div>
     </div>`).join('');
+  updateQSDashboard();
+}
+
+function updateQSDashboard() {
+  const weak = items.filter(i => i.level === 1).length;
+  document.getElementById('weak-sub').textContent = weak > 0 ? `${weak} items slipping` : 'No weak items — great!';
+  const recent = items.filter(i => recentItemIds.has(i.id) && i.level < 5).length;
+  document.getElementById('recent-sub').textContent = recent > 0 ? `${recent} items from this week` : 'No recent items';
+}
+
+// ── QUICK START MODALS ──
+function openQSModal(mode) {
+  qsMode = mode;
+  const overlay = document.getElementById('qs-modal-overlay');
+  const title = document.getElementById('qs-modal-title');
+  const sub = document.getElementById('qs-modal-sub');
+  const catField = document.getElementById('qs-cat-field');
+  const levelField = document.getElementById('qs-level-field');
+  if (mode === 'review') {
+    title.textContent = '🔄 Review Quiz';
+    sub.textContent = 'Practice your unlocked items';
+    catField.style.display = 'block';
+    levelField.style.display = 'none';
+  } else if (mode === 'new') {
+    title.textContent = '✨ New Items';
+    sub.textContent = 'Unlock items from a category';
+    catField.style.display = 'block';
+    levelField.style.display = 'none';
+  } else if (mode === 'recent') {
+    title.textContent = '📅 Recent';
+    sub.textContent = 'Items you\'ve studied in the last 7 days';
+    catField.style.display = 'none';
+    levelField.style.display = 'block';
+  }
+  document.getElementById('qs-cat').value = '';
+  document.getElementById('qs-level').value = '3';
+  updateQSPool();
+  overlay.classList.add('open');
+}
+
+function closeQSModal(e) {
+  if (!e || e.target === document.getElementById('qs-modal-overlay')) {
+    document.getElementById('qs-modal-overlay').classList.remove('open');
+  }
+}
+
+function updateQSPool() {
+  const cat = document.getElementById('qs-cat').value;
+  const maxLevel = parseInt(document.getElementById('qs-level').value);
+  let pool;
+  if (qsMode === 'review') pool = items.filter(i => (!cat || i.category === cat) && i.level >= 2);
+  else if (qsMode === 'new') pool = items.filter(i => (!cat || i.category === cat) && i.level === 0);
+  else if (qsMode === 'recent') pool = items.filter(i => recentItemIds.has(i.id) && i.level > 0 && i.level < maxLevel + 1);
+  const info = document.getElementById('qs-pool-info');
+  info.textContent = `${pool.length} item${pool.length !== 1 ? 's' : ''} available`;
+  document.getElementById('qs-start-btn').disabled = pool.length === 0;
+}
+
+function startQSQuiz() {
+  const cat = document.getElementById('qs-cat').value;
+  const maxLevel = parseInt(document.getElementById('qs-level').value);
+  let pool;
+  if (qsMode === 'review') pool = items.filter(i => (!cat || i.category === cat) && i.level >= 2);
+  else if (qsMode === 'new') pool = items.filter(i => (!cat || i.category === cat) && i.level === 0);
+  else if (qsMode === 'recent') pool = items.filter(i => recentItemIds.has(i.id) && i.level > 0 && i.level < maxLevel + 1);
+  closeQSModal();
+  launchCustomQuiz(pool, qsMode === 'new' ? 'new' : 'review');
+}
+
+function startWeakItems() {
+  const pool = items.filter(i => i.level === 1);
+  if (!pool.length) { alert('No weak items — you\'re doing great!'); return; }
+  launchCustomQuiz(pool, 'review');
+}
+
+function launchCustomQuiz(pool, mode) {
+  if (!pool.length) return;
+  quizMode = mode;
+  quizQueue = shuffle([...pool]).slice(0, Math.min(pool.length, 20));
+  quizIndex = 0; quizScore = 0; quizResults = [];
+  showView('quiz');
+  document.getElementById('quiz-config-panel').classList.add('hide');
+  document.getElementById('quiz-active').classList.add('show');
+  document.getElementById('quiz-results').classList.remove('show');
+  startItem();
 }
 
 // ── DICTIONARY ──
 function getDisplayReading(item) {
   if (item.readings) {
     const r = item.readings, parts = [];
-    if (r.on && r.on.length) parts.push('音: ' + r.on.join('、'));
-    if (r.kun && r.kun.length) parts.push('訓: ' + r.kun.join('、'));
-    if (r.name && r.name.length) parts.push('名: ' + r.name.join('、'));
+    if (r.on&&r.on.length) parts.push('音: '+r.on.join('、'));
+    if (r.kun&&r.kun.length) parts.push('訓: '+r.kun.join('、'));
+    if (r.name&&r.name.length) parts.push('名: '+r.name.join('、'));
     return parts.join(' / ');
   }
   return item.reading || '';
@@ -818,7 +999,14 @@ function getMeanings(item) {
   if (item.meaning) return [item.meaning];
   return [];
 }
+
+function getCatCount(cat) {
+  if (!cat) return items.length;
+  return items.filter(i => i.category === cat).length;
+}
+
 function renderDict() {
+  document.getElementById('dict-skeleton')?.remove();
   const q = document.getElementById('dict-search').value.toLowerCase();
   const cat = document.getElementById('filter-cat').value;
   const subcat = document.getElementById('filter-subcat').value;
@@ -827,23 +1015,23 @@ function renderDict() {
     if (cat && i.category !== cat) return false;
     if (subcat && !subcatMatches(i, subcat)) return false;
     if (level !== '' && i.level !== parseInt(level)) return false;
-    if (q) return i.kanji.includes(q) || (i.reading || '').includes(q) ||
-      (i.readings ? Object.values(i.readings).flat().some(r => r.includes(q)) : false) ||
-      (i.romaji || '').toLowerCase().includes(q) || getDisplayMeaning(i).toLowerCase().includes(q);
+    if (q) return i.kanji.includes(q)||(i.reading||'').includes(q)||
+      (i.readings?Object.values(i.readings).flat().some(r=>r.includes(q)):false)||
+      (i.romaji||'').toLowerCase().includes(q)||getDisplayMeaning(i).toLowerCase().includes(q);
     return true;
   });
-  document.getElementById('dict-count').textContent = `${filtered.length} item${filtered.length !== 1 ? 's' : ''}`;
+  document.getElementById('dict-count').textContent = `${filtered.length} item${filtered.length!==1?'s':''}`;
   if (!filtered.length) { document.getElementById('dict-list').innerHTML = `<div class="empty-state"><div class="es-icon">🔍</div><div>No items found</div></div>`; return; }
-  document.getElementById('dict-list').innerHTML = filtered.slice(0, 200).map(item => {
+  document.getElementById('dict-list').innerHTML = filtered.slice(0,200).map(item => {
     const gBadge = item.gender ? `<span class="badge gender-badge-${item.gender}">${item.gender==='Male'?'♂':item.gender==='Female'?'♀':'⚥'} ${item.gender}</span>` : '';
     return `<div class="dict-item" onclick="openModal('${item.id}')">
       <div class="kanji">${item.kanji}</div>
       <div class="info">
         <div class="reading">${getDisplayReading(item)}</div>
-        <div class="meaning">${getDisplayMeaning(item).slice(0, 60)}</div>
+        <div class="meaning">${getDisplayMeaning(item).slice(0,60)}</div>
         <div class="badge-row"><span class="badge level-badge-${item.level}">${LEVEL_NAMES[item.level]}</span><span class="badge cat-badge">${item.category}</span><span class="badge cat-badge">${item.subcategory}</span>${gBadge}</div>
       </div></div>`;
-  }).join('') + (filtered.length > 200 ? `<div class="empty-state" style="padding:16px">Showing 200 of ${filtered.length} — refine your search</div>` : '');
+  }).join('')+(filtered.length>200?`<div class="empty-state" style="padding:16px">Showing 200 of ${filtered.length} — refine your search</div>`:'');
 }
 
 // ── MODAL ──
@@ -857,9 +1045,9 @@ function openModal(id) {
     document.getElementById('modal-readings-section').style.display = 'block';
     const r = item.readings;
     document.getElementById('modal-readings-grid').innerHTML = [
-      r.on&&r.on.length ? `<div class="modal-reading-block"><div class="rb-label">On'yomi</div><div class="rb-value">${r.on.join('、')}</div></div>` : '',
-      r.kun&&r.kun.length ? `<div class="modal-reading-block"><div class="rb-label">Kun'yomi</div><div class="rb-value">${r.kun.join('、')}</div></div>` : '',
-      r.name&&r.name.length ? `<div class="modal-reading-block"><div class="rb-label">Name</div><div class="rb-value">${r.name.join('、')}</div></div>` : '',
+      r.on&&r.on.length?`<div class="modal-reading-block"><div class="rb-label">On'yomi</div><div class="rb-value">${r.on.join('、')}</div></div>`:'',
+      r.kun&&r.kun.length?`<div class="modal-reading-block"><div class="rb-label">Kun'yomi</div><div class="rb-value">${r.kun.join('、')}</div></div>`:'',
+      r.name&&r.name.length?`<div class="modal-reading-block"><div class="rb-label">Name</div><div class="rb-value">${r.name.join('、')}</div></div>`:'',
     ].join('');
     rw.innerHTML = '';
   } else {
@@ -871,16 +1059,13 @@ function openModal(id) {
   document.getElementById('modal-notes-display').textContent = item.notes || '—';
   document.getElementById('modal-notes-input').value = item.notes || '';
   document.getElementById('modal-notes-edit').style.display = 'none';
-  document.getElementById('modal-hook-display').textContent = item.hook ? '💡 ' + item.hook : '—';
+  document.getElementById('modal-hook-display').textContent = item.hook ? '💡 '+item.hook : '—';
   document.getElementById('modal-hook-input').value = item.hook || '';
   document.getElementById('modal-hook-edit').style.display = 'none';
   renderModalSynonyms(item);
   document.getElementById('modal-syn-row').style.display = 'none';
-  const ls = document.getElementById('modal-level-selector');
-  ls.innerHTML = LEVEL_NAMES.map((n, l) => `
-    <div class="level-opt${item.level===l?' active':''}"
-         style="${item.level===l?`background:${LEVEL_COLORS[l]}22;border-color:${LEVEL_COLORS[l]};color:${LEVEL_COLORS[l]};border-width:2px;`:''}"
-         onclick="setItemLevel(${l})">${l} — ${n}</div>`).join('');
+  document.getElementById('modal-level-selector').innerHTML = LEVEL_NAMES.map((n,l) =>
+    `<div class="level-opt${item.level===l?' active':''}" style="${item.level===l?`background:${LEVEL_COLORS[l]}22;border-color:${LEVEL_COLORS[l]};color:${LEVEL_COLORS[l]};border-width:2px;`:''}" onclick="setItemLevel(${l})">${l} — ${n}</div>`).join('');
   document.getElementById('modal-overlay').classList.add('open');
 }
 function renderModalSynonyms(item) {
@@ -889,318 +1074,356 @@ function renderModalSynonyms(item) {
     `<div class="synonym-tag">${s}<span class="synonym-remove" onclick="removeUserSynonym('${item.id}','${s.replace(/'/g,"\\'")}')">✕</span></div>`).join('');
   document.getElementById('modal-add-syn-btn').style.display = getMeanings(item).length ? 'block' : 'none';
 }
-function closeModal(e) { if (e.target === document.getElementById('modal-overlay')) closeModalBtn(); }
-function closeModalBtn() { document.getElementById('modal-overlay').classList.remove('open'); currentModalId = null; }
-function toggleEdit(f) {
-  const el = document.getElementById(`modal-${f}-edit`);
-  const open = el.style.display !== 'none';
-  el.style.display = open ? 'none' : 'block';
-  if (!open) document.getElementById(`modal-${f}-input`).focus();
-}
-function cancelEdit(f) { document.getElementById(`modal-${f}-edit`).style.display = 'none'; }
+function closeModal(e) { if(e.target===document.getElementById('modal-overlay')) closeModalBtn(); }
+function closeModalBtn() { document.getElementById('modal-overlay').classList.remove('open'); currentModalId=null; }
+function toggleEdit(f) { const el=document.getElementById(`modal-${f}-edit`); const open=el.style.display!=='none'; el.style.display=open?'none':'block'; if(!open) document.getElementById(`modal-${f}-input`).focus(); }
+function cancelEdit(f) { document.getElementById(`modal-${f}-edit`).style.display='none'; }
 async function saveEdit(f) {
-  const item = items.find(i => i.id === currentModalId);
-  if (!item) return;
-  const val = document.getElementById(`modal-${f}-input`).value.trim();
-  item[f] = val;
-  document.getElementById(`modal-${f}-display`).textContent = f === 'hook' ? (val ? '💡 ' + val : '—') : val || '—';
-  document.getElementById(`modal-${f}-edit`).style.display = 'none';
-  await saveNote(item.id, item.notes || '', item.hook || '');
+  const item=items.find(i=>i.id===currentModalId); if(!item) return;
+  const val=document.getElementById(`modal-${f}-input`).value.trim();
+  item[f]=val;
+  document.getElementById(`modal-${f}-display`).textContent=f==='hook'?(val?'💡 '+val:'—'):val||'—';
+  document.getElementById(`modal-${f}-edit`).style.display='none';
+  await saveNote(item.id, item.notes||'', item.hook||'');
 }
 async function setItemLevel(level) {
-  const item = items.find(i => i.id === currentModalId);
-  if (!item) return;
-  item.level = level;
-  const ls = document.getElementById('modal-level-selector');
-  ls.innerHTML = LEVEL_NAMES.map((n, l) => `
-    <div class="level-opt${item.level===l?' active':''}"
-         style="${item.level===l?`background:${LEVEL_COLORS[l]}22;border-color:${LEVEL_COLORS[l]};color:${LEVEL_COLORS[l]};border-width:2px;`:''}"
-         onclick="setItemLevel(${l})">${l} — ${n}</div>`).join('');
+  const item=items.find(i=>i.id===currentModalId); if(!item) return;
+  item.level=level;
+  document.getElementById('modal-level-selector').innerHTML=LEVEL_NAMES.map((n,l)=>
+    `<div class="level-opt${item.level===l?' active':''}" style="${item.level===l?`background:${LEVEL_COLORS[l]}22;border-color:${LEVEL_COLORS[l]};color:${LEVEL_COLORS[l]};border-width:2px;`:''}" onclick="setItemLevel(${l})">${l} — ${n}</div>`).join('');
   renderDashboard();
   await saveLevel(item.id, level);
-  showSync('Saved ✓', 'success');
-  setTimeout(() => showSync('', ''), 1500);
+  showSync('Saved ✓','success'); setTimeout(()=>showSync('',''),1500);
 }
-function toggleSynInput() {
-  const r = document.getElementById('modal-syn-row');
-  r.style.display = r.style.display === 'none' ? 'flex' : 'none';
-  if (r.style.display === 'flex') document.getElementById('modal-syn-input').focus();
-}
+function toggleSynInput() { const r=document.getElementById('modal-syn-row'); r.style.display=r.style.display==='none'?'flex':'none'; if(r.style.display==='flex') document.getElementById('modal-syn-input').focus(); }
 async function saveSynonym() {
-  const input = document.getElementById('modal-syn-input');
-  const val = input.value.trim();
-  if (!val || !currentModalId) return;
-  const item = items.find(i => i.id === currentModalId);
-  if (!item) return;
-  await addUserSynonym(currentModalId, val);
-  input.value = '';
-  document.getElementById('modal-syn-row').style.display = 'none';
+  const input=document.getElementById('modal-syn-input'); const val=input.value.trim();
+  if(!val||!currentModalId) return;
+  const item=items.find(i=>i.id===currentModalId); if(!item) return;
+  await addUserSynonym(currentModalId,val);
+  input.value=''; document.getElementById('modal-syn-row').style.display='none';
   renderModalSynonyms(item);
 }
 
 // ── USER SYNONYMS ──
-function getUserSynonyms(id) {
-  const item = items.find(i => i.id === id);
-  return (item && item.user_synonyms) ? [...item.user_synonyms] : [];
+function getUserSynonyms(id) { const item=items.find(i=>i.id===id); return(item&&item.user_synonyms)?[...item.user_synonyms]:[]; }
+async function addUserSynonym(id,syn) {
+  const item=items.find(i=>i.id===id); if(!item) return;
+  if(!item.user_synonyms) item.user_synonyms=[];
+  if(!item.user_synonyms.includes(syn)){item.user_synonyms.push(syn);await addSynonymDB(id,syn);}
 }
-async function addUserSynonym(id, syn) {
-  const item = items.find(i => i.id === id);
-  if (!item) return;
-  if (!item.user_synonyms) item.user_synonyms = [];
-  if (!item.user_synonyms.includes(syn)) {
-    item.user_synonyms.push(syn);
-    await addSynonymDB(id, syn);
-  }
+async function removeUserSynonym(id,syn) {
+  const item=items.find(i=>i.id===id);
+  if(item&&item.user_synonyms){item.user_synonyms=item.user_synonyms.filter(s=>s!==syn);await removeSynonymDB(id,syn);renderModalSynonyms(item);}
 }
-async function removeUserSynonym(id, syn) {
-  const item = items.find(i => i.id === id);
-  if (item && item.user_synonyms) {
-    item.user_synonyms = item.user_synonyms.filter(s => s !== syn);
-    await removeSynonymDB(id, syn);
-    renderModalSynonyms(item);
-  }
+
+// ── SETTINGS ──
+function populateSettingsName() {
+  const name = currentUser?.user_metadata?.display_name || '';
+  const input = document.getElementById('settings-name');
+  if (input) input.value = name;
+}
+async function saveDisplayName() {
+  const name = document.getElementById('settings-name').value.trim();
+  const msg = document.getElementById('settings-name-msg');
+  msg.textContent = '';
+  const { data, error } = await sb.auth.updateUser({ data: { display_name: name } });
+  if (error) { msg.textContent = error.message; msg.className = 'settings-msg error'; return; }
+  currentUser = data.user;
+  updateNavUser();
+  msg.textContent = 'Display name updated!';
+  msg.className = 'settings-msg success';
+  setTimeout(() => msg.textContent = '', 2000);
+}
+async function changePassword() {
+  const current = document.getElementById('settings-current-pw').value;
+  const newPw = document.getElementById('settings-new-pw').value;
+  const confirm = document.getElementById('settings-confirm-pw').value;
+  const msg = document.getElementById('settings-pw-msg');
+  msg.textContent = '';
+  if (newPw.length < 6) { msg.textContent = 'Password must be at least 6 characters'; msg.className = 'settings-msg error'; return; }
+  if (newPw !== confirm) { msg.textContent = 'Passwords do not match'; msg.className = 'settings-msg error'; return; }
+  // Verify current password
+  const { error: signInError } = await sb.auth.signInWithPassword({ email: currentUser.email, password: current });
+  if (signInError) { msg.textContent = 'Current password is incorrect'; msg.className = 'settings-msg error'; return; }
+  const { error } = await sb.auth.updateUser({ password: newPw });
+  if (error) { msg.textContent = error.message; msg.className = 'settings-msg error'; return; }
+  msg.textContent = 'Password updated!';
+  msg.className = 'settings-msg success';
+  document.getElementById('settings-current-pw').value = '';
+  document.getElementById('settings-new-pw').value = '';
+  document.getElementById('settings-confirm-pw').value = '';
+  setTimeout(() => msg.textContent = '', 2000);
 }
 
 // ── LEVENSHTEIN ──
-function levenshtein(a, b) {
-  const m = a.length, n = b.length;
-  const dp = Array.from({length:m+1}, (_, i) => Array.from({length:n+1}, (_, j) => i===0?j:j===0?i:0));
-  for (let i=1;i<=m;i++) for (let j=1;j<=n;j++)
-    dp[i][j] = a[i-1]===b[j-1] ? dp[i-1][j-1] : 1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
-  return dp[m][n];
-}
-function normMeaning(s) { return s.toLowerCase().trim().replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' '); }
-function checkMeaning(input, item) {
-  const inp = normMeaning(input);
-  const all = [...getMeanings(item), ...getUserSynonyms(item.id)].map(normMeaning);
-  let best = Infinity;
-  for (const m of all) { const d = levenshtein(inp, m); if (d===0) return {result:'correct'}; best = Math.min(best, d); }
-  if (best <= 2) return {result:'close'};
-  return {result:'wrong'};
+function levenshtein(a,b){const m=a.length,n=b.length;const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);return dp[m][n];}
+function normMeaning(s){return s.toLowerCase().trim().replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ');}
+function checkMeaning(input,item){
+  const inp=normMeaning(input);
+  const all=[...getMeanings(item),...getUserSynonyms(item.id)].map(normMeaning);
+  let best=Infinity;
+  for(const m of all){const d=levenshtein(inp,m);if(d===0)return{result:'correct'};best=Math.min(best,d);}
+  if(best<=2)return{result:'close'};return{result:'wrong'};
 }
 
 // ── PROMPTS ──
 function buildPrompts(item) {
   if (item.readings) {
-    const r = item.readings, pool = [];
-    if (r.on && r.on.length) pool.push({type:'on', label:"On'yomi", mode:'reading'});
-    if (r.kun && r.kun.length) pool.push({type:'kun', label:"Kun'yomi", mode:'reading'});
-    if (getMeanings(item).length) pool.push({type:'meaning', label:'Meaning', mode:'meaning'});
-    return pool.length ? shuffle(pool) : [{type:'reading', label:'Reading', mode:'reading'}];
+    const r=item.readings,pool=[];
+    if(r.on&&r.on.length) pool.push({type:'on',label:"On'yomi",mode:'reading'});
+    if(r.kun&&r.kun.length) pool.push({type:'kun',label:"Kun'yomi",mode:'reading'});
+    if(getMeanings(item).length) pool.push({type:'meaning',label:'Meaning',mode:'meaning'});
+    return pool.length?shuffle(pool):[{type:'reading',label:'Reading',mode:'reading'}];
   }
-  const prompts = [{type:'reading', label:'Reading', mode:'reading'}];
-  if (item.category === 'Vocab' && getMeanings(item).length) prompts.push({type:'meaning', label:'Meaning', mode:'meaning'});
+  const prompts=[{type:'reading',label:'Reading',mode:'reading'}];
+  if(item.category==='Vocab'&&getMeanings(item).length) prompts.push({type:'meaning',label:'Meaning',mode:'meaning'});
   return prompts;
 }
-function getAcceptedReadings(item, promptType) {
-  if (item.readings) {
-    if (promptType === 'on') return item.readings.on || [];
-    if (promptType === 'kun') return item.readings.kun || [];
-  }
-  return (item.reading || '').split('/').map(s => s.trim()).filter(Boolean);
+function getAcceptedReadings(item,promptType) {
+  if(item.readings){if(promptType==='on')return item.readings.on||[];if(promptType==='kun')return item.readings.kun||[];}
+  return(item.reading||'').split('/').map(s=>s.trim()).filter(Boolean);
 }
 
 // ── WANAKANA ──
-function attachWanakana(el) { if (window.wanakana) { try { wanakana.unbind(el); } catch(e) {} wanakana.bind(el, {IMEMode:true}); } }
-function detachWanakana(el) { if (window.wanakana) { try { wanakana.unbind(el); } catch(e) {} } }
+function attachWanakana(el){if(window.wanakana){try{wanakana.unbind(el);}catch(e){}wanakana.bind(el,{IMEMode:true});}}
+function detachWanakana(el){if(window.wanakana){try{wanakana.unbind(el);}catch(e){}}}
 
 // ── QUIZ CONFIG ──
-function setQuizMode(mode) {
-  quizMode = mode;
-  document.getElementById('tab-review').classList.toggle('active', mode==='review');
-  document.getElementById('tab-new').classList.toggle('active', mode==='new');
+function setQuizMode(mode){
+  quizMode=mode;
+  document.getElementById('tab-review').classList.toggle('active',mode==='review');
+  document.getElementById('tab-new').classList.toggle('active',mode==='new');
   updateQuizPoolInfo();
 }
-function getQuizPool() {
-  const cat = document.getElementById('qconfig-cat')?.value || '';
-  const subcat = document.getElementById('qconfig-subcat')?.value || '';
-  const minLevel = parseInt(document.getElementById('qconfig-minlevel')?.value || '2');
-  return items.filter(i => {
-    if (cat && i.category !== cat) return false;
-    if (subcat && !subcatMatches(i, subcat)) return false;
-    if (quizMode === 'new') return i.level === 0;
-    if (quizMode === 'review') return i.level >= minLevel;
-    return i.level > 0;
+function getQuizPool(){
+  const cat=document.getElementById('qconfig-cat')?.value||'';
+  const subcat=document.getElementById('qconfig-subcat')?.value||'';
+  const minLevel=parseInt(document.getElementById('qconfig-minlevel')?.value||'2');
+  return items.filter(i=>{
+    if(cat&&i.category!==cat)return false;
+    if(subcat&&!subcatMatches(i,subcat))return false;
+    if(quizMode==='new')return i.level===0;
+    if(quizMode==='review')return i.level>=minLevel;
+    return i.level>0;
   });
 }
-function updateQuizPoolInfo() {
-  const pool = getQuizPool();
-  const el = document.getElementById('quiz-pool-info');
-  if (el) el.textContent = `${pool.length} item${pool.length!==1?'s':''} available`;
-  const btn = document.getElementById('start-btn');
-  if (btn) btn.disabled = pool.length === 0;
-}
-function startQuickQuiz(mode) {
-  showView('quiz');
-  quizMode = mode === 'all' ? 'review' : mode;
-  setQuizMode(quizMode);
-  setTimeout(startQuiz, 50);
+function updateQuizPoolInfo(){
+  const pool=getQuizPool();
+  const el=document.getElementById('quiz-pool-info');
+  if(el)el.textContent=`${pool.length} item${pool.length!==1?'s':''} available`;
+  const btn=document.getElementById('start-btn');
+  if(btn)btn.disabled=pool.length===0;
 }
 
 // ── QUIZ ENGINE ──
-function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
-function normaliseReading(str) { return str.toLowerCase().replace(/[ōôoo]/g,'o').replace(/[ūû]/g,'u').replace(/[āâ]/g,'a').replace(/[īî]/g,'i').replace(/\s+/g,'').replace(/[-・]/g,''); }
-function checkReading(input, accepted) { return accepted.some(r => normaliseReading(input) === normaliseReading(r)); }
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function normaliseReading(str){return str.toLowerCase().replace(/[ōôoo]/g,'o').replace(/[ūû]/g,'u').replace(/[āâ]/g,'a').replace(/[īî]/g,'i').replace(/\s+/g,'').replace(/[-・]/g,'');}
+function checkReading(input,accepted){return accepted.some(r=>normaliseReading(input)===normaliseReading(r));}
 
-function startQuiz() {
-  const pool = getQuizPool();
-  if (!pool.length) return;
-  const count = Math.min(parseInt(document.getElementById('qconfig-count').value)||10, pool.length);
-  quizQueue = shuffle([...pool]).slice(0, count);
-  quizIndex = 0; quizScore = 0; quizResults = [];
+function startQuiz(){
+  const pool=getQuizPool();if(!pool.length)return;
+  const count=Math.min(parseInt(document.getElementById('qconfig-count').value)||10,pool.length);
+  quizQueue=shuffle([...pool]).slice(0,count);
+  quizIndex=0;quizScore=0;quizResults=[];
   document.getElementById('quiz-config-panel').classList.add('hide');
   document.getElementById('quiz-active').classList.add('show');
   document.getElementById('quiz-results').classList.remove('show');
   startItem();
 }
-function startItem() {
-  currentItem = quizQueue[quizIndex];
-  currentPrompts = buildPrompts(currentItem);
-  currentPromptIndex = 0; itemAnswered = false; itemCorrect = true;
-  updateProgressBar(); showPrompt();
-}
-function updateProgressBar() {
-  document.getElementById('progress-fill').style.width = (quizIndex/quizQueue.length)*100+'%';
-  document.getElementById('progress-text').textContent = `${quizIndex+1} / ${quizQueue.length}`;
-}
-function showPrompt() {
-  const prompt = currentPrompts[currentPromptIndex];
-  const item = currentItem;
-  const lbl = document.getElementById('quiz-prompt-label');
-  lbl.textContent = prompt.label;
-  lbl.className = 'quiz-prompt-label ' + (prompt.mode==='reading'?'reading':'meaning');
-  document.getElementById('quiz-prompt').textContent = item.kanji;
-  document.getElementById('quiz-hint').textContent = `${item.category} › ${item.subcategory}`;
-  const ge = document.getElementById('quiz-gender-hint');
-  if (item.gender) {
-    const icon = item.gender==='Male'?'♂':item.gender==='Female'?'♀':'⚥';
-    const color = item.gender==='Male'?'#2980b9':item.gender==='Female'?'#e8799a':'#27ae60';
-    ge.textContent = `${icon} ${item.gender}`;
-    ge.style.cssText = `color:${color};background:${color}22;border:1px solid ${color}44;display:inline-block;`;
-  } else { ge.textContent=''; ge.style.display=''; }
-  document.getElementById('quiz-step-indicator').innerHTML = currentPrompts.map((_,i) =>
-    `<div class="step-dot${i<currentPromptIndex?' done':i===currentPromptIndex?' active':''}"></div>`).join('');
-  const input = document.getElementById('quiz-input');
-  input.value = '';
-  input.className = 'quiz-input ' + (prompt.mode==='reading'?'reading-mode':'meaning-mode');
-  input.placeholder = prompt.mode==='reading'?'Type the reading…':'Type the meaning…';
-  input.disabled = false;
-  if (prompt.mode==='reading') attachWanakana(input); else detachWanakana(input);
-  document.getElementById('quiz-feedback').classList.remove('show');
-  document.getElementById('btn-submit').style.display = '';
-  document.getElementById('btn-next').style.display = 'none';
-  setTimeout(() => input.focus(), 50);
+
+function startItem(){
+  currentItem=quizQueue[quizIndex];
+  currentPrompts=buildPrompts(currentItem);
+  currentPromptIndex=0;itemAnswered=false;itemCorrect=true;
+  updateProgressBar();showPrompt();
 }
 
-function submitAnswer() {
-  const prompt = currentPrompts[currentPromptIndex];
-  const input = document.getElementById('quiz-input');
-  const userAns = input.value.trim();
-  let correct = false, closeMatch = false, correctAnswer = '';
-  if (prompt.mode === 'reading') {
-    const accepted = getAcceptedReadings(currentItem, prompt.type);
-    correct = checkReading(userAns, accepted);
-    correctAnswer = accepted.join(' / ');
-    input.className = 'quiz-input ' + (correct?'correct':'incorrect');
+function updateProgressBar(){
+  document.getElementById('progress-fill').style.width=(quizIndex/quizQueue.length)*100+'%';
+  document.getElementById('progress-text').textContent=`${quizIndex+1} / ${quizQueue.length}`;
+}
+
+function showPrompt(){
+  const prompt=currentPrompts[currentPromptIndex];
+  const item=currentItem;
+  const lbl=document.getElementById('quiz-prompt-label');
+  lbl.textContent=prompt.label;
+  lbl.className='quiz-prompt-label '+(prompt.mode==='reading'?'reading':'meaning');
+  document.getElementById('quiz-prompt').textContent=item.kanji;
+  document.getElementById('quiz-hint').textContent=`${item.category} › ${item.subcategory}`;
+  const ge=document.getElementById('quiz-gender-hint');
+  if(item.gender){const icon=item.gender==='Male'?'♂':item.gender==='Female'?'♀':'⚥';const color=item.gender==='Male'?'#2980b9':item.gender==='Female'?'#e8799a':'#27ae60';ge.textContent=`${icon} ${item.gender}`;ge.style.cssText=`color:${color};background:${color}22;border:1px solid ${color}44;display:inline-block;`;}
+  else{ge.textContent='';ge.style.display='';}
+  document.getElementById('quiz-step-indicator').innerHTML=currentPrompts.map((_,i)=>`<div class="step-dot${i<currentPromptIndex?' done':i===currentPromptIndex?' active':''}"></div>`).join('');
+  const input=document.getElementById('quiz-input');
+  input.value='';
+  input.className='quiz-input '+(prompt.mode==='reading'?'reading-mode':'meaning-mode');
+  input.placeholder=prompt.mode==='reading'?'Type the reading…':'Type the meaning…';
+  input.disabled=false;
+  if(prompt.mode==='reading')attachWanakana(input);else detachWanakana(input);
+  document.getElementById('quiz-feedback').classList.remove('show');
+  document.getElementById('btn-submit').style.display='';
+  document.getElementById('btn-next').style.display='none';
+  setTimeout(()=>input.focus(),50);
+}
+
+function submitAnswer(){
+  const prompt=currentPrompts[currentPromptIndex];
+  const input=document.getElementById('quiz-input');
+  const userAns=input.value.trim();
+  let correct=false,closeMatch=false,correctAnswer='';
+  if(prompt.mode==='reading'){
+    const accepted=getAcceptedReadings(currentItem,prompt.type);
+    correct=checkReading(userAns,accepted);
+    correctAnswer=accepted.join(' / ');
+    input.className='quiz-input '+(correct?'correct':'incorrect');
   } else {
-    const result = checkMeaning(userAns, currentItem);
-    if (result.result==='correct') correct=true;
-    else if (result.result==='close') closeMatch=true;
-    correctAnswer = getMeanings(currentItem).join(', ');
-    if (correct) input.className='quiz-input correct';
-    else if (closeMatch) { input.className='quiz-input shake'; setTimeout(()=>{input.className='quiz-input meaning-mode';},500); }
+    const result=checkMeaning(userAns,currentItem);
+    if(result.result==='correct')correct=true;
+    else if(result.result==='close')closeMatch=true;
+    correctAnswer=getMeanings(currentItem).join(', ');
+    if(correct)input.className='quiz-input correct';
+    else if(closeMatch){input.className='quiz-input shake';setTimeout(()=>{input.className='quiz-input meaning-mode';},500);}
     else input.className='quiz-input incorrect';
   }
-  if (closeMatch) {
-    showFeedbackMsg('close', `Close! Did you mean: ${correctAnswer}`);
-    input.value=''; setTimeout(()=>input.focus(),100);
-    return;
+  if(closeMatch){
+    showFeedbackMsg('close',`Close! Did you mean: ${correctAnswer}`);
+    input.value='';setTimeout(()=>input.focus(),100);return;
   }
-  if (!correct) itemCorrect = false;
-  input.disabled = true;
-  const fb = document.getElementById('quiz-feedback');
-  fb.classList.add('show');
-  const re = document.getElementById('feedback-result');
-  re.textContent = correct?'✅ Correct!':'❌ Incorrect';
-  re.className = 'feedback-result ' + (correct?'correct':'incorrect');
-  document.getElementById('feedback-answer').textContent = correct?'':`Answer: ${correctAnswer}`;
-  document.getElementById('feedback-notes').textContent = (currentItem.notes&&!currentItem.notes.startsWith('WaniKani'))?currentItem.notes:'';
-  document.getElementById('feedback-hook').textContent = currentItem.hook?'💡 '+currentItem.hook:'';
-  const se = document.getElementById('feedback-synonyms');
-  if (prompt.mode==='meaning'&&!correct) {
+  if(!correct)itemCorrect=false;
+  input.disabled=true;
+
+  // Check if this is the last prompt
+  const isLastPrompt = currentPromptIndex >= currentPrompts.length - 1 || !correct;
+
+  if(isLastPrompt){
+    // Finalise immediately — show level change in same feedback
+    finaliseItem(correct, correctAnswer);
+  } else {
+    // More prompts to go — show intermediate feedback
+    const fb=document.getElementById('quiz-feedback');fb.classList.add('show');
+    const re=document.getElementById('feedback-result');
+    re.textContent='✅ Correct!';re.className='feedback-result correct';
+    document.getElementById('feedback-answer').textContent='';
+    document.getElementById('feedback-notes').textContent='';
+    document.getElementById('feedback-hook').textContent='';
+    document.getElementById('feedback-level').textContent='';
+    document.getElementById('feedback-synonyms').innerHTML='';
+    document.getElementById('enlightened-overlay').className='enlightened-overlay';
+    document.getElementById('btn-submit').style.display='none';
+    document.getElementById('btn-next').style.display='';
+  }
+}
+
+function finaliseItem(lastCorrect, correctAnswer){
+  itemAnswered=true;
+  if(!lastCorrect)itemCorrect=false;
+
+  const fb=document.getElementById('quiz-feedback');fb.classList.add('show');
+  const re=document.getElementById('feedback-result');
+
+  const prevLevel=currentItem.level;
+  if(quizMode==='new'){if(itemCorrect)currentItem.level=2;}
+  else{if(itemCorrect)currentItem.level=Math.min(5,currentItem.level+1);else currentItem.level=Math.max(1,currentItem.level-1);}
+
+  quizResults.push({item:currentItem,correct:itemCorrect});
+  if(itemCorrect)quizScore++;
+
+  // Result display
+  re.textContent=itemCorrect?'✅ Correct!':'❌ Incorrect';
+  re.className='feedback-result '+(itemCorrect?'correct':'incorrect');
+  document.getElementById('feedback-answer').textContent=(!itemCorrect&&correctAnswer)?`Answer: ${correctAnswer}`:'';
+  document.getElementById('feedback-notes').textContent=(currentItem.notes&&!currentItem.notes.startsWith('WaniKani'))?currentItem.notes:'';
+  document.getElementById('feedback-hook').textContent=currentItem.hook?'💡 '+currentItem.hook:'';
+
+  // Level change
+  const lc=currentItem.level-prevLevel;
+  const arrow=lc>0?'↑':lc<0?'↓':'→';
+  document.getElementById('feedback-level').innerHTML=`<span style="color:${LEVEL_COLORS[currentItem.level]}">${arrow} ${LEVEL_NAMES[prevLevel]} → ${LEVEL_NAMES[currentItem.level]}</span>`;
+
+  // Animation
+  const fb2=document.getElementById('quiz-feedback');
+  if(lc>0)fb2.classList.add('feedback-levelup');
+  setTimeout(()=>fb2.classList.remove('feedback-levelup'),400);
+  if(currentItem.level===5&&prevLevel<5){
+    const overlay=document.getElementById('enlightened-overlay');
+    overlay.className='enlightened-overlay burst';
+    setTimeout(()=>overlay.className='enlightened-overlay',1000);
+  }
+
+  // Synonym add for wrong meaning
+  const se=document.getElementById('feedback-synonyms');
+  const lastPrompt=currentPrompts[currentPromptIndex];
+  if(lastPrompt&&lastPrompt.mode==='meaning'&&!itemCorrect){
+    const userAns=document.getElementById('quiz-input').value.trim();
     se.innerHTML=`<span class="add-syn-inline" onclick="showInlineSyn('${userAns.replace(/'/g,"\\'")}')">+ Add as synonym</span><div class="syn-inline-row" id="syn-inline-row" style="display:none"><input class="syn-inline-input" id="syn-inline-input" value="${userAns}"><button class="syn-inline-save" onclick="saveInlineSyn()">Save</button></div>`;
   } else se.innerHTML='';
-  document.getElementById('btn-submit').style.display='none';
-  document.getElementById('btn-next').style.display='';
-  if (!correct) currentPromptIndex = currentPrompts.length-1;
-}
 
-function showFeedbackMsg(type, msg) {
-  const fb=document.getElementById('quiz-feedback'); fb.classList.add('show');
-  const re=document.getElementById('feedback-result');
-  if(type==='close'){re.textContent='⚠️ Close!';re.className='feedback-result close';}
-  document.getElementById('feedback-answer').textContent=msg;
-  ['feedback-notes','feedback-hook','feedback-synonyms'].forEach(id=>document.getElementById(id).textContent='');
-  document.getElementById('btn-submit').style.display=''; document.getElementById('btn-next').style.display='none';
-}
-function showInlineSyn(val){document.getElementById('syn-inline-row').style.display='flex';document.getElementById('syn-inline-input').value=val;document.getElementById('syn-inline-input').focus();}
-async function saveInlineSyn(){
-  const val=document.getElementById('syn-inline-input').value.trim();
-  if(val&&currentItem){await addUserSynonym(currentItem.id,val);document.getElementById('feedback-synonyms').innerHTML='<span style="color:var(--correct);font-size:0.78rem">✅ Synonym saved</span>';}
-}
-
-function handleNext() { if (itemAnswered) advanceItem(); else nextPrompt(); }
-function nextPrompt() {
-  currentPromptIndex++;
-  if (currentPromptIndex < currentPrompts.length && itemCorrect) showPrompt();
-  else finaliseItem();
-}
-function finaliseItem() {
-  itemAnswered = true;
-  const prevLevel = currentItem.level;
-  if (quizMode==='new') { if(itemCorrect) currentItem.level=2; }
-  else { if(itemCorrect) currentItem.level=Math.min(5,currentItem.level+1); else currentItem.level=Math.max(1,currentItem.level-1); }
-  quizResults.push({item:currentItem, correct:itemCorrect});
-  if (itemCorrect) quizScore++;
-  const lc = currentItem.level-prevLevel;
-  const arrow = lc>0?'↑':lc<0?'↓':'→';
-  document.getElementById('feedback-level').innerHTML=`<span style="color:${LEVEL_COLORS[currentItem.level]}">${arrow} ${LEVEL_NAMES[prevLevel]} → ${LEVEL_NAMES[currentItem.level]}</span>`;
   document.getElementById('btn-submit').style.display='none';
   document.getElementById('btn-next').textContent='Next →';
   document.getElementById('btn-next').style.display='';
 }
-function advanceItem() { quizIndex++; if(quizIndex>=quizQueue.length) showResults(); else startItem(); }
-function handleQuizKey(e) {
-  if (e.key==='Enter') {
-    const nb=document.getElementById('btn-next'), sb=document.getElementById('btn-submit');
-    if(nb.style.display!=='none') handleNext(); else if(sb.style.display!=='none') submitAnswer();
+
+function showFeedbackMsg(type,msg){
+  const fb=document.getElementById('quiz-feedback');fb.classList.add('show');
+  const re=document.getElementById('feedback-result');
+  if(type==='close'){re.textContent='⚠️ Close!';re.className='feedback-result close';}
+  document.getElementById('feedback-answer').textContent=msg;
+  ['feedback-notes','feedback-hook','feedback-level','feedback-synonyms'].forEach(id=>document.getElementById(id).textContent='');
+  document.getElementById('enlightened-overlay').className='enlightened-overlay';
+  document.getElementById('btn-submit').style.display='';
+  document.getElementById('btn-next').style.display='none';
+}
+
+function showInlineSyn(val){document.getElementById('syn-inline-row').style.display='flex';document.getElementById('syn-inline-input').value=val;document.getElementById('syn-inline-input').focus();}
+async function saveInlineSyn(){const val=document.getElementById('syn-inline-input').value.trim();if(val&&currentItem){await addUserSynonym(currentItem.id,val);document.getElementById('feedback-synonyms').innerHTML='<span style="color:var(--correct);font-size:0.78rem">✅ Synonym saved</span>';}}
+
+function handleNext(){
+  if(itemAnswered)advanceItem();
+  else{
+    // Move to next prompt
+    currentPromptIndex++;
+    if(currentPromptIndex<currentPrompts.length&&itemCorrect)showPrompt();
+    else finaliseItem(true,'');
   }
 }
 
-async function showResults() {
+function advanceItem(){quizIndex++;if(quizIndex>=quizQueue.length)showResults();else startItem();}
+
+function handleQuizKey(e){
+  if(e.key==='Enter'||e.key===' '){
+    const nb=document.getElementById('btn-next');
+    const sb2=document.getElementById('btn-submit');
+    if(e.key===' '&&document.activeElement===document.getElementById('quiz-input'))return;
+    if(nb.style.display!=='none')handleNext();
+    else if(sb2.style.display!=='none')submitAnswer();
+    if(e.key===' ')e.preventDefault();
+  }
+}
+
+async function showResults(){
   document.getElementById('quiz-active').classList.remove('show');
   document.getElementById('quiz-results').classList.add('show');
-  const pct = Math.round((quizScore/quizQueue.length)*100);
-  document.getElementById('results-score').textContent = pct+'%';
-  document.getElementById('results-fraction').textContent = `${quizScore} / ${quizQueue.length} correct`;
-  document.getElementById('results-breakdown').innerHTML = quizResults.map(r =>
+  const pct=Math.round((quizScore/quizQueue.length)*100);
+  document.getElementById('results-score').textContent=pct+'%';
+  document.getElementById('results-fraction').textContent=`${quizScore} / ${quizQueue.length} correct`;
+  document.getElementById('results-breakdown').innerHTML=quizResults.map(r=>
     `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div class="results-icon">${r.correct?'✅':'❌'}</div></div>`).join('');
   renderDashboard();
-  // Save all level changes to Supabase
-  const updates = quizResults.map(r => ({item_id: r.item.id, level: r.item.level}));
-  await saveLevelBatch(updates);
+  await saveLevelBatch(quizResults.map(r=>({item_id:r.item.id,level:r.item.level})));
 }
-function restartQuiz() { document.getElementById('quiz-results').classList.remove('show'); startQuiz(); }
-function backToConfig() {
+
+function restartQuiz(){document.getElementById('quiz-results').classList.remove('show');startQuiz();}
+function backToConfig(){
   document.getElementById('quiz-results').classList.remove('show');
   document.getElementById('quiz-active').classList.remove('show');
   document.getElementById('quiz-config-panel').classList.remove('hide');
   updateQuizPoolInfo();
 }
-async function endQuiz() {
-  // Save any changed levels before ending
-  const updates = quizResults.map(r => ({item_id: r.item.id, level: r.item.level}));
-  if (updates.length) await saveLevelBatch(updates);
+async function endQuiz(){
+  const updates=quizResults.map(r=>({item_id:r.item.id,level:r.item.level}));
+  if(updates.length)await saveLevelBatch(updates);
   document.getElementById('quiz-active').classList.remove('show');
   document.getElementById('quiz-config-panel').classList.remove('hide');
   updateQuizPoolInfo();
