@@ -1,460 +1,511 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="sumi" data-mode="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>日本語辞典 — Japanese Study</title>
 <style>
-  :root {
-    --bg: #0f0f13;
-    --surface: #1a1a24;
-    --surface2: #22222f;
-    --surface3: #2a2a3a;
-    --border: #333348;
-    --text: #e8e8f0;
-    --text2: #9999b8;
-    --text3: #6666888;
-    --accent: #7c6af7;
-    --accent2: #5a4fd4;
-    --locked: #444460;
-    --review: #c0392b;
-    --apprentice: #e67e22;
-    --guru: #8e44ad;
-    --master: #2980b9;
-    --enlightened: #27ae60;
-    --correct: #27ae60;
-    --incorrect: #c0392b;
-    --radius: 12px;
-    --radius-sm: 8px;
-  }
+/* ── THEMES ── */
+[data-theme="sumi"][data-mode="dark"] {
+  --bg: #0e0d0c;
+  --surface: #1a1816;
+  --surface2: #221f1d;
+  --surface3: #2c2825;
+  --border: #3d3830;
+  --text: #f0ebe3;
+  --text2: #a89880;
+  --text3: #6e5e50;
+  --accent: #c0392b;
+  --accent2: #962d22;
+  --accent-soft: rgba(192,57,43,0.15);
+  --nav-bg: #141210;
+  --card-bg: #1a1816;
+}
+[data-theme="sumi"][data-mode="light"] {
+  --bg: #f5f0e8;
+  --surface: #faf6ef;
+  --surface2: #f0ebe0;
+  --surface3: #e8e0d0;
+  --border: #d0c4b0;
+  --text: #1a1410;
+  --text2: #5a4a38;
+  --text3: #9a8a78;
+  --accent: #c0392b;
+  --accent2: #962d22;
+  --accent-soft: rgba(192,57,43,0.1);
+  --nav-bg: #ede8df;
+  --card-bg: #faf6ef;
+}
+[data-theme="sakura"][data-mode="dark"] {
+  --bg: #0a0c14;
+  --surface: #131520;
+  --surface2: #1a1c2a;
+  --surface3: #222436;
+  --border: #2e3048;
+  --text: #f0eaf5;
+  --text2: #a090b8;
+  --text3: #605878;
+  --accent: #e8799a;
+  --accent2: #c45c7a;
+  --accent-soft: rgba(232,121,154,0.15);
+  --nav-bg: #0d0f1a;
+  --card-bg: #131520;
+}
+[data-theme="sakura"][data-mode="light"] {
+  --bg: #fdf0f5;
+  --surface: #fff5f8;
+  --surface2: #f8e8f0;
+  --surface3: #f0dce8;
+  --border: #e0c0d0;
+  --text: #1a0a10;
+  --text2: #6a3a50;
+  --text3: #a07088;
+  --accent: #c45c7a;
+  --accent2: #a04060;
+  --accent-soft: rgba(196,92,122,0.1);
+  --nav-bg: #f5e8f0;
+  --card-bg: #fff5f8;
+}
+[data-theme="ai"][data-mode="dark"] {
+  --bg: #080c14;
+  --surface: #0f1520;
+  --surface2: #161d2a;
+  --surface3: #1e2638;
+  --border: #2a3448;
+  --text: #f0f0e8;
+  --text2: #8898b8;
+  --text3: #4a5878;
+  --accent: #c8a84a;
+  --accent2: #a08838;
+  --accent-soft: rgba(200,168,74,0.15);
+  --nav-bg: #0b1018;
+  --card-bg: #0f1520;
+}
+[data-theme="ai"][data-mode="light"] {
+  --bg: #f0f4f8;
+  --surface: #f8fafc;
+  --surface2: #e8eef5;
+  --surface3: #dce6f0;
+  --border: #b8c8dc;
+  --text: #080c18;
+  --text2: #2a3a58;
+  --text3: #6a7a98;
+  --accent: #2a3a8a;
+  --accent2: #1e2c6e;
+  --accent-soft: rgba(42,58,138,0.1);
+  --nav-bg: #e8eef8;
+  --card-bg: #f8fafc;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── FIXED LEVEL COLOURS (consistent across all themes) ── */
+:root {
+  --locked: #555570;
+  --lvl-review: #c0392b;
+  --lvl-apprentice: #e67e22;
+  --lvl-guru: #8e44ad;
+  --lvl-master: #2980b9;
+  --lvl-enlightened: #27ae60;
+  --correct: #27ae60;
+  --incorrect: #c0392b;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* ── NAV ── */
-  nav {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 56px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .nav-title { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
-  .nav-title span { color: var(--text2); font-weight: 400; font-size: 0.85rem; margin-left: 8px; }
-  .nav-tabs { display: flex; gap: 4px; }
-  .nav-tab {
-    padding: 6px 14px;
-    border-radius: var(--radius-sm);
-    border: none;
-    background: transparent;
-    color: var(--text2);
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .nav-tab.active { background: var(--accent); color: white; font-weight: 600; }
-  .nav-tab:hover:not(.active) { background: var(--surface3); color: var(--text); }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.25s, color 0.25s;
+}
 
-  /* ── VIEWS ── */
-  .view { display: none; padding: 16px; max-width: 900px; margin: 0 auto; }
-  .view.active { display: block; }
+/* ── NAV ── */
+nav {
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 54px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 8px;
+}
+.nav-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nav-tabs { display: flex; gap: 3px; flex-shrink: 0; }
+.nav-tab {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.nav-tab.active { background: var(--accent); color: white; font-weight: 600; }
+.nav-tab:hover:not(.active) { background: var(--surface3); color: var(--text); }
 
-  /* ── DASHBOARD ── */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  @media (max-width: 480px) { .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; } }
+.nav-controls { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.icon-btn {
+  width: 32px; height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text2);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.icon-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 12px;
-    text-align: center;
-  }
-  .stat-card .num { font-size: 1.8rem; font-weight: 700; }
-  .stat-card .lbl { font-size: 0.75rem; color: var(--text2); margin-top: 2px; }
+/* Theme picker dropdown */
+.theme-picker {
+  position: relative;
+}
+.theme-dropdown {
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px;
+  min-width: 160px;
+  z-index: 200;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+.theme-dropdown.open { display: block; }
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text);
+  transition: background 0.1s;
+}
+.theme-option:hover { background: var(--surface3); }
+.theme-option.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.theme-swatch {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid var(--border);
+}
 
-  .level-breakdown {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    margin-bottom: 20px;
-  }
-  .level-breakdown h3 { font-size: 0.875rem; color: var(--text2); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
-  .level-bars { display: flex; flex-direction: column; gap: 8px; }
-  .level-bar-row { display: flex; align-items: center; gap: 10px; }
-  .level-bar-label { width: 90px; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; }
-  .level-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .level-bar-track { flex: 1; height: 8px; background: var(--surface3); border-radius: 4px; overflow: hidden; }
-  .level-bar-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
-  .level-bar-count { width: 35px; text-align: right; font-size: 0.8rem; color: var(--text2); }
+/* ── VIEWS ── */
+.view { display: none; padding: 14px; max-width: 900px; margin: 0 auto; }
+.view.active { display: block; }
 
-  .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .quick-btn {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    cursor: pointer;
-    transition: all 0.15s;
-    text-align: left;
-  }
-  .quick-btn:hover { border-color: var(--accent); background: var(--surface2); }
-  .quick-btn .qb-icon { font-size: 1.5rem; margin-bottom: 6px; }
-  .quick-btn .qb-title { font-size: 0.9rem; font-weight: 600; }
-  .quick-btn .qb-sub { font-size: 0.78rem; color: var(--text2); margin-top: 2px; }
+/* ── DASHBOARD ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 10px;
+  text-align: center;
+  transition: background 0.25s, border-color 0.25s;
+}
+.stat-card .num { font-size: 1.7rem; font-weight: 700; }
+.stat-card .lbl { font-size: 0.72rem; color: var(--text2); margin-top: 2px; }
 
-  /* ── DICTIONARY ── */
-  .dict-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  .search-row { display: flex; gap: 8px; }
-  .search-input {
-    flex: 1;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 10px 14px;
-    color: var(--text);
-    font-size: 1rem;
-    outline: none;
-  }
-  .search-input:focus { border-color: var(--accent); }
-  .search-input::placeholder { color: var(--text3); }
+.level-breakdown {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: background 0.25s;
+}
+.level-breakdown h3 { font-size: 0.8rem; color: var(--text2); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+.level-bars { display: flex; flex-direction: column; gap: 7px; }
+.level-bar-row { display: flex; align-items: center; gap: 10px; }
+.level-bar-label { width: 88px; font-size: 0.78rem; display: flex; align-items: center; gap: 6px; }
+.level-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.level-bar-track { flex: 1; height: 7px; background: var(--surface3); border-radius: 4px; overflow: hidden; }
+.level-bar-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+.level-bar-count { width: 30px; text-align: right; font-size: 0.78rem; color: var(--text2); }
 
-  .filter-row { display: flex; gap: 8px; flex-wrap: wrap; }
-  .filter-sel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 8px 12px;
-    color: var(--text);
-    font-size: 0.85rem;
-    outline: none;
-    cursor: pointer;
-    flex: 1;
-    min-width: 120px;
-  }
-  .filter-sel:focus { border-color: var(--accent); }
+.quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.quick-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+}
+.quick-btn:hover { border-color: var(--accent); background: var(--surface2); }
+.quick-btn .qb-icon { font-size: 1.4rem; margin-bottom: 5px; }
+.quick-btn .qb-title { font-size: 0.875rem; font-weight: 600; }
+.quick-btn .qb-sub { font-size: 0.75rem; color: var(--text2); margin-top: 2px; }
 
-  .dict-count { font-size: 0.8rem; color: var(--text2); margin-bottom: 8px; }
+/* ── DICTIONARY ── */
+.dict-controls { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.search-row { display: flex; gap: 8px; }
+.search-input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  color: var(--text);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s, background 0.25s;
+}
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--text3); }
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.filter-sel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  color: var(--text);
+  font-size: 0.82rem;
+  outline: none;
+  cursor: pointer;
+  flex: 1;
+  min-width: 110px;
+  transition: background 0.25s;
+}
+.filter-sel:focus { border-color: var(--accent); }
+.dict-count { font-size: 0.78rem; color: var(--text2); margin-bottom: 8px; }
+.dict-list { display: flex; flex-direction: column; gap: 7px; }
+.dict-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 11px 13px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.25s;
+}
+.dict-item:hover { border-color: var(--accent); background: var(--surface2); }
+.dict-item .kanji { font-size: 1.35rem; min-width: 55px; }
+.dict-item .info { flex: 1; }
+.dict-item .reading { font-size: 0.875rem; color: var(--text2); }
+.dict-item .meaning { font-size: 0.78rem; color: var(--text3); margin-top: 2px; }
+.dict-item .badge-row { display: flex; gap: 5px; margin-top: 4px; flex-wrap: wrap; }
+.badge { font-size: 0.68rem; padding: 2px 7px; border-radius: 20px; font-weight: 600; }
+.level-badge-0 { background: var(--locked); color: #ccc; }
+.level-badge-1 { background: var(--lvl-review); color: white; }
+.level-badge-2 { background: var(--lvl-apprentice); color: white; }
+.level-badge-3 { background: var(--lvl-guru); color: white; }
+.level-badge-4 { background: var(--lvl-master); color: white; }
+.level-badge-5 { background: var(--lvl-enlightened); color: white; }
+.cat-badge { background: var(--surface3); color: var(--text2); }
 
-  .dict-list { display: flex; flex-direction: column; gap: 8px; }
-  .dict-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 12px 14px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    transition: border-color 0.15s;
-  }
-  .dict-item:hover { border-color: var(--accent); }
-  .dict-item .kanji { font-size: 1.4rem; min-width: 60px; }
-  .dict-item .info { flex: 1; }
-  .dict-item .reading { font-size: 0.9rem; color: var(--text2); }
-  .dict-item .meaning { font-size: 0.8rem; color: var(--text3); margin-top: 2px; }
-  .dict-item .badge-row { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
-  .badge {
-    font-size: 0.7rem;
-    padding: 2px 7px;
-    border-radius: 20px;
-    font-weight: 600;
-  }
-  .level-badge-0 { background: var(--locked); color: #aaa; }
-  .level-badge-1 { background: var(--review); color: white; }
-  .level-badge-2 { background: var(--apprentice); color: white; }
-  .level-badge-3 { background: var(--guru); color: white; }
-  .level-badge-4 { background: var(--master); color: white; }
-  .level-badge-5 { background: var(--enlightened); color: white; }
-  .cat-badge { background: var(--surface3); color: var(--text2); }
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 300;
+  padding: 20px;
+  overflow-y: auto;
+}
+.modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; padding-top: 60px; }
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  width: 100%;
+  max-width: 460px;
+  position: relative;
+  transition: background 0.25s;
+}
+.modal-close {
+  position: absolute; top: 12px; right: 12px;
+  background: var(--surface3); border: none; color: var(--text2);
+  width: 26px; height: 26px; border-radius: 50%;
+  cursor: pointer; font-size: 0.9rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-kanji { font-size: 2.8rem; margin-bottom: 6px; }
+.modal-reading { font-size: 1.1rem; color: var(--text2); margin-bottom: 3px; }
+.modal-romaji { font-size: 0.875rem; color: var(--text3); margin-bottom: 10px; }
+.modal-divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+.modal-field { margin-bottom: 7px; }
+.modal-field-label { font-size: 0.72rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
+.modal-field-value { font-size: 0.875rem; }
+.modal-notes { background: var(--surface2); border-radius: var(--radius-sm); padding: 9px; font-size: 0.85rem; color: var(--text2); margin-top: 7px; }
+.modal-hook { background: var(--accent-soft); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 9px; font-size: 0.85rem; color: var(--accent); margin-top: 7px; }
 
-  /* Detail modal */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 200;
-    padding: 20px;
-    overflow-y: auto;
-  }
-  .modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; padding-top: 60px; }
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 24px;
-    width: 100%;
-    max-width: 480px;
-    position: relative;
-  }
-  .modal-close {
-    position: absolute;
-    top: 14px; right: 14px;
-    background: var(--surface3);
-    border: none;
-    color: var(--text2);
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 1rem;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .modal-kanji { font-size: 3rem; margin-bottom: 8px; }
-  .modal-reading { font-size: 1.2rem; color: var(--text2); margin-bottom: 4px; }
-  .modal-romaji { font-size: 0.9rem; color: var(--text3); margin-bottom: 12px; }
-  .modal-divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
-  .modal-field { margin-bottom: 8px; }
-  .modal-field-label { font-size: 0.75rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
-  .modal-field-value { font-size: 0.9rem; }
-  .modal-notes {
-    background: var(--surface2);
-    border-radius: var(--radius-sm);
-    padding: 10px;
-    font-size: 0.875rem;
-    color: var(--text2);
-    margin-top: 8px;
-  }
-  .modal-hook {
-    background: rgba(124,106,247,0.1);
-    border: 1px solid rgba(124,106,247,0.3);
-    border-radius: var(--radius-sm);
-    padding: 10px;
-    font-size: 0.875rem;
-    color: var(--accent);
-    margin-top: 8px;
-  }
+/* ── QUIZ CONFIG ── */
+.quiz-config { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; transition: background 0.25s; }
+.quiz-config h3 { font-size: 0.8rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; }
+.config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+@media (max-width: 400px) { .config-grid { grid-template-columns: 1fr; } }
+.config-item label { display: block; font-size: 0.78rem; color: var(--text2); margin-bottom: 4px; }
+.config-item select, .config-item input {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 8px 10px; color: var(--text);
+  font-size: 0.85rem; outline: none; transition: background 0.25s;
+}
+.config-item select:focus, .config-item input:focus { border-color: var(--accent); }
 
-  /* ── QUIZ ── */
-  .quiz-config {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    margin-bottom: 16px;
-  }
-  .quiz-config h3 { font-size: 0.875rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
-  .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  @media (max-width: 400px) { .config-grid { grid-template-columns: 1fr; } }
-  .config-item label { display: block; font-size: 0.8rem; color: var(--text2); margin-bottom: 4px; }
-  .config-item select, .config-item input {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 8px 10px;
-    color: var(--text);
-    font-size: 0.875rem;
-    outline: none;
-  }
-  .config-item select:focus, .config-item input:focus { border-color: var(--accent); }
+.quiz-mode-tabs { display: flex; gap: 7px; margin-bottom: 14px; }
+.quiz-mode-tab {
+  flex: 1; padding: 10px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--surface2);
+  color: var(--text2); cursor: pointer; text-align: center;
+  font-size: 0.85rem; transition: all 0.15s;
+}
+.quiz-mode-tab.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.quiz-mode-tab:hover:not(.active) { background: var(--surface3); color: var(--text); }
 
-  .quiz-mode-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-  .quiz-mode-tab {
-    flex: 1;
-    padding: 10px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    color: var(--text2);
-    cursor: pointer;
-    text-align: center;
-    font-size: 0.875rem;
-    transition: all 0.15s;
-  }
-  .quiz-mode-tab.active { border-color: var(--accent); background: rgba(124,106,247,0.15); color: var(--accent); font-weight: 600; }
-  .quiz-mode-tab:hover:not(.active) { border-color: var(--border); background: var(--surface3); color: var(--text); }
+.start-btn {
+  width: 100%; padding: 13px; background: var(--accent); border: none;
+  border-radius: var(--radius); color: white; font-size: 0.95rem;
+  font-weight: 600; cursor: pointer; transition: background 0.15s;
+}
+.start-btn:hover { background: var(--accent2); }
+.start-btn:disabled { background: var(--surface3); color: var(--text3); cursor: not-allowed; }
 
-  .start-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--accent);
-    border: none;
-    border-radius: var(--radius);
-    color: white;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .start-btn:hover { background: var(--accent2); }
-  .start-btn:disabled { background: var(--surface3); color: var(--text3); cursor: not-allowed; }
+/* ── ACTIVE QUIZ ── */
+.quiz-active { display: none; }
+.quiz-active.show { display: block; }
+.quiz-config-panel.hide { display: none; }
 
-  /* Active quiz */
-  .quiz-active { display: none; }
-  .quiz-active.show { display: block; }
-  .quiz-config-panel { }
-  .quiz-config-panel.hide { display: none; }
+.quiz-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.progress-bar { flex: 1; height: 5px; background: var(--surface3); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.3s ease; }
+.progress-text { font-size: 0.78rem; color: var(--text2); white-space: nowrap; }
 
-  .quiz-progress {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-  .progress-bar {
-    flex: 1;
-    height: 6px;
-    background: var(--surface3);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.3s ease; }
-  .progress-text { font-size: 0.8rem; color: var(--text2); white-space: nowrap; }
+.quiz-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px 20px; text-align: center;
+  margin-bottom: 14px; min-height: 180px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: background 0.25s;
+}
+.quiz-prompt { font-size: 3.2rem; margin-bottom: 7px; line-height: 1; }
+.quiz-sub { font-size: 0.82rem; color: var(--text2); }
+.quiz-category-hint { font-size: 0.72rem; color: var(--text3); margin-top: 5px; }
 
-  .quiz-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 32px 24px;
-    text-align: center;
-    margin-bottom: 16px;
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  .quiz-prompt { font-size: 3.5rem; margin-bottom: 8px; line-height: 1; }
-  .quiz-sub { font-size: 0.85rem; color: var(--text2); }
-  .quiz-category-hint { font-size: 0.75rem; color: var(--text3); margin-top: 6px; }
+.quiz-answer-area { margin-bottom: 14px; }
+.quiz-input {
+  width: 100%; background: var(--surface); border: 2px solid var(--border);
+  border-radius: var(--radius); padding: 13px 15px; color: var(--text);
+  font-size: 1.05rem; outline: none; text-align: center; transition: border-color 0.15s, background 0.25s;
+}
+.quiz-input:focus { border-color: var(--accent); }
+.quiz-input.correct { border-color: var(--correct); background: rgba(39,174,96,0.08); }
+.quiz-input.incorrect { border-color: var(--incorrect); background: rgba(192,57,43,0.08); }
 
-  .quiz-answer-area { margin-bottom: 16px; }
-  .quiz-input {
-    width: 100%;
-    background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    color: var(--text);
-    font-size: 1.1rem;
-    outline: none;
-    text-align: center;
-    transition: border-color 0.15s;
-  }
-  .quiz-input:focus { border-color: var(--accent); }
-  .quiz-input.correct { border-color: var(--correct); background: rgba(39,174,96,0.1); }
-  .quiz-input.incorrect { border-color: var(--incorrect); background: rgba(192,57,43,0.1); }
+.quiz-btn-row { display: flex; gap: 9px; }
+.quiz-btn { flex: 1; padding: 12px; border-radius: var(--radius); border: none; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.btn-submit { background: var(--accent); color: white; }
+.btn-submit:hover { background: var(--accent2); }
+.btn-next { background: var(--surface3); color: var(--text); border: 1px solid var(--border); }
+.btn-next:hover { background: var(--surface2); }
+.btn-end { background: var(--surface3); color: var(--text2); border: 1px solid var(--border); font-size: 0.78rem; padding: 8px; flex: 0; white-space: nowrap; }
 
-  .quiz-btn-row { display: flex; gap: 10px; }
-  .quiz-btn {
-    flex: 1;
-    padding: 12px;
-    border-radius: var(--radius);
-    border: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .btn-submit { background: var(--accent); color: white; }
-  .btn-submit:hover { background: var(--accent2); }
-  .btn-next { background: var(--surface3); color: var(--text); border: 1px solid var(--border); }
-  .btn-next:hover { background: var(--surface2); }
-  .btn-end { background: var(--surface3); color: var(--text2); border: 1px solid var(--border); font-size: 0.8rem; padding: 8px; }
+.quiz-feedback {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px; margin-bottom: 12px; display: none;
+  transition: background 0.25s;
+}
+.quiz-feedback.show { display: block; }
+.feedback-result { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+.feedback-result.correct { color: var(--correct); }
+.feedback-result.incorrect { color: var(--incorrect); }
+.feedback-answer { font-size: 0.875rem; color: var(--text2); }
+.feedback-notes { font-size: 0.78rem; color: var(--text3); margin-top: 5px; font-style: italic; }
+.feedback-hook { font-size: 0.78rem; color: var(--accent); margin-top: 4px; }
+.feedback-level { font-size: 0.78rem; margin-top: 7px; }
 
-  .quiz-feedback {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    margin-bottom: 12px;
-    display: none;
-  }
-  .quiz-feedback.show { display: block; }
-  .feedback-result { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
-  .feedback-result.correct { color: var(--correct); }
-  .feedback-result.incorrect { color: var(--incorrect); }
-  .feedback-answer { font-size: 0.9rem; color: var(--text2); }
-  .feedback-notes { font-size: 0.8rem; color: var(--text3); margin-top: 6px; font-style: italic; }
-  .feedback-hook { font-size: 0.8rem; color: var(--accent); margin-top: 4px; }
-  .feedback-level { font-size: 0.8rem; margin-top: 8px; }
+/* ── RESULTS ── */
+.quiz-results {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 22px; text-align: center;
+  display: none; transition: background 0.25s;
+}
+.quiz-results.show { display: block; }
+.results-score { font-size: 2.8rem; font-weight: 700; color: var(--accent); }
+.results-fraction { font-size: 1rem; color: var(--text2); margin-bottom: 14px; }
+.results-breakdown { text-align: left; margin: 14px 0; }
+.results-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem;
+}
+.results-item:last-child { border-bottom: none; }
+.results-kanji { font-size: 1.15rem; min-width: 48px; }
+.results-reading { flex: 1; color: var(--text2); }
+.results-icon { font-size: 1rem; }
+.results-btn-row { display: flex; gap: 9px; margin-top: 14px; }
 
-  /* Results */
-  .quiz-results {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 24px;
-    text-align: center;
-    display: none;
-  }
-  .quiz-results.show { display: block; }
-  .results-score { font-size: 3rem; font-weight: 700; color: var(--accent); }
-  .results-fraction { font-size: 1.1rem; color: var(--text2); margin-bottom: 16px; }
-  .results-breakdown { text-align: left; margin: 16px 0; }
-  .results-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.875rem;
-  }
-  .results-item:last-child { border-bottom: none; }
-  .results-kanji { font-size: 1.2rem; min-width: 50px; }
-  .results-reading { flex: 1; color: var(--text2); }
-  .results-icon { font-size: 1.1rem; }
-  .results-btn-row { display: flex; gap: 10px; margin-top: 16px; }
-
-  /* Level colours */
-  .c0 { color: #888; }
-  .c1 { color: var(--review); }
-  .c2 { color: var(--apprentice); }
-  .c3 { color: var(--guru); }
-  .c4 { color: var(--master); }
-  .c5 { color: var(--enlightened); }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
-  .empty-state { text-align: center; padding: 40px 20px; color: var(--text2); }
-  .empty-state .es-icon { font-size: 2.5rem; margin-bottom: 10px; }
-
-  .section-title {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text3);
-    margin-bottom: 10px;
-    margin-top: 20px;
-  }
-  .section-title:first-child { margin-top: 0; }
+/* ── MISC ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.empty-state { text-align: center; padding: 36px 20px; color: var(--text2); }
+.empty-state .es-icon { font-size: 2.2rem; margin-bottom: 8px; }
+.section-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 9px; margin-top: 18px; }
+.section-title:first-child { margin-top: 0; }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-title">日本語辞典 <span>Japanese Study</span></div>
+  <div class="nav-title">日本語辞典</div>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="showView('dashboard')">Home</button>
     <button class="nav-tab" onclick="showView('dictionary')">Dict</button>
     <button class="nav-tab" onclick="showView('quiz')">Quiz</button>
+  </div>
+  <div class="nav-controls">
+    <!-- Dark/Light toggle -->
+    <button class="icon-btn" id="mode-btn" onclick="toggleMode()" title="Toggle light/dark">🌙</button>
+    <!-- Theme picker -->
+    <div class="theme-picker">
+      <button class="icon-btn" onclick="toggleThemeDropdown()" title="Change theme">🎨</button>
+      <div class="theme-dropdown" id="theme-dropdown">
+        <div class="theme-option" id="theme-sumi" onclick="setTheme('sumi')">
+          <div class="theme-swatch" style="background:linear-gradient(135deg,#0e0d0c 50%,#c0392b 50%)"></div>
+          🖋️ Sumi
+        </div>
+        <div class="theme-option" id="theme-sakura" onclick="setTheme('sakura')">
+          <div class="theme-swatch" style="background:linear-gradient(135deg,#0a0c14 50%,#e8799a 50%)"></div>
+          🌸 Sakura
+        </div>
+        <div class="theme-option" id="theme-ai" onclick="setTheme('ai')">
+          <div class="theme-swatch" style="background:linear-gradient(135deg,#080c14 50%,#c8a84a 50%)"></div>
+          藍 Ai
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -561,7 +612,7 @@
         </div>
       </div>
     </div>
-    <div id="quiz-pool-info" style="font-size:0.8rem;color:var(--text2);margin-bottom:12px;text-align:center;"></div>
+    <div id="quiz-pool-info" style="font-size:0.78rem;color:var(--text2);margin-bottom:11px;text-align:center;"></div>
     <button class="start-btn" id="start-btn" onclick="startQuiz()">Start Quiz</button>
   </div>
 
@@ -569,7 +620,7 @@
     <div class="quiz-progress">
       <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
       <div class="progress-text" id="progress-text"></div>
-      <button class="btn-end" onclick="endQuiz()">End</button>
+      <button class="quiz-btn btn-end" onclick="endQuiz()">End</button>
     </div>
     <div class="quiz-card" id="quiz-card">
       <div class="quiz-prompt" id="quiz-prompt"></div>
@@ -630,7 +681,7 @@
 </div>
 
 <script>
-// ── DATA ──
+// ── DATA & STATE ──
 let items = [];
 let quizMode = 'review';
 let quizQueue = [];
@@ -641,23 +692,72 @@ let currentItem = null;
 let answered = false;
 
 const LEVEL_NAMES = ['Locked','Review','Apprentice','Guru','Master','Enlightened'];
-const LEVEL_COLORS = ['#444460','#c0392b','#e67e22','#8e44ad','#2980b9','#27ae60'];
+const LEVEL_COLORS = ['#555570','#c0392b','#e67e22','#8e44ad','#2980b9','#27ae60'];
+
+// ── THEME ──
+const THEMES = ['sumi','sakura','ai'];
+const THEME_ICONS = { sumi:'🖋️', sakura:'🌸', ai:'藍' };
+
+function loadPrefs() {
+  const prefs = JSON.parse(localStorage.getItem('jisho_prefs') || '{}');
+  const theme = prefs.theme || 'sumi';
+  const mode = prefs.mode || 'dark';
+  document.documentElement.setAttribute('data-theme', theme);
+  document.documentElement.setAttribute('data-mode', mode);
+  document.getElementById('mode-btn').textContent = mode === 'dark' ? '🌙' : '☀️';
+  document.querySelectorAll('.theme-option').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById('theme-' + theme);
+  if (el) el.classList.add('active');
+}
+
+function savePrefs() {
+  localStorage.setItem('jisho_prefs', JSON.stringify({
+    theme: document.documentElement.getAttribute('data-theme'),
+    mode: document.documentElement.getAttribute('data-mode')
+  }));
+}
+
+function toggleMode() {
+  const current = document.documentElement.getAttribute('data-mode');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-mode', next);
+  document.getElementById('mode-btn').textContent = next === 'dark' ? '🌙' : '☀️';
+  savePrefs();
+}
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.querySelectorAll('.theme-option').forEach(el => el.classList.remove('active'));
+  document.getElementById('theme-' + theme).classList.add('active');
+  savePrefs();
+  closeThemeDropdown();
+}
+
+function toggleThemeDropdown() {
+  document.getElementById('theme-dropdown').classList.toggle('open');
+}
+
+function closeThemeDropdown() {
+  document.getElementById('theme-dropdown').classList.remove('open');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.theme-picker')) closeThemeDropdown();
+});
 
 // ── LOAD DATA ──
 async function loadData() {
+  loadPrefs();
   try {
     const r = await fetch('data.json');
     const data = await r.json();
-    // Merge with saved progress
     const saved = JSON.parse(localStorage.getItem('jisho_progress') || '{}');
     items = data.items.map(item => ({
       ...item,
-      level: saved[item.id] !== undefined ? saved[item.id] : item.level,
-      streak: 0
+      level: saved[item.id] !== undefined ? saved[item.id] : item.level
     }));
     init();
   } catch(e) {
-    console.error('Failed to load data.json', e);
     document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#e66"><h2>Could not load data.json</h2><p style="margin-top:10px;color:#999">Make sure data.json is in the same folder as index.html</p></div>';
   }
 }
@@ -720,9 +820,8 @@ function showView(v) {
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
   document.getElementById('view-' + v).classList.add('active');
-  const tabs = document.querySelectorAll('.nav-tab');
   const idx = ['dashboard','dictionary','quiz'].indexOf(v);
-  if (idx >= 0) tabs[idx].classList.add('active');
+  if (idx >= 0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
   if (v === 'dashboard') renderDashboard();
   if (v === 'dictionary') renderDict();
 }
@@ -732,13 +831,11 @@ function renderDashboard() {
   const total = items.length;
   const unlocked = items.filter(i => i.level > 0).length;
   const enlightened = items.filter(i => i.level === 5).length;
-
   document.getElementById('stats-grid').innerHTML = `
     <div class="stat-card"><div class="num" style="color:var(--accent)">${total}</div><div class="lbl">Total Items</div></div>
-    <div class="stat-card"><div class="num" style="color:var(--enlightened)">${unlocked}</div><div class="lbl">Unlocked</div></div>
-    <div class="stat-card"><div class="num" style="color:var(--master)">${enlightened}</div><div class="lbl">Enlightened</div></div>
+    <div class="stat-card"><div class="num" style="color:var(--lvl-enlightened)">${unlocked}</div><div class="lbl">Unlocked</div></div>
+    <div class="stat-card"><div class="num" style="color:var(--lvl-master)">${enlightened}</div><div class="lbl">Enlightened</div></div>
   `;
-
   const counts = [0,1,2,3,4,5].map(l => items.filter(i => i.level === l).length);
   const maxCount = Math.max(...counts, 1);
   document.getElementById('level-bars').innerHTML = counts.map((c,l) => `
@@ -761,26 +858,19 @@ function renderDict() {
   const cat = document.getElementById('filter-cat').value;
   const subcat = document.getElementById('filter-subcat').value;
   const level = document.getElementById('filter-level').value;
-
   let filtered = items.filter(i => {
     if (cat && i.category !== cat) return false;
     if (subcat && i.subcategory !== subcat) return false;
     if (level !== '' && i.level !== parseInt(level)) return false;
-    if (q) {
-      return i.kanji.includes(q) || i.reading.includes(q) ||
-             i.romaji.toLowerCase().includes(q) || i.meaning.toLowerCase().includes(q);
-    }
+    if (q) return i.kanji.includes(q) || i.reading.includes(q) ||
+      i.romaji.toLowerCase().includes(q) || i.meaning.toLowerCase().includes(q);
     return true;
   });
-
   document.getElementById('dict-count').textContent = `${filtered.length} item${filtered.length !== 1 ? 's' : ''}`;
-
   if (filtered.length === 0) {
-    document.getElementById('dict-list').innerHTML = `
-      <div class="empty-state"><div class="es-icon">🔍</div><div>No items found</div></div>`;
+    document.getElementById('dict-list').innerHTML = `<div class="empty-state"><div class="es-icon">🔍</div><div>No items found</div></div>`;
     return;
   }
-
   document.getElementById('dict-list').innerHTML = filtered.map(item => `
     <div class="dict-item" onclick="openModal('${item.id}')">
       <div class="kanji">${item.kanji}</div>
@@ -806,11 +896,10 @@ function openModal(id) {
   document.getElementById('modal-romaji').textContent = item.romaji;
   document.getElementById('modal-meaning').textContent = item.meaning;
   document.getElementById('modal-category').textContent = `${item.category} › ${item.subcategory}`;
-  const notesEl = document.getElementById('modal-notes-wrap');
-  notesEl.textContent = item.notes || '—';
+  document.getElementById('modal-notes-wrap').textContent = item.notes || '—';
   const hookEl = document.getElementById('modal-hook-wrap');
   if (item.hook) { hookEl.textContent = '💡 ' + item.hook; hookEl.style.display = 'block'; }
-  else { hookEl.style.display = 'none'; }
+  else hookEl.style.display = 'none';
   document.getElementById('modal-level').innerHTML =
     `<span style="color:${LEVEL_COLORS[item.level]};font-weight:700">${item.level} — ${LEVEL_NAMES[item.level]}</span>`;
   document.getElementById('modal-overlay').classList.add('open');
@@ -835,7 +924,7 @@ function getQuizPool() {
     if (subcat && i.subcategory !== subcat) return false;
     if (quizMode === 'new') return i.level === 0;
     if (quizMode === 'review') return i.level >= minLevel;
-    return i.level > 0; // mixed
+    return i.level > 0;
   });
 }
 
@@ -851,7 +940,7 @@ function startQuickQuiz(mode) {
   showView('quiz');
   quizMode = mode === 'all' ? 'review' : mode;
   setQuizMode(quizMode);
-  setTimeout(startQuiz, 100);
+  setTimeout(startQuiz, 50);
 }
 
 // ── QUIZ ENGINE ──
@@ -865,23 +954,16 @@ function shuffle(arr) {
 
 function normalise(str) {
   return str.toLowerCase()
-    .replace(/[ōôoo]/g, 'o').replace(/[ūû]/g, 'u')
-    .replace(/[āâ]/g, 'a').replace(/[īî]/g, 'i')
-    .replace(/\s+/g, '').replace(/[-・]/g, '')
-    .replace(/っ/g, 'っ');
+    .replace(/[ōôoo]/g,'o').replace(/[ūû]/g,'u')
+    .replace(/[āâ]/g,'a').replace(/[īî]/g,'i')
+    .replace(/\s+/g,'').replace(/[-・]/g,'');
 }
 
 function checkAnswer(input, item) {
   const norm = normalise(input);
-  // Check reading (hiragana)
-  const readingClean = item.reading.replace(/\s/g,'').replace(/・/g,'');
-  if (norm === normalise(readingClean)) return true;
-  // Check romaji
+  if (norm === normalise(item.reading.replace(/\s/g,'').replace(/・/g,''))) return true;
   const romajiParts = item.romaji.split('/').map(s => normalise(s.trim()));
-  if (romajiParts.some(r => norm === r)) return true;
-  // Partial romaji match for slash-separated readings
-  if (romajiParts.some(r => norm === normalise(r))) return true;
-  return false;
+  return romajiParts.some(r => norm === r);
 }
 
 function startQuiz() {
@@ -889,36 +971,24 @@ function startQuiz() {
   if (pool.length === 0) return;
   const count = Math.min(parseInt(document.getElementById('qconfig-count').value) || 10, pool.length);
   quizQueue = shuffle([...pool]).slice(0, count);
-  quizIndex = 0;
-  quizScore = 0;
-  quizResults = [];
-  answered = false;
-
+  quizIndex = 0; quizScore = 0; quizResults = []; answered = false;
   document.getElementById('quiz-config-panel').classList.add('hide');
   document.getElementById('quiz-active').classList.add('show');
   document.getElementById('quiz-results').classList.remove('show');
-
   showQuestion();
 }
 
 function showQuestion() {
   currentItem = quizQueue[quizIndex];
   answered = false;
-
   const pct = (quizIndex / quizQueue.length) * 100;
   document.getElementById('progress-fill').style.width = pct + '%';
   document.getElementById('progress-text').textContent = `${quizIndex + 1} / ${quizQueue.length}`;
-
   document.getElementById('quiz-prompt').textContent = currentItem.kanji;
   document.getElementById('quiz-sub').textContent = 'What is the reading?';
   document.getElementById('quiz-hint').textContent = `${currentItem.category} › ${currentItem.subcategory}`;
-
   const input = document.getElementById('quiz-input');
-  input.value = '';
-  input.className = 'quiz-input';
-  input.disabled = false;
-  input.focus();
-
+  input.value = ''; input.className = 'quiz-input'; input.disabled = false; input.focus();
   document.getElementById('quiz-feedback').classList.remove('show');
   document.getElementById('btn-submit').style.display = '';
   document.getElementById('btn-next').style.display = 'none';
@@ -928,47 +998,30 @@ function submitAnswer() {
   if (answered) return;
   answered = true;
   const input = document.getElementById('quiz-input');
-  const userAns = input.value.trim();
-  const correct = checkAnswer(userAns, currentItem);
-
-  // Update level
+  const correct = checkAnswer(input.value.trim(), currentItem);
   const prevLevel = currentItem.level;
-  if (quizMode === 'new') {
-    if (correct) currentItem.level = 2;
-    // else stays 0
-  } else {
+  if (quizMode === 'new') { if (correct) currentItem.level = 2; }
+  else {
     if (correct) currentItem.level = Math.min(5, currentItem.level + 1);
     else currentItem.level = Math.max(1, currentItem.level - 1);
   }
   saveProgress();
-
-  if (correct) {
-    quizScore++;
-    input.className = 'quiz-input correct';
-  } else {
-    input.className = 'quiz-input incorrect';
-  }
-
-  quizResults.push({ item: currentItem, correct, userAns });
-
-  // Feedback
+  input.className = 'quiz-input ' + (correct ? 'correct' : 'incorrect');
+  if (correct) quizScore++;
+  quizResults.push({ item: currentItem, correct, userAns: input.value.trim() });
   const fb = document.getElementById('quiz-feedback');
   fb.classList.add('show');
   const resultEl = document.getElementById('feedback-result');
   resultEl.textContent = correct ? '✅ Correct!' : '❌ Incorrect';
   resultEl.className = 'feedback-result ' + (correct ? 'correct' : 'incorrect');
-
   document.getElementById('feedback-answer').textContent =
-    correct ? `${currentItem.reading} (${currentItem.romaji})` :
-    `Answer: ${currentItem.reading} (${currentItem.romaji})`;
+    correct ? `${currentItem.reading} (${currentItem.romaji})` : `Answer: ${currentItem.reading} (${currentItem.romaji})`;
   document.getElementById('feedback-notes').textContent = currentItem.notes || '';
   document.getElementById('feedback-hook').textContent = currentItem.hook ? '💡 ' + currentItem.hook : '';
-
   const levelChange = currentItem.level - prevLevel;
   const arrow = levelChange > 0 ? '↑' : levelChange < 0 ? '↓' : '→';
   document.getElementById('feedback-level').innerHTML =
     `<span style="color:${LEVEL_COLORS[currentItem.level]}">${arrow} ${LEVEL_NAMES[prevLevel]} → ${LEVEL_NAMES[currentItem.level]}</span>`;
-
   input.disabled = true;
   document.getElementById('btn-submit').style.display = 'none';
   document.getElementById('btn-next').style.display = '';
@@ -976,38 +1029,28 @@ function submitAnswer() {
 
 function nextQuestion() {
   quizIndex++;
-  if (quizIndex >= quizQueue.length) {
-    showResults();
-  } else {
-    showQuestion();
-  }
+  if (quizIndex >= quizQueue.length) showResults();
+  else showQuestion();
 }
 
 function handleQuizKey(e) {
-  if (e.key === 'Enter') {
-    if (!answered) submitAnswer();
-    else nextQuestion();
-  }
+  if (e.key === 'Enter') { if (!answered) submitAnswer(); else nextQuestion(); }
 }
 
 function showResults() {
   document.getElementById('quiz-active').classList.remove('show');
-  const results = document.getElementById('quiz-results');
-  results.classList.add('show');
-
+  document.getElementById('quiz-results').classList.add('show');
   const pct = Math.round((quizScore / quizQueue.length) * 100);
   document.getElementById('results-score').textContent = pct + '%';
-  document.getElementById('results-fraction').textContent =
-    `${quizScore} / ${quizQueue.length} correct`;
-
-  document.getElementById('results-breakdown').innerHTML =
-    quizResults.map(r => `
-      <div class="results-item">
-        <div class="results-kanji">${r.item.kanji}</div>
-        <div class="results-reading">${r.item.reading}</div>
-        <div class="results-icon">${r.correct ? '✅' : '❌'}</div>
-      </div>
-    `).join('');
+  document.getElementById('results-fraction').textContent = `${quizScore} / ${quizQueue.length} correct`;
+  document.getElementById('results-breakdown').innerHTML = quizResults.map(r => `
+    <div class="results-item">
+      <div class="results-kanji">${r.item.kanji}</div>
+      <div class="results-reading">${r.item.reading}</div>
+      <div class="results-icon">${r.correct ? '✅' : '❌'}</div>
+    </div>
+  `).join('');
+  renderDashboard();
 }
 
 function restartQuiz() {
@@ -1029,7 +1072,6 @@ function endQuiz() {
   renderDashboard();
 }
 
-// ── START ──
 loadData();
 </script>
 </body>
