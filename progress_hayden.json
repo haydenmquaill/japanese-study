@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-06-12T10:59:52.823Z",
+  "last_updated": "2026-06-12T11:00:02.062Z",
   "user": "hayden",
   "levels": {
     "pref_001": 3,
@@ -255,6 +255,7 @@
     "city_003": 3,
     "city_021": 3,
     "city_022": 3,
+    "city_033": 2,
     "city_067": 3,
     "city_072": 3,
     "city_073": 3,
