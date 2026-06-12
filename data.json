@@ -1,8 +1,14 @@
 {
   "meta": {
-    "version": "1.0",
+    "version": "2.0",
     "last_updated": "2026-06-12",
-    "total_items": 273
+    "total_items": 554,
+    "breakdown": {
+      "prefectures": 47,
+      "stations": 372,
+      "cities_towns": 100,
+      "names": 35
+    }
   },
   "items": [
     {
@@ -15,6 +21,9 @@
       "subcategory": "Hokkaido",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -27,6 +36,9 @@
       "subcategory": "Tohoku",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -39,6 +51,9 @@
       "subcategory": "Tohoku",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -51,6 +66,9 @@
       "subcategory": "Tohoku",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -63,6 +81,9 @@
       "subcategory": "Tohoku",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -75,6 +96,9 @@
       "subcategory": "Tohoku",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -87,6 +111,10 @@
       "subcategory": "Tohoku",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station"
+      ],
       "level": 3
     },
     {
@@ -99,6 +127,9 @@
       "subcategory": "Kanto",
       "notes": "Not いばらぎ",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -111,6 +142,9 @@
       "subcategory": "Kanto",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -123,6 +157,9 @@
       "subcategory": "Kanto",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -135,6 +172,9 @@
       "subcategory": "Kanto",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -147,6 +187,11 @@
       "subcategory": "Kanto",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -154,11 +199,16 @@
       "kanji": "東京",
       "reading": "とうきょう",
       "romaji": "Tokyo",
-      "meaning": "Tokyo Prefecture",
+      "meaning": "Tokyo",
       "category": "Prefecture",
       "subcategory": "Kanto",
       "notes": "Eastern Capital",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -171,6 +221,9 @@
       "subcategory": "Kanto",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -183,6 +236,11 @@
       "subcategory": "Chubu",
       "notes": "にい not しん for 新",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -195,6 +253,11 @@
       "subcategory": "Chubu",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -207,6 +270,9 @@
       "subcategory": "Chubu",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -219,6 +285,11 @@
       "subcategory": "Chubu",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -231,6 +302,9 @@
       "subcategory": "Chubu",
       "notes": "Mountain pear",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -243,6 +317,11 @@
       "subcategory": "Chubu",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -255,6 +334,11 @@
       "subcategory": "Chubu",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -267,6 +351,11 @@
       "subcategory": "Chubu",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -279,6 +368,9 @@
       "subcategory": "Chubu",
       "notes": "Love + knowledge",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -291,6 +383,9 @@
       "subcategory": "Kinki",
       "notes": "重 reads え not じゅう",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -303,6 +398,9 @@
       "subcategory": "Kinki",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -310,11 +408,16 @@
       "kanji": "京都",
       "reading": "きょうと",
       "romaji": "Kyoto",
-      "meaning": "Kyoto Prefecture",
+      "meaning": "Kyoto",
       "category": "Prefecture",
       "subcategory": "Kinki",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -322,11 +425,16 @@
       "kanji": "大阪",
       "reading": "おおさか",
       "romaji": "Osaka",
-      "meaning": "Osaka Prefecture",
+      "meaning": "Osaka",
       "category": "Prefecture",
       "subcategory": "Kinki",
       "notes": "Future home! 🎌",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -339,6 +447,9 @@
       "subcategory": "Kinki",
       "notes": "Home of Nada sake & Akashi",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -346,11 +457,16 @@
       "kanji": "奈良",
       "reading": "なら",
       "romaji": "Nara",
-      "meaning": "Nara Prefecture",
+      "meaning": "Nara",
       "category": "Prefecture",
       "subcategory": "Kinki",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -363,6 +479,11 @@
       "subcategory": "Kinki",
       "notes": "歌 reads か not が",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -375,6 +496,11 @@
       "subcategory": "Chugoku",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -387,6 +513,9 @@
       "subcategory": "Chugoku",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -394,11 +523,16 @@
       "kanji": "岡山",
       "reading": "おかやま",
       "romaji": "Okayama",
-      "meaning": "Okayama Prefecture",
+      "meaning": "Okayama",
       "category": "Prefecture",
       "subcategory": "Chugoku",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -406,11 +540,16 @@
       "kanji": "広島",
       "reading": "ひろしま",
       "romaji": "Hiroshima",
-      "meaning": "Hiroshima Prefecture",
+      "meaning": "Hiroshima",
       "category": "Prefecture",
       "subcategory": "Chugoku",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -423,6 +562,11 @@
       "subcategory": "Chugoku",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -435,6 +579,11 @@
       "subcategory": "Shikoku",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -447,6 +596,9 @@
       "subcategory": "Shikoku",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -459,6 +611,9 @@
       "subcategory": "Shikoku",
       "notes": "愛 reads え not あい",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -471,6 +626,11 @@
       "subcategory": "Shikoku",
       "notes": "高 reads こう not たか",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -478,11 +638,16 @@
       "kanji": "福岡",
       "reading": "ふくおか",
       "romaji": "Fukuoka",
-      "meaning": "Fukuoka Prefecture",
+      "meaning": "Fukuoka",
       "category": "Prefecture",
       "subcategory": "Kyushu",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -490,11 +655,16 @@
       "kanji": "佐賀",
       "reading": "さが",
       "romaji": "Saga",
-      "meaning": "Saga Prefecture",
+      "meaning": "Saga",
       "category": "Prefecture",
       "subcategory": "Kyushu",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -502,11 +672,16 @@
       "kanji": "長崎",
       "reading": "ながさき",
       "romaji": "Nagasaki",
-      "meaning": "Nagasaki Prefecture",
+      "meaning": "Nagasaki",
       "category": "Prefecture",
       "subcategory": "Kyushu",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -514,11 +689,16 @@
       "kanji": "熊本",
       "reading": "くまもと",
       "romaji": "Kumamoto",
-      "meaning": "Kumamoto Prefecture",
+      "meaning": "Kumamoto",
       "category": "Prefecture",
       "subcategory": "Kyushu",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -526,11 +706,16 @@
       "kanji": "大分",
       "reading": "おおいた",
       "romaji": "Oita",
-      "meaning": "Oita Prefecture",
+      "meaning": "Oita",
       "category": "Prefecture",
       "subcategory": "Kyushu",
       "notes": "分 reads いた not ぶん",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -538,11 +723,16 @@
       "kanji": "宮崎",
       "reading": "みやざき",
       "romaji": "Miyazaki",
-      "meaning": "Miyazaki Prefecture",
+      "meaning": "Miyazaki",
       "category": "Prefecture",
       "subcategory": "Kyushu",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -550,11 +740,16 @@
       "kanji": "鹿児島",
       "reading": "かごしま",
       "romaji": "Kagoshima",
-      "meaning": "Kagoshima Prefecture",
+      "meaning": "Kagoshima",
       "category": "Prefecture",
       "subcategory": "Kyushu",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -562,11 +757,14 @@
       "kanji": "沖縄",
       "reading": "おきなわ",
       "romaji": "Okinawa",
-      "meaning": "Okinawa Prefecture",
+      "meaning": "Okinawa",
       "category": "Prefecture",
       "subcategory": "Okinawa",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Prefecture"
+      ],
       "level": 3
     },
     {
@@ -579,6 +777,9 @@
       "subcategory": "Tokyo",
       "notes": "World's busiest station",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -591,6 +792,9 @@
       "subcategory": "Tokyo",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -603,6 +807,9 @@
       "subcategory": "Tokyo",
       "notes": "Pond bag",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -615,6 +822,9 @@
       "subcategory": "Tokyo",
       "notes": "Anime/electronics district",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -627,6 +837,9 @@
       "subcategory": "Tokyo",
       "notes": "品 reads しな",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -639,6 +852,9 @@
       "subcategory": "Tokyo",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -651,6 +867,9 @@
       "subcategory": "Tokyo",
       "notes": "Shallow grass - Sensoji",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -663,6 +882,9 @@
       "subcategory": "Tokyo",
       "notes": "橋 voiced to ばし",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -675,6 +897,9 @@
       "subcategory": "Tokyo",
       "notes": "Six trees",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -687,6 +912,9 @@
       "subcategory": "Tokyo",
       "notes": "神 reads かん",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -699,6 +927,9 @@
       "subcategory": "Tokyo",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -711,6 +942,9 @@
       "subcategory": "Tokyo",
       "notes": "神 reads じん - bookshop district",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -723,6 +957,9 @@
       "subcategory": "Tokyo",
       "notes": "Honourable tea water",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -735,6 +972,9 @@
       "subcategory": "Tokyo",
       "notes": "四 reads よ, 谷 reads や",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -745,8 +985,11 @@
       "meaning": "Takadanobaba Station",
       "category": "Station",
       "subcategory": "Tokyo",
-      "notes": "Don't forget the の!",
+      "notes": "Don't forget の!",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -759,6 +1002,9 @@
       "subcategory": "Tokyo",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -771,6 +1017,9 @@
       "subcategory": "Tokyo",
       "notes": "Cherry blossom canal",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -783,6 +1032,9 @@
       "subcategory": "Tokyo",
       "notes": "Lucky god of fishing",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -795,6 +1047,9 @@
       "subcategory": "Tokyo",
       "notes": "Most desirable Tokyo neighbourhood",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -807,6 +1062,9 @@
       "subcategory": "Tokyo",
       "notes": "Burning reeds around a hollow 🔥",
       "hook": "Fire radical + hollow",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -819,6 +1077,9 @@
       "subcategory": "Tokyo",
       "notes": "Studio Ghibli nearby",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -831,6 +1092,9 @@
       "subcategory": "Tokyo",
       "notes": "下 reads しも in place names",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -843,6 +1107,9 @@
       "subcategory": "Tokyo",
       "notes": "々 repeater - generation after generation",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -855,6 +1122,9 @@
       "subcategory": "Tokyo",
       "notes": "Freedom hill",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -867,6 +1137,9 @@
       "subcategory": "Tokyo",
       "notes": "Twin jewel river",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -879,6 +1152,9 @@
       "subcategory": "Kanagawa",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -891,6 +1167,9 @@
       "subcategory": "Tokyo",
       "notes": "Sickle cuts cattails 🌾",
       "hook": "Sickle (かま) cuts cattails",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -903,6 +1182,10 @@
       "subcategory": "Kanagawa",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -915,6 +1198,9 @@
       "subcategory": "Tokyo",
       "notes": "Both countries - sumo stadium",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -927,6 +1213,9 @@
       "subcategory": "Tokyo",
       "notes": "前 reads ぜん",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -939,6 +1228,9 @@
       "subcategory": "Tokyo",
       "notes": "Turtle - 戸 reads いど",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -951,6 +1243,9 @@
       "subcategory": "Tokyo",
       "notes": "Pure clear white river",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -963,6 +1258,9 @@
       "subcategory": "Tokyo",
       "notes": "Pure memorisation",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -975,6 +1273,9 @@
       "subcategory": "Tokyo",
       "notes": "Brocade thread town",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -987,6 +1288,10 @@
       "subcategory": "Tokyo",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -999,6 +1304,10 @@
       "subcategory": "Kanagawa",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1011,6 +1320,9 @@
       "subcategory": "Kanagawa",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1023,6 +1335,10 @@
       "subcategory": "Kanagawa",
       "notes": "さがみ = ancient Kanagawa province",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1035,6 +1351,10 @@
       "subcategory": "Kanagawa",
       "notes": "Shrimp name 🦐",
       "hook": "海老 = shrimp - hunched old man backs",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1047,6 +1367,10 @@
       "subcategory": "Kanagawa",
       "notes": "木 voiced to ぎ",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1059,6 +1383,10 @@
       "subcategory": "Kanagawa",
       "notes": "原 reads わら",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1071,6 +1399,9 @@
       "subcategory": "Kanagawa",
       "notes": "急 = express",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1083,6 +1414,10 @@
       "subcategory": "Kanagawa",
       "notes": "Sickle + warehouse - Great Buddha",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1095,6 +1430,10 @@
       "subcategory": "Kanagawa",
       "notes": "沢 unvoiced さわ here",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1107,6 +1446,10 @@
       "subcategory": "Kanagawa",
       "notes": "Flat mound",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1117,8 +1460,12 @@
       "meaning": "Chigasaki Station",
       "category": "Station",
       "subcategory": "Kanagawa",
-      "notes": "Reed grass cape - Kuwata Keisuke hometown",
+      "notes": "Reed grass cape",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1131,6 +1478,9 @@
       "subcategory": "Kanagawa",
       "notes": "Crossroads hall",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1141,8 +1491,12 @@
       "meaning": "Atami Station",
       "category": "Station",
       "subcategory": "Shizuoka",
-      "notes": "Hot spring resort - 熱 reads あた, 海 reads み",
-      "hook": "Hot sea - tatami dropping the first t",
+      "notes": "熱 reads あた, 海 reads み",
+      "hook": "Hot sea - tatami dropping the t",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1155,6 +1509,10 @@
       "subcategory": "Chiba",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1167,6 +1525,9 @@
       "subcategory": "Chiba",
       "notes": "沼 = swamp ぬま",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1179,6 +1540,9 @@
       "subcategory": "Chiba",
       "notes": "Curtain stretch - convention centre",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1191,6 +1555,9 @@
       "subcategory": "Chiba",
       "notes": "Famous ancient clan",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1203,6 +1570,10 @@
       "subcategory": "Chiba",
       "notes": "津 voiced to づ",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1215,6 +1586,9 @@
       "subcategory": "Chiba",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1227,6 +1601,9 @@
       "subcategory": "Chiba",
       "notes": "Older sister's cape",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1239,6 +1616,10 @@
       "subcategory": "Chiba",
       "notes": "Your harbour",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1251,6 +1632,10 @@
       "subcategory": "Chiba",
       "notes": "富 reads ふっ - double consonant",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1263,6 +1648,9 @@
       "subcategory": "Chiba",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1275,6 +1663,9 @@
       "subcategory": "Saitama",
       "notes": "Major Shinkansen hub",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1287,6 +1678,9 @@
       "subcategory": "Saitama",
       "notes": "Urawa Reds football",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1299,6 +1693,10 @@
       "subcategory": "Saitama",
       "notes": "口 voiced to ぐち",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1311,6 +1709,10 @@
       "subcategory": "Saitama",
       "notes": "所 reads ところ",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1323,6 +1725,10 @@
       "subcategory": "Saitama",
       "notes": "越 reads こし",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1335,6 +1741,10 @@
       "subcategory": "Saitama",
       "notes": "谷 reads がや in Saitama",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1347,6 +1757,10 @@
       "subcategory": "Saitama",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1359,6 +1773,10 @@
       "subcategory": "Gunma",
       "notes": "Major Shinkansen junction",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1371,6 +1789,10 @@
       "subcategory": "Gunma",
       "notes": "前 reads まえ",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1383,6 +1805,10 @@
       "subcategory": "Tochigi",
       "notes": "Don't forget の! Gyoza capital",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1395,6 +1821,10 @@
       "subcategory": "Ibaraki",
       "notes": "水 reads み not みず",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1407,6 +1837,10 @@
       "subcategory": "Ibaraki",
       "notes": "土 reads つち",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1419,6 +1853,10 @@
       "subcategory": "Ibaraki",
       "notes": "Famous corporation",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1431,6 +1869,10 @@
       "subcategory": "Tochigi",
       "notes": "小 reads お",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1443,6 +1885,10 @@
       "subcategory": "Ibaraki",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1455,6 +1901,10 @@
       "subcategory": "Tochigi",
       "notes": "塩 = salt しお, 原 reads ばら",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1467,6 +1917,9 @@
       "subcategory": "Fukushima",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1479,6 +1932,10 @@
       "subcategory": "Fukushima",
       "notes": "郡 reads こおり - irregular",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1491,6 +1948,9 @@
       "subcategory": "Miyagi",
       "notes": "蔵王 reads ざおう",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1503,6 +1963,10 @@
       "subcategory": "Miyagi",
       "notes": "Largest Tohoku city",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1515,6 +1979,9 @@
       "subcategory": "Miyagi",
       "notes": "古 reads ふる",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1527,6 +1994,10 @@
       "subcategory": "Iwate",
       "notes": "関 reads せき - don't forget の",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1539,6 +2010,10 @@
       "subcategory": "Iwate",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1551,6 +2026,10 @@
       "subcategory": "Iwate",
       "notes": "盛 reads もり",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1563,6 +2042,10 @@
       "subcategory": "Iwate",
       "notes": "戸 reads のへ in Tohoku",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1575,6 +2058,10 @@
       "subcategory": "Aomori",
       "notes": "Same のへ pattern",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1587,6 +2074,9 @@
       "subcategory": "Aomori",
       "notes": "十 reads と",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1599,6 +2089,9 @@
       "subcategory": "Aomori",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1611,6 +2104,9 @@
       "subcategory": "Hokkaido",
       "notes": "北斗 = Big Dipper ⭐",
       "hook": "北斗七星 (Big Dipper)",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1623,6 +2119,10 @@
       "subcategory": "Hokkaido",
       "notes": "館 reads だて",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1635,6 +2135,10 @@
       "subcategory": "Hokkaido",
       "notes": "Ainu origin - pure memorisation",
       "hook": "",
+      "tags": [
+        " Station",
+        "Town"
+      ],
       "level": 3
     },
     {
@@ -1647,6 +2151,10 @@
       "subcategory": "Hokkaido",
       "notes": "Ainu - Niseko gateway",
       "hook": "",
+      "tags": [
+        " Station",
+        "Town"
+      ],
       "level": 3
     },
     {
@@ -1659,6 +2167,10 @@
       "subcategory": "Hokkaido",
       "notes": "樽 = barrel たる",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1671,6 +2183,10 @@
       "subcategory": "Hokkaido",
       "notes": "Morning sun river",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1683,6 +2199,10 @@
       "subcategory": "Hokkaido",
       "notes": "Northernmost station - double っ",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1695,6 +2215,10 @@
       "subcategory": "Hokkaido",
       "notes": "帯 = sash おび",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1707,6 +2231,10 @@
       "subcategory": "Hokkaido",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1719,6 +2247,10 @@
       "subcategory": "Hokkaido",
       "notes": "Famous prison/drift ice",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1731,6 +2263,9 @@
       "subcategory": "Hokkaido",
       "notes": "千歳 = thousand years",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1743,6 +2278,10 @@
       "subcategory": "Hokkaido",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1755,6 +2294,10 @@
       "subcategory": "Niigata",
       "notes": "にい not しん, 潟 reads がた",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1767,6 +2310,10 @@
       "subcategory": "Niigata",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1779,6 +2326,9 @@
       "subcategory": "Niigata",
       "notes": "燕 = swallow つばめ",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1791,6 +2341,10 @@
       "subcategory": "Niigata",
       "notes": "湯 = hot spring ゆ",
       "hook": "",
+      "tags": [
+        " Station",
+        "Town"
+      ],
       "level": 3
     },
     {
@@ -1803,6 +2357,10 @@
       "subcategory": "Toyama",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1815,6 +2373,10 @@
       "subcategory": "Toyama",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1827,6 +2389,10 @@
       "subcategory": "Ishikawa",
       "notes": "Dream city! 🎌",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1839,6 +2405,10 @@
       "subcategory": "Fukui",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1851,6 +2421,10 @@
       "subcategory": "Fukui",
       "notes": "つる like 鶴 (crane)",
       "hook": "Crane connection つる",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1863,6 +2437,10 @@
       "subcategory": "Kyoto",
       "notes": "Ancient capital",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -1875,6 +2453,9 @@
       "subcategory": "Osaka",
       "notes": "Future front door! 🎌",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1887,6 +2468,9 @@
       "subcategory": "Osaka",
       "notes": "Osaka main hub",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1899,6 +2483,9 @@
       "subcategory": "Osaka",
       "notes": "Entertainment district",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1911,6 +2498,9 @@
       "subcategory": "Osaka",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1923,6 +2513,9 @@
       "subcategory": "Osaka",
       "notes": "橋 voiced to ばし",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1935,6 +2528,9 @@
       "subcategory": "Osaka",
       "notes": "Crane bridge - 橋 unvoiced はし",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1947,6 +2543,9 @@
       "subcategory": "Osaka",
       "notes": "Street food market",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1959,6 +2558,9 @@
       "subcategory": "Osaka",
       "notes": "今 reads いま",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1971,6 +2573,9 @@
       "subcategory": "Osaka",
       "notes": "京 reads きょう",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -1983,18 +2588,24 @@
       "subcategory": "Osaka",
       "notes": "Different reading each city! Osaka=にっぽんばし Tokyo=にほんばし",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
       "id": "stat_119",
       "kanji": "福島",
       "reading": "ふくしま",
-      "romaji": "Fukushima",
+      "romaji": "Fukushima (Osaka)",
       "meaning": "Fukushima Station (Osaka)",
       "category": "Station",
       "subcategory": "Osaka",
       "notes": "Osaka station - same reading as Tohoku prefecture",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2007,6 +2618,9 @@
       "subcategory": "Osaka",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2019,6 +2633,9 @@
       "subcategory": "Osaka",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2031,6 +2648,9 @@
       "subcategory": "Osaka",
       "notes": "鴫 = snipe bird",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2043,6 +2663,9 @@
       "subcategory": "Osaka",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2055,6 +2678,9 @@
       "subcategory": "Osaka",
       "notes": "Business district",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2067,6 +2693,9 @@
       "subcategory": "Kobe",
       "notes": "Kobe main station",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2079,6 +2708,10 @@
       "subcategory": "Hyogo",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2091,6 +2724,10 @@
       "subcategory": "Hyogo",
       "notes": "尼 reads あま",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2103,6 +2740,10 @@
       "subcategory": "Hyogo",
       "notes": "Famous for octopus & sea bream - Akashi Tai umeshu!",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2115,6 +2756,10 @@
       "subcategory": "Hyogo",
       "notes": "Most beautiful castle in Japan 🏯",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2127,6 +2772,10 @@
       "subcategory": "Hyogo",
       "notes": "日常's Aioi-san!",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2139,6 +2788,10 @@
       "subcategory": "Okayama",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2151,6 +2804,10 @@
       "subcategory": "Okayama",
       "notes": "Beautiful canal district",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2163,6 +2820,9 @@
       "subcategory": "Okayama",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2175,6 +2835,10 @@
       "subcategory": "Hiroshima",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2187,6 +2851,10 @@
       "subcategory": "Hiroshima",
       "notes": "三 reads み not さん",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2199,6 +2867,10 @@
       "subcategory": "Hiroshima",
       "notes": "東 reads ひがし",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2211,6 +2883,10 @@
       "subcategory": "Hiroshima",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2223,6 +2899,9 @@
       "subcategory": "Yamaguchi",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2235,6 +2914,10 @@
       "subcategory": "Yamaguchi",
       "notes": "Through thick and thin, there is always the morning 🌅",
       "hook": "Thick (厚) and thin (狭) - always morning (あさ)",
+      "tags": [
+        " Station",
+        "Town"
+      ],
       "level": 3
     },
     {
@@ -2247,6 +2930,9 @@
       "subcategory": "Fukuoka",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2259,6 +2945,9 @@
       "subcategory": "Fukuoka",
       "notes": "Fukuoka main Shinkansen station",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2271,6 +2960,10 @@
       "subcategory": "Fukuoka",
       "notes": "米 reads め",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2283,6 +2976,9 @@
       "subcategory": "Saga",
       "notes": "栖 = nest す",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2295,6 +2991,10 @@
       "subcategory": "Kumamoto",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2307,6 +3007,9 @@
       "subcategory": "Kumamoto",
       "notes": "八 reads やつ",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2319,6 +3022,9 @@
       "subcategory": "Kumamoto",
       "notes": "水 reads みな not みず",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2331,6 +3037,10 @@
       "subcategory": "Kagoshima",
       "notes": "出 reads いず, 水 reads み",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2343,6 +3053,10 @@
       "subcategory": "Kagoshima",
       "notes": "Same reading as 仙台! Completely irregular",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2355,6 +3069,9 @@
       "subcategory": "Kagoshima",
       "notes": "Southern Shinkansen terminus",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2366,7 +3083,11 @@
       "category": "Station",
       "subcategory": "Kagoshima",
       "notes": "Famous sand baths ♨️",
-      "hook": "いぶ=steaming + すき=love it - sand steam baths",
+      "hook": "いぶ=steaming + すき=love it",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2379,6 +3100,9 @@
       "subcategory": "Kagoshima",
       "notes": "神宮 reads じんぐう - grand shrine",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2391,6 +3115,10 @@
       "subcategory": "Miyazaki",
       "notes": "都 reads みやこ, don't forget の",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2403,6 +3131,10 @@
       "subcategory": "Miyazaki",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2415,6 +3147,10 @@
       "subcategory": "Miyazaki",
       "notes": "延 reads のべ",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2427,6 +3163,10 @@
       "subcategory": "Shiga",
       "notes": "Shinkansen junction - 米 reads まい, 原 reads ばら",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2439,6 +3179,9 @@
       "subcategory": "Gifu",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2451,6 +3194,10 @@
       "subcategory": "Aichi",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2463,6 +3210,9 @@
       "subcategory": "Aichi",
       "notes": "三河 = ancient Aichi province",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2475,6 +3225,10 @@
       "subcategory": "Aichi",
       "notes": "豊 reads とよ - plentiful",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2487,6 +3241,10 @@
       "subcategory": "Shizuoka",
       "notes": "Music instrument capital",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2499,6 +3257,10 @@
       "subcategory": "Shizuoka",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2511,6 +3273,9 @@
       "subcategory": "Shizuoka",
       "notes": "Views of Mt Fuji 🗻",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2523,6 +3288,10 @@
       "subcategory": "Shiga",
       "notes": "津 reads つ",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2535,6 +3304,10 @@
       "subcategory": "Shiga",
       "notes": "Also famous onsen in Gunma",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2547,6 +3320,9 @@
       "subcategory": "Shiga",
       "notes": "Most unusual reading!",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2559,6 +3335,9 @@
       "subcategory": "Shiga",
       "notes": "Tale of Genji connection",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2571,6 +3350,9 @@
       "subcategory": "Shiga",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2583,6 +3365,9 @@
       "subcategory": "Shiga",
       "notes": "南 reads みなみ",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2595,6 +3380,10 @@
       "subcategory": "Shiga",
       "notes": "Protect mountain",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2607,6 +3396,10 @@
       "subcategory": "Shiga",
       "notes": "野 reads や",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2619,6 +3412,10 @@
       "subcategory": "Shiga",
       "notes": "近江 = ancient Shiga province",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2631,6 +3428,10 @@
       "subcategory": "Shiga",
       "notes": "彦 reads ひこ - beautiful castle & Hikonyan 🐱",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2643,6 +3444,10 @@
       "subcategory": "Ibaraki",
       "notes": "手 reads で",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2655,6 +3460,10 @@
       "subcategory": "Ibaraki",
       "notes": "Dragon cape city 🐉",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2667,6 +3476,10 @@
       "subcategory": "Ibaraki",
       "notes": "Cow hollow - giant Buddha",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2679,6 +3492,9 @@
       "subcategory": "Ibaraki",
       "notes": "沖 = offshore",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2691,6 +3507,9 @@
       "subcategory": "Ibaraki",
       "notes": "神 reads かん - voiced だち",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2703,6 +3522,10 @@
       "subcategory": "Ibaraki",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "Town"
+      ],
       "level": 3
     },
     {
@@ -2715,6 +3538,10 @@
       "subcategory": "Ibaraki",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2727,6 +3554,9 @@
       "subcategory": "Ibaraki",
       "notes": "Feather bird 🐦",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2739,6 +3569,9 @@
       "subcategory": "Ibaraki",
       "notes": "Between the rocks",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2751,6 +3584,9 @@
       "subcategory": "Ibaraki",
       "notes": "部 reads べ",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2763,6 +3599,10 @@
       "subcategory": "Ibaraki",
       "notes": "Bamboo hat - pottery town",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2775,6 +3615,9 @@
       "subcategory": "Ibaraki",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2787,6 +3630,9 @@
       "subcategory": "Ibaraki",
       "notes": "Garden to enjoy together - one of Japan's 3 great gardens",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2799,6 +3645,9 @@
       "subcategory": "Ibaraki",
       "notes": "勝 reads かつ not かち",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
     },
     {
@@ -2811,6 +3660,10 @@
       "subcategory": "Chiba",
       "notes": "Boat bridge",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2821,8 +3674,12 @@
       "meaning": "Kashiwa Station",
       "category": "Station",
       "subcategory": "Chiba",
-      "notes": "Oak tree - also Kansai word for chicken",
+      "notes": "Oak tree",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2835,6 +3692,10 @@
       "subcategory": "Chiba",
       "notes": "戸 voiced to ど",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2847,6 +3708,10 @@
       "subcategory": "Chiba",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -2859,7 +3724,4330 @@
       "subcategory": "Chiba",
       "notes": "",
       "hook": "",
+      "tags": [
+        " Station"
+      ],
       "level": 3
+    },
+    {
+      "id": "stat_192",
+      "kanji": "原宿",
+      "reading": "はらじゅく",
+      "romaji": "Harajuku",
+      "meaning": "Harajuku Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "Fashion district - 原 reads はら, 宿 reads じゅく",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_193",
+      "kanji": "大崎",
+      "reading": "おおさき",
+      "romaji": "Osaki",
+      "meaning": "Osaki Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "崎 reads さき",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_194",
+      "kanji": "五反田",
+      "reading": "ごたんだ",
+      "romaji": "Gotanda",
+      "meaning": "Gotanda Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "Five rice paddies",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_195",
+      "kanji": "田町",
+      "reading": "たまち",
+      "romaji": "Tamachi",
+      "meaning": "Tamachi Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "田 reads た in names",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_196",
+      "kanji": "浜松町",
+      "reading": "はままつちょう",
+      "romaji": "Hamamatsucho",
+      "meaning": "Hamamatsucho Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_200",
+      "kanji": "神谷町",
+      "reading": "かみやちょう",
+      "romaji": "Kamiyacho",
+      "meaning": "Kamiyacho Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "神 reads かみ here",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_201",
+      "kanji": "麻布十番",
+      "reading": "あざぶじゅうばん",
+      "romaji": "Azabujuban",
+      "meaning": "Azabujuban Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "麻布 = hemp cloth district",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_202",
+      "kanji": "白金台",
+      "reading": "しろかねだい",
+      "romaji": "Shirokanedai",
+      "meaning": "Shirokanedai Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "Silver platform - upmarket area",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_203",
+      "kanji": "三田",
+      "reading": "みた",
+      "romaji": "Mita",
+      "meaning": "Mita Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "三 reads み in names",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_204",
+      "kanji": "泉岳寺",
+      "reading": "せんがくじ",
+      "romaji": "Sengakuji",
+      "meaning": "Sengakuji Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "Famous temple of 47 ronin",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_205",
+      "kanji": "大手町",
+      "reading": "おおてまち",
+      "romaji": "Otemachi",
+      "meaning": "Otemachi Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "Big hand town - business district",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_207",
+      "kanji": "馬喰町",
+      "reading": "ばくろちょう",
+      "romaji": "Bakurocho",
+      "meaning": "Bakurocho Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "Horse dealer town - 喰 rare kanji",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_208",
+      "kanji": "浅草橋",
+      "reading": "あさくさばし",
+      "romaji": "Asakusabashi",
+      "meaning": "Asakusabashi Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "Asakusa bridge",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_210",
+      "kanji": "御徒町",
+      "reading": "おかちまち",
+      "romaji": "Okachimachi",
+      "meaning": "Okachimachi Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "徒 reads かち - samurai foot soldier town",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_211",
+      "kanji": "日暮里",
+      "reading": "にっぽり",
+      "romaji": "Nippori",
+      "meaning": "Nippori Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "日 reads にっ, 暮 reads ぽ, 里 reads り - sunset village",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_212",
+      "kanji": "西日暮里",
+      "reading": "にしにっぽり",
+      "romaji": "Nishi-Nippori",
+      "meaning": "Nishi-Nippori Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_213",
+      "kanji": "田端",
+      "reading": "たばた",
+      "romaji": "Tabata",
+      "meaning": "Tabata Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "端 reads ばた",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_214",
+      "kanji": "駒込",
+      "reading": "こまごめ",
+      "romaji": "Komagome",
+      "meaning": "Komagome Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "駒 = pawn/colt",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_215",
+      "kanji": "巣鴨",
+      "reading": "すがも",
+      "romaji": "Sugamo",
+      "meaning": "Sugamo Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "Nest duck - famous elderly shopping street",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_216",
+      "kanji": "大塚",
+      "reading": "おおつか",
+      "romaji": "Otsuka",
+      "meaning": "Otsuka Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "Big mound",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_217",
+      "kanji": "目白",
+      "reading": "めじろ",
+      "romaji": "Mejiro",
+      "meaning": "Mejiro Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "White eye - a bird",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_218",
+      "kanji": "新大久保",
+      "reading": "しんおおくぼ",
+      "romaji": "Shin-Okubo",
+      "meaning": "Shin-Okubo Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "Korea Town - 久保 reads くぼ",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_220",
+      "kanji": "千駄ヶ谷",
+      "reading": "せんだがや",
+      "romaji": "Sendagaya",
+      "meaning": "Sendagaya Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "千駄 = thousand loads",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_221",
+      "kanji": "中野",
+      "reading": "なかの",
+      "romaji": "Nakano",
+      "meaning": "Nakano Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "Middle field",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_222",
+      "kanji": "高円寺",
+      "reading": "こうえんじ",
+      "romaji": "Koenji",
+      "meaning": "Koenji Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "高円 reads こうえん - vintage/indie area",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_223",
+      "kanji": "阿佐ヶ谷",
+      "reading": "あさがや",
+      "romaji": "Asagaya",
+      "meaning": "Asagaya Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "阿佐 reads あさ",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_224",
+      "kanji": "西荻窪",
+      "reading": "にしおぎくぼ",
+      "romaji": "Nishi-Ogikubo",
+      "meaning": "Nishi-Ogikubo Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "West Ogikubo",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_225",
+      "kanji": "国分寺",
+      "reading": "こくぶんじ",
+      "romaji": "Kokubunji",
+      "meaning": "Kokubunji Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "National temple - 国分 reads こくぶ",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_226",
+      "kanji": "国立",
+      "reading": "くにたち",
+      "romaji": "Kunitachi",
+      "meaning": "Kunitachi Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "国立 reads くにたち - national land",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_227",
+      "kanji": "立川",
+      "reading": "たちかわ",
+      "romaji": "Tachikawa",
+      "meaning": "Tachikawa Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "立 reads たち",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_228",
+      "kanji": "八王子",
+      "reading": "はちおうじ",
+      "romaji": "Hachioji",
+      "meaning": "Hachioji Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "Eight princes",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_229",
+      "kanji": "三軒茶屋",
+      "reading": "さんげんちゃや",
+      "romaji": "Sangenjaya",
+      "meaning": "Sangenjaya Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "Three teahouses",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_230",
+      "kanji": "溝の口",
+      "reading": "みぞのくち",
+      "romaji": "Mizonokuchi",
+      "meaning": "Mizonokuchi Station",
+      "category": "Station",
+      "subcategory": "Kanagawa",
+      "notes": "Ditch mouth",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_231",
+      "kanji": "長津田",
+      "reading": "ながつた",
+      "romaji": "Nagatsuta",
+      "meaning": "Nagatsuta Station",
+      "category": "Station",
+      "subcategory": "Kanagawa",
+      "notes": "Long rice paddy",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_232",
+      "kanji": "中央林間",
+      "reading": "ちゅうおうりんかん",
+      "romaji": "Chuo-Rinkan",
+      "meaning": "Chuo-Rinkan Station",
+      "category": "Station",
+      "subcategory": "Kanagawa",
+      "notes": "Central forest interval",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_233",
+      "kanji": "調布",
+      "reading": "ちょうふ",
+      "romaji": "Chofu",
+      "meaning": "Chofu Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "調 reads ちょう, 布 reads ふ - cloth tax",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_234",
+      "kanji": "府中",
+      "reading": "ふちゅう",
+      "romaji": "Fuchu",
+      "meaning": "Fuchu Station",
+      "category": "Station",
+      "subcategory": "Tokyo",
+      "notes": "府 reads ふ, 中 reads ちゅう - provincial centre",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_235",
+      "kanji": "北浜",
+      "reading": "きたはま",
+      "romaji": "Kitahama",
+      "meaning": "Kitahama Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "North beach - financial district",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_236",
+      "kanji": "淀屋橋",
+      "reading": "よどやばし",
+      "romaji": "Yodoyabashi",
+      "meaning": "Yodoyabashi Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "淀屋 = Yodoya merchant family",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_237",
+      "kanji": "肥後橋",
+      "reading": "ひごばし",
+      "romaji": "Higobashi",
+      "meaning": "Higobashi Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "肥後 = ancient Kumamoto province",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_238",
+      "kanji": "西長堀",
+      "reading": "にしながほり",
+      "romaji": "Nishi-Nagahori",
+      "meaning": "Nishi-Nagahori Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "Long moat",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_239",
+      "kanji": "大国町",
+      "reading": "だいこくちょう",
+      "romaji": "Daikokucho",
+      "meaning": "Daikokucho Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "大国 = Daikoku lucky god",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_240",
+      "kanji": "動物園前",
+      "reading": "どうぶつえんまえ",
+      "romaji": "Dobutsuen-mae",
+      "meaning": "Dobutsuen-mae Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "In front of the zoo",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_241",
+      "kanji": "恵美須町",
+      "reading": "えびすちょう",
+      "romaji": "Ebisucho",
+      "meaning": "Ebisucho Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "Ebisu town - Den-Den Town electronics",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_242",
+      "kanji": "阿波座",
+      "reading": "あわざ",
+      "romaji": "Awaza",
+      "meaning": "Awaza Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "阿波 = ancient Tokushima province",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_243",
+      "kanji": "九条",
+      "reading": "くじょう",
+      "romaji": "Kujo",
+      "meaning": "Kujo Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "Nine sections",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_244",
+      "kanji": "弁天町",
+      "reading": "べんてんちょう",
+      "romaji": "Bentencho",
+      "meaning": "Bentencho Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "Benten goddess town",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_245",
+      "kanji": "大正",
+      "reading": "たいしょう",
+      "romaji": "Taisho",
+      "meaning": "Taisho Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "Taisho era name",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_246",
+      "kanji": "汐見橋",
+      "reading": "しおみばし",
+      "romaji": "Shiomibashi",
+      "meaning": "Shiomibashi Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "Tide view bridge",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_247",
+      "kanji": "今宮",
+      "reading": "いまみや",
+      "romaji": "Imamiya",
+      "meaning": "Imamiya Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "Present shrine",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_248",
+      "kanji": "天下茶屋",
+      "reading": "てんがちゃや",
+      "romaji": "Tengachaya",
+      "meaning": "Tengachaya Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "Heavenly teahouse - 天下 reads てんが here",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_249",
+      "kanji": "住吉",
+      "reading": "すみよし",
+      "romaji": "Sumiyoshi",
+      "meaning": "Sumiyoshi Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "Famous shrine",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_250",
+      "kanji": "長居",
+      "reading": "ながい",
+      "romaji": "Nagai",
+      "meaning": "Nagai Station",
+      "category": "Station",
+      "subcategory": "Osaka",
+      "notes": "Long stay - famous sports park",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_251",
+      "kanji": "神戸",
+      "reading": "こうべ",
+      "romaji": "Kobe",
+      "meaning": "Kobe Station",
+      "category": "Station",
+      "subcategory": "Kobe",
+      "notes": "神 reads こう, 戸 reads べ - irregular",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_252",
+      "kanji": "元町",
+      "reading": "もとまち",
+      "romaji": "Motomachi",
+      "meaning": "Motomachi Station",
+      "category": "Station",
+      "subcategory": "Kobe",
+      "notes": "Original town",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_253",
+      "kanji": "三宮",
+      "reading": "さんのみや",
+      "romaji": "Sannomiya",
+      "meaning": "Sannomiya (alt spelling)",
+      "category": "Station",
+      "subcategory": "Kobe",
+      "notes": "Alternative kanji for さんのみや",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_254",
+      "kanji": "住吉",
+      "reading": "すみよし",
+      "romaji": "Sumiyoshi",
+      "meaning": "Sumiyoshi Station (Kobe)",
+      "category": "Station",
+      "subcategory": "Kobe",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_255",
+      "kanji": "岡本",
+      "reading": "おかもと",
+      "romaji": "Okamoto",
+      "meaning": "Okamoto Station",
+      "category": "Station",
+      "subcategory": "Kobe",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_256",
+      "kanji": "芦屋",
+      "reading": "あしや",
+      "romaji": "Ashiya",
+      "meaning": "Ashiya Station",
+      "category": "Station",
+      "subcategory": "Hyogo",
+      "notes": "芦 = reed あし - wealthy area",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_257",
+      "kanji": "甲子園",
+      "reading": "こうしえん",
+      "romaji": "Koshien",
+      "meaning": "Koshien Station",
+      "category": "Station",
+      "subcategory": "Hyogo",
+      "notes": "甲子 reads こうし - famous baseball stadium",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_258",
+      "kanji": "伊丹",
+      "reading": "いたみ",
+      "romaji": "Itami",
+      "meaning": "Itami Station",
+      "category": "Station",
+      "subcategory": "Hyogo",
+      "notes": "伊丹 - location of Osaka's domestic airport",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_259",
+      "kanji": "宝塚",
+      "reading": "たからづか",
+      "romaji": "Takarazuka",
+      "meaning": "Takarazuka Station",
+      "category": "Station",
+      "subcategory": "Hyogo",
+      "notes": "Treasure mound - famous all-female theatre",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_260",
+      "kanji": "加古川",
+      "reading": "かこがわ",
+      "romaji": "Kakogawa",
+      "meaning": "Kakogawa Station",
+      "category": "Station",
+      "subcategory": "Hyogo",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_261",
+      "kanji": "加西",
+      "reading": "かさい",
+      "romaji": "Kasai",
+      "meaning": "Kasai Station (Hyogo)",
+      "category": "Station",
+      "subcategory": "Hyogo",
+      "notes": "Different from Tokyo's 葛西",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_262",
+      "kanji": "龍野",
+      "reading": "たつの",
+      "romaji": "Tatsuno",
+      "meaning": "Tatsuno Station",
+      "category": "Station",
+      "subcategory": "Hyogo",
+      "notes": "Dragon field - famous soy sauce",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_263",
+      "kanji": "網干",
+      "reading": "あぼし",
+      "romaji": "Aboshi",
+      "meaning": "Aboshi Station",
+      "category": "Station",
+      "subcategory": "Hyogo",
+      "notes": "Net dry - 干 reads ぼし",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_264",
+      "kanji": "二条",
+      "reading": "にじょう",
+      "romaji": "Nijo",
+      "meaning": "Nijo Station",
+      "category": "Station",
+      "subcategory": "Kyoto",
+      "notes": "二条 - near Nijo Castle",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_265",
+      "kanji": "円町",
+      "reading": "えんまち",
+      "romaji": "Enmachi",
+      "meaning": "Enmachi Station",
+      "category": "Station",
+      "subcategory": "Kyoto",
+      "notes": "円 reads えん",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_266",
+      "kanji": "花園",
+      "reading": "はなぞの",
+      "romaji": "Hanazono",
+      "meaning": "Hanazono Station",
+      "category": "Station",
+      "subcategory": "Kyoto",
+      "notes": "Flower garden",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_267",
+      "kanji": "太秦",
+      "reading": "うずまさ",
+      "romaji": "Uzumasa",
+      "meaning": "Uzumasa Station",
+      "category": "Station",
+      "subcategory": "Kyoto",
+      "notes": "太秦 - completely irregular ancient reading - film studio area",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_268",
+      "kanji": "嵯峨嵐山",
+      "reading": "さがあらしやま",
+      "romaji": "Saga-Arashiyama",
+      "meaning": "Saga-Arashiyama Station",
+      "category": "Station",
+      "subcategory": "Kyoto",
+      "notes": "Famous bamboo grove area",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_269",
+      "kanji": "嵐山",
+      "reading": "あらしやま",
+      "romaji": "Arashiyama",
+      "meaning": "Arashiyama Station",
+      "category": "Station",
+      "subcategory": "Kyoto",
+      "notes": "Storm mountain - bamboo groves",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_270",
+      "kanji": "伏見稲荷",
+      "reading": "ふしみいなり",
+      "romaji": "Fushimi-Inari",
+      "meaning": "Fushimi-Inari Station",
+      "category": "Station",
+      "subcategory": "Kyoto",
+      "notes": "Famous thousand torii gates",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_271",
+      "kanji": "丹波橋",
+      "reading": "たんばばし",
+      "romaji": "Tambabashi",
+      "meaning": "Tambabashi Station",
+      "category": "Station",
+      "subcategory": "Kyoto",
+      "notes": "丹波 = ancient Kyoto province",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_272",
+      "kanji": "中書島",
+      "reading": "ちゅうしょじま",
+      "romaji": "Chushojima",
+      "meaning": "Chushojima Station",
+      "category": "Station",
+      "subcategory": "Kyoto",
+      "notes": "中書 reads ちゅうしょ",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_273",
+      "kanji": "近鉄奈良",
+      "reading": "きんてつなら",
+      "romaji": "Kintetsu-Nara",
+      "meaning": "Kintetsu-Nara Station",
+      "category": "Station",
+      "subcategory": "Nara",
+      "notes": "近鉄 = Kintetsu private railway",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_274",
+      "kanji": "大和西大寺",
+      "reading": "やまとさいだいじ",
+      "romaji": "Yamato-Saidaiji",
+      "meaning": "Yamato-Saidaiji Station",
+      "category": "Station",
+      "subcategory": "Nara",
+      "notes": "大和 = ancient Nara province",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_275",
+      "kanji": "西大寺",
+      "reading": "さいだいじ",
+      "romaji": "Saidaiji",
+      "meaning": "Saidaiji Station",
+      "category": "Station",
+      "subcategory": "Nara",
+      "notes": "West great temple",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_276",
+      "kanji": "栄",
+      "reading": "さかえ",
+      "romaji": "Sakae",
+      "meaning": "Sakae Station",
+      "category": "Station",
+      "subcategory": "Aichi",
+      "notes": "栄 = prosperity - main Nagoya entertainment district",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_277",
+      "kanji": "金山",
+      "reading": "かなやま",
+      "romaji": "Kanayama",
+      "meaning": "Kanayama Station",
+      "category": "Station",
+      "subcategory": "Aichi",
+      "notes": "Gold mountain - major junction",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_278",
+      "kanji": "鶴舞",
+      "reading": "つるまい",
+      "romaji": "Tsurumai",
+      "meaning": "Tsurumai Station",
+      "category": "Station",
+      "subcategory": "Aichi",
+      "notes": "Dancing crane",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_279",
+      "kanji": "千種",
+      "reading": "ちくさ",
+      "romaji": "Chikusa",
+      "meaning": "Chikusa Station",
+      "category": "Station",
+      "subcategory": "Aichi",
+      "notes": "千種 - thousand varieties",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_280",
+      "kanji": "大曾根",
+      "reading": "おおぞね",
+      "romaji": "Ozone",
+      "meaning": "Ozone Station",
+      "category": "Station",
+      "subcategory": "Aichi",
+      "notes": "Large root",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_281",
+      "kanji": "豊田市",
+      "reading": "とよたし",
+      "romaji": "Toyota-shi",
+      "meaning": "Toyota-shi Station",
+      "category": "Station",
+      "subcategory": "Aichi",
+      "notes": "The Toyota city 🚗",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_282",
+      "kanji": "岡崎",
+      "reading": "おかざき",
+      "romaji": "Okazaki",
+      "meaning": "Okazaki Station",
+      "category": "Station",
+      "subcategory": "Aichi",
+      "notes": "岡 reads おか",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_283",
+      "kanji": "刈谷",
+      "reading": "かりや",
+      "romaji": "Kariya",
+      "meaning": "Kariya Station",
+      "category": "Station",
+      "subcategory": "Aichi",
+      "notes": "刈 = mow/reap",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_284",
+      "kanji": "安城",
+      "reading": "あんじょう",
+      "romaji": "Anjo",
+      "meaning": "Anjo Station",
+      "category": "Station",
+      "subcategory": "Aichi",
+      "notes": "Peaceful castle",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_285",
+      "kanji": "一宮",
+      "reading": "いちのみや",
+      "romaji": "Ichinomiya",
+      "meaning": "Ichinomiya Station",
+      "category": "Station",
+      "subcategory": "Aichi",
+      "notes": "First shrine - 宮 reads みや",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_286",
+      "kanji": "春日井",
+      "reading": "かすがい",
+      "romaji": "Kasugai",
+      "meaning": "Kasugai Station",
+      "category": "Station",
+      "subcategory": "Aichi",
+      "notes": "Spring day well",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_287",
+      "kanji": "沼津",
+      "reading": "ぬまづ",
+      "romaji": "Numazu",
+      "meaning": "Numazu Station",
+      "category": "Station",
+      "subcategory": "Shizuoka",
+      "notes": "Swamp harbour - 沼 reads ぬま",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_288",
+      "kanji": "三島",
+      "reading": "みしま",
+      "romaji": "Mishima",
+      "meaning": "Mishima Station",
+      "category": "Station",
+      "subcategory": "Shizuoka",
+      "notes": "Three islands",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_289",
+      "kanji": "富士",
+      "reading": "ふじ",
+      "romaji": "Fuji",
+      "meaning": "Fuji Station",
+      "category": "Station",
+      "subcategory": "Shizuoka",
+      "notes": "Mount Fuji city",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_290",
+      "kanji": "清水",
+      "reading": "しみず",
+      "romaji": "Shimizu",
+      "meaning": "Shimizu Station",
+      "category": "Station",
+      "subcategory": "Shizuoka",
+      "notes": "清 reads し, 水 reads みず",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_291",
+      "kanji": "焼津",
+      "reading": "やいづ",
+      "romaji": "Yaizu",
+      "meaning": "Yaizu Station",
+      "category": "Station",
+      "subcategory": "Shizuoka",
+      "notes": "Burning harbour - 焼 reads やい",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_292",
+      "kanji": "藤枝",
+      "reading": "ふじえだ",
+      "romaji": "Fujieda",
+      "meaning": "Fujieda Station",
+      "category": "Station",
+      "subcategory": "Shizuoka",
+      "notes": "Wisteria branch",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_293",
+      "kanji": "島田",
+      "reading": "しまだ",
+      "romaji": "Shimada",
+      "meaning": "Shimada Station",
+      "category": "Station",
+      "subcategory": "Shizuoka",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_294",
+      "kanji": "菊川",
+      "reading": "きくがわ",
+      "romaji": "Kikugawa",
+      "meaning": "Kikugawa Station",
+      "category": "Station",
+      "subcategory": "Shizuoka",
+      "notes": "Chrysanthemum river",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_295",
+      "kanji": "掛川",
+      "reading": "かけがわ",
+      "romaji": "Kakegawa",
+      "meaning": "Kakegawa Station",
+      "category": "Station",
+      "subcategory": "Shizuoka",
+      "notes": "掛 = hang/suspend",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_296",
+      "kanji": "袋井",
+      "reading": "ふくろい",
+      "romaji": "Fukuroi",
+      "meaning": "Fukuroi Station",
+      "category": "Station",
+      "subcategory": "Shizuoka",
+      "notes": "Bag well",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_297",
+      "kanji": "磐田",
+      "reading": "いわた",
+      "romaji": "Iwata",
+      "meaning": "Iwata Station",
+      "category": "Station",
+      "subcategory": "Shizuoka",
+      "notes": "Rock paddy",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_298",
+      "kanji": "尾道",
+      "reading": "おのみち",
+      "romaji": "Onomichi",
+      "meaning": "Onomichi Station",
+      "category": "Station",
+      "subcategory": "Hiroshima",
+      "notes": "尾 = tail, 道 reads みち - scenic harbour city",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_299",
+      "kanji": "糸崎",
+      "reading": "いとざき",
+      "romaji": "Itozaki",
+      "meaning": "Itozaki Station",
+      "category": "Station",
+      "subcategory": "Hiroshima",
+      "notes": "Thread cape",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_300",
+      "kanji": "西条",
+      "reading": "さいじょう",
+      "romaji": "Saijo",
+      "meaning": "Saijo Station",
+      "category": "Station",
+      "subcategory": "Hiroshima",
+      "notes": "West section - famous sake town",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_301",
+      "kanji": "河内",
+      "reading": "こうち",
+      "romaji": "Kochi",
+      "meaning": "Kochi Station (Hiroshima)",
+      "category": "Station",
+      "subcategory": "Hiroshima",
+      "notes": "Different from 高知 prefecture",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_302",
+      "kanji": "白市",
+      "reading": "しらいち",
+      "romaji": "Shiraichi",
+      "meaning": "Shiraichi Station",
+      "category": "Station",
+      "subcategory": "Hiroshima",
+      "notes": "White market",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_303",
+      "kanji": "本郷",
+      "reading": "ほんごう",
+      "romaji": "Hongo",
+      "meaning": "Hongo Station",
+      "category": "Station",
+      "subcategory": "Hiroshima",
+      "notes": "Main village",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_304",
+      "kanji": "三次",
+      "reading": "みよし",
+      "romaji": "Miyoshi",
+      "meaning": "Miyoshi Station",
+      "category": "Station",
+      "subcategory": "Hiroshima",
+      "notes": "三次 - 次 reads よし - irregular",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_305",
+      "kanji": "下関",
+      "reading": "しものせき",
+      "romaji": "Shimonoseki",
+      "meaning": "Shimonoseki Station",
+      "category": "Station",
+      "subcategory": "Yamaguchi",
+      "notes": "下 reads しも, 関 reads のせき",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_306",
+      "kanji": "山陽小野田",
+      "reading": "さんようおのだ",
+      "romaji": "Sanyo-Onoda",
+      "meaning": "Sanyo-Onoda Station",
+      "category": "Station",
+      "subcategory": "Yamaguchi",
+      "notes": "山陽 = sunny side of mountains",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_307",
+      "kanji": "宇部",
+      "reading": "うべ",
+      "romaji": "Ube",
+      "meaning": "Ube Station",
+      "category": "Station",
+      "subcategory": "Yamaguchi",
+      "notes": "宇部 = eaves section",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_308",
+      "kanji": "松山",
+      "reading": "まつやま",
+      "romaji": "Matsuyama",
+      "meaning": "Matsuyama Station",
+      "category": "Station",
+      "subcategory": "Ehime",
+      "notes": "Pine mountain - Dogo Onsen nearby",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_309",
+      "kanji": "今治",
+      "reading": "いまばり",
+      "romaji": "Imabari",
+      "meaning": "Imabari Station",
+      "category": "Station",
+      "subcategory": "Ehime",
+      "notes": "今 reads いま, 治 reads ばり - Shimanami Kaido",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_310",
+      "kanji": "新居浜",
+      "reading": "にいはま",
+      "romaji": "Niihama",
+      "meaning": "Niihama Station",
+      "category": "Station",
+      "subcategory": "Ehime",
+      "notes": "新 reads にい, 浜 reads はま",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_311",
+      "kanji": "観音寺",
+      "reading": "かんおんじ",
+      "romaji": "Kanonji",
+      "meaning": "Kanonji Station",
+      "category": "Station",
+      "subcategory": "Kagawa",
+      "notes": "Kannon temple",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_312",
+      "kanji": "丸亀",
+      "reading": "まるがめ",
+      "romaji": "Marugame",
+      "meaning": "Marugame Station",
+      "category": "Station",
+      "subcategory": "Kagawa",
+      "notes": "Round tortoise - famous castle",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_313",
+      "kanji": "坂出",
+      "reading": "さかいで",
+      "romaji": "Sakaide",
+      "meaning": "Sakaide Station",
+      "category": "Station",
+      "subcategory": "Kagawa",
+      "notes": "Slope exit",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 3
+    },
+    {
+      "id": "stat_314",
+      "kanji": "高松",
+      "reading": "たかまつ",
+      "romaji": "Takamatsu",
+      "meaning": "Takamatsu Station",
+      "category": "Station",
+      "subcategory": "Kagawa",
+      "notes": "Tall pine - Shikoku's main city",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_315",
+      "kanji": "阿波池田",
+      "reading": "あわいけだ",
+      "romaji": "Awa-Ikeda",
+      "meaning": "Awa-Ikeda Station",
+      "category": "Station",
+      "subcategory": "Tokushima",
+      "notes": "阿波 = ancient Tokushima province",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_316",
+      "kanji": "徳島",
+      "reading": "とくしま",
+      "romaji": "Tokushima",
+      "meaning": "Tokushima Station",
+      "category": "Station",
+      "subcategory": "Tokushima",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 3
+    },
+    {
+      "id": "stat_317",
+      "kanji": "高知",
+      "reading": "こうち",
+      "romaji": "Kochi",
+      "meaning": "Kochi Station",
+      "category": "Station",
+      "subcategory": "Kochi",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 3
+    },
+    {
+      "id": "stat_318",
+      "kanji": "須崎",
+      "reading": "すさき",
+      "romaji": "Susaki",
+      "meaning": "Susaki Station",
+      "category": "Station",
+      "subcategory": "Kochi",
+      "notes": "須 reads す",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_319",
+      "kanji": "北九州",
+      "reading": "きたきゅうしゅう",
+      "romaji": "Kitakyushu",
+      "meaning": "Kitakyushu Station",
+      "category": "Station",
+      "subcategory": "Fukuoka",
+      "notes": "North Kyushu - 九州 reads きゅうしゅう",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_320",
+      "kanji": "黒崎",
+      "reading": "くろさき",
+      "romaji": "Kurosaki",
+      "meaning": "Kurosaki Station",
+      "category": "Station",
+      "subcategory": "Fukuoka",
+      "notes": "Black cape",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_321",
+      "kanji": "折尾",
+      "reading": "おりお",
+      "romaji": "Orio",
+      "meaning": "Orio Station",
+      "category": "Station",
+      "subcategory": "Fukuoka",
+      "notes": "Fold tail",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_322",
+      "kanji": "二日市",
+      "reading": "ふつかいち",
+      "romaji": "Futsukaichi",
+      "meaning": "Futsukaichi Station",
+      "category": "Station",
+      "subcategory": "Fukuoka",
+      "notes": "Two day market",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_323",
+      "kanji": "鳥栖",
+      "reading": "とす",
+      "romaji": "Tosu",
+      "meaning": "Tosu Station",
+      "category": "Station",
+      "subcategory": "Saga",
+      "notes": "栖 reads す - bird's nest",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_324",
+      "kanji": "武雄温泉",
+      "reading": "たけおおんせん",
+      "romaji": "Takeo-Onsen",
+      "meaning": "Takeo-Onsen Station",
+      "category": "Station",
+      "subcategory": "Saga",
+      "notes": "武雄 hot spring - famous onsen",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_325",
+      "kanji": "肥前鹿島",
+      "reading": "ひぜんかしま",
+      "romaji": "Hizen-Kashima",
+      "meaning": "Hizen-Kashima Station",
+      "category": "Station",
+      "subcategory": "Saga",
+      "notes": "肥前 = ancient Saga/Nagasaki province",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_326",
+      "kanji": "諫早",
+      "reading": "いさはや",
+      "romaji": "Isahaya",
+      "meaning": "Isahaya Station",
+      "category": "Station",
+      "subcategory": "Nagasaki",
+      "notes": "諫 = remonstrate - 早 reads はや",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_327",
+      "kanji": "長崎",
+      "reading": "ながさき",
+      "romaji": "Nagasaki",
+      "meaning": "Nagasaki Station",
+      "category": "Station",
+      "subcategory": "Nagasaki",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 3
+    },
+    {
+      "id": "stat_328",
+      "kanji": "佐世保",
+      "reading": "させぼ",
+      "romaji": "Sasebo",
+      "meaning": "Sasebo Station",
+      "category": "Station",
+      "subcategory": "Nagasaki",
+      "notes": "佐世保 - 世 reads せ, 保 reads ぼ",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_329",
+      "kanji": "大村",
+      "reading": "おおむら",
+      "romaji": "Omura",
+      "meaning": "Omura Station",
+      "category": "Station",
+      "subcategory": "Nagasaki",
+      "notes": "Big village",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_330",
+      "kanji": "八代",
+      "reading": "やつしろ",
+      "romaji": "Yatsushiro",
+      "meaning": "Yatsushiro Station",
+      "category": "Station",
+      "subcategory": "Kumamoto",
+      "notes": "八 reads やつ - you know this from 新八代",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_331",
+      "kanji": "人吉",
+      "reading": "ひとよし",
+      "romaji": "Hitoyoshi",
+      "meaning": "Hitoyoshi Station",
+      "category": "Station",
+      "subcategory": "Kumamoto",
+      "notes": "人 reads ひと, 吉 reads よし",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_332",
+      "kanji": "大分",
+      "reading": "おおいた",
+      "romaji": "Oita",
+      "meaning": "Oita Station",
+      "category": "Station",
+      "subcategory": "Oita",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 3
+    },
+    {
+      "id": "stat_333",
+      "kanji": "別府",
+      "reading": "べっぷ",
+      "romaji": "Beppu",
+      "meaning": "Beppu Station",
+      "category": "Station",
+      "subcategory": "Oita",
+      "notes": "別 reads べっ, 府 reads ぷ - famous onsen city",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_334",
+      "kanji": "中津",
+      "reading": "なかつ",
+      "romaji": "Nakatsu",
+      "meaning": "Nakatsu Station",
+      "category": "Station",
+      "subcategory": "Oita",
+      "notes": "Middle harbour",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_335",
+      "kanji": "日田",
+      "reading": "ひた",
+      "romaji": "Hita",
+      "meaning": "Hita Station",
+      "category": "Station",
+      "subcategory": "Oita",
+      "notes": "日 reads ひ, 田 reads た",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_336",
+      "kanji": "佐伯",
+      "reading": "さいき",
+      "romaji": "Saiki",
+      "meaning": "Saiki Station",
+      "category": "Station",
+      "subcategory": "Oita",
+      "notes": "佐伯 - 伯 reads いき",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_337",
+      "kanji": "日南",
+      "reading": "にちなん",
+      "romaji": "Nichinan",
+      "meaning": "Nichinan Station",
+      "category": "Station",
+      "subcategory": "Miyazaki",
+      "notes": "日 reads にち, 南 reads なん",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_338",
+      "kanji": "串間",
+      "reading": "くしま",
+      "romaji": "Kushima",
+      "meaning": "Kushima Station",
+      "category": "Station",
+      "subcategory": "Miyazaki",
+      "notes": "串 = skewer reads くし",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_339",
+      "kanji": "西都城",
+      "reading": "にしみやこのじょう",
+      "romaji": "Nishi-Miyakonojo",
+      "meaning": "Nishi-Miyakonojo Station",
+      "category": "Station",
+      "subcategory": "Miyazaki",
+      "notes": "West Miyakonojo",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_340",
+      "kanji": "山形",
+      "reading": "やまがた",
+      "romaji": "Yamagata",
+      "meaning": "Yamagata Station",
+      "category": "Station",
+      "subcategory": "Yamagata",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 3
+    },
+    {
+      "id": "stat_341",
+      "kanji": "天童",
+      "reading": "てんどう",
+      "romaji": "Tendo",
+      "meaning": "Tendo Station",
+      "category": "Station",
+      "subcategory": "Yamagata",
+      "notes": "Heavenly child - shogi piece town",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_342",
+      "kanji": "米沢",
+      "reading": "よねざわ",
+      "romaji": "Yonezawa",
+      "meaning": "Yonezawa Station",
+      "category": "Station",
+      "subcategory": "Yamagata",
+      "notes": "Rice swamp",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_343",
+      "kanji": "新庄",
+      "reading": "しんじょう",
+      "romaji": "Shinjo",
+      "meaning": "Shinjo Station",
+      "category": "Station",
+      "subcategory": "Yamagata",
+      "notes": "You know this one!",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 3
+    },
+    {
+      "id": "stat_344",
+      "kanji": "酒田",
+      "reading": "さかた",
+      "romaji": "Sakata",
+      "meaning": "Sakata Station",
+      "category": "Station",
+      "subcategory": "Yamagata",
+      "notes": "Sake rice paddy",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_345",
+      "kanji": "鶴岡",
+      "reading": "つるおか",
+      "romaji": "Tsuruoka",
+      "meaning": "Tsuruoka Station",
+      "category": "Station",
+      "subcategory": "Yamagata",
+      "notes": "Crane hill",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_346",
+      "kanji": "秋田",
+      "reading": "あきた",
+      "romaji": "Akita",
+      "meaning": "Akita Station",
+      "category": "Station",
+      "subcategory": "Akita",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 3
+    },
+    {
+      "id": "stat_347",
+      "kanji": "大館",
+      "reading": "おおだて",
+      "romaji": "Odate",
+      "meaning": "Odate Station",
+      "category": "Station",
+      "subcategory": "Akita",
+      "notes": "大 reads おお, 館 reads だて",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_348",
+      "kanji": "横手",
+      "reading": "よこて",
+      "romaji": "Yokote",
+      "meaning": "Yokote Station",
+      "category": "Station",
+      "subcategory": "Akita",
+      "notes": "Beside hand",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_349",
+      "kanji": "花巻",
+      "reading": "はなまき",
+      "romaji": "Hanamaki",
+      "meaning": "Hanamaki Station",
+      "category": "Station",
+      "subcategory": "Iwate",
+      "notes": "Flower roll",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_350",
+      "kanji": "釜石",
+      "reading": "かまいし",
+      "romaji": "Kamaishi",
+      "meaning": "Kamaishi Station",
+      "category": "Station",
+      "subcategory": "Iwate",
+      "notes": "Cauldron stone",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_351",
+      "kanji": "宮古",
+      "reading": "みやこ",
+      "romaji": "Miyako",
+      "meaning": "Miyako Station",
+      "category": "Station",
+      "subcategory": "Iwate",
+      "notes": "Capital - 宮古 reads みやこ",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_352",
+      "kanji": "気仙沼",
+      "reading": "けせんぬま",
+      "romaji": "Kesennuma",
+      "meaning": "Kesennuma Station",
+      "category": "Station",
+      "subcategory": "Miyagi",
+      "notes": "気仙 reads けせん - irregular",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_353",
+      "kanji": "石巻",
+      "reading": "いしのまき",
+      "romaji": "Ishinomaki",
+      "meaning": "Ishinomaki Station",
+      "category": "Station",
+      "subcategory": "Miyagi",
+      "notes": "Stone roll - 巻 reads まき",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_354",
+      "kanji": "塩竈",
+      "reading": "しおがま",
+      "romaji": "Shiogama",
+      "meaning": "Shiogama Station",
+      "category": "Station",
+      "subcategory": "Miyagi",
+      "notes": "Salt cauldron - rare kanji 竈",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_355",
+      "kanji": "福島",
+      "reading": "ふくしま",
+      "romaji": "Fukushima",
+      "meaning": "Fukushima Station",
+      "category": "Station",
+      "subcategory": "Fukushima",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 3
+    },
+    {
+      "id": "stat_356",
+      "kanji": "会津若松",
+      "reading": "あいづわかまつ",
+      "romaji": "Aizu-Wakamatsu",
+      "meaning": "Aizu-Wakamatsu Station",
+      "category": "Station",
+      "subcategory": "Fukushima",
+      "notes": "会津 reads あいづ - historic samurai city",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_357",
+      "kanji": "いわき",
+      "reading": "いわき",
+      "romaji": "Iwaki",
+      "meaning": "Iwaki Station",
+      "category": "Station",
+      "subcategory": "Fukushima",
+      "notes": "Usually written in kana",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_358",
+      "kanji": "北見",
+      "reading": "きたみ",
+      "romaji": "Kitami",
+      "meaning": "Kitami Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "North view",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_359",
+      "kanji": "釧路",
+      "reading": "くしろ",
+      "romaji": "Kushiro",
+      "meaning": "Kushiro Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 3
+    },
+    {
+      "id": "stat_360",
+      "kanji": "根室",
+      "reading": "ねむろ",
+      "romaji": "Nemuro",
+      "meaning": "Nemuro Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "Root room - easternmost city in Japan",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_361",
+      "kanji": "苫小牧",
+      "reading": "とまこまい",
+      "romaji": "Tomakomai",
+      "meaning": "Tomakomai Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "Ainu origin - 苫小牧",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_362",
+      "kanji": "室蘭",
+      "reading": "むろらん",
+      "romaji": "Muroran",
+      "meaning": "Muroran Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "Ainu origin",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_363",
+      "kanji": "登別",
+      "reading": "のぼりべつ",
+      "romaji": "Noboribetsu",
+      "meaning": "Noboribetsu Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "Ainu - famous hot springs",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_364",
+      "kanji": "伊達紋別",
+      "reading": "だてもんべつ",
+      "romaji": "Date-Monbetsu",
+      "meaning": "Date-Monbetsu Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "伊達 you know! 紋別 = crest source",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_365",
+      "kanji": "東室蘭",
+      "reading": "ひがしむろらん",
+      "romaji": "Higashi-Muroran",
+      "meaning": "Higashi-Muroran Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "East Muroran",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_366",
+      "kanji": "千歳",
+      "reading": "ちとせ",
+      "romaji": "Chitose",
+      "meaning": "Chitose Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "千歳 = thousand years",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_367",
+      "kanji": "恵庭",
+      "reading": "えにわ",
+      "romaji": "Eniwa",
+      "meaning": "Eniwa Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "Ainu origin",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_368",
+      "kanji": "江別",
+      "reading": "えべつ",
+      "romaji": "Ebetsu",
+      "meaning": "Ebetsu Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "Ainu origin",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_369",
+      "kanji": "岩見沢",
+      "reading": "いわみざわ",
+      "romaji": "Iwamizawa",
+      "meaning": "Iwamizawa Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "Rock watching swamp",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_370",
+      "kanji": "滝川",
+      "reading": "たきかわ",
+      "romaji": "Takikawa",
+      "meaning": "Takikawa Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "Waterfall river",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_371",
+      "kanji": "砂川",
+      "reading": "すながわ",
+      "romaji": "Sunagawa",
+      "meaning": "Sunagawa Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "Sand river",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_372",
+      "kanji": "深川",
+      "reading": "ふかがわ",
+      "romaji": "Fukagawa",
+      "meaning": "Fukagawa Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "Deep river",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_373",
+      "kanji": "留萌",
+      "reading": "るもい",
+      "romaji": "Rumoi",
+      "meaning": "Rumoi Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "Ainu origin",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_374",
+      "kanji": "名寄",
+      "reading": "なよろ",
+      "romaji": "Nayoro",
+      "meaning": "Nayoro Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "Ainu origin",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_375",
+      "kanji": "士別",
+      "reading": "しべつ",
+      "romaji": "Shibetsu",
+      "meaning": "Shibetsu Station",
+      "category": "Station",
+      "subcategory": "Hokkaido",
+      "notes": "Ainu origin",
+      "hook": "",
+      "tags": [
+        " Station",
+        "City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_376",
+      "kanji": "那覇空港",
+      "reading": "なはくうこう",
+      "romaji": "Naha Airport",
+      "meaning": "Naha Airport Station",
+      "category": "Station",
+      "subcategory": "Okinawa",
+      "notes": "那覇 you know!",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_377",
+      "kanji": "おもろまち",
+      "reading": "おもろまち",
+      "romaji": "Omoromachi",
+      "meaning": "Omoromachi Station",
+      "category": "Station",
+      "subcategory": "Okinawa",
+      "notes": "Written in kana - Okinawan dialect",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "stat_378",
+      "kanji": "首里",
+      "reading": "しゅり",
+      "romaji": "Shuri",
+      "meaning": "Shuri Station",
+      "category": "Station",
+      "subcategory": "Okinawa",
+      "notes": "首 reads しゅ, 里 reads り - ancient Ryukyu capital",
+      "hook": "",
+      "tags": [
+        " Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_001",
+      "kanji": "神戸",
+      "reading": "こうべ",
+      "romaji": "Kobe",
+      "meaning": "City in Hyogo Prefecture",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "神 reads こう, 戸 reads べ - irregular",
+      "hook": "",
+      "tags": [
+        " City",
+        "Station"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_002",
+      "kanji": "京都",
+      "reading": "きょうと",
+      "romaji": "Kyoto",
+      "meaning": "Ancient capital",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " City",
+        "Prefecture",
+        "Station"
+      ],
+      "level": 3
+    },
+    {
+      "id": "city_003",
+      "kanji": "奈良",
+      "reading": "なら",
+      "romaji": "Nara",
+      "meaning": "Ancient capital",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " City",
+        "Prefecture",
+        "Station"
+      ],
+      "level": 3
+    },
+    {
+      "id": "city_004",
+      "kanji": "堺",
+      "reading": "さかい",
+      "romaji": "Sakai",
+      "meaning": "City in Osaka Prefecture",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "堺 = boundary reads さかい",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_005",
+      "kanji": "東大阪",
+      "reading": "ひがしおおさか",
+      "romaji": "Higashi-Osaka",
+      "meaning": "City east of Osaka",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "East Osaka",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_006",
+      "kanji": "吹田",
+      "reading": "すいた",
+      "romaji": "Suita",
+      "meaning": "City in Osaka Prefecture",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "吹 reads すい, 田 reads た - Expo City area",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_007",
+      "kanji": "豊中",
+      "reading": "とよなか",
+      "romaji": "Toyonaka",
+      "meaning": "City in Osaka Prefecture",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "豊 reads とよ",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_008",
+      "kanji": "枚方",
+      "reading": "ひらかた",
+      "romaji": "Hirakata",
+      "meaning": "City in Osaka Prefecture",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "枚 reads ひら, 方 reads かた - irregular",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_009",
+      "kanji": "茨木",
+      "reading": "いばらき",
+      "romaji": "Ibaraki",
+      "meaning": "City in Osaka Prefecture",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "Same reading as Ibaraki Prefecture!",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_010",
+      "kanji": "高槻",
+      "reading": "たかつき",
+      "romaji": "Takatsuki",
+      "meaning": "City in Osaka Prefecture",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "槻 = zelkova tree reads つき",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_011",
+      "kanji": "寝屋川",
+      "reading": "ねやがわ",
+      "romaji": "Neyagawa",
+      "meaning": "City in Osaka Prefecture",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "寝 reads ね, 屋 reads や",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_012",
+      "kanji": "八尾",
+      "reading": "やお",
+      "romaji": "Yao",
+      "meaning": "City in Osaka Prefecture",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "八 reads や, 尾 reads お",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_013",
+      "kanji": "和泉",
+      "reading": "いずみ",
+      "romaji": "Izumi",
+      "meaning": "City in Osaka Prefecture",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "和泉 = ancient province name reads いずみ",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_014",
+      "kanji": "岸和田",
+      "reading": "きしわだ",
+      "romaji": "Kishiwada",
+      "meaning": "City in Osaka Prefecture",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "岸 reads きし, 和田 reads わだ - famous danjiri festival",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_015",
+      "kanji": "日光",
+      "reading": "にっこう",
+      "romaji": "Nikko",
+      "meaning": "Famous shrine/temple town in Tochigi",
+      "category": "Town",
+      "subcategory": "Kanto",
+      "notes": "日 reads にっ, 光 reads こう",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_016",
+      "kanji": "箱根",
+      "reading": "はこね",
+      "romaji": "Hakone",
+      "meaning": "Famous hot spring resort in Kanagawa",
+      "category": "Town",
+      "subcategory": "Kanto",
+      "notes": "箱 reads はこ, 根 reads ね",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_017",
+      "kanji": "軽井沢",
+      "reading": "かるいざわ",
+      "romaji": "Karuizawa",
+      "meaning": "Famous resort town in Nagano",
+      "category": "Town",
+      "subcategory": "Chubu",
+      "notes": "軽 reads かるい, 井 reads い, 沢 reads ざわ",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_018",
+      "kanji": "白川郷",
+      "reading": "しらかわごう",
+      "romaji": "Shirakawa-go",
+      "meaning": "UNESCO World Heritage village in Gifu",
+      "category": "Town",
+      "subcategory": "Chubu",
+      "notes": "郷 reads ごう - thatched roof houses",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_019",
+      "kanji": "高山",
+      "reading": "たかやま",
+      "romaji": "Takayama",
+      "meaning": "Historic city in Hida region of Gifu",
+      "category": "City",
+      "subcategory": "Chubu",
+      "notes": "飛騨高山 - you know 飛騨!",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_020",
+      "kanji": "松本",
+      "reading": "まつもと",
+      "romaji": "Matsumoto",
+      "meaning": "City in Nagano - famous castle",
+      "category": "City",
+      "subcategory": "Chubu",
+      "notes": "松 reads まつ, 本 reads もと",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_021",
+      "kanji": "長野",
+      "reading": "ながの",
+      "romaji": "Nagano",
+      "meaning": "Nagano city - 1998 Winter Olympics",
+      "category": "City",
+      "subcategory": "Chubu",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " City",
+        "Prefecture",
+        "Station"
+      ],
+      "level": 3
+    },
+    {
+      "id": "city_022",
+      "kanji": "諏訪",
+      "reading": "すわ",
+      "romaji": "Suwa",
+      "meaning": "City and lake in Nagano",
+      "category": "City",
+      "subcategory": "Chubu",
+      "notes": "You know this one! 言 radical → すわ",
+      "hook": "言 radical → すわ",
+      "tags": [
+        " City"
+      ],
+      "level": 3
+    },
+    {
+      "id": "city_023",
+      "kanji": "飯田",
+      "reading": "いいだ",
+      "romaji": "Iida",
+      "meaning": "City in Nagano - puppet theatre",
+      "category": "City",
+      "subcategory": "Chubu",
+      "notes": "飯 reads いい - cooked rice",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_024",
+      "kanji": "上田",
+      "reading": "うえだ",
+      "romaji": "Ueda",
+      "meaning": "City in Nagano - famous castle",
+      "category": "City",
+      "subcategory": "Chubu",
+      "notes": "上 reads うえ",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_025",
+      "kanji": "伊豆",
+      "reading": "いず",
+      "romaji": "Izu",
+      "meaning": "Peninsula in Shizuoka",
+      "category": "Town",
+      "subcategory": "Chubu",
+      "notes": "伊豆 reads いず - hot springs peninsula",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_026",
+      "kanji": "修善寺",
+      "reading": "しゅぜんじ",
+      "romaji": "Shuzenji",
+      "meaning": "Hot spring town in Izu",
+      "category": "Town",
+      "subcategory": "Chubu",
+      "notes": "修 reads しゅ, 善 reads ぜん, 寺 reads じ",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_027",
+      "kanji": "下田",
+      "reading": "しもだ",
+      "romaji": "Shimoda",
+      "meaning": "Historic port in Izu",
+      "category": "City",
+      "subcategory": "Chubu",
+      "notes": "下 reads しも - Perry's black ships arrived here",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_028",
+      "kanji": "祇園",
+      "reading": "ぎおん",
+      "romaji": "Gion",
+      "meaning": "Famous geisha district in Kyoto",
+      "category": "Town",
+      "subcategory": "Kinki",
+      "notes": "祇 reads ぎ, 園 reads おん - irregular",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_029",
+      "kanji": "嵐山",
+      "reading": "あらしやま",
+      "romaji": "Arashiyama",
+      "meaning": "Famous bamboo grove district in Kyoto",
+      "category": "Town",
+      "subcategory": "Kinki",
+      "notes": "Storm mountain",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_030",
+      "kanji": "伏見",
+      "reading": "ふしみ",
+      "romaji": "Fushimi",
+      "meaning": "District in Kyoto - sake brewing",
+      "category": "Town",
+      "subcategory": "Kinki",
+      "notes": "伏 reads ふし, 見 reads み",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_031",
+      "kanji": "宇治",
+      "reading": "うじ",
+      "romaji": "Uji",
+      "meaning": "City near Kyoto - famous for tea",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "宇 reads う, 治 reads じ",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_032",
+      "kanji": "舞鶴",
+      "reading": "まいづる",
+      "romaji": "Maizuru",
+      "meaning": "City in Kyoto Prefecture",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "Dancing crane - 舞 reads まい",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_033",
+      "kanji": "亀岡",
+      "reading": "かめおか",
+      "romaji": "Kameoka",
+      "meaning": "City in Kyoto Prefecture",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "Turtle hill",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_034",
+      "kanji": "有馬温泉",
+      "reading": "ありまおんせん",
+      "romaji": "Arima Onsen",
+      "meaning": "Famous hot spring in Kobe mountains",
+      "category": "Town",
+      "subcategory": "Kinki",
+      "notes": "有馬 = having a horse reads ありま",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_035",
+      "kanji": "城崎温泉",
+      "reading": "きのさきおんせん",
+      "romaji": "Kinosaki Onsen",
+      "meaning": "Famous hot spring town in Hyogo",
+      "category": "Town",
+      "subcategory": "Kinki",
+      "notes": "城崎 reads きのさき - irregular",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_036",
+      "kanji": "吉野",
+      "reading": "よしの",
+      "romaji": "Yoshino",
+      "meaning": "Famous cherry blossom mountain in Nara",
+      "category": "Town",
+      "subcategory": "Kinki",
+      "notes": "吉 reads よし",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_037",
+      "kanji": "飛鳥",
+      "reading": "あすか",
+      "romaji": "Asuka",
+      "meaning": "Ancient capital area in Nara",
+      "category": "Town",
+      "subcategory": "Kinki",
+      "notes": "飛 reads あ, 鳥 reads すか - completely irregular ancient reading",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_038",
+      "kanji": "斑鳩",
+      "reading": "いかるが",
+      "romaji": "Ikaruga",
+      "meaning": "Town in Nara - Horyuji Temple",
+      "category": "Town",
+      "subcategory": "Kinki",
+      "notes": "斑 reads いか, 鳩 reads るが - completely irregular",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_039",
+      "kanji": "橿原",
+      "reading": "かしはら",
+      "romaji": "Kashihara",
+      "meaning": "City in Nara",
+      "category": "City",
+      "subcategory": "Kinki",
+      "notes": "橿 reads かし, 原 reads はら",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_040",
+      "kanji": "十津川",
+      "reading": "とつかわ",
+      "romaji": "Totsukawa",
+      "meaning": "Remote village in Nara",
+      "category": "Town",
+      "subcategory": "Kinki",
+      "notes": "十 reads とつ here - irregular",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_041",
+      "kanji": "那智勝浦",
+      "reading": "なちかつうら",
+      "romaji": "Nachi-Katsuura",
+      "meaning": "Town in Wakayama - famous waterfall",
+      "category": "Town",
+      "subcategory": "Kinki",
+      "notes": "那智 you know! 勝浦 = victory bay",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_042",
+      "kanji": "白浜",
+      "reading": "しらはま",
+      "romaji": "Shirahama",
+      "meaning": "Beach resort in Wakayama",
+      "category": "Town",
+      "subcategory": "Kinki",
+      "notes": "White beach",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_043",
+      "kanji": "高野山",
+      "reading": "こうやさん",
+      "romaji": "Koyasan",
+      "meaning": "Sacred mountain in Wakayama",
+      "category": "Town",
+      "subcategory": "Kinki",
+      "notes": "高野 reads こうや - Shingon Buddhism centre",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_044",
+      "kanji": "串本",
+      "reading": "くしもと",
+      "romaji": "Kushimoto",
+      "meaning": "Southernmost point of Honshu",
+      "category": "Town",
+      "subcategory": "Kinki",
+      "notes": "串 reads くし, 本 reads もと",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_045",
+      "kanji": "出雲",
+      "reading": "いずも",
+      "romaji": "Izumo",
+      "meaning": "Famous ancient shrine in Shimane",
+      "category": "City",
+      "subcategory": "Chugoku",
+      "notes": "出 reads いず, 雲 reads も - one of Japan's oldest shrines",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_046",
+      "kanji": "石見",
+      "reading": "いわみ",
+      "romaji": "Iwami",
+      "meaning": "Historical region in Shimane",
+      "category": "Town",
+      "subcategory": "Chugoku",
+      "notes": "石 reads いわ, 見 reads み",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_047",
+      "kanji": "津和野",
+      "reading": "つわの",
+      "romaji": "Tsuwano",
+      "meaning": "Historic castle town in Shimane",
+      "category": "Town",
+      "subcategory": "Chugoku",
+      "notes": "津 reads つ, 和 reads わ, 野 reads の",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_048",
+      "kanji": "萩",
+      "reading": "はぎ",
+      "romaji": "Hagi",
+      "meaning": "Historic castle town in Yamaguchi",
+      "category": "City",
+      "subcategory": "Chugoku",
+      "notes": "萩 = bush clover reads はぎ - Meiji Restoration birthplace",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_049",
+      "kanji": "宮島",
+      "reading": "みやじま",
+      "romaji": "Miyajima",
+      "meaning": "Island in Hiroshima - floating torii",
+      "category": "Town",
+      "subcategory": "Chugoku",
+      "notes": "Shrine island - official name 厳島",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_050",
+      "kanji": "厳島",
+      "reading": "いつくしま",
+      "romaji": "Itsukushima",
+      "meaning": "Official name of Miyajima",
+      "category": "Town",
+      "subcategory": "Chugoku",
+      "notes": "厳 reads いつく - sacred island",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_051",
+      "kanji": "竹原",
+      "reading": "たけはら",
+      "romaji": "Takehara",
+      "meaning": "Historic preserved town in Hiroshima",
+      "category": "Town",
+      "subcategory": "Chugoku",
+      "notes": "Bamboo plain",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_052",
+      "kanji": "因島",
+      "reading": "いんのしま",
+      "romaji": "Innoshima",
+      "meaning": "Island in Hiroshima - Shimanami Kaido",
+      "category": "Town",
+      "subcategory": "Chugoku",
+      "notes": "因 reads いん, 島 reads のしま",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_053",
+      "kanji": "道後温泉",
+      "reading": "どうごおんせん",
+      "romaji": "Dogo Onsen",
+      "meaning": "Famous ancient hot spring in Matsuyama",
+      "category": "Town",
+      "subcategory": "Shikoku",
+      "notes": "道後 reads どうご - Japan's oldest onsen",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_054",
+      "kanji": "内子",
+      "reading": "うちこ",
+      "romaji": "Uchiko",
+      "meaning": "Historic preserved town in Ehime",
+      "category": "Town",
+      "subcategory": "Shikoku",
+      "notes": "内 reads うち, 子 reads こ",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_055",
+      "kanji": "足摺岬",
+      "reading": "あしずりみさき",
+      "romaji": "Ashizuri-misaki",
+      "meaning": "Cape in Kochi",
+      "category": "Town",
+      "subcategory": "Shikoku",
+      "notes": "足摺 reads あしずり - irregular",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_056",
+      "kanji": "四万十",
+      "reading": "しまんと",
+      "romaji": "Shimanto",
+      "meaning": "Famous river and city in Kochi",
+      "category": "City",
+      "subcategory": "Shikoku",
+      "notes": "四万十 reads しまんと - Japan's last clear river",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_057",
+      "kanji": "室戸岬",
+      "reading": "むろとみさき",
+      "romaji": "Muroto-misaki",
+      "meaning": "Cape in Kochi",
+      "category": "Town",
+      "subcategory": "Shikoku",
+      "notes": "室戸 reads むろと",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_058",
+      "kanji": "小豆島",
+      "reading": "しょうどしま",
+      "romaji": "Shodoshima",
+      "meaning": "Famous island in Kagawa",
+      "category": "Town",
+      "subcategory": "Shikoku",
+      "notes": "小豆 reads しょうど - olive and soy sauce island",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_059",
+      "kanji": "阿蘇",
+      "reading": "あそ",
+      "romaji": "Aso",
+      "meaning": "Famous volcanic caldera in Kumamoto",
+      "category": "City",
+      "subcategory": "Kyushu",
+      "notes": "阿蘇 reads あそ - world's largest caldera",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_060",
+      "kanji": "黒川温泉",
+      "reading": "くろかわおんせん",
+      "romaji": "Kurokawa Onsen",
+      "meaning": "Famous hot spring in Kumamoto",
+      "category": "Town",
+      "subcategory": "Kyushu",
+      "notes": "Black river hot spring",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_061",
+      "kanji": "湯布院",
+      "reading": "ゆふいん",
+      "romaji": "Yufuin",
+      "meaning": "Famous resort town in Oita",
+      "category": "Town",
+      "subcategory": "Kyushu",
+      "notes": "湯 reads ゆ, 布 reads ふ, 院 reads いん",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_062",
+      "kanji": "耶馬渓",
+      "reading": "やばけい",
+      "romaji": "Yabakei",
+      "meaning": "Famous gorge in Oita",
+      "category": "Town",
+      "subcategory": "Kyushu",
+      "notes": "耶馬 reads やば - irregular",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_063",
+      "kanji": "臼杵",
+      "reading": "うすき",
+      "romaji": "Usuki",
+      "meaning": "City in Oita - stone Buddhas",
+      "category": "City",
+      "subcategory": "Kyushu",
+      "notes": "臼 reads うす, 杵 reads き",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_064",
+      "kanji": "島原",
+      "reading": "しまばら",
+      "romaji": "Shimabara",
+      "meaning": "City in Nagasaki - famous rebellion",
+      "category": "City",
+      "subcategory": "Kyushu",
+      "notes": "Island plain - 島原の乱",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_065",
+      "kanji": "平戸",
+      "reading": "ひらど",
+      "romaji": "Hirado",
+      "meaning": "Historic port city in Nagasaki",
+      "category": "City",
+      "subcategory": "Kyushu",
+      "notes": "平 reads ひら, 戸 reads ど",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_066",
+      "kanji": "五島",
+      "reading": "ごとう",
+      "romaji": "Goto",
+      "meaning": "Island chain in Nagasaki",
+      "category": "Town",
+      "subcategory": "Kyushu",
+      "notes": "Five islands",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_067",
+      "kanji": "壱岐",
+      "reading": "いき",
+      "romaji": "Iki",
+      "meaning": "Island in Nagasaki - you know this!",
+      "category": "Town",
+      "subcategory": "Kyushu",
+      "notes": "",
+      "hook": "You know this one!",
+      "tags": [
+        " Town"
+      ],
+      "level": 3
+    },
+    {
+      "id": "city_068",
+      "kanji": "対馬",
+      "reading": "つしま",
+      "romaji": "Tsushima",
+      "meaning": "Island between Japan and Korea",
+      "category": "Town",
+      "subcategory": "Kyushu",
+      "notes": "対馬 reads つしま - strategic island",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_069",
+      "kanji": "屋久島",
+      "reading": "やくしま",
+      "romaji": "Yakushima",
+      "meaning": "UNESCO forest island in Kagoshima",
+      "category": "Town",
+      "subcategory": "Kyushu",
+      "notes": "屋久 reads やく",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_070",
+      "kanji": "種子島",
+      "reading": "たねがしま",
+      "romaji": "Tanegashima",
+      "meaning": "Island in Kagoshima - space centre",
+      "category": "Town",
+      "subcategory": "Kyushu",
+      "notes": "種 reads たね, 子 reads が, 島 reads しま",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_071",
+      "kanji": "奄美大島",
+      "reading": "あまみおおしま",
+      "romaji": "Amami Oshima",
+      "meaning": "Large island in Kagoshima",
+      "category": "Town",
+      "subcategory": "Kyushu",
+      "notes": "奄美 reads あまみ - subtropical island",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_072",
+      "kanji": "那覇",
+      "reading": "なは",
+      "romaji": "Naha",
+      "meaning": "Capital of Okinawa",
+      "category": "City",
+      "subcategory": "Okinawa",
+      "notes": "You know this from 那覇空港!",
+      "hook": "",
+      "tags": [
+        " City",
+        "Station"
+      ],
+      "level": 3
+    },
+    {
+      "id": "city_073",
+      "kanji": "沖縄",
+      "reading": "おきなわ",
+      "romaji": "Okinawa",
+      "meaning": "Okinawa city",
+      "category": "City",
+      "subcategory": "Okinawa",
+      "notes": "",
+      "hook": "",
+      "tags": [
+        " City",
+        "Prefecture"
+      ],
+      "level": 3
+    },
+    {
+      "id": "city_074",
+      "kanji": "宜野湾",
+      "reading": "ぎのわん",
+      "romaji": "Ginowan",
+      "meaning": "City in Okinawa",
+      "category": "City",
+      "subcategory": "Okinawa",
+      "notes": "宜野湾 reads ぎのわん - irregular Okinawan reading",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_075",
+      "kanji": "浦添",
+      "reading": "うらそえ",
+      "romaji": "Urasoe",
+      "meaning": "City in Okinawa",
+      "category": "City",
+      "subcategory": "Okinawa",
+      "notes": "浦 reads うら, 添 reads そえ",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_076",
+      "kanji": "名護",
+      "reading": "なご",
+      "romaji": "Nago",
+      "meaning": "City in northern Okinawa",
+      "category": "City",
+      "subcategory": "Okinawa",
+      "notes": "名護 reads なご",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_077",
+      "kanji": "石垣",
+      "reading": "いしがき",
+      "romaji": "Ishigaki",
+      "meaning": "City on Yaeyama Islands",
+      "category": "City",
+      "subcategory": "Okinawa",
+      "notes": "Stone fence - southernmost city in Japan",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_078",
+      "kanji": "宮古島",
+      "reading": "みやこじま",
+      "romaji": "Miyakojima",
+      "meaning": "Island city in Okinawa",
+      "category": "City",
+      "subcategory": "Okinawa",
+      "notes": "宮古 reads みやこ",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_079",
+      "kanji": "松島",
+      "reading": "まつしま",
+      "romaji": "Matsushima",
+      "meaning": "Famous scenic bay in Miyagi",
+      "category": "Town",
+      "subcategory": "Tohoku",
+      "notes": "Pine islands - one of Japan's three views",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_080",
+      "kanji": "平泉",
+      "reading": "ひらいずみ",
+      "romaji": "Hiraizumi",
+      "meaning": "UNESCO World Heritage in Iwate",
+      "category": "Town",
+      "subcategory": "Tohoku",
+      "notes": "平 reads ひら, 泉 reads いずみ - golden age of Oshu Fujiwara",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_081",
+      "kanji": "角館",
+      "reading": "かくのだて",
+      "romaji": "Kakunodate",
+      "meaning": "Famous samurai district in Akita",
+      "category": "Town",
+      "subcategory": "Tohoku",
+      "notes": "角 reads かく, 館 reads のだて - irregular",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_082",
+      "kanji": "田沢湖",
+      "reading": "たざわこ",
+      "romaji": "Tazawako",
+      "meaning": "Deepest lake in Japan - Akita",
+      "category": "Town",
+      "subcategory": "Tohoku",
+      "notes": "田沢 reads たざわ, 湖 reads こ",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_083",
+      "kanji": "蔵王",
+      "reading": "ざおう",
+      "romaji": "Zao",
+      "meaning": "Famous ski/onsen area",
+      "category": "Town",
+      "subcategory": "Tohoku",
+      "notes": "蔵王 reads ざおう - you know this from 白石蔵王!",
+      "hook": "蔵王 from 白石蔵王",
+      "tags": [
+        " Town"
+      ],
+      "level": 3
+    },
+    {
+      "id": "city_084",
+      "kanji": "象潟",
+      "reading": "きさかた",
+      "romaji": "Kisakata",
+      "meaning": "Scenic area in Akita",
+      "category": "Town",
+      "subcategory": "Tohoku",
+      "notes": "象潟 reads きさかた - completely irregular",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_085",
+      "kanji": "十和田湖",
+      "reading": "とわだこ",
+      "romaji": "Towadako",
+      "meaning": "Famous crater lake in Aomori/Akita",
+      "category": "Town",
+      "subcategory": "Tohoku",
+      "notes": "十和田 reads とわだ - you know this from 七戸十和田!",
+      "hook": "From 七戸十和田",
+      "tags": [
+        " Town"
+      ],
+      "level": 3
+    },
+    {
+      "id": "city_086",
+      "kanji": "弘前",
+      "reading": "ひろさき",
+      "romaji": "Hirosaki",
+      "meaning": "City in Aomori - famous castle",
+      "category": "City",
+      "subcategory": "Tohoku",
+      "notes": "You know this one!",
+      "hook": "弘 reads ひろ, 前 reads さき",
+      "tags": [
+        " City"
+      ],
+      "level": 3
+    },
+    {
+      "id": "city_087",
+      "kanji": "むつ",
+      "reading": "むつ",
+      "romaji": "Mutsu",
+      "meaning": "City in Aomori",
+      "category": "City",
+      "subcategory": "Tohoku",
+      "notes": "Usually written in kana - ancient province name",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_088",
+      "kanji": "日光",
+      "reading": "にっこう",
+      "romaji": "Nikko",
+      "meaning": "Famous shrine town in Tochigi",
+      "category": "Town",
+      "subcategory": "Kanto",
+      "notes": "日 reads にっ, 光 reads こう - Toshogu Shrine",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_089",
+      "kanji": "那須",
+      "reading": "なす",
+      "romaji": "Nasu",
+      "meaning": "Resort area in Tochigi",
+      "category": "Town",
+      "subcategory": "Kanto",
+      "notes": "Those famous 那須塩原 starts here!",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 3
+    },
+    {
+      "id": "city_090",
+      "kanji": "草津温泉",
+      "reading": "くさつおんせん",
+      "romaji": "Kusatsu Onsen",
+      "meaning": "Famous hot spring in Gunma",
+      "category": "Town",
+      "subcategory": "Kanto",
+      "notes": "くさつ - different from Shiga's 草津!",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_091",
+      "kanji": "伊香保",
+      "reading": "いかほ",
+      "romaji": "Ikaho",
+      "meaning": "Hot spring in Gunma",
+      "category": "Town",
+      "subcategory": "Kanto",
+      "notes": "伊香保 reads いかほ",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_092",
+      "kanji": "水上",
+      "reading": "みなかみ",
+      "romaji": "Minakami",
+      "meaning": "Resort in Gunma",
+      "category": "Town",
+      "subcategory": "Kanto",
+      "notes": "水上 reads みなかみ - upper water",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_093",
+      "kanji": "富士山",
+      "reading": "ふじさん",
+      "romaji": "Fujisan",
+      "meaning": "Mount Fuji",
+      "category": "Town",
+      "subcategory": "Chubu",
+      "notes": "さん not やま for mountains!",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_094",
+      "kanji": "富士五湖",
+      "reading": "ふじごこ",
+      "romaji": "Fuji Goko",
+      "meaning": "Five lakes around Mt Fuji",
+      "category": "Town",
+      "subcategory": "Chubu",
+      "notes": "五湖 = five lakes",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_095",
+      "kanji": "河口湖",
+      "reading": "かわぐちこ",
+      "romaji": "Kawaguchiko",
+      "meaning": "Famous lake near Mt Fuji",
+      "category": "Town",
+      "subcategory": "Chubu",
+      "notes": "河口 = river mouth reads かわぐち + 湖 = こ",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_096",
+      "kanji": "山中湖",
+      "reading": "やまなかこ",
+      "romaji": "Yamanakako",
+      "meaning": "Lake near Mt Fuji",
+      "category": "Town",
+      "subcategory": "Chubu",
+      "notes": "Mountain middle lake",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_097",
+      "kanji": "鎌倉",
+      "reading": "かまくら",
+      "romaji": "Kamakura",
+      "meaning": "Historic coastal city in Kanagawa",
+      "category": "City",
+      "subcategory": "Kanto",
+      "notes": "You know this! Great Buddha",
+      "hook": "",
+      "tags": [
+        " City",
+        "Station"
+      ],
+      "level": 3
+    },
+    {
+      "id": "city_098",
+      "kanji": "江の島",
+      "reading": "えのしま",
+      "romaji": "Enoshima",
+      "meaning": "Famous island near Kamakura",
+      "category": "Town",
+      "subcategory": "Kanto",
+      "notes": "江 reads え - inlet island",
+      "hook": "",
+      "tags": [
+        " Town"
+      ],
+      "level": 0
+    },
+    {
+      "id": "city_099",
+      "kanji": "三浦",
+      "reading": "みうら",
+      "romaji": "Miura",
+      "meaning": "Peninsula/city in Kanagawa",
+      "category": "City",
+      "subcategory": "Kanto",
+      "notes": "You know this surname!",
+      "hook": "三 reads み",
+      "tags": [
+        " City"
+      ],
+      "level": 3
+    },
+    {
+      "id": "city_100",
+      "kanji": "逗子",
+      "reading": "ずし",
+      "romaji": "Zushi",
+      "meaning": "Coastal city in Kanagawa",
+      "category": "City",
+      "subcategory": "Kanto",
+      "notes": "逗子 reads ずし - irregular",
+      "hook": "",
+      "tags": [
+        " City"
+      ],
+      "level": 0
     },
     {
       "id": "name_001",
@@ -2871,6 +8059,9 @@
       "subcategory": "Irregular",
       "notes": "May + woman - completely irregular",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -2883,6 +8074,9 @@
       "subcategory": "Common",
       "notes": "榎 = hackberry tree えの",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -2894,7 +8088,10 @@
       "category": "Surname",
       "subcategory": "Common",
       "notes": "言 radical → わ connection",
-      "hook": "言 (speech) radical → すわ",
+      "hook": "言 radical → すわ",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -2904,9 +8101,12 @@
       "romaji": "Igarashi",
       "meaning": "Surname",
       "category": "Surname",
-      "subcategory": "Irregular",
+      "subcategory": "Common",
       "notes": "五十 reads いが - irregular",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -2919,6 +8119,9 @@
       "subcategory": "Irregular",
       "notes": "Famous ninja clan",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -2931,6 +8134,10 @@
       "subcategory": "Province",
       "notes": "Ancient province in Yamaguchi",
       "hook": "",
+      "tags": [
+        "Historical",
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -2943,6 +8150,9 @@
       "subcategory": "Common",
       "notes": "結 reads ゆう",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -2955,6 +8165,9 @@
       "subcategory": "Historical",
       "notes": "Famous Sengoku clan",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -2967,6 +8180,9 @@
       "subcategory": "Province",
       "notes": "Ancient Niigata - 越後の虎 🐯",
       "hook": "",
+      "tags": [
+        "Historical"
+      ],
       "level": 3
     },
     {
@@ -2979,6 +8195,10 @@
       "subcategory": "Place",
       "notes": "Two readings! Place=やわた Shrine=はちまん",
       "hook": "",
+      "tags": [
+        "Historical",
+        "Place"
+      ],
       "level": 3
     },
     {
@@ -2991,6 +8211,9 @@
       "subcategory": "Region",
       "notes": "騨 = pack horse - rare kanji",
       "hook": "",
+      "tags": [
+        "Historical"
+      ],
       "level": 3
     },
     {
@@ -3003,6 +8226,9 @@
       "subcategory": "Place",
       "notes": "Ancient pilgrimage region",
       "hook": "",
+      "tags": [
+        "Historical"
+      ],
       "level": 3
     },
     {
@@ -3015,6 +8241,9 @@
       "subcategory": "Common",
       "notes": "酒 reads さか",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -3027,6 +8256,9 @@
       "subcategory": "Province",
       "notes": "丹 = red/vermillion",
       "hook": "",
+      "tags": [
+        "Historical"
+      ],
       "level": 3
     },
     {
@@ -3039,6 +8271,9 @@
       "subcategory": "Common",
       "notes": "遠 reads えん",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -3051,6 +8286,10 @@
       "subcategory": "Place",
       "notes": "勢 reads せ - most sacred shrine",
       "hook": "",
+      "tags": [
+        "Historical",
+        "Place"
+      ],
       "level": 3
     },
     {
@@ -3063,6 +8302,9 @@
       "subcategory": "Common",
       "notes": "土 reads と not ど",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -3075,6 +8317,9 @@
       "subcategory": "Place",
       "notes": "雫 = water droplet しずく",
       "hook": "",
+      "tags": [
+        "Historical"
+      ],
       "level": 3
     },
     {
@@ -3087,6 +8332,11 @@
       "subcategory": "Common",
       "notes": "Don't overthink it!",
       "hook": "",
+      "tags": [
+        "Surname",
+        "Station",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -3099,6 +8349,9 @@
       "subcategory": "Place",
       "notes": "城 reads じょう",
       "hook": "",
+      "tags": [
+        "Historical"
+      ],
       "level": 3
     },
     {
@@ -3111,6 +8364,10 @@
       "subcategory": "Place",
       "notes": "壱 = formal variant of 一",
       "hook": "",
+      "tags": [
+        "Historical",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -3123,6 +8380,9 @@
       "subcategory": "Common",
       "notes": "池 reads ち",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -3135,6 +8395,9 @@
       "subcategory": "Historical",
       "notes": "Famous Sengoku clan",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -3147,6 +8410,9 @@
       "subcategory": "Common",
       "notes": "阿 reads あ",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -3159,6 +8425,10 @@
       "subcategory": "Place",
       "notes": "前 reads さき",
       "hook": "",
+      "tags": [
+        "Historical",
+        "City"
+      ],
       "level": 3
     },
     {
@@ -3171,6 +8441,9 @@
       "subcategory": "Historical",
       "notes": "Famous Sengoku clan - irregular",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -3183,6 +8456,9 @@
       "subcategory": "Historical",
       "notes": "Heian scholar deity",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -3195,6 +8471,9 @@
       "subcategory": "Historical",
       "notes": "Famous Sengoku clan",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -3207,6 +8486,9 @@
       "subcategory": "Common",
       "notes": "三 reads み",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -3219,6 +8501,9 @@
       "subcategory": "Rare",
       "notes": "Completely irregular - party trick! 🌕",
       "hook": "",
+      "tags": [
+        "Poetic"
+      ],
       "level": 3
     },
     {
@@ -3231,6 +8516,9 @@
       "subcategory": "Expression",
       "notes": "Zen expression - each encounter is unique",
       "hook": "",
+      "tags": [
+        "Poetic"
+      ],
       "level": 3
     },
     {
@@ -3243,6 +8531,9 @@
       "subcategory": "Place",
       "notes": "曇 reads づみ - irregular",
       "hook": "",
+      "tags": [
+        "Historical"
+      ],
       "level": 3
     },
     {
@@ -3255,6 +8546,9 @@
       "subcategory": "Rare",
       "notes": "Small birds play because there are no hawks - 鷹なし",
       "hook": "No hawks = small birds play freely",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     },
     {
@@ -3267,6 +8561,9 @@
       "subcategory": "Place",
       "notes": "嬉 from うれしい (happy)",
       "hook": "",
+      "tags": [
+        "Historical"
+      ],
       "level": 3
     },
     {
@@ -3279,6 +8576,9 @@
       "subcategory": "Common",
       "notes": "榎 = hackberry tree えの",
       "hook": "",
+      "tags": [
+        "Surname"
+      ],
       "level": 3
     }
   ]
