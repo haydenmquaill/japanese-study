@@ -242,6 +242,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
     <div class="auth-title">日本語辞典</div>
     <div class="auth-subtitle">Japanese Study</div>
     <div id="auth-loading" class="auth-loading">Loading…</div>
+
+    <!-- Sign in form -->
     <div id="auth-form" style="display:none">
       <div class="auth-field">
         <label>Email</label>
@@ -253,6 +255,21 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       </div>
       <button class="auth-btn" id="auth-btn" onclick="signIn()">Sign In</button>
       <div class="auth-error" id="auth-error"></div>
+    </div>
+
+    <!-- Set new password form (shown after password reset redirect) -->
+    <div id="reset-form" style="display:none">
+      <div class="auth-subtitle" style="margin-bottom:20px;">Set your new password</div>
+      <div class="auth-field">
+        <label>New Password</label>
+        <input class="auth-input" id="reset-password" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')setNewPassword()">
+      </div>
+      <div class="auth-field">
+        <label>Confirm Password</label>
+        <input class="auth-input" id="reset-password-confirm" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')setNewPassword()">
+      </div>
+      <button class="auth-btn" id="reset-btn" onclick="setNewPassword()">Set Password</button>
+      <div class="auth-error" id="reset-error"></div>
     </div>
   </div>
 </div>
@@ -469,6 +486,19 @@ const VOCAB_GROUPS = {
 
 // ── AUTH ──
 async function initAuth() {
+  // Check if this is a password reset / invite redirect
+  // Supabase puts #access_token=...&type=recovery or type=invite in the URL hash
+  const hash = window.location.hash;
+  if (hash && hash.includes('type=recovery') || hash.includes('type=invite')) {
+    // Let Supabase process the token from the URL
+    const { data, error } = await sb.auth.getSession();
+    if (data?.session) {
+      // User is now in a password reset session — show set password form
+      document.getElementById('auth-loading').style.display = 'none';
+      document.getElementById('reset-form').style.display = 'block';
+      return;
+    }
+  }
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
     currentUser = session.user;
@@ -477,6 +507,30 @@ async function initAuth() {
     document.getElementById('auth-loading').style.display = 'none';
     document.getElementById('auth-form').style.display = 'block';
   }
+}
+
+async function setNewPassword() {
+  const pw = document.getElementById('reset-password').value;
+  const confirm = document.getElementById('reset-password-confirm').value;
+  const btn = document.getElementById('reset-btn');
+  const err = document.getElementById('reset-error');
+  err.textContent = '';
+  if (pw.length < 6) { err.textContent = 'Password must be at least 6 characters'; return; }
+  if (pw !== confirm) { err.textContent = 'Passwords do not match'; return; }
+  btn.disabled = true;
+  btn.textContent = 'Setting password…';
+  const { data, error } = await sb.auth.updateUser({ password: pw });
+  if (error) {
+    err.textContent = error.message;
+    btn.disabled = false;
+    btn.textContent = 'Set Password';
+    return;
+  }
+  // Password set — now signed in, launch app
+  currentUser = data.user;
+  // Clear the hash from the URL so it doesn't confuse on refresh
+  history.replaceState(null, '', window.location.pathname);
+  await launchApp();
 }
 
 async function signIn() {
