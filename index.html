@@ -43,21 +43,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 /* NAV */
 nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;gap:8px;}
 .nav-title{font-size:1rem;font-weight:700;color:var(--accent);white-space:nowrap;flex-shrink:0;cursor:pointer;}
-.nav-user{font-size:0.75rem;color:var(--text2);margin-left:6px;}
 .nav-tabs{display:flex;gap:3px;flex-shrink:0;}
 .nav-tab{padding:6px 12px;border-radius:var(--radius-sm);border:none;background:transparent;color:var(--text2);font-size:0.85rem;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .nav-tab.active{background:var(--accent);color:white;font-weight:600;}
 .nav-tab:hover:not(.active){background:var(--surface3);color:var(--text);}
-.nav-controls{display:flex;align-items:center;gap:6px;flex-shrink:0;}
-.icon-btn{width:32px;height:32px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all 0.15s;flex-shrink:0;}
+.nav-menu-wrap{position:relative;flex-shrink:0;}
+.nav-menu-dropdown{display:none;position:absolute;top:42px;right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:6px;min-width:190px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,0.3);}
+.nav-menu-dropdown.open{display:block;}
+.nav-menu-user{font-size:0.82rem;font-weight:600;color:var(--text2);padding:6px 10px;}
+.nav-menu-section{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);padding:6px 10px 2px;}
+.nav-menu-divider{border:none;border-top:1px solid var(--border);margin:4px 0;}
+.nav-menu-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius-sm);cursor:pointer;font-size:0.875rem;color:var(--text);transition:background 0.1s;}
+.nav-menu-item:hover{background:var(--surface3);}
+.nav-menu-item.active{background:var(--accent-soft);color:var(--accent);font-weight:600;}
+.nav-menu-item.danger{color:var(--incorrect);}
+.nav-menu-item.danger:hover{background:rgba(192,57,43,0.1);}
+.icon-btn{width:32px;height:32px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:all 0.15s;}
 .icon-btn:hover{border-color:var(--accent);color:var(--accent);}
-.theme-picker{position:relative;}
-.theme-dropdown{display:none;position:absolute;top:40px;right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px;min-width:160px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,0.3);}
-.theme-dropdown.open{display:block;}
-.theme-option{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-sm);cursor:pointer;font-size:0.85rem;color:var(--text);transition:background 0.1s;}
-.theme-option:hover{background:var(--surface3);}
-.theme-option.active{background:var(--accent-soft);color:var(--accent);font-weight:600;}
-.theme-swatch{width:20px;height:20px;border-radius:50%;flex-shrink:0;border:2px solid var(--border);}
 
 /* SYNC STATUS */
 .sync-bar{display:none;background:var(--surface2);border-bottom:1px solid var(--border);padding:6px 14px;font-size:0.75rem;color:var(--text2);text-align:center;}
@@ -275,31 +277,30 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 <!-- MAIN APP -->
 <div id="main-app" style="display:none">
   <nav>
-    <div style="display:flex;align-items:center;gap:4px;">
-      <div class="nav-title" onclick="showView('dashboard')">日本語辞典</div>
-      <span class="nav-user" id="nav-user"></span>
-    </div>
+    <div class="nav-title" onclick="showView('dashboard')">日本語辞典</div>
     <div class="nav-tabs">
       <button class="nav-tab active" onclick="showView('dashboard')">Home</button>
       <button class="nav-tab" onclick="showView('dictionary')">Dict</button>
       <button class="nav-tab" onclick="showView('quiz')">Quiz</button>
     </div>
-    <div class="nav-controls">
-      <button class="icon-btn" id="mode-btn" onclick="toggleMode()" title="Toggle light/dark">🌙</button>
-      <div class="theme-picker">
-        <button class="icon-btn" onclick="toggleThemeDropdown()" title="Change theme">🎨</button>
-        <div class="theme-dropdown" id="theme-dropdown">
-          <div class="theme-option" id="theme-sumi" onclick="setTheme('sumi')"><div class="theme-swatch" style="background:linear-gradient(135deg,#0e0d0c 50%,#c0392b 50%)"></div>🖋️ Sumi</div>
-          <div class="theme-option" id="theme-sakura" onclick="setTheme('sakura')"><div class="theme-swatch" style="background:linear-gradient(135deg,#0a0c14 50%,#e8799a 50%)"></div>🌸 Sakura</div>
-          <div class="theme-option" id="theme-ai" onclick="setTheme('ai')"><div class="theme-swatch" style="background:linear-gradient(135deg,#080c14 50%,#c8a84a 50%)"></div>藍 Ai</div>
-        </div>
+    <div class="nav-menu-wrap">
+      <button class="icon-btn" onclick="toggleNavMenu()" id="nav-menu-btn" title="Menu">⋮</button>
+      <div class="nav-menu-dropdown" id="nav-menu-dropdown">
+        <div class="nav-menu-user" id="nav-menu-user"></div>
+        <div class="nav-menu-divider"></div>
+        <div class="nav-menu-section">Theme</div>
+        <div class="nav-menu-item" id="menu-theme-sumi" onclick="setTheme('sumi')"><div class="theme-swatch" style="background:linear-gradient(135deg,#0e0d0c 50%,#c0392b 50%)"></div>🖋️ Sumi</div>
+        <div class="nav-menu-item" id="menu-theme-sakura" onclick="setTheme('sakura')"><div class="theme-swatch" style="background:linear-gradient(135deg,#0a0c14 50%,#e8799a 50%)"></div>🌸 Sakura</div>
+        <div class="nav-menu-item" id="menu-theme-ai" onclick="setTheme('ai')"><div class="theme-swatch" style="background:linear-gradient(135deg,#080c14 50%,#c8a84a 50%)"></div>藍 Ai</div>
+        <div class="nav-menu-divider"></div>
+        <div class="nav-menu-item" onclick="toggleMode()" id="menu-mode-btn">🌙 Dark mode</div>
+        <div class="nav-menu-divider"></div>
+        <div class="nav-menu-item" onclick="resetToken()">🔑 Reset token</div>
+        <div class="nav-menu-item danger" onclick="signOut()">🚪 Sign out</div>
       </div>
-      <button class="icon-btn" onclick="resetToken()" title="Reset GitHub token">🔑</button>
-      <button class="icon-btn" onclick="signOut()" title="Sign out">🚪</button>
     </div>
   </nav>
   <div class="sync-bar" id="sync-bar"></div>
-
   <div id="view-dashboard" class="view active">
     <div class="stats-grid" id="stats-grid"></div>
     <div class="level-breakdown"><h3>Progress by Level</h3><div class="level-bars" id="level-bars"></div></div>
@@ -719,7 +720,8 @@ async function checkPin() {
     currentUser = selectedUser;
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('main-app').style.display = 'block';
-    document.getElementById('nav-user').textContent = `— ${currentUser.name}`;
+    const navUser = document.getElementById('nav-menu-user');
+    if (navUser) navUser.textContent = currentUser.name;
     await loadApp();
   } else {
     pinBuffer = '';
@@ -770,10 +772,7 @@ function loadPrefs() {
   const mode = prefs.mode||'dark';
   document.documentElement.setAttribute('data-theme',theme);
   document.documentElement.setAttribute('data-mode',mode);
-  document.getElementById('mode-btn').textContent = mode==='dark'?'🌙':'☀️';
-  document.querySelectorAll('.theme-option').forEach(el=>el.classList.remove('active'));
-  const el = document.getElementById('theme-'+theme);
-  if(el) el.classList.add('active');
+  updateMenuState();
 }
 function savePrefs() {
   localStorage.setItem('jisho_prefs',JSON.stringify({
@@ -781,21 +780,28 @@ function savePrefs() {
     mode:document.documentElement.getAttribute('data-mode')
   }));
 }
+function updateMenuState() {
+  const mode = document.documentElement.getAttribute('data-mode');
+  const theme = document.documentElement.getAttribute('data-theme');
+  const modeBtn = document.getElementById('menu-mode-btn');
+  if (modeBtn) modeBtn.textContent = mode==='dark' ? '🌙 Dark mode' : '☀️ Light mode';
+  ['sumi','sakura','ai'].forEach(t => {
+    const el = document.getElementById(`menu-theme-${t}`);
+    if (el) el.classList.toggle('active', theme===t);
+  });
+}
 function toggleMode() {
   const next = document.documentElement.getAttribute('data-mode')==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-mode',next);
-  document.getElementById('mode-btn').textContent = next==='dark'?'🌙':'☀️';
-  savePrefs();
+  savePrefs(); updateMenuState();
 }
 function setTheme(t) {
   document.documentElement.setAttribute('data-theme',t);
-  document.querySelectorAll('.theme-option').forEach(el=>el.classList.remove('active'));
-  document.getElementById('theme-'+t).classList.add('active');
-  savePrefs(); closeThemeDropdown();
+  savePrefs(); updateMenuState(); closeNavMenu();
 }
-function toggleThemeDropdown() { document.getElementById('theme-dropdown').classList.toggle('open'); }
-function closeThemeDropdown() { document.getElementById('theme-dropdown').classList.remove('open'); }
-document.addEventListener('click', e=>{ if(!e.target.closest('.theme-picker')) closeThemeDropdown(); });
+function toggleNavMenu() { document.getElementById('nav-menu-dropdown').classList.toggle('open'); }
+function closeNavMenu() { document.getElementById('nav-menu-dropdown').classList.remove('open'); }
+document.addEventListener('click', e=>{ if(!e.target.closest('.nav-menu-wrap')) closeNavMenu(); });
 
 // ── LOAD APP ──
 async function loadApp() {
