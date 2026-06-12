@@ -501,7 +501,17 @@ const VOCAB_GROUPS = {
 };
 
 // ── GITHUB API ──
+async function githubFetchRaw(path) {
+  // Use raw URL for large files — no size limit, no auth needed for public repos
+  // Cache bust with timestamp
+  const url = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${path}?t=${Date.now()}`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`Raw fetch failed: ${r.status}`);
+  return { data: await r.json(), sha: null };
+}
+
 async function githubFetch(path) {
+  // Use Contents API for small files where we need the SHA for writes
   const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}&t=${Date.now()}`;
   const r = await fetch(url, { headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
   if (!r.ok) throw new Error(`GitHub fetch failed: ${r.status}`);
@@ -530,8 +540,19 @@ async function loadFromGitHub() {
   showSync('Loading…', 'syncing');
   try {
     const [dataResult, progressResult] = await Promise.all([
-      githubFetch('data.json'),
-      githubFetch(`progress_${currentUser.id}.json`).catch(() => ({ data: { levels:{}, synonyms:{}, notes:{}, hooks:{} }, sha: null }))
+      githubFetchRaw('data.json'),  // raw — no size limit
+      // Fetch progress data via raw (no size limit) and SHA via API separately
+      (async () => {
+        try {
+          const [rawResult, apiResult] = await Promise.all([
+            githubFetchRaw(`progress_${currentUser.id}.json`),
+            githubFetch(`progress_${currentUser.id}.json`).catch(() => ({ sha: null }))
+          ]);
+          return { data: rawResult.data, sha: apiResult.sha };
+        } catch(e) {
+          return { data: { levels:{}, synonyms:{}, notes:{}, hooks:{} }, sha: null };
+        }
+      })()
     ]);
     items = dataResult.data.items;
     progress = progressResult.data;
