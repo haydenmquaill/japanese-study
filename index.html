@@ -3,60 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>日本語辞典 — Japanese Study</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wanakana/5.3.1/wanakana.min.js"></script>
+<title>日本語辞典</title>
+<script src="wanakana.min.js"></script>
 <style>
-/* ── THEMES ── */
-[data-theme="sumi"][data-mode="dark"] {
-  --bg:#0e0d0c;--surface:#1a1816;--surface2:#221f1d;--surface3:#2c2825;
-  --border:#3d3830;--text:#f0ebe3;--text2:#a89880;--text3:#6e5e50;
-  --accent:#c0392b;--accent2:#962d22;--accent-soft:rgba(192,57,43,0.15);
-  --nav-bg:#141210;
-}
-[data-theme="sumi"][data-mode="light"] {
-  --bg:#f5f0e8;--surface:#faf6ef;--surface2:#f0ebe0;--surface3:#e8e0d0;
-  --border:#d0c4b0;--text:#1a1410;--text2:#5a4a38;--text3:#9a8a78;
-  --accent:#c0392b;--accent2:#962d22;--accent-soft:rgba(192,57,43,0.1);
-  --nav-bg:#ede8df;
-}
-[data-theme="sakura"][data-mode="dark"] {
-  --bg:#0a0c14;--surface:#131520;--surface2:#1a1c2a;--surface3:#222436;
-  --border:#2e3048;--text:#f0eaf5;--text2:#a090b8;--text3:#605878;
-  --accent:#e8799a;--accent2:#c45c7a;--accent-soft:rgba(232,121,154,0.15);
-  --nav-bg:#0d0f1a;
-}
-[data-theme="sakura"][data-mode="light"] {
-  --bg:#fdf0f5;--surface:#fff5f8;--surface2:#f8e8f0;--surface3:#f0dce8;
-  --border:#e0c0d0;--text:#1a0a10;--text2:#6a3a50;--text3:#a07088;
-  --accent:#c45c7a;--accent2:#a04060;--accent-soft:rgba(196,92,122,0.1);
-  --nav-bg:#f5e8f0;
-}
-[data-theme="ai"][data-mode="dark"] {
-  --bg:#080c14;--surface:#0f1520;--surface2:#161d2a;--surface3:#1e2638;
-  --border:#2a3448;--text:#f0f0e8;--text2:#8898b8;--text3:#4a5878;
-  --accent:#c8a84a;--accent2:#a08838;--accent-soft:rgba(200,168,74,0.15);
-  --nav-bg:#0b1018;
-}
-[data-theme="ai"][data-mode="light"] {
-  --bg:#f0f4f8;--surface:#f8fafc;--surface2:#e8eef5;--surface3:#dce6f0;
-  --border:#b8c8dc;--text:#080c18;--text2:#2a3a58;--text3:#6a7a98;
-  --accent:#2a3a8a;--accent2:#1e2c6e;--accent-soft:rgba(42,58,138,0.1);
-  --nav-bg:#e8eef8;
-}
-:root {
-  --locked:#555570;--lvl-review:#c0392b;--lvl-apprentice:#e67e22;
-  --lvl-guru:#8e44ad;--lvl-master:#2980b9;--lvl-enlightened:#27ae60;
-  --correct:#27ae60;--incorrect:#c0392b;
-  --reading-bg:rgba(41,128,185,0.15);--reading-border:#2980b9;
-  --meaning-bg:rgba(142,68,173,0.15);--meaning-border:#8e44ad;
-  --radius:12px;--radius-sm:8px;
-}
+[data-theme="sumi"][data-mode="dark"]{--bg:#0e0d0c;--surface:#1a1816;--surface2:#221f1d;--surface3:#2c2825;--border:#3d3830;--text:#f0ebe3;--text2:#a89880;--text3:#6e5e50;--accent:#c0392b;--accent2:#962d22;--accent-soft:rgba(192,57,43,0.15);--nav-bg:#141210;}
+[data-theme="sumi"][data-mode="light"]{--bg:#f5f0e8;--surface:#faf6ef;--surface2:#f0ebe0;--surface3:#e8e0d0;--border:#d0c4b0;--text:#1a1410;--text2:#5a4a38;--text3:#9a8a78;--accent:#c0392b;--accent2:#962d22;--accent-soft:rgba(192,57,43,0.1);--nav-bg:#ede8df;}
+[data-theme="sakura"][data-mode="dark"]{--bg:#0a0c14;--surface:#131520;--surface2:#1a1c2a;--surface3:#222436;--border:#2e3048;--text:#f0eaf5;--text2:#a090b8;--text3:#605878;--accent:#e8799a;--accent2:#c45c7a;--accent-soft:rgba(232,121,154,0.15);--nav-bg:#0d0f1a;}
+[data-theme="sakura"][data-mode="light"]{--bg:#fdf0f5;--surface:#fff5f8;--surface2:#f8e8f0;--surface3:#f0dce8;--border:#e0c0d0;--text:#1a0a10;--text2:#6a3a50;--text3:#a07088;--accent:#c45c7a;--accent2:#a04060;--accent-soft:rgba(196,92,122,0.1);--nav-bg:#f5e8f0;}
+[data-theme="ai"][data-mode="dark"]{--bg:#080c14;--surface:#0f1520;--surface2:#161d2a;--surface3:#1e2638;--border:#2a3448;--text:#f0f0e8;--text2:#8898b8;--text3:#4a5878;--accent:#c8a84a;--accent2:#a08838;--accent-soft:rgba(200,168,74,0.15);--nav-bg:#0b1018;}
+[data-theme="ai"][data-mode="light"]{--bg:#f0f4f8;--surface:#f8fafc;--surface2:#e8eef5;--surface3:#dce6f0;--border:#b8c8dc;--text:#080c18;--text2:#2a3a58;--text3:#6a7a98;--accent:#2a3a8a;--accent2:#1e2c6e;--accent-soft:rgba(42,58,138,0.1);--nav-bg:#e8eef8;}
+:root{--locked:#555570;--lvl-review:#c0392b;--lvl-apprentice:#e67e22;--lvl-guru:#8e44ad;--lvl-master:#2980b9;--lvl-enlightened:#27ae60;--correct:#27ae60;--incorrect:#c0392b;--reading-bg:rgba(41,128,185,0.15);--reading-border:#2980b9;--meaning-bg:rgba(142,68,173,0.15);--meaning-border:#8e44ad;--radius:12px;--radius-sm:8px;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background 0.25s,color 0.25s;}
 
+/* LOGIN */
+.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 24px;width:100%;max-width:360px;text-align:center;}
+.login-title{font-size:2rem;color:var(--accent);margin-bottom:4px;}
+.login-subtitle{font-size:0.85rem;color:var(--text2);margin-bottom:28px;}
+.user-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.user-btn{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all 0.15s;text-align:left;display:flex;align-items:center;gap:12px;}
+.user-btn:hover{border-color:var(--accent);background:var(--surface3);}
+.user-avatar{width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:white;flex-shrink:0;}
+.user-name{font-size:0.95rem;font-weight:600;}
+.user-sub{font-size:0.75rem;color:var(--text2);}
+.pin-entry{display:none;}
+.pin-entry.show{display:block;}
+.pin-title{font-size:0.9rem;color:var(--text2);margin-bottom:12px;}
+.pin-dots{display:flex;justify-content:center;gap:10px;margin-bottom:16px;}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);transition:all 0.15s;}
+.pin-dot.filled{background:var(--accent);border-color:var(--accent);}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.pin-key{background:var(--surface3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;font-size:1.1rem;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.pin-key:hover{background:var(--accent-soft);border-color:var(--accent);}
+.pin-key:active{transform:scale(0.95);}
+.pin-error{color:var(--incorrect);font-size:0.82rem;margin-top:8px;min-height:20px;}
+.back-btn{background:none;border:none;color:var(--text2);cursor:pointer;font-size:0.82rem;margin-top:12px;text-decoration:underline;}
+
 /* NAV */
 nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;gap:8px;}
-.nav-title{font-size:1rem;font-weight:700;color:var(--accent);white-space:nowrap;flex-shrink:0;}
+.nav-title{font-size:1rem;font-weight:700;color:var(--accent);white-space:nowrap;flex-shrink:0;cursor:pointer;}
+.nav-user{font-size:0.75rem;color:var(--text2);margin-left:6px;}
 .nav-tabs{display:flex;gap:3px;flex-shrink:0;}
 .nav-tab{padding:6px 12px;border-radius:var(--radius-sm);border:none;background:transparent;color:var(--text2);font-size:0.85rem;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .nav-tab.active{background:var(--accent);color:white;font-weight:600;}
@@ -72,13 +59,20 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .theme-option.active{background:var(--accent-soft);color:var(--accent);font-weight:600;}
 .theme-swatch{width:20px;height:20px;border-radius:50%;flex-shrink:0;border:2px solid var(--border);}
 
+/* SYNC STATUS */
+.sync-bar{display:none;background:var(--surface2);border-bottom:1px solid var(--border);padding:6px 14px;font-size:0.75rem;color:var(--text2);text-align:center;}
+.sync-bar.show{display:block;}
+.sync-bar.syncing{color:var(--accent);}
+.sync-bar.error{color:var(--incorrect);}
+.sync-bar.success{color:var(--correct);}
+
 /* VIEWS */
 .view{display:none;padding:14px;max-width:900px;margin:0 auto;}
 .view.active{display:block;}
 
 /* DASHBOARD */
 .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 10px;text-align:center;transition:background 0.25s;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 10px;text-align:center;}
 .stat-card .num{font-size:1.7rem;font-weight:700;}
 .stat-card .lbl{font-size:0.72rem;color:var(--text2);margin-top:2px;}
 .level-breakdown{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;}
@@ -130,27 +124,38 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 /* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:300;padding:20px;overflow-y:auto;}
 .modal-overlay.open{display:flex;align-items:flex-start;justify-content:center;padding-top:60px;}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;width:100%;max-width:460px;position:relative;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;width:100%;max-width:480px;position:relative;}
 .modal-close{position:absolute;top:12px;right:12px;background:var(--surface3);border:none;color:var(--text2);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;}
 .modal-kanji{font-size:2.8rem;margin-bottom:6px;}
 .modal-reading{font-size:1.1rem;color:var(--text2);margin-bottom:3px;}
 .modal-romaji{font-size:0.875rem;color:var(--text3);margin-bottom:10px;}
 .modal-divider{border:none;border-top:1px solid var(--border);margin:10px 0;}
-.modal-field{margin-bottom:7px;}
-.modal-field-label{font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px;}
+.modal-field{margin-bottom:10px;}
+.modal-field-label{font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;}
 .modal-field-value{font-size:0.875rem;}
-.modal-notes{background:var(--surface2);border-radius:var(--radius-sm);padding:9px;font-size:0.85rem;color:var(--text2);margin-top:7px;}
-.modal-hook{background:var(--accent-soft);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px;font-size:0.85rem;color:var(--accent);margin-top:7px;}
-.modal-readings-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;}
+.modal-edit-btn{font-size:0.7rem;color:var(--accent);cursor:pointer;background:none;border:none;padding:0;}
+.modal-edit-input{width:100%;background:var(--surface2);border:1px solid var(--accent);border-radius:var(--radius-sm);padding:7px 10px;color:var(--text);font-size:0.875rem;outline:none;margin-top:4px;}
+.modal-edit-row{display:flex;gap:6px;margin-top:4px;}
+.modal-save-btn{background:var(--accent);border:none;color:white;border-radius:var(--radius-sm);padding:6px 12px;cursor:pointer;font-size:0.8rem;white-space:nowrap;}
+.modal-cancel-btn{background:var(--surface3);border:1px solid var(--border);color:var(--text2);border-radius:var(--radius-sm);padding:6px 12px;cursor:pointer;font-size:0.8rem;}
+.modal-readings-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px;}
 .modal-reading-block{background:var(--surface2);border-radius:var(--radius-sm);padding:8px;text-align:center;}
 .modal-reading-block .rb-label{font-size:0.68rem;color:var(--text3);text-transform:uppercase;margin-bottom:4px;}
-.modal-reading-block .rb-value{font-size:0.9rem;color:var(--text);}
-.add-synonym-btn{width:100%;margin-top:10px;padding:8px;background:var(--surface2);border:1px dashed var(--border);border-radius:var(--radius-sm);color:var(--text2);cursor:pointer;font-size:0.82rem;}
+.modal-reading-block .rb-value{font-size:0.9rem;}
+.synonym-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+.synonym-tag{background:var(--surface3);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:0.78rem;display:flex;align-items:center;gap:6px;}
+.synonym-remove{cursor:pointer;color:var(--text3);font-size:0.7rem;line-height:1;}
+.synonym-remove:hover{color:var(--incorrect);}
+.add-synonym-btn{width:100%;margin-top:8px;padding:8px;background:var(--surface2);border:1px dashed var(--border);border-radius:var(--radius-sm);color:var(--text2);cursor:pointer;font-size:0.82rem;}
 .add-synonym-btn:hover{border-color:var(--accent);color:var(--accent);}
 .synonym-input-row{display:flex;gap:8px;margin-top:8px;}
 .synonym-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 10px;color:var(--text);font-size:0.85rem;outline:none;}
 .synonym-input:focus{border-color:var(--accent);}
 .synonym-save-btn{background:var(--accent);border:none;color:white;border-radius:var(--radius-sm);padding:7px 14px;cursor:pointer;font-size:0.85rem;}
+.level-selector{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;}
+.level-opt{padding:4px 10px;border-radius:20px;border:1px solid var(--border);font-size:0.75rem;cursor:pointer;background:var(--surface2);transition:all 0.15s;}
+.level-opt.active{font-weight:700;border-width:2px;}
+.level-opt:hover{border-color:var(--accent);}
 
 /* QUIZ CONFIG */
 .quiz-config{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px;}
@@ -168,7 +173,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .start-btn:hover{background:var(--accent2);}
 .start-btn:disabled{background:var(--surface3);color:var(--text3);cursor:not-allowed;}
 
-/* ACTIVE QUIZ */
+/* QUIZ */
 .quiz-active{display:none;}
 .quiz-active.show{display:block;}
 .quiz-config-panel.hide{display:none;}
@@ -176,8 +181,6 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .progress-bar{flex:1;height:5px;background:var(--surface3);border-radius:3px;overflow:hidden;}
 .progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width 0.3s ease;}
 .progress-text{font-size:0.78rem;color:var(--text2);white-space:nowrap;}
-
-/* QUIZ CARD */
 .quiz-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;margin-bottom:14px;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .quiz-prompt{font-size:3.2rem;margin-bottom:7px;line-height:1;}
 .quiz-prompt-label{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;font-weight:600;padding:3px 10px;border-radius:20px;display:inline-block;}
@@ -191,8 +194,6 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .step-dot.active{background:var(--accent);}
 .step-dot.done{background:var(--correct);}
 .step-dot.wrong{background:var(--incorrect);}
-
-/* QUIZ INPUT */
 .quiz-answer-area{margin-bottom:14px;}
 .quiz-input{width:100%;background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:13px 15px;color:var(--text);font-size:1.1rem;outline:none;text-align:center;transition:border-color 0.15s;}
 .quiz-input:focus{border-color:var(--accent);}
@@ -202,8 +203,6 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .quiz-input.meaning-mode{border-color:var(--meaning-border);}
 @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-8px);}40%{transform:translateX(8px);}60%{transform:translateX(-6px);}80%{transform:translateX(6px);}}
 .quiz-input.shake{animation:shake 0.4s ease;}
-
-/* QUIZ BUTTONS */
 .quiz-btn-row{display:flex;gap:9px;}
 .quiz-btn{flex:1;padding:12px;border-radius:var(--radius);border:none;font-size:0.875rem;font-weight:600;cursor:pointer;transition:all 0.15s;}
 .btn-submit{background:var(--accent);color:white;}
@@ -211,8 +210,6 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .btn-next{background:var(--surface3);color:var(--text);border:1px solid var(--border);}
 .btn-next:hover{background:var(--surface2);}
 .btn-end{background:var(--surface3);color:var(--text2);border:1px solid var(--border);font-size:0.78rem;padding:8px;flex:0;white-space:nowrap;}
-
-/* FEEDBACK */
 .quiz-feedback{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;display:none;}
 .quiz-feedback.show{display:block;}
 .feedback-result{font-size:0.95rem;font-weight:700;margin-bottom:6px;}
@@ -228,8 +225,6 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .syn-inline-row{display:flex;gap:6px;margin-top:6px;}
 .syn-inline-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:5px 8px;color:var(--text);font-size:0.8rem;outline:none;}
 .syn-inline-save{background:var(--accent);border:none;color:white;border-radius:var(--radius-sm);padding:5px 10px;cursor:pointer;font-size:0.8rem;}
-
-/* RESULTS */
 .quiz-results{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;text-align:center;display:none;}
 .quiz-results.show{display:block;}
 .results-score{font-size:2.8rem;font-weight:700;color:var(--accent);}
@@ -241,8 +236,6 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .results-reading{flex:1;color:var(--text2);}
 .results-icon{font-size:1rem;}
 .results-btn-row{display:flex;gap:9px;margin-top:14px;}
-
-/* MISC */
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
@@ -254,318 +247,448 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 </head>
 <body>
 
-<nav>
-  <div class="nav-title">日本語辞典</div>
-  <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showView('dashboard')">Home</button>
-    <button class="nav-tab" onclick="showView('dictionary')">Dict</button>
-    <button class="nav-tab" onclick="showView('quiz')">Quiz</button>
-  </div>
-  <div class="nav-controls">
-    <button class="icon-btn" id="mode-btn" onclick="toggleMode()" title="Toggle light/dark">🌙</button>
-    <div class="theme-picker">
-      <button class="icon-btn" onclick="toggleThemeDropdown()" title="Change theme">🎨</button>
-      <div class="theme-dropdown" id="theme-dropdown">
-        <div class="theme-option" id="theme-sumi" onclick="setTheme('sumi')">
-          <div class="theme-swatch" style="background:linear-gradient(135deg,#0e0d0c 50%,#c0392b 50%)"></div>🖋️ Sumi
-        </div>
-        <div class="theme-option" id="theme-sakura" onclick="setTheme('sakura')">
-          <div class="theme-swatch" style="background:linear-gradient(135deg,#0a0c14 50%,#e8799a 50%)"></div>🌸 Sakura
-        </div>
-        <div class="theme-option" id="theme-ai" onclick="setTheme('ai')">
-          <div class="theme-swatch" style="background:linear-gradient(135deg,#080c14 50%,#c8a84a 50%)"></div>藍 Ai
-        </div>
-      </div>
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <div class="login-title">日本語辞典</div>
+    <div class="login-subtitle">Japanese Study</div>
+    <div id="user-select">
+      <div class="user-list" id="user-list"></div>
     </div>
-  </div>
-</nav>
-
-<!-- DASHBOARD -->
-<div id="view-dashboard" class="view active">
-  <div class="stats-grid" id="stats-grid"></div>
-  <div class="level-breakdown">
-    <h3>Progress by Level</h3>
-    <div class="level-bars" id="level-bars"></div>
-  </div>
-  <div class="section-title">Quick Start</div>
-  <div class="quick-actions">
-    <div class="quick-btn" onclick="startQuickQuiz('review')">
-      <div class="qb-icon">🔄</div><div class="qb-title">Review Quiz</div>
-      <div class="qb-sub">Practice unlocked items</div>
-    </div>
-    <div class="quick-btn" onclick="startQuickQuiz('new')">
-      <div class="qb-icon">✨</div><div class="qb-title">New Quiz</div>
-      <div class="qb-sub">Unlock locked items</div>
-    </div>
-    <div class="quick-btn" onclick="showView('dictionary')">
-      <div class="qb-icon">📖</div><div class="qb-title">Dictionary</div>
-      <div class="qb-sub">Browse all entries</div>
-    </div>
-    <div class="quick-btn" onclick="startQuickQuiz('all')">
-      <div class="qb-icon">⚡</div><div class="qb-title">Mixed Quiz</div>
-      <div class="qb-sub">Everything together</div>
+    <div class="pin-entry" id="pin-entry">
+      <div class="pin-title" id="pin-title">Enter PIN</div>
+      <div class="pin-dots" id="pin-dots"></div>
+      <div class="pin-pad" id="pin-pad"></div>
+      <div class="pin-error" id="pin-error"></div>
+      <button class="back-btn" onclick="backToUsers()">← Back</button>
     </div>
   </div>
 </div>
 
-<!-- DICTIONARY -->
-<div id="view-dictionary" class="view">
-  <div class="dict-controls">
-    <div class="search-row">
-      <input class="search-input" id="dict-search" placeholder="Search kanji, reading, meaning…" oninput="renderDict()">
+<!-- MAIN APP -->
+<div id="main-app" style="display:none">
+  <nav>
+    <div style="display:flex;align-items:center;gap:4px;">
+      <div class="nav-title" onclick="showView('dashboard')">日本語辞典</div>
+      <span class="nav-user" id="nav-user"></span>
     </div>
-    <div class="filter-row">
-      <select class="filter-sel" id="filter-cat" onchange="updateSubcatFilter();renderDict()">
-        <option value="">All Categories</option>
-      </select>
-      <select class="filter-sel" id="filter-subcat" onchange="renderDict()">
-        <option value="">All Subcategories</option>
-      </select>
-      <select class="filter-sel" id="filter-level" onchange="renderDict()">
-        <option value="">All Levels</option>
-        <option value="0">0 — Locked</option>
-        <option value="1">1 — Review</option>
-        <option value="2">2 — Apprentice</option>
-        <option value="3">3 — Guru</option>
-        <option value="4">4 — Master</option>
-        <option value="5">5 — Enlightened</option>
-      </select>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showView('dashboard')">Home</button>
+      <button class="nav-tab" onclick="showView('dictionary')">Dict</button>
+      <button class="nav-tab" onclick="showView('quiz')">Quiz</button>
     </div>
-  </div>
-  <div class="dict-count" id="dict-count"></div>
-  <div class="dict-list" id="dict-list"></div>
-</div>
-
-<!-- QUIZ -->
-<div id="view-quiz" class="view">
-  <div id="quiz-config-panel" class="quiz-config-panel">
-    <div class="quiz-config">
-      <h3>Quiz Mode</h3>
-      <div class="quiz-mode-tabs">
-        <div class="quiz-mode-tab active" id="tab-review" onclick="setQuizMode('review')">
-          🔄 Review<br><small style="font-weight:400;color:var(--text3)">Unlocked items</small>
-        </div>
-        <div class="quiz-mode-tab" id="tab-new" onclick="setQuizMode('new')">
-          ✨ New<br><small style="font-weight:400;color:var(--text3)">Locked items</small>
+    <div class="nav-controls">
+      <button class="icon-btn" id="mode-btn" onclick="toggleMode()" title="Toggle light/dark">🌙</button>
+      <div class="theme-picker">
+        <button class="icon-btn" onclick="toggleThemeDropdown()" title="Change theme">🎨</button>
+        <div class="theme-dropdown" id="theme-dropdown">
+          <div class="theme-option" id="theme-sumi" onclick="setTheme('sumi')"><div class="theme-swatch" style="background:linear-gradient(135deg,#0e0d0c 50%,#c0392b 50%)"></div>🖋️ Sumi</div>
+          <div class="theme-option" id="theme-sakura" onclick="setTheme('sakura')"><div class="theme-swatch" style="background:linear-gradient(135deg,#0a0c14 50%,#e8799a 50%)"></div>🌸 Sakura</div>
+          <div class="theme-option" id="theme-ai" onclick="setTheme('ai')"><div class="theme-swatch" style="background:linear-gradient(135deg,#080c14 50%,#c8a84a 50%)"></div>藍 Ai</div>
         </div>
       </div>
-      <h3 style="margin-bottom:12px">Configure</h3>
-      <div class="config-grid">
-        <div class="config-item">
-          <label>Category</label>
-          <select id="qconfig-cat" onchange="updateQSubcat()">
-            <option value="">All Categories</option>
-          </select>
-        </div>
-        <div class="config-item">
-          <label>Subcategory</label>
-          <select id="qconfig-subcat"><option value="">All Subcategories</option></select>
-        </div>
-        <div class="config-item">
-          <label>Questions</label>
-          <input type="number" id="qconfig-count" value="10" min="1" max="100">
-        </div>
-        <div class="config-item">
-          <label>Min Level (Review)</label>
-          <select id="qconfig-minlevel">
-            <option value="1">1 — Review+</option>
-            <option value="2" selected>2 — Apprentice+</option>
-            <option value="3">3 — Guru+</option>
-            <option value="4">4 — Master+</option>
-            <option value="5">5 — Enlightened only</option>
-          </select>
-        </div>
+      <button class="icon-btn" onclick="signOut()" title="Sign out">🚪</button>
+    </div>
+  </nav>
+  <div class="sync-bar" id="sync-bar"></div>
+
+  <div id="view-dashboard" class="view active">
+    <div class="stats-grid" id="stats-grid"></div>
+    <div class="level-breakdown"><h3>Progress by Level</h3><div class="level-bars" id="level-bars"></div></div>
+    <div class="section-title">Quick Start</div>
+    <div class="quick-actions">
+      <div class="quick-btn" onclick="startQuickQuiz('review')"><div class="qb-icon">🔄</div><div class="qb-title">Review Quiz</div><div class="qb-sub">Practice unlocked items</div></div>
+      <div class="quick-btn" onclick="startQuickQuiz('new')"><div class="qb-icon">✨</div><div class="qb-title">New Quiz</div><div class="qb-sub">Unlock locked items</div></div>
+      <div class="quick-btn" onclick="showView('dictionary')"><div class="qb-icon">📖</div><div class="qb-title">Dictionary</div><div class="qb-sub">Browse all entries</div></div>
+      <div class="quick-btn" onclick="startQuickQuiz('all')"><div class="qb-icon">⚡</div><div class="qb-title">Mixed Quiz</div><div class="qb-sub">Everything together</div></div>
+    </div>
+  </div>
+
+  <div id="view-dictionary" class="view">
+    <div class="dict-controls">
+      <div class="search-row"><input class="search-input" id="dict-search" placeholder="Search kanji, reading, meaning…" oninput="renderDict()"></div>
+      <div class="filter-row">
+        <select class="filter-sel" id="filter-cat" onchange="updateSubcatFilter();renderDict()"><option value="">All Categories</option></select>
+        <select class="filter-sel" id="filter-subcat" onchange="renderDict()"><option value="">All Subcategories</option></select>
+        <select class="filter-sel" id="filter-level" onchange="renderDict()">
+          <option value="">All Levels</option>
+          <option value="0">0 — Locked</option><option value="1">1 — Review</option>
+          <option value="2">2 — Apprentice</option><option value="3">3 — Guru</option>
+          <option value="4">4 — Master</option><option value="5">5 — Enlightened</option>
+        </select>
       </div>
     </div>
-    <div id="quiz-pool-info" style="font-size:0.78rem;color:var(--text2);margin-bottom:11px;text-align:center;"></div>
-    <button class="start-btn" id="start-btn" onclick="startQuiz()">Start Quiz</button>
+    <div class="dict-count" id="dict-count"></div>
+    <div class="dict-list" id="dict-list"></div>
   </div>
 
-  <div class="quiz-active" id="quiz-active">
-    <div class="quiz-progress">
-      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-      <div class="progress-text" id="progress-text"></div>
-      <button class="quiz-btn btn-end" onclick="endQuiz()">End</button>
+  <div id="view-quiz" class="view">
+    <div id="quiz-config-panel" class="quiz-config-panel">
+      <div class="quiz-config">
+        <h3>Quiz Mode</h3>
+        <div class="quiz-mode-tabs">
+          <div class="quiz-mode-tab active" id="tab-review" onclick="setQuizMode('review')">🔄 Review<br><small style="font-weight:400;color:var(--text3)">Unlocked items</small></div>
+          <div class="quiz-mode-tab" id="tab-new" onclick="setQuizMode('new')">✨ New<br><small style="font-weight:400;color:var(--text3)">Locked items</small></div>
+        </div>
+        <h3 style="margin-bottom:12px">Configure</h3>
+        <div class="config-grid">
+          <div class="config-item"><label>Category</label><select id="qconfig-cat" onchange="updateQSubcat()"><option value="">All Categories</option></select></div>
+          <div class="config-item"><label>Subcategory</label><select id="qconfig-subcat"><option value="">All Subcategories</option></select></div>
+          <div class="config-item"><label>Questions</label><input type="number" id="qconfig-count" value="10" min="1" max="100"></div>
+          <div class="config-item"><label>Min Level (Review)</label>
+            <select id="qconfig-minlevel">
+              <option value="1">1 — Review+</option><option value="2" selected>2 — Apprentice+</option>
+              <option value="3">3 — Guru+</option><option value="4">4 — Master+</option>
+              <option value="5">5 — Enlightened only</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div id="quiz-pool-info" style="font-size:0.78rem;color:var(--text2);margin-bottom:11px;text-align:center;"></div>
+      <button class="start-btn" id="start-btn" onclick="startQuiz()">Start Quiz</button>
     </div>
-    <div class="quiz-card" id="quiz-card">
-      <div class="quiz-prompt-label reading" id="quiz-prompt-label">Reading</div>
-      <div class="quiz-prompt" id="quiz-prompt"></div>
-      <div class="quiz-sub" id="quiz-sub"></div>
-      <div class="quiz-category-hint" id="quiz-hint"></div>
-      <div class="quiz-gender-hint" id="quiz-gender-hint"></div>
-      <div class="quiz-step-indicator" id="quiz-step-indicator"></div>
+    <div class="quiz-active" id="quiz-active">
+      <div class="quiz-progress">
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="progress-text" id="progress-text"></div>
+        <button class="quiz-btn btn-end" onclick="endQuiz()">End</button>
+      </div>
+      <div class="quiz-card">
+        <div class="quiz-prompt-label reading" id="quiz-prompt-label">Reading</div>
+        <div class="quiz-prompt" id="quiz-prompt"></div>
+        <div class="quiz-sub" id="quiz-sub"></div>
+        <div class="quiz-category-hint" id="quiz-hint"></div>
+        <div class="quiz-gender-hint" id="quiz-gender-hint"></div>
+        <div class="quiz-step-indicator" id="quiz-step-indicator"></div>
+      </div>
+      <div class="quiz-feedback" id="quiz-feedback">
+        <div class="feedback-result" id="feedback-result"></div>
+        <div class="feedback-answer" id="feedback-answer"></div>
+        <div class="feedback-notes" id="feedback-notes"></div>
+        <div class="feedback-hook" id="feedback-hook"></div>
+        <div class="feedback-level" id="feedback-level"></div>
+        <div class="feedback-synonyms" id="feedback-synonyms"></div>
+      </div>
+      <div class="quiz-answer-area">
+        <input class="quiz-input reading-mode" id="quiz-input" placeholder="Type the reading…" onkeydown="handleQuizKey(event)">
+      </div>
+      <div class="quiz-btn-row">
+        <button class="quiz-btn btn-submit" id="btn-submit" onclick="submitAnswer()">Submit</button>
+        <button class="quiz-btn btn-next" id="btn-next" onclick="nextPrompt()" style="display:none">Next →</button>
+      </div>
     </div>
-    <div class="quiz-feedback" id="quiz-feedback">
-      <div class="feedback-result" id="feedback-result"></div>
-      <div class="feedback-answer" id="feedback-answer"></div>
-      <div class="feedback-notes" id="feedback-notes"></div>
-      <div class="feedback-hook" id="feedback-hook"></div>
-      <div class="feedback-level" id="feedback-level"></div>
-      <div class="feedback-synonyms" id="feedback-synonyms"></div>
-    </div>
-    <div class="quiz-answer-area">
-      <input class="quiz-input reading-mode" id="quiz-input" placeholder="Type the reading…" onkeydown="handleQuizKey(event)">
-    </div>
-    <div class="quiz-btn-row">
-      <button class="quiz-btn btn-submit" id="btn-submit" onclick="submitAnswer()">Submit</button>
-      <button class="quiz-btn btn-next" id="btn-next" onclick="nextPrompt()" style="display:none">Next →</button>
-    </div>
-  </div>
-
-  <div class="quiz-results" id="quiz-results">
-    <div class="results-score" id="results-score"></div>
-    <div class="results-fraction" id="results-fraction"></div>
-    <div class="results-breakdown" id="results-breakdown"></div>
-    <div class="results-btn-row">
-      <button class="quiz-btn btn-submit" onclick="restartQuiz()" style="flex:1">Again</button>
-      <button class="quiz-btn btn-next" onclick="backToConfig()" style="flex:1">Config</button>
+    <div class="quiz-results" id="quiz-results">
+      <div class="results-score" id="results-score"></div>
+      <div class="results-fraction" id="results-fraction"></div>
+      <div class="results-breakdown" id="results-breakdown"></div>
+      <div class="results-btn-row">
+        <button class="quiz-btn btn-submit" onclick="restartQuiz()" style="flex:1">Again</button>
+        <button class="quiz-btn btn-next" onclick="backToConfig()" style="flex:1">Config</button>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- DETAIL MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal" id="modal">
+  <div class="modal">
     <button class="modal-close" onclick="closeModalBtn()">✕</button>
     <div class="modal-kanji" id="modal-kanji"></div>
-    <div class="modal-reading" id="modal-reading"></div>
-    <div class="modal-romaji" id="modal-romaji" style="display:none"></div>
+    <div id="modal-reading-wrap"></div>
     <hr class="modal-divider">
     <div id="modal-readings-section" style="display:none">
-      <div class="modal-field-label">Readings</div>
+      <div style="font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Readings</div>
       <div class="modal-readings-grid" id="modal-readings-grid"></div>
       <hr class="modal-divider">
     </div>
     <div class="modal-field">
-      <div class="modal-field-label">Meaning / Notes</div>
+      <div class="modal-field-label">Meaning</div>
       <div class="modal-field-value" id="modal-meaning"></div>
     </div>
     <div class="modal-field">
       <div class="modal-field-label">Category</div>
       <div class="modal-field-value" id="modal-category"></div>
     </div>
-    <div id="modal-notes-wrap" class="modal-notes" style="display:none"></div>
-    <div id="modal-hook-wrap" class="modal-hook" style="display:none"></div>
-    <div id="modal-synonyms-wrap" style="display:none">
-      <hr class="modal-divider">
-      <div class="modal-field-label">User Synonyms</div>
-      <div class="modal-field-value" id="modal-synonyms-list" style="color:var(--text2);font-size:0.85rem;margin-top:4px;"></div>
+
+    <!-- Editable Notes -->
+    <div class="modal-field" id="modal-notes-field">
+      <div class="modal-field-label">
+        Notes
+        <button class="modal-edit-btn" onclick="toggleEdit('notes')">✏️ Edit</button>
+      </div>
+      <div class="modal-field-value" id="modal-notes-display" style="color:var(--text2);font-size:0.85rem;"></div>
+      <div id="modal-notes-edit" style="display:none">
+        <textarea class="modal-edit-input" id="modal-notes-input" rows="3" style="resize:vertical;"></textarea>
+        <div class="modal-edit-row">
+          <button class="modal-save-btn" onclick="saveEdit('notes')">Save</button>
+          <button class="modal-cancel-btn" onclick="cancelEdit('notes')">Cancel</button>
+        </div>
+      </div>
     </div>
+
+    <!-- Editable Hook -->
+    <div class="modal-field" id="modal-hook-field">
+      <div class="modal-field-label">
+        Memory Hook
+        <button class="modal-edit-btn" onclick="toggleEdit('hook')">✏️ Edit</button>
+      </div>
+      <div class="modal-field-value" id="modal-hook-display" style="color:var(--accent);font-size:0.85rem;"></div>
+      <div id="modal-hook-edit" style="display:none">
+        <input class="modal-edit-input" id="modal-hook-input" placeholder="Add a memory hook…">
+        <div class="modal-edit-row">
+          <button class="modal-save-btn" onclick="saveEdit('hook')">Save</button>
+          <button class="modal-cancel-btn" onclick="cancelEdit('hook')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Synonyms -->
+    <div class="modal-field">
+      <div class="modal-field-label">User Synonyms</div>
+      <div class="synonym-list" id="modal-synonym-list"></div>
+      <button class="add-synonym-btn" id="modal-add-syn-btn" onclick="toggleSynInput()">+ Add synonym</button>
+      <div class="synonym-input-row" id="modal-syn-row" style="display:none">
+        <input class="synonym-input" id="modal-syn-input" placeholder="Enter synonym…" onkeydown="if(event.key==='Enter')saveSynonym()">
+        <button class="synonym-save-btn" onclick="saveSynonym()">Save</button>
+      </div>
+    </div>
+
     <hr class="modal-divider">
+
+    <!-- Editable Level -->
     <div class="modal-field">
       <div class="modal-field-label">Level</div>
-      <div class="modal-field-value" id="modal-level"></div>
-    </div>
-    <button class="add-synonym-btn" id="modal-add-syn-btn" onclick="toggleSynonymInput()" style="display:none">+ Add synonym</button>
-    <div class="synonym-input-row" id="modal-syn-row" style="display:none">
-      <input class="synonym-input" id="modal-syn-input" placeholder="Enter synonym…">
-      <button class="synonym-save-btn" onclick="saveSynonym()">Save</button>
+      <div class="level-selector" id="modal-level-selector"></div>
     </div>
   </div>
 </div>
 
 <script>
+// ── CONFIG ──
+const GITHUB_OWNER = 'haydenmquaill';
+const GITHUB_REPO = 'japanese-study';
+const GITHUB_BRANCH = 'main';
+const GITHUB_TOKEN = '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';
+
 // ── STATE ──
 let items = [];
+let currentUser = null;
+let progress = { levels:{}, synonyms:{}, notes:{}, hooks:{} };
 let quizMode = 'review';
-let quizQueue = [];
-let quizIndex = 0;
-let quizScore = 0;
-let quizResults = [];
-let currentItem = null;
-let currentPrompts = [];
-let currentPromptIndex = 0;
-let itemAnswered = false;
-let itemCorrect = true;
+let quizQueue = [], quizIndex = 0, quizScore = 0, quizResults = [];
+let currentItem = null, currentPrompts = [], currentPromptIndex = 0;
+let itemAnswered = false, itemCorrect = true;
 let currentModalId = null;
+let pendingWrite = false;
 
 const LEVEL_NAMES = ['Locked','Review','Apprentice','Guru','Master','Enlightened'];
 const LEVEL_COLORS = ['#555570','#c0392b','#e67e22','#8e44ad','#2980b9','#27ae60'];
+const VOCAB_GROUPS = {
+  'Verbs':['Transitive Verb','Intransitive Verb','Godan Verb','Ichidan Verb','する Verb'],
+  'Nouns':['Noun','Proper Noun','Independent Noun','Verbal Noun','Counter'],
+  'Adjectives':['い Adjective','な Adjective','の Adjective','Adjective'],
+  'Adverbs':['Adverb'],
+  'Expressions':['Expression','Interjection','Conjunction'],
+  'Other':['Prefix','Suffix','Pronoun','Numeral'],
+};
 
-// ── LEVENSHTEIN ──
-function levenshtein(a, b) {
-  const m = a.length, n = b.length;
-  const dp = Array.from({length:m+1}, (_,i) => Array.from({length:n+1}, (_,j) => i===0?j:j===0?i:0));
-  for (let i=1;i<=m;i++) for (let j=1;j<=n;j++)
-    dp[i][j] = a[i-1]===b[j-1] ? dp[i-1][j-1] : 1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
-  return dp[m][n];
+// ── GITHUB API ──
+async function githubFetch(path) {
+  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}&t=${Date.now()}`;
+  const r = await fetch(url, { headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
+  if (!r.ok) throw new Error(`GitHub fetch failed: ${r.status}`);
+  const data = await r.json();
+  const content = atob(data.content.replace(/\n/g,''));
+  return { data: JSON.parse(content), sha: data.sha };
 }
 
-function normMeaning(s) { return s.toLowerCase().trim().replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' '); }
+async function githubWrite(path, content, sha, message) {
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2))));
+  const body = { message, content: encoded, branch: GITHUB_BRANCH };
+  if (sha) body.sha = sha;
+  const r = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`, {
+    method: 'PUT',
+    headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) { const e = await r.json(); throw new Error(e.message || `GitHub write failed: ${r.status}`); }
+  const result = await r.json();
+  return result.content.sha;
+}
 
-function checkMeaning(input, item) {
-  const inp = normMeaning(input);
-  const accepted = getMeanings(item);
-  const synonyms = getUserSynonyms(item.id);
-  const all = [...accepted, ...synonyms].map(normMeaning);
-  let best = Infinity;
-  for (const m of all) {
-    const d = levenshtein(inp, m);
-    if (d === 0) return {result:'correct', match:m};
-    best = Math.min(best, d);
+let progressSha = null;
+
+async function loadFromGitHub() {
+  showSync('Loading…', 'syncing');
+  try {
+    const [dataResult, progressResult] = await Promise.all([
+      githubFetch('data.json'),
+      githubFetch(`progress_${currentUser.id}.json`).catch(() => ({ data: { levels:{}, synonyms:{}, notes:{}, hooks:{} }, sha: null }))
+    ]);
+    items = dataResult.data.items;
+    progress = progressResult.data;
+    progressSha = progressResult.sha;
+    // Ensure all fields exist
+    if (!progress.levels) progress.levels = {};
+    if (!progress.synonyms) progress.synonyms = {};
+    if (!progress.notes) progress.notes = {};
+    if (!progress.hooks) progress.hooks = {};
+    // Apply progress to items
+    applyProgress();
+    showSync('', '');
+  } catch(e) {
+    showSync(`Load failed: ${e.message}`, 'error');
+    throw e;
   }
-  if (best <= 2) return {result:'close', best};
-  return {result:'wrong', best};
 }
 
-function getMeanings(item) {
-  if (item.meanings && Array.isArray(item.meanings)) return item.meanings;
-  if (item.meaning) return [item.meaning];
-  return [];
+function applyProgress() {
+  items.forEach(item => {
+    item.level = progress.levels[item.id] ?? 0;
+    item.user_synonyms = progress.synonyms[item.id] || [];
+    if (progress.notes[item.id] !== undefined) item.notes = progress.notes[item.id];
+    if (progress.hooks[item.id] !== undefined) item.hook = progress.hooks[item.id];
+  });
 }
 
-// ── USER SYNONYMS ──
-function getUserSynonyms(id) {
-  return JSON.parse(localStorage.getItem('syn_'+id)||'[]');
-}
-function addUserSynonym(id, syn) {
-  const syns = getUserSynonyms(id);
-  if (!syns.includes(syn)) { syns.push(syn); localStorage.setItem('syn_'+id, JSON.stringify(syns)); }
+async function writeProgress(message = 'Update progress') {
+  // Build progress from current item state — only non-zero/non-empty
+  const levels = {}, synonyms = {}, notes = {}, hooks = {};
+  items.forEach(i => {
+    if (i.level > 0) levels[i.id] = i.level;
+    if (i.user_synonyms && i.user_synonyms.length) synonyms[i.id] = i.user_synonyms;
+    if (i.notes && i.notes !== (i._origNotes || '')) notes[i.id] = i.notes;
+    if (i.hook && i.hook !== (i._origHook || '')) hooks[i.id] = i.hook;
+  });
+
+  const newProgress = {
+    version: '1.0',
+    last_updated: new Date().toISOString(),
+    user: currentUser.id,
+    levels, synonyms, notes, hooks
+  };
+
+  showSync('Saving…', 'syncing');
+  try {
+    progressSha = await githubWrite(`progress_${currentUser.id}.json`, newProgress, progressSha, message);
+    progress = newProgress;
+    showSync('Saved ✓', 'success');
+    setTimeout(() => showSync('', ''), 2000);
+  } catch(e) {
+    showSync(`Save failed: ${e.message}`, 'error');
+  }
 }
 
-// ── PROMPTS ──
-function buildPrompts(item) {
-  const prompts = [];
-  if (item.readings) {
-    // Kanji item
-    const r = item.readings;
-    const pool = [];
-    if (r.on && r.on.length) pool.push({type:'on', label:"On'yomi", mode:'reading'});
-    if (r.kun && r.kun.length) pool.push({type:'kun', label:"Kun'yomi", mode:'reading'});
-    const meanings = getMeanings(item);
-    if (meanings.length) pool.push({type:'meaning', label:'Meaning', mode:'meaning'});
-    return shuffle(pool);
+function showSync(msg, state) {
+  const el = document.getElementById('sync-bar');
+  el.textContent = msg;
+  el.className = 'sync-bar' + (msg ? ' show' : '') + (state ? ' ' + state : '');
+}
+
+// ── LOGIN ──
+let users = [];
+let selectedUser = null;
+let pinBuffer = '';
+
+async function loadUsers() {
+  try {
+    const result = await githubFetch('users.json');
+    users = result.data.users;
+    renderUserList();
+  } catch(e) {
+    // Fallback hardcoded users if GitHub unavailable
+    users = [{ id:'hayden', name:'Hayden', pin_hash:'50f72405baf11b0f73f6a3db7152798bf2f958384e806befdf4ee6ddfdd9e198', progress_file:'progress_hayden.json' }];
+    renderUserList();
+  }
+}
+
+function renderUserList() {
+  const list = document.getElementById('user-list');
+  list.innerHTML = users.map(u => `
+    <div class="user-btn" onclick="selectUser('${u.id}')">
+      <div class="user-avatar">${u.name[0]}</div>
+      <div><div class="user-name">${u.name}</div><div class="user-sub">Tap to sign in</div></div>
+    </div>`).join('');
+}
+
+function selectUser(id) {
+  selectedUser = users.find(u => u.id === id);
+  pinBuffer = '';
+  document.getElementById('user-select').style.display = 'none';
+  document.getElementById('pin-entry').classList.add('show');
+  document.getElementById('pin-title').textContent = `Hi ${selectedUser.name}! Enter your PIN`;
+  renderPinPad();
+}
+
+function renderPinPad() {
+  const dots = document.getElementById('pin-dots');
+  dots.innerHTML = [0,1,2,3].map(i => `<div class="pin-dot${i < pinBuffer.length ? ' filled' : ''}" id="dot-${i}"></div>`).join('');
+  const pad = document.getElementById('pin-pad');
+  pad.innerHTML = [1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k => `
+    <div class="pin-key ${k===''?'':''}` + `" onclick="${k==='⌫'?'pinBackspace()':k===''?'':``pinPress(${k})``}">${k}</div>`
+  ).join('');
+}
+
+function pinPress(digit) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += digit;
+  document.getElementById('pin-error').textContent = '';
+  // Update dots
+  for(let i=0;i<4;i++) {
+    const dot = document.getElementById(`dot-${i}`);
+    if(dot) dot.classList.toggle('filled', i < pinBuffer.length);
+  }
+  if (pinBuffer.length === 4) setTimeout(checkPin, 150);
+}
+
+function pinBackspace() {
+  pinBuffer = pinBuffer.slice(0,-1);
+  for(let i=0;i<4;i++) {
+    const dot = document.getElementById(`dot-${i}`);
+    if(dot) dot.classList.toggle('filled', i < pinBuffer.length);
+  }
+}
+
+async function checkPin() {
+  const hash = await sha256(pinBuffer);
+  if (hash === selectedUser.pin_hash) {
+    currentUser = selectedUser;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main-app').style.display = 'block';
+    document.getElementById('nav-user').textContent = `— ${currentUser.name}`;
+    await loadApp();
   } else {
-    // Proper noun or given name or vocab
-    prompts.push({type:'reading', label:'Reading', mode:'reading'});
-    const meanings = getMeanings(item);
-    if (item.category === 'Kanji' || item.category === 'Vocab') {
-      if (meanings.length) prompts.push({type:'meaning', label:'Meaning', mode:'meaning'});
+    pinBuffer = '';
+    document.getElementById('pin-error').textContent = 'Incorrect PIN, try again';
+    for(let i=0;i<4;i++) {
+      const dot = document.getElementById(`dot-${i}`);
+      if(dot) dot.classList.remove('filled');
     }
-    return prompts;
   }
 }
 
-function getAcceptedReadings(item, promptType) {
-  if (item.readings) {
-    if (promptType === 'on') return item.readings.on || [];
-    if (promptType === 'kun') return item.readings.kun || [];
-  }
-  const r = item.reading || '';
-  return r.split('/').map(s=>s.trim()).filter(Boolean);
+function backToUsers() {
+  selectedUser = null;
+  pinBuffer = '';
+  document.getElementById('pin-entry').classList.remove('show');
+  document.getElementById('user-select').style.display = 'block';
+  document.getElementById('pin-error').textContent = '';
 }
 
-// ── WANAKANA ──
-function attachWanakana(el) {
-  if (window.wanakana) {
-    try { wanakana.unbind(el); } catch(e) {}
-    wanakana.bind(el, {IMEMode:true});
-  }
+function signOut() {
+  currentUser = null;
+  items = [];
+  progress = { levels:{}, synonyms:{}, notes:{}, hooks:{} };
+  document.getElementById('main-app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  pinBuffer = '';
+  document.getElementById('pin-entry').classList.remove('show');
+  document.getElementById('user-select').style.display = 'block';
 }
-function detachWanakana(el) {
-  if (window.wanakana) {
-    try { wanakana.unbind(el); } catch(e) {}
-  }
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
 
 // ── THEME ──
@@ -602,23 +725,15 @@ function toggleThemeDropdown() { document.getElementById('theme-dropdown').class
 function closeThemeDropdown() { document.getElementById('theme-dropdown').classList.remove('open'); }
 document.addEventListener('click', e=>{ if(!e.target.closest('.theme-picker')) closeThemeDropdown(); });
 
-// ── LOAD DATA ──
-async function loadData() {
+// ── LOAD APP ──
+async function loadApp() {
   loadPrefs();
   try {
-    const r = await fetch('data.json');
-    const data = await r.json();
-    const saved = JSON.parse(localStorage.getItem('jisho_progress')||'{}');
-    items = data.items.map(item=>({...item, level:saved[item.id]!==undefined?saved[item.id]:item.level}));
+    await loadFromGitHub();
     init();
   } catch(e) {
-    document.body.innerHTML='<div style="padding:40px;text-align:center;color:#e66"><h2>Could not load data.json</h2><p style="margin-top:10px;color:#999">Make sure data.json is in the same folder as index.html</p></div>';
+    console.error('Load failed:', e);
   }
-}
-function saveProgress() {
-  const prog={};
-  items.forEach(i=>prog[i.id]=i.level);
-  localStorage.setItem('jisho_progress',JSON.stringify(prog));
 }
 
 // ── INIT ──
@@ -633,14 +748,19 @@ function populateFilters() {
   const cats=[...new Set(items.map(i=>i.category))].sort();
   ['filter-cat','qconfig-cat'].forEach(id=>{
     const sel=document.getElementById(id);
-    cats.forEach(c=>{
-      const opt=document.createElement('option');
-      opt.value=c;opt.textContent=c;sel.appendChild(opt);
-    });
+    sel.innerHTML='<option value="">All Categories</option>';
+    cats.forEach(c=>{const opt=document.createElement('option');opt.value=c;opt.textContent=c;sel.appendChild(opt);});
   });
 }
+
 function getSubcats(cat) {
+  if (cat==='Vocab') return Object.keys(VOCAB_GROUPS);
   return [...new Set(items.filter(i=>!cat||i.category===cat).map(i=>i.subcategory))].sort();
+}
+function subcatMatches(item, subcat) {
+  if (!subcat) return true;
+  if (item.category==='Vocab' && VOCAB_GROUPS[subcat]) return VOCAB_GROUPS[subcat].includes(item.subcategory);
+  return item.subcategory===subcat;
 }
 function updateSubcatFilter() {
   const cat=document.getElementById('filter-cat').value;
@@ -675,14 +795,12 @@ function renderDashboard() {
   document.getElementById('stats-grid').innerHTML=`
     <div class="stat-card"><div class="num" style="color:var(--accent)">${total}</div><div class="lbl">Total Items</div></div>
     <div class="stat-card"><div class="num" style="color:var(--lvl-enlightened)">${unlocked}</div><div class="lbl">Unlocked</div></div>
-    <div class="stat-card"><div class="num" style="color:var(--lvl-master)">${enlightened}</div><div class="lbl">Enlightened</div></div>
-  `;
+    <div class="stat-card"><div class="num" style="color:var(--lvl-master)">${enlightened}</div><div class="lbl">Enlightened</div></div>`;
   const counts=[0,1,2,3,4,5].map(l=>items.filter(i=>i.level===l).length);
   const maxCount=Math.max(...counts,1);
   document.getElementById('level-bars').innerHTML=counts.map((c,l)=>`
     <div class="level-bar-row">
-      <div class="level-bar-label"><div class="level-dot" style="background:${LEVEL_COLORS[l]}"></div>
-      <span style="color:${LEVEL_COLORS[l]}">${LEVEL_NAMES[l]}</span></div>
+      <div class="level-bar-label"><div class="level-dot" style="background:${LEVEL_COLORS[l]}"></div><span style="color:${LEVEL_COLORS[l]}">${LEVEL_NAMES[l]}</span></div>
       <div class="level-bar-track"><div class="level-bar-fill" style="width:${(c/maxCount)*100}%;background:${LEVEL_COLORS[l]}"></div></div>
       <div class="level-bar-count">${c}</div>
     </div>`).join('');
@@ -691,19 +809,22 @@ function renderDashboard() {
 // ── DICTIONARY ──
 function getDisplayReading(item) {
   if (item.readings) {
-    const r = item.readings;
-    const parts = [];
-    if (r.on && r.on.length) parts.push('音: ' + r.on.join('、'));
-    if (r.kun && r.kun.length) parts.push('訓: ' + r.kun.join('、'));
-    if (r.name && r.name.length) parts.push('名: ' + r.name.join('、'));
+    const r=item.readings, parts=[];
+    if(r.on&&r.on.length) parts.push('音: '+r.on.join('、'));
+    if(r.kun&&r.kun.length) parts.push('訓: '+r.kun.join('、'));
+    if(r.name&&r.name.length) parts.push('名: '+r.name.join('、'));
     return parts.join(' / ');
   }
-  return item.reading || '';
+  return item.reading||'';
 }
-
 function getDisplayMeaning(item) {
-  if (item.meanings && Array.isArray(item.meanings)) return item.meanings.join(', ');
-  return item.meaning || item.notes || '';
+  if (item.meanings&&Array.isArray(item.meanings)) return item.meanings.join(', ');
+  return item.meaning||item.notes||'';
+}
+function getMeanings(item) {
+  if (item.meanings&&Array.isArray(item.meanings)) return item.meanings;
+  if (item.meaning) return [item.meaning];
+  return [];
 }
 
 function renderDict() {
@@ -713,99 +834,118 @@ function renderDict() {
   const level=document.getElementById('filter-level').value;
   let filtered=items.filter(i=>{
     if(cat&&i.category!==cat) return false;
-    if(subcat&&i.subcategory!==subcat) return false;
+    if(subcat&&!subcatMatches(i,subcat)) return false;
     if(level!==''&&i.level!==parseInt(level)) return false;
-    if(q) return i.kanji.includes(q)||
-      (i.reading||'').includes(q)||
-      (i.readings ? Object.values(i.readings).flat().some(r=>r.includes(q)) : false)||
-      (i.romaji||'').toLowerCase().includes(q)||
-      getDisplayMeaning(i).toLowerCase().includes(q);
+    if(q) return i.kanji.includes(q)||(i.reading||'').includes(q)||
+      (i.readings?Object.values(i.readings).flat().some(r=>r.includes(q)):false)||
+      (i.romaji||'').toLowerCase().includes(q)||getDisplayMeaning(i).toLowerCase().includes(q);
     return true;
   });
   document.getElementById('dict-count').textContent=`${filtered.length} item${filtered.length!==1?'s':''}`;
-  if(filtered.length===0){
-    document.getElementById('dict-list').innerHTML=`<div class="empty-state"><div class="es-icon">🔍</div><div>No items found</div></div>`;
-    return;
-  }
-  document.getElementById('dict-list').innerHTML=filtered.map(item=>{
-    const genderBadge = item.gender ? `<span class="badge gender-badge-${item.gender}">${item.gender==='Male'?'♂':item.gender==='Female'?'♀':'⚥'} ${item.gender}</span>` : '';
+  if(!filtered.length){document.getElementById('dict-list').innerHTML=`<div class="empty-state"><div class="es-icon">🔍</div><div>No items found</div></div>`;return;}
+  document.getElementById('dict-list').innerHTML=filtered.slice(0,200).map(item=>{
+    const genderBadge=item.gender?`<span class="badge gender-badge-${item.gender}">${item.gender==='Male'?'♂':item.gender==='Female'?'♀':'⚥'} ${item.gender}</span>`:'';
     return `<div class="dict-item" onclick="openModal('${item.id}')">
       <div class="kanji">${item.kanji}</div>
       <div class="info">
         <div class="reading">${getDisplayReading(item)}</div>
-        <div class="meaning">${getDisplayMeaning(item)}</div>
-        <div class="badge-row">
-          <span class="badge level-badge-${item.level}">${LEVEL_NAMES[item.level]}</span>
-          <span class="badge cat-badge">${item.category}</span>
-          <span class="badge cat-badge">${item.subcategory}</span>
-          ${genderBadge}
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+        <div class="meaning">${getDisplayMeaning(item).slice(0,60)}</div>
+        <div class="badge-row"><span class="badge level-badge-${item.level}">${LEVEL_NAMES[item.level]}</span><span class="badge cat-badge">${item.category}</span><span class="badge cat-badge">${item.subcategory}</span>${genderBadge}</div>
+      </div></div>`;
+  }).join('')+(filtered.length>200?`<div class="empty-state" style="padding:16px">Showing 200 of ${filtered.length} — refine your search</div>`:'');
 }
 
 // ── MODAL ──
 function openModal(id) {
-  currentModalId = id;
+  currentModalId=id;
   const item=items.find(i=>i.id===id);
   if(!item) return;
   document.getElementById('modal-kanji').textContent=item.kanji;
 
-  // Readings display
-  if (item.readings) {
-    document.getElementById('modal-reading').style.display='none';
+  // Reading display
+  const readingWrap=document.getElementById('modal-reading-wrap');
+  if(item.readings){
     document.getElementById('modal-readings-section').style.display='block';
-    const r = item.readings;
-    document.getElementById('modal-readings-grid').innerHTML = [
-      r.on&&r.on.length ? `<div class="modal-reading-block"><div class="rb-label">On'yomi</div><div class="rb-value">${r.on.join('、')}</div></div>` : '',
-      r.kun&&r.kun.length ? `<div class="modal-reading-block"><div class="rb-label">Kun'yomi</div><div class="rb-value">${r.kun.join('、')}</div></div>` : '',
-      r.name&&r.name.length ? `<div class="modal-reading-block"><div class="rb-label">Name</div><div class="rb-value">${r.name.join('、')}</div></div>` : '',
+    const r=item.readings;
+    document.getElementById('modal-readings-grid').innerHTML=[
+      r.on&&r.on.length?`<div class="modal-reading-block"><div class="rb-label">On'yomi</div><div class="rb-value">${r.on.join('、')}</div></div>`:'',
+      r.kun&&r.kun.length?`<div class="modal-reading-block"><div class="rb-label">Kun'yomi</div><div class="rb-value">${r.kun.join('、')}</div></div>`:'',
+      r.name&&r.name.length?`<div class="modal-reading-block"><div class="rb-label">Name</div><div class="rb-value">${r.name.join('、')}</div></div>`:'',
     ].join('');
+    readingWrap.innerHTML='';
   } else {
-    document.getElementById('modal-reading').style.display='block';
-    document.getElementById('modal-reading').textContent=item.reading||'';
     document.getElementById('modal-readings-section').style.display='none';
-  }
-
-  if (item.romaji) {
-    document.getElementById('modal-romaji').textContent=item.romaji;
-    document.getElementById('modal-romaji').style.display='block';
-  } else {
-    document.getElementById('modal-romaji').style.display='none';
+    readingWrap.innerHTML=`<div style="font-size:1.1rem;color:var(--text2);margin-bottom:3px;">${item.reading||''}</div>${item.romaji?`<div style="font-size:0.875rem;color:var(--text3);margin-bottom:10px;">${item.romaji}</div>`:''}`;
   }
 
   document.getElementById('modal-meaning').textContent=getDisplayMeaning(item);
   document.getElementById('modal-category').textContent=`${item.category} › ${item.subcategory}${item.gender?' › '+item.gender:''}`;
 
-  const notesEl=document.getElementById('modal-notes-wrap');
-  if(item.notes){notesEl.textContent=item.notes;notesEl.style.display='block';}
-  else notesEl.style.display='none';
+  // Notes (editable)
+  document.getElementById('modal-notes-display').textContent=item.notes||'—';
+  document.getElementById('modal-notes-input').value=item.notes||'';
+  document.getElementById('modal-notes-edit').style.display='none';
 
-  const hookEl=document.getElementById('modal-hook-wrap');
-  if(item.hook){hookEl.textContent='💡 '+item.hook;hookEl.style.display='block';}
-  else hookEl.style.display='none';
+  // Hook (editable)
+  document.getElementById('modal-hook-display').textContent=item.hook?'💡 '+item.hook:'—';
+  document.getElementById('modal-hook-input').value=item.hook||'';
+  document.getElementById('modal-hook-edit').style.display='none';
 
-  // User synonyms
-  const syns = getUserSynonyms(id);
-  const synWrap = document.getElementById('modal-synonyms-wrap');
-  const synList = document.getElementById('modal-synonyms-list');
-  if(syns.length){synList.textContent=syns.join(', ');synWrap.style.display='block';}
-  else synWrap.style.display='none';
-
-  document.getElementById('modal-level').innerHTML=`<span style="color:${LEVEL_COLORS[item.level]};font-weight:700">${item.level} — ${LEVEL_NAMES[item.level]}</span>`;
-
-  // Show add synonym button for items with meanings
-  const synBtn = document.getElementById('modal-add-syn-btn');
-  if(getMeanings(item).length > 0) synBtn.style.display='block';
-  else synBtn.style.display='none';
-
+  // Synonyms
+  renderModalSynonyms(item);
   document.getElementById('modal-syn-row').style.display='none';
+
+  // Level selector
+  const levelSel=document.getElementById('modal-level-selector');
+  levelSel.innerHTML=LEVEL_NAMES.map((n,l)=>`
+    <div class="level-opt${item.level===l?' active':''}" 
+         style="${item.level===l?`background:${LEVEL_COLORS[l]}22;border-color:${LEVEL_COLORS[l]};color:${LEVEL_COLORS[l]};`:''}"
+         onclick="setItemLevel(${l})">${l} — ${n}</div>`).join('');
+
   document.getElementById('modal-overlay').classList.add('open');
 }
+
+function renderModalSynonyms(item) {
+  const syns=getUserSynonyms(item.id);
+  const list=document.getElementById('modal-synonym-list');
+  list.innerHTML=syns.map(s=>`<div class="synonym-tag">${s}<span class="synonym-remove" onclick="removeUserSynonym('${item.id}','${s}')">✕</span></div>`).join('');
+  document.getElementById('modal-add-syn-btn').style.display=getMeanings(item).length?'block':'none';
+}
+
+function toggleEdit(field) {
+  const editEl=document.getElementById(`modal-${field}-edit`);
+  const isOpen=editEl.style.display!=='none';
+  editEl.style.display=isOpen?'none':'block';
+  if(!isOpen) document.getElementById(`modal-${field}-input`).focus();
+}
+function cancelEdit(field) { document.getElementById(`modal-${field}-edit`).style.display='none'; }
+function saveEdit(field) {
+  const item=items.find(i=>i.id===currentModalId);
+  if(!item) return;
+  const val=document.getElementById(`modal-${field}-input`).value.trim();
+  item[field]=val;
+  document.getElementById(`modal-${field}-display`).textContent=field==='hook'?(val?'💡 '+val:'—'):val||'—';
+  document.getElementById(`modal-${field}-edit`).style.display='none';
+  writeProgress(`Edit ${field} for ${item.kanji}`);
+}
+function setItemLevel(level) {
+  const item=items.find(i=>i.id===currentModalId);
+  if(!item) return;
+  item.level=level;
+  // Re-render level selector
+  const levelSel=document.getElementById('modal-level-selector');
+  levelSel.innerHTML=LEVEL_NAMES.map((n,l)=>`
+    <div class="level-opt${item.level===l?' active':''}" 
+         style="${item.level===l?`background:${LEVEL_COLORS[l]}22;border-color:${LEVEL_COLORS[l]};color:${LEVEL_COLORS[l]};`:''}"
+         onclick="setItemLevel(${l})">${l} — ${n}</div>`).join('');
+  renderDashboard();
+  writeProgress(`Set level ${level} for ${item.kanji}`);
+}
+
 function closeModal(e){if(e.target===document.getElementById('modal-overlay'))closeModalBtn();}
 function closeModalBtn(){document.getElementById('modal-overlay').classList.remove('open');currentModalId=null;}
-function toggleSynonymInput(){
+
+function toggleSynInput(){
   const row=document.getElementById('modal-syn-row');
   row.style.display=row.style.display==='none'?'flex':'none';
   if(row.style.display==='flex') document.getElementById('modal-syn-input').focus();
@@ -813,8 +953,81 @@ function toggleSynonymInput(){
 function saveSynonym(){
   const input=document.getElementById('modal-syn-input');
   const val=input.value.trim();
-  if(val&&currentModalId){addUserSynonym(currentModalId,val);input.value='';openModal(currentModalId);}
+  if(val&&currentModalId){
+    addUserSynonym(currentModalId,val);
+    input.value='';
+    document.getElementById('modal-syn-row').style.display='none';
+    const item=items.find(i=>i.id===currentModalId);
+    if(item) renderModalSynonyms(item);
+    writeProgress(`Add synonym for ${items.find(i=>i.id===currentModalId)?.kanji}`);
+  }
 }
+
+// ── USER SYNONYMS ──
+function getUserSynonyms(id) {
+  const item=items.find(i=>i.id===id);
+  return (item&&item.user_synonyms)?[...item.user_synonyms]:[];
+}
+function addUserSynonym(id, syn) {
+  const item=items.find(i=>i.id===id);
+  if(item){
+    if(!item.user_synonyms) item.user_synonyms=[];
+    if(!item.user_synonyms.includes(syn)) item.user_synonyms.push(syn);
+  }
+}
+function removeUserSynonym(id, syn) {
+  const item=items.find(i=>i.id===id);
+  if(item&&item.user_synonyms){
+    item.user_synonyms=item.user_synonyms.filter(s=>s!==syn);
+    renderModalSynonyms(item);
+    writeProgress(`Remove synonym for ${item.kanji}`);
+  }
+}
+
+// ── LEVENSHTEIN ──
+function levenshtein(a,b){
+  const m=a.length,n=b.length;
+  const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));
+  for(let i=1;i<=m;i++) for(let j=1;j<=n;j++)
+    dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+  return dp[m][n];
+}
+function normMeaning(s){return s.toLowerCase().trim().replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ');}
+function checkMeaning(input,item){
+  const inp=normMeaning(input);
+  const all=[...getMeanings(item),...getUserSynonyms(item.id)].map(normMeaning);
+  let best=Infinity;
+  for(const m of all){const d=levenshtein(inp,m);if(d===0)return{result:'correct'};best=Math.min(best,d);}
+  if(best<=2)return{result:'close'};
+  return{result:'wrong'};
+}
+
+// ── PROMPTS ──
+function buildPrompts(item){
+  if(item.readings){
+    const r=item.readings,pool=[];
+    if(r.on&&r.on.length) pool.push({type:'on',label:"On'yomi",mode:'reading'});
+    if(r.kun&&r.kun.length) pool.push({type:'kun',label:"Kun'yomi",mode:'reading'});
+    const meanings=getMeanings(item);
+    if(meanings.length) pool.push({type:'meaning',label:'Meaning',mode:'meaning'});
+    return pool.length?shuffle(pool):[{type:'reading',label:'Reading',mode:'reading'}];
+  } else {
+    const prompts=[{type:'reading',label:'Reading',mode:'reading'}];
+    if(item.category==='Vocab'&&getMeanings(item).length) prompts.push({type:'meaning',label:'Meaning',mode:'meaning'});
+    return prompts;
+  }
+}
+function getAcceptedReadings(item,promptType){
+  if(item.readings){
+    if(promptType==='on') return item.readings.on||[];
+    if(promptType==='kun') return item.readings.kun||[];
+  }
+  return (item.reading||'').split('/').map(s=>s.trim()).filter(Boolean);
+}
+
+// ── WANAKANA ──
+function attachWanakana(el){if(window.wanakana){try{wanakana.unbind(el);}catch(e){}wanakana.bind(el,{IMEMode:true});}}
+function detachWanakana(el){if(window.wanakana){try{wanakana.unbind(el);}catch(e){}}}
 
 // ── QUIZ CONFIG ──
 function setQuizMode(mode){
@@ -829,7 +1042,7 @@ function getQuizPool(){
   const minLevel=parseInt(document.getElementById('qconfig-minlevel')?.value||'2');
   return items.filter(i=>{
     if(cat&&i.category!==cat) return false;
-    if(subcat&&i.subcategory!==subcat) return false;
+    if(subcat&&!subcatMatches(i,subcat)) return false;
     if(quizMode==='new') return i.level===0;
     if(quizMode==='review') return i.level>=minLevel;
     return i.level>0;
@@ -838,7 +1051,7 @@ function getQuizPool(){
 function updateQuizPoolInfo(){
   const pool=getQuizPool();
   const el=document.getElementById('quiz-pool-info');
-  if(el) el.textContent=`${pool.length} item${pool.length!==1?'s':''} available in pool`;
+  if(el) el.textContent=`${pool.length} item${pool.length!==1?'s':''} available`;
   const btn=document.getElementById('start-btn');
   if(btn) btn.disabled=pool.length===0;
 }
@@ -850,27 +1063,13 @@ function startQuickQuiz(mode){
 }
 
 // ── QUIZ ENGINE ──
-function shuffle(arr){
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
-  return a;
-}
-
-function normaliseReading(str){
-  return str.toLowerCase()
-    .replace(/[ōôoo]/g,'o').replace(/[ūû]/g,'u')
-    .replace(/[āâ]/g,'a').replace(/[īî]/g,'i')
-    .replace(/\s+/g,'').replace(/[-・]/g,'');
-}
-
-function checkReading(input,accepted){
-  const norm=normaliseReading(input);
-  return accepted.some(r=>normaliseReading(r)===norm);
-}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function normaliseReading(str){return str.toLowerCase().replace(/[ōôoo]/g,'o').replace(/[ūû]/g,'u').replace(/[āâ]/g,'a').replace(/[īî]/g,'i').replace(/\s+/g,'').replace(/[-・]/g,'');}
+function checkReading(input,accepted){const norm=normaliseReading(input);return accepted.some(r=>normaliseReading(r)===norm);}
 
 function startQuiz(){
   const pool=getQuizPool();
-  if(pool.length===0) return;
+  if(!pool.length) return;
   const count=Math.min(parseInt(document.getElementById('qconfig-count').value)||10,pool.length);
   quizQueue=shuffle([...pool]).slice(0,count);
   quizIndex=0;quizScore=0;quizResults=[];
@@ -879,68 +1078,42 @@ function startQuiz(){
   document.getElementById('quiz-results').classList.remove('show');
   startItem();
 }
-
 function startItem(){
   currentItem=quizQueue[quizIndex];
   currentPrompts=buildPrompts(currentItem);
-  currentPromptIndex=0;
-  itemAnswered=false;
-  itemCorrect=true;
-  updateProgress();
-  showPrompt();
+  currentPromptIndex=0;itemAnswered=false;itemCorrect=true;
+  updateProgress();showPrompt();
 }
-
 function updateProgress(){
   const pct=(quizIndex/quizQueue.length)*100;
   document.getElementById('progress-fill').style.width=pct+'%';
   document.getElementById('progress-text').textContent=`${quizIndex+1} / ${quizQueue.length}`;
 }
-
 function showPrompt(){
   const prompt=currentPrompts[currentPromptIndex];
   const item=currentItem;
-
-  // Card
   const labelEl=document.getElementById('quiz-prompt-label');
   labelEl.textContent=prompt.label;
   labelEl.className='quiz-prompt-label '+(prompt.mode==='reading'?'reading':'meaning');
-
   document.getElementById('quiz-prompt').textContent=item.kanji;
-  document.getElementById('quiz-sub').textContent='';
-
-  // Hint
   document.getElementById('quiz-hint').textContent=`${item.category} › ${item.subcategory}`;
-
-  // Gender hint for given names
   const genderEl=document.getElementById('quiz-gender-hint');
   if(item.gender){
     const icon=item.gender==='Male'?'♂':item.gender==='Female'?'♀':'⚥';
     const color=item.gender==='Male'?'#2980b9':item.gender==='Female'?'#e8799a':'#27ae60';
     genderEl.textContent=`${icon} ${item.gender}`;
     genderEl.style.cssText=`color:${color};background:${color}22;border:1px solid ${color}44;display:inline-block;`;
-  } else {
-    genderEl.textContent='';genderEl.style.display='none';
-    if(item.gender===undefined) genderEl.style.display='';
-  }
-
-  // Step indicator
-  const steps=document.getElementById('quiz-step-indicator');
-  steps.innerHTML=currentPrompts.map((_,i)=>`<div class="step-dot${i<currentPromptIndex?' done':i===currentPromptIndex?' active':''}"></div>`).join('');
-
-  // Input
+  } else { genderEl.textContent=''; genderEl.style.display='none'; if(item.gender===undefined) genderEl.style.display=''; }
+  document.getElementById('quiz-step-indicator').innerHTML=currentPrompts.map((_,i)=>`<div class="step-dot${i<currentPromptIndex?' done':i===currentPromptIndex?' active':''}"></div>`).join('');
   const input=document.getElementById('quiz-input');
   input.value='';
   input.className='quiz-input '+(prompt.mode==='reading'?'reading-mode':'meaning-mode');
   input.placeholder=prompt.mode==='reading'?'Type the reading…':'Type the meaning…';
   input.disabled=false;
-
-  if(prompt.mode==='reading') attachWanakana(input);
-  else detachWanakana(input);
-
+  if(prompt.mode==='reading') attachWanakana(input); else detachWanakana(input);
   document.getElementById('quiz-feedback').classList.remove('show');
   document.getElementById('btn-submit').style.display='';
   document.getElementById('btn-next').style.display='none';
-
   setTimeout(()=>input.focus(),50);
 }
 
@@ -949,10 +1122,7 @@ function submitAnswer(){
   const prompt=currentPrompts[currentPromptIndex];
   const input=document.getElementById('quiz-input');
   const userAns=input.value.trim();
-  let correct=false;
-  let closeMatch=false;
-  let correctAnswer='';
-
+  let correct=false,closeMatch=false,correctAnswer='';
   if(prompt.mode==='reading'){
     const accepted=getAcceptedReadings(currentItem,prompt.type);
     correct=checkReading(userAns,accepted);
@@ -960,81 +1130,49 @@ function submitAnswer(){
     input.className='quiz-input '+(correct?'correct':'incorrect');
   } else {
     const result=checkMeaning(userAns,currentItem);
-    if(result.result==='correct'){correct=true;}
-    else if(result.result==='close'){closeMatch=true;}
+    if(result.result==='correct') correct=true;
+    else if(result.result==='close') closeMatch=true;
     correctAnswer=getMeanings(currentItem).join(', ');
     if(correct) input.className='quiz-input correct';
-    else if(closeMatch){
-      input.className='quiz-input shake';
-      setTimeout(()=>{input.className='quiz-input meaning-mode';},500);
-    } else input.className='quiz-input incorrect';
+    else if(closeMatch){input.className='quiz-input shake';setTimeout(()=>{input.className='quiz-input meaning-mode';},500);}
+    else input.className='quiz-input incorrect';
   }
-
   if(closeMatch){
-    // Shake and stay on same prompt
-    showFeedback('close', `Close! Did you mean: ${correctAnswer}`, '', '');
-    document.getElementById('btn-submit').style.display='';
-    document.getElementById('btn-next').style.display='none';
-    input.value='';
-    setTimeout(()=>input.focus(),100);
+    showFeedbackMsg('close',`Close! Did you mean: ${correctAnswer}`);
+    input.value='';setTimeout(()=>input.focus(),100);
     return;
   }
-
   if(!correct) itemCorrect=false;
   input.disabled=true;
-
-  // Show feedback
   const fb=document.getElementById('quiz-feedback');
   fb.classList.add('show');
   const resultEl=document.getElementById('feedback-result');
-
-  if(correct){
-    resultEl.textContent='✅ Correct!';
-    resultEl.className='feedback-result correct';
-  } else {
-    resultEl.textContent='❌ Incorrect';
-    resultEl.className='feedback-result incorrect';
-    document.getElementById('feedback-answer').textContent=`Answer: ${correctAnswer}`;
-  }
-
-  if(correct) document.getElementById('feedback-answer').textContent='';
-
-  document.getElementById('feedback-notes').textContent=currentItem.notes||'';
+  resultEl.textContent=correct?'✅ Correct!':'❌ Incorrect';
+  resultEl.className='feedback-result '+(correct?'correct':'incorrect');
+  document.getElementById('feedback-answer').textContent=correct?'':`Answer: ${correctAnswer}`;
+  document.getElementById('feedback-notes').textContent=currentItem.notes&&!currentItem.notes.startsWith('WaniKani')?currentItem.notes:'';
   document.getElementById('feedback-hook').textContent=currentItem.hook?'💡 '+currentItem.hook:'';
-
-  // Synonym add option for meaning prompts
   const synEl=document.getElementById('feedback-synonyms');
-  if(prompt.mode==='meaning' && !correct){
-    synEl.innerHTML=`<span class="add-syn-inline" onclick="showInlineSyn()">+ Add "${userAns}" as synonym</span>
-    <div class="syn-inline-row" id="syn-inline-row" style="display:none">
-      <input class="syn-inline-input" id="syn-inline-input" value="${userAns}">
-      <button class="syn-inline-save" onclick="saveInlineSyn()">Save</button>
-    </div>`;
+  if(prompt.mode==='meaning'&&!correct){
+    synEl.innerHTML=`<span class="add-syn-inline" onclick="showInlineSyn('${userAns}')">+ Add "${userAns.slice(0,20)}" as synonym</span><div class="syn-inline-row" id="syn-inline-row" style="display:none"><input class="syn-inline-input" id="syn-inline-input" value="${userAns}"><button class="syn-inline-save" onclick="saveInlineSyn()">Save</button></div>`;
   } else synEl.innerHTML='';
-
   document.getElementById('btn-submit').style.display='none';
   document.getElementById('btn-next').style.display='';
-
-  // If wrong, skip remaining prompts
-  if(!correct){
-    currentPromptIndex=currentPrompts.length-1;
-  }
+  if(!correct) currentPromptIndex=currentPrompts.length-1;
 }
 
-function showFeedback(type, answer, notes, hook){
-  const fb=document.getElementById('quiz-feedback');
-  fb.classList.add('show');
+function showFeedbackMsg(type,msg){
+  const fb=document.getElementById('quiz-feedback');fb.classList.add('show');
   const resultEl=document.getElementById('feedback-result');
   if(type==='close'){resultEl.textContent='⚠️ Close!';resultEl.className='feedback-result close';}
-  document.getElementById('feedback-answer').textContent=answer;
-  document.getElementById('feedback-notes').textContent=notes;
-  document.getElementById('feedback-hook').textContent=hook;
+  document.getElementById('feedback-answer').textContent=msg;
+  document.getElementById('feedback-notes').textContent='';
+  document.getElementById('feedback-hook').textContent='';
+  document.getElementById('feedback-synonyms').innerHTML='';
+  document.getElementById('btn-submit').style.display='';
+  document.getElementById('btn-next').style.display='none';
 }
-
-function showInlineSyn(){
-  document.getElementById('syn-inline-row').style.display='flex';
-  document.getElementById('syn-inline-input').focus();
-}
+function showInlineSyn(val){document.getElementById('syn-inline-row').style.display='flex';document.getElementById('syn-inline-input').value=val;document.getElementById('syn-inline-input').focus();}
 function saveInlineSyn(){
   const val=document.getElementById('syn-inline-input').value.trim();
   if(val&&currentItem){addUserSynonym(currentItem.id,val);document.getElementById('feedback-synonyms').innerHTML='<span style="color:var(--correct);font-size:0.78rem">✅ Synonym saved</span>';}
@@ -1042,55 +1180,33 @@ function saveInlineSyn(){
 
 function nextPrompt(){
   currentPromptIndex++;
-  if(currentPromptIndex<currentPrompts.length&&itemCorrect){
-    showPrompt();
-  } else {
-    // Item complete
-    finaliseItem();
-  }
+  if(currentPromptIndex<currentPrompts.length&&itemCorrect) showPrompt();
+  else finaliseItem();
 }
-
 function finaliseItem(){
   itemAnswered=true;
   const prevLevel=currentItem.level;
-
-  if(quizMode==='new'){
-    if(itemCorrect) currentItem.level=2;
-  } else {
-    if(itemCorrect) currentItem.level=Math.min(5,currentItem.level+1);
-    else currentItem.level=Math.max(1,currentItem.level-1);
-  }
-  saveProgress();
-
+  if(quizMode==='new'){if(itemCorrect)currentItem.level=2;}
+  else{if(itemCorrect)currentItem.level=Math.min(5,currentItem.level+1);else currentItem.level=Math.max(1,currentItem.level-1);}
   quizResults.push({item:currentItem,correct:itemCorrect});
   if(itemCorrect) quizScore++;
-
   const levelChange=currentItem.level-prevLevel;
   const arrow=levelChange>0?'↑':levelChange<0?'↓':'→';
-  document.getElementById('feedback-level').innerHTML=
-    `<span style="color:${LEVEL_COLORS[currentItem.level]}">${arrow} ${LEVEL_NAMES[prevLevel]} → ${LEVEL_NAMES[currentItem.level]}</span>`;
-
+  document.getElementById('feedback-level').innerHTML=`<span style="color:${LEVEL_COLORS[currentItem.level]}">${arrow} ${LEVEL_NAMES[prevLevel]} → ${LEVEL_NAMES[currentItem.level]}</span>`;
   document.getElementById('btn-submit').style.display='none';
   document.getElementById('btn-next').innerHTML='Next →';
   document.getElementById('btn-next').onclick=advanceItem;
   document.getElementById('btn-next').style.display='';
 }
-
-function advanceItem(){
-  quizIndex++;
-  if(quizIndex>=quizQueue.length) showResults();
-  else startItem();
-}
-
+function advanceItem(){quizIndex++;if(quizIndex>=quizQueue.length)showResults();else startItem();}
 function handleQuizKey(e){
   if(e.key==='Enter'){
-    const submitBtn=document.getElementById('btn-submit');
     const nextBtn=document.getElementById('btn-next');
+    const submitBtn=document.getElementById('btn-submit');
     if(nextBtn.style.display!=='none'&&itemAnswered) nextBtn.click();
     else if(submitBtn.style.display!=='none') submitAnswer();
   }
 }
-
 function showResults(){
   document.getElementById('quiz-active').classList.remove('show');
   document.getElementById('quiz-results').classList.add('show');
@@ -1098,12 +1214,9 @@ function showResults(){
   document.getElementById('results-score').textContent=pct+'%';
   document.getElementById('results-fraction').textContent=`${quizScore} / ${quizQueue.length} correct`;
   document.getElementById('results-breakdown').innerHTML=quizResults.map(r=>`
-    <div class="results-item">
-      <div class="results-kanji">${r.item.kanji}</div>
-      <div class="results-reading">${getDisplayReading(r.item)}</div>
-      <div class="results-icon">${r.correct?'✅':'❌'}</div>
-    </div>`).join('');
+    <div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div class="results-icon">${r.correct?'✅':'❌'}</div></div>`).join('');
   renderDashboard();
+  writeProgress('Quiz session complete');
 }
 function restartQuiz(){document.getElementById('quiz-results').classList.remove('show');startQuiz();}
 function backToConfig(){
@@ -1117,9 +1230,12 @@ function endQuiz(){
   document.getElementById('quiz-config-panel').classList.remove('hide');
   updateQuizPoolInfo();
   renderDashboard();
+  writeProgress('Quiz ended early');
 }
 
-loadData();
+// ── START ──
+loadPrefs();
+loadUsers();
 </script>
 </body>
 </html>
