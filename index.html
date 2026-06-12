@@ -262,6 +262,13 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       <div class="pin-error" id="pin-error"></div>
       <button class="back-btn" onclick="backToUsers()">← Back</button>
     </div>
+    <!-- Token setup — shown only on first run -->
+    <div id="token-setup" style="display:none">
+      <div style="font-size:0.85rem;color:var(--text2);margin-bottom:12px;">Enter your GitHub Personal Access Token to enable sync。 This is stored only in your browser — never in the repo。</div>
+      <input id="token-input" type="password" class="synonym-input" style="width:100%;margin-bottom:10px;" placeholder="ghp_…">
+      <button class="start-btn" onclick="saveToken()">Save Token</button>
+      <div id="token-error" style="color:var(--incorrect);font-size:0.82rem;margin-top:8px;min-height:18px;"></div>
+    </div>
   </div>
 </div>
 
@@ -287,6 +294,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
           <div class="theme-option" id="theme-ai" onclick="setTheme('ai')"><div class="theme-swatch" style="background:linear-gradient(135deg,#080c14 50%,#c8a84a 50%)"></div>藍 Ai</div>
         </div>
       </div>
+      <button class="icon-btn" onclick="resetToken()" title="Reset GitHub token">🔑</button>
       <button class="icon-btn" onclick="signOut()" title="Sign out">🚪</button>
     </div>
   </nav>
@@ -468,7 +476,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 const GITHUB_OWNER = 'haydenmquaill';
 const GITHUB_REPO = 'japanese-study';
 const GITHUB_BRANCH = 'main';
-const GITHUB_TOKEN = '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';
+let GITHUB_TOKEN = localStorage.getItem('jisho_github_token') || '';
 
 // ── STATE ──
 let items = [];
@@ -591,6 +599,12 @@ let selectedUser = null;
 let pinBuffer = '';
 
 async function loadUsers() {
+  // If no token stored, show token setup first
+  if (!GITHUB_TOKEN) {
+    document.getElementById('user-select').style.display = 'none';
+    document.getElementById('token-setup').style.display = 'block';
+    return;
+  }
   try {
     const result = await githubFetch('users.json');
     users = result.data.users;
@@ -599,6 +613,29 @@ async function loadUsers() {
     // Fallback hardcoded users if GitHub unavailable
     users = [{ id:'hayden', name:'Hayden', pin_hash:'50f72405baf11b0f73f6a3db7152798bf2f958384e806befdf4ee6ddfdd9e198', progress_file:'progress_hayden.json' }];
     renderUserList();
+  }
+}
+
+async function saveToken() {
+  const val = document.getElementById('token-input').value.trim();
+  if (!val || !val.startsWith('ghp_')) {
+    document.getElementById('token-error').textContent = 'Token should start with ghp_';
+    return;
+  }
+  // Test the token before saving
+  document.getElementById('token-error').textContent = 'Testing token…';
+  try {
+    GITHUB_TOKEN = val;
+    const result = await githubFetch('users.json');
+    // Success — save and proceed
+    localStorage.setItem('jisho_github_token', val);
+    users = result.data.users;
+    document.getElementById('token-setup').style.display = 'none';
+    document.getElementById('user-select').style.display = 'block';
+    renderUserList();
+  } catch(e) {
+    GITHUB_TOKEN = '';
+    document.getElementById('token-error').textContent = 'Token invalid or repo not found。 Check and try again。';
   }
 }
 
@@ -622,11 +659,17 @@ function selectUser(id) {
 
 function renderPinPad() {
   const dots = document.getElementById('pin-dots');
-  dots.innerHTML = [0,1,2,3].map(i => `<div class="pin-dot${i < pinBuffer.length ? ' filled' : ''}" id="dot-${i}"></div>`).join('');
-  const pad = document.getElementById('pin-pad');
-  pad.innerHTML = [1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k => `
-    <div class="pin-key ${k===''?'':''}` + `" onclick="${k==='⌫'?'pinBackspace()':k===''?'':``pinPress(${k})``}">${k}</div>`
+  dots.innerHTML = [0,1,2,3].map(i =>
+    `<div class="pin-dot${i < pinBuffer.length ? ' filled' : ''}" id="dot-${i}"></div>`
   ).join('');
+  const pad = document.getElementById('pin-pad');
+  const keys = [1,2,3,4,5,6,7,8,9,'',0,'⌫'];
+  pad.innerHTML = keys.map(k => {
+    let action = '';
+    if (k === '⌫') action = 'pinBackspace()';
+    else if (k !== '') action = `pinPress(${k})`;
+    return `<div class="pin-key" ${action ? `onclick="${action}"` : ''}>${k}</div>`;
+  }).join('');
 }
 
 function pinPress(digit) {
@@ -684,6 +727,14 @@ function signOut() {
   pinBuffer = '';
   document.getElementById('pin-entry').classList.remove('show');
   document.getElementById('user-select').style.display = 'block';
+  document.getElementById('token-setup').style.display = 'none';
+}
+
+function resetToken() {
+  if (!confirm('Clear saved GitHub token? You will need to re-enter it on next load。')) return;
+  localStorage.removeItem('jisho_github_token');
+  GITHUB_TOKEN = '';
+  signOut();
 }
 
 async function sha256(str) {
