@@ -241,8 +241,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .feedback-result.incorrect{color:var(--incorrect);}
 .feedback-result.close{color:#e67e22;}
 .feedback-answer{font-size:0.875rem;color:var(--text2);}
-.feedback-notes{font-size:0.78rem;color:var(--text3);margin-top:5px;font-style:italic;}
-.feedback-hook{font-size:0.78rem;color:var(--accent);margin-top:4px;}
+.feedback-description{font-size:0.78rem;color:var(--text2);margin-top:5px;white-space:pre-line;line-height:1.5;}
+.feedback-notes{font-size:0.78rem;color:var(--accent);margin-top:4px;font-style:italic;}
 .feedback-level{font-size:0.78rem;margin-top:7px;}
 .feedback-synonyms{margin-top:8px;}
 .add-syn-inline{font-size:0.75rem;color:var(--accent);cursor:pointer;text-decoration:underline;}
@@ -433,8 +433,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
         <div class="enlightened-overlay" id="enlightened-overlay">✨</div>
         <div class="feedback-result" id="feedback-result"></div>
         <div class="feedback-answer" id="feedback-answer"></div>
+        <div class="feedback-description" id="feedback-description"></div>
         <div class="feedback-notes" id="feedback-notes"></div>
-        <div class="feedback-hook" id="feedback-hook"></div>
         <div class="feedback-level" id="feedback-level"></div>
         <div class="feedback-synonyms" id="feedback-synonyms"></div>
       </div>
@@ -536,20 +536,16 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
     </div>
     <div class="modal-field"><div class="modal-field-label">Meaning</div><div class="modal-field-value" id="modal-meaning"></div></div>
     <div class="modal-field"><div class="modal-field-label">Category</div><div class="modal-field-value" id="modal-category"></div></div>
-    <div class="modal-field">
-      <div class="modal-field-label">Notes <button class="modal-edit-btn" onclick="toggleEdit('notes')">✏️ Edit</button></div>
-      <div id="modal-notes-display" style="color:var(--text2);font-size:0.85rem;"></div>
-      <div id="modal-notes-edit" style="display:none">
-        <textarea class="modal-edit-input" id="modal-notes-input" rows="3" style="resize:vertical;"></textarea>
-        <div class="modal-edit-row"><button class="modal-save-btn" onclick="saveEdit('notes')">Save</button><button class="modal-cancel-btn" onclick="cancelEdit('notes')">Cancel</button></div>
-      </div>
+    <div class="modal-field" id="modal-desc-field">
+      <div class="modal-field-label">Description</div>
+      <div id="modal-description" style="color:var(--text2);font-size:0.85rem;white-space:pre-line;line-height:1.5;"></div>
     </div>
     <div class="modal-field">
-      <div class="modal-field-label">Memory Hook <button class="modal-edit-btn" onclick="toggleEdit('hook')">✏️ Edit</button></div>
-      <div id="modal-hook-display" style="color:var(--accent);font-size:0.85rem;"></div>
-      <div id="modal-hook-edit" style="display:none">
-        <input class="modal-edit-input" id="modal-hook-input" placeholder="Add a memory hook…">
-        <div class="modal-edit-row"><button class="modal-save-btn" onclick="saveEdit('hook')">Save</button><button class="modal-cancel-btn" onclick="cancelEdit('hook')">Cancel</button></div>
+      <div class="modal-field-label">Notes <button class="modal-edit-btn" onclick="toggleEdit('notes')">✏️ Edit</button></div>
+      <div id="modal-notes-display" style="color:var(--text2);font-size:0.85rem;white-space:pre-line;"></div>
+      <div id="modal-notes-edit" style="display:none">
+        <textarea class="modal-edit-input" id="modal-notes-input" rows="3" style="resize:vertical;" placeholder="Your personal notes, mnemonics, warnings…"></textarea>
+        <div class="modal-edit-row"><button class="modal-save-btn" onclick="saveEdit('notes')">Save</button><button class="modal-cancel-btn" onclick="cancelEdit('notes')">Cancel</button></div>
       </div>
     </div>
     <div class="modal-field">
@@ -715,7 +711,7 @@ async function loadUserProgress() {
   userSynonyms = {};
   synonymRows.forEach(r => { if (!userSynonyms[r.item_id]) userSynonyms[r.item_id] = []; userSynonyms[r.item_id].push(r.synonym); });
   userNotes = {};
-  noteRows.forEach(r => userNotes[r.item_id] = { note: r.note, hook: r.hook });
+  noteRows.forEach(r => userNotes[r.item_id] = { description: r.description, notes: r.notes });
   if (settingsRes.data) userSettings = settingsRes.data;
   recentItemIds = new Set((recentRes.data || []).map(r => r.item_id));
 }
@@ -725,8 +721,8 @@ function applyProgress() {
     item.level = userProgress[item.id] ?? 0;
     item.user_synonyms = userSynonyms[item.id] || [];
     if (userNotes[item.id]) {
-      if (userNotes[item.id].note !== null) item.notes = userNotes[item.id].note;
-      if (userNotes[item.id].hook !== null) item.hook = userNotes[item.id].hook;
+      if (userNotes[item.id].description !== null) item.description = userNotes[item.id].description;
+      if (userNotes[item.id].notes !== null) item.notes = userNotes[item.id].notes;
     }
   });
 }
@@ -773,10 +769,10 @@ async function updateStreak() {
   await sb.rpc('upsert_user_settings', { p_streak: streak, p_last_study_date: today });
 }
 
-async function saveNote(itemId, note, hook) {
-  const { error } = await sb.rpc('upsert_note', { p_item_id: itemId, p_note: note, p_hook: hook });
+async function saveNote(itemId, description, notes) {
+  const { error } = await sb.rpc('upsert_note', { p_item_id: itemId, p_description: description, p_notes: notes });
   if (error) showSync('Save failed', 'error');
-  else { userNotes[itemId] = { note, hook }; showSync('Saved ✓', 'success'); setTimeout(() => showSync('', ''), 1500); }
+  else { userNotes[itemId] = { description, notes }; showSync('Saved ✓', 'success'); setTimeout(() => showSync('', ''), 1500); }
 }
 
 async function addSynonymDB(itemId, synonym) {
@@ -1017,7 +1013,7 @@ function renderDict() {
     if (level !== '' && i.level !== parseInt(level)) return false;
     if (q) return i.kanji.includes(q)||(i.reading||'').includes(q)||
       (i.readings?Object.values(i.readings).flat().some(r=>r.includes(q)):false)||
-      (i.romaji||'').toLowerCase().includes(q)||getDisplayMeaning(i).toLowerCase().includes(q);
+      (i.romaji||'').toLowerCase().includes(q)||getDisplayMeaning(i).toLowerCase().includes(q)||(i.description||'').toLowerCase().includes(q);
     return true;
   });
   document.getElementById('dict-count').textContent = `${filtered.length} item${filtered.length!==1?'s':''}`;
@@ -1056,12 +1052,14 @@ function openModal(id) {
   }
   document.getElementById('modal-meaning').textContent = getDisplayMeaning(item);
   document.getElementById('modal-category').textContent = `${item.category} › ${item.subcategory}${item.gender?' › '+item.gender:''}`;
-  document.getElementById('modal-notes-display').textContent = item.notes || '—';
+  // Description (read-only)
+  const descEl = document.getElementById('modal-description');
+  descEl.textContent = item.description || '';
+  document.getElementById('modal-desc-field').style.display = item.description ? 'block' : 'none';
+  // Notes (editable)
+  document.getElementById('modal-notes-display').textContent = item.notes || '';
   document.getElementById('modal-notes-input').value = item.notes || '';
   document.getElementById('modal-notes-edit').style.display = 'none';
-  document.getElementById('modal-hook-display').textContent = item.hook ? '💡 '+item.hook : '—';
-  document.getElementById('modal-hook-input').value = item.hook || '';
-  document.getElementById('modal-hook-edit').style.display = 'none';
   renderModalSynonyms(item);
   document.getElementById('modal-syn-row').style.display = 'none';
   document.getElementById('modal-level-selector').innerHTML = LEVEL_NAMES.map((n,l) =>
@@ -1079,12 +1077,12 @@ function closeModalBtn() { document.getElementById('modal-overlay').classList.re
 function toggleEdit(f) { const el=document.getElementById(`modal-${f}-edit`); const open=el.style.display!=='none'; el.style.display=open?'none':'block'; if(!open) document.getElementById(`modal-${f}-input`).focus(); }
 function cancelEdit(f) { document.getElementById(`modal-${f}-edit`).style.display='none'; }
 async function saveEdit(f) {
-  const item=items.find(i=>i.id===currentModalId); if(!item) return;
-  const val=document.getElementById(`modal-${f}-input`).value.trim();
-  item[f]=val;
-  document.getElementById(`modal-${f}-display`).textContent=f==='hook'?(val?'💡 '+val:'—'):val||'—';
-  document.getElementById(`modal-${f}-edit`).style.display='none';
-  await saveNote(item.id, item.notes||'', item.hook||'');
+  const item = items.find(i => i.id === currentModalId); if (!item) return;
+  const val = document.getElementById(`modal-${f}-input`).value.trim();
+  item[f] = val;
+  document.getElementById(`modal-${f}-display`).textContent = val || '';
+  document.getElementById(`modal-${f}-edit`).style.display = 'none';
+  await saveNote(item.id, item.description || '', item.notes || '');
 }
 async function setItemLevel(level) {
   const item=items.find(i=>i.id===currentModalId); if(!item) return;
@@ -1306,8 +1304,8 @@ function submitAnswer(){
     const re=document.getElementById('feedback-result');
     re.textContent='✅ Correct!';re.className='feedback-result correct';
     document.getElementById('feedback-answer').textContent='';
-    document.getElementById('feedback-notes').textContent='';
-    document.getElementById('feedback-hook').textContent='';
+    document.getElementById('feedback-description').textContent='';document.getElementById('feedback-notes').textContent='';
+    
     document.getElementById('feedback-level').textContent='';
     document.getElementById('feedback-synonyms').innerHTML='';
     document.getElementById('enlightened-overlay').className='enlightened-overlay';
@@ -1334,8 +1332,8 @@ function finaliseItem(lastCorrect, correctAnswer){
   re.textContent=itemCorrect?'✅ Correct!':'❌ Incorrect';
   re.className='feedback-result '+(itemCorrect?'correct':'incorrect');
   document.getElementById('feedback-answer').textContent=(!itemCorrect&&correctAnswer)?`Answer: ${correctAnswer}`:'';
-  document.getElementById('feedback-notes').textContent=(currentItem.notes&&!currentItem.notes.startsWith('WaniKani'))?currentItem.notes:'';
-  document.getElementById('feedback-hook').textContent=currentItem.hook?'💡 '+currentItem.hook:'';
+  const desc=currentItem.description||'';document.getElementById('feedback-description').textContent=desc;document.getElementById('feedback-notes').textContent=currentItem.notes?'📝 '+currentItem.notes:'';
+  
 
   // Level change
   const lc=currentItem.level-prevLevel;
@@ -1370,7 +1368,7 @@ function showFeedbackMsg(type,msg){
   const re=document.getElementById('feedback-result');
   if(type==='close'){re.textContent='⚠️ Close!';re.className='feedback-result close';}
   document.getElementById('feedback-answer').textContent=msg;
-  ['feedback-notes','feedback-hook','feedback-level','feedback-synonyms'].forEach(id=>document.getElementById(id).textContent='');
+  ['feedback-description','feedback-notes','feedback-level','feedback-synonyms'].forEach(id=>document.getElementById(id).textContent='');
   document.getElementById('enlightened-overlay').className='enlightened-overlay';
   document.getElementById('btn-submit').style.display='';
   document.getElementById('btn-next').style.display='none';
