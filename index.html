@@ -700,7 +700,7 @@ async function loadUserProgress() {
   const [progressRows, synonymRows, noteRows, settingsRes, recentRes] = await Promise.all([
     fetchAllRows('progress', 'item_id,level', uid),
     fetchAllRows('synonyms', 'item_id,synonym', uid),
-    fetchAllRows('notes', 'item_id,note,hook', uid),
+    fetchAllRows('notes', 'item_id,description,notes', uid),
     sb.from('user_settings').select('streak,last_study_date').eq('user_id', uid).single(),
     sb.from('progress').select('item_id').eq('user_id', uid)
       .gte('last_quizzed', new Date(Date.now() - 7*24*60*60*1000).toISOString())
