@@ -676,9 +676,12 @@ function updateNavUser() {
 }
 
 async function loadData() {
-  const { data, error } = await sb.storage.from('study-data').download('data.json');
-  if (error) throw new Error('Could not load data.json: ' + error.message);
-  const json = JSON.parse(await data.text());
+  // Use signed URL with cache bust to always get fresh data
+  const { data: urlData, error: urlError } = await sb.storage.from('study-data').createSignedUrl('data.json', 60);
+  if (urlError) throw new Error('Could not get storage URL: ' + urlError.message);
+  const response = await fetch(urlData.signedUrl + '&t=' + Date.now());
+  if (!response.ok) throw new Error('Could not fetch data.json: ' + response.status);
+  const json = JSON.parse(await response.text());
   items = json.items;
 }
 
