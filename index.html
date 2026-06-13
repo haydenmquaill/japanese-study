@@ -283,6 +283,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .settings-msg.success{color:var(--correct);}
 .settings-msg.error{color:var(--incorrect);}
 
+.dict-item-locked{opacity:0.65;}
+.dict-item-locked:hover{border-color:var(--border) !important;background:var(--surface) !important;}
 .answer-hint{font-size:0.82rem;color:var(--text2);text-align:center;margin-top:6px;min-height:18px;font-style:italic;}
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
@@ -468,8 +470,9 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       <div class="results-score" id="results-score"></div>
       <div class="results-fraction" id="results-fraction"></div>
       <div class="results-breakdown" id="results-breakdown"></div>
+      <div id="results-pool-empty" style="display:none;font-size:0.85rem;color:var(--correct);text-align:center;padding:10px 0;">🎉 All items in this pool completed!</div>
       <div class="results-btn-row">
-        <button class="quiz-btn btn-submit" onclick="restartQuiz()" style="flex:1">Again</button>
+        <button class="quiz-btn btn-submit" id="btn-again" onclick="restartQuiz()" style="flex:1">Again</button>
         <button class="quiz-btn btn-next" onclick="backToConfig()" style="flex:1">Config</button>
       </div>
     </div>
@@ -550,8 +553,9 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       <div class="results-score" id="study-results-score"></div>
       <div class="results-fraction" id="study-results-fraction"></div>
       <div class="results-breakdown" id="study-results-breakdown"></div>
+      <div id="study-pool-empty" style="display:none;font-size:0.85rem;color:var(--correct);text-align:center;padding:10px 0;">🎉 All locked items in this category studied!</div>
       <div class="results-btn-row">
-        <button class="quiz-btn btn-submit" onclick="backToStudyConfig()" style="flex:1">Study More</button>
+        <button class="quiz-btn btn-submit" id="btn-study-more" onclick="backToStudyConfig()" style="flex:1">Study More</button>
         <button class="quiz-btn btn-next" onclick="showView('dashboard')" style="flex:1">Home</button>
       </div>
     </div>
@@ -673,7 +677,8 @@ let currentUser = null;
 let userProgress = {};
 let userSynonyms = {};
 let userNotes = {};
-let userSettings = { streak: 0, last_study_date: null };
+let userSettings = { streak: 0, last_study_date: null, unlocked_levels: [] };
+let unlockedLevels = new Set(); // WK level numbers that are unlocked
 let quizMode = 'review';
 let quizQueue = [], quizIndex = 0, quizScore = 0, quizResults = [];
 let currentItem = null, currentPrompts = [], currentPromptIndex = 0;
@@ -806,10 +811,10 @@ async function fetchAllRows(table, columns, userId) {
 async function loadUserProgress() {
   const uid = currentUser.id;
   const [progressRows, synonymRows, noteRows, settingsRes, recentRes] = await Promise.all([
-    fetchAllRows('progress', 'item_id,level', uid),
+    fetchAllRows('progress', 'item_id,level,last_quizzed', uid),
     fetchAllRows('synonyms', 'item_id,synonym', uid),
     fetchAllRows('notes', 'item_id,description,notes', uid),
-    sb.from('user_settings').select('streak,last_study_date').eq('user_id', uid).single(),
+    sb.from('user_settings').select('streak,last_study_date,unlocked_levels').eq('user_id', uid).single(),
     sb.from('progress').select('item_id').eq('user_id', uid)
       .gte('last_quizzed', new Date(Date.now() - 7*24*60*60*1000).toISOString())
       .lt('level', 5),
@@ -820,7 +825,12 @@ async function loadUserProgress() {
   synonymRows.forEach(r => { if (!userSynonyms[r.item_id]) userSynonyms[r.item_id] = []; userSynonyms[r.item_id].push(r.synonym); });
   userNotes = {};
   noteRows.forEach(r => userNotes[r.item_id] = { description: r.description, notes: r.notes });
-  if (settingsRes.data) userSettings = settingsRes.data;
+  // Store last_quizzed on progress rows for Later Reviewed filter
+  progressRows.forEach(r => { if (r.last_quizzed) { const item = items.find(i => i.id === r.item_id); if (item) item.last_quizzed = r.last_quizzed; } });
+  if (settingsRes.data) {
+    userSettings = settingsRes.data;
+    unlockedLevels = new Set(settingsRes.data.unlocked_levels || []);
+  }
   recentItemIds = new Set((recentRes.data || []).map(r => r.item_id));
 }
 
@@ -846,12 +856,15 @@ async function saveLastQuizzed(itemIds) {
   if (!itemIds.length) return;
   const now = new Date().toISOString();
   const uid = currentUser.id;
-  // Batch update last_quizzed for all quizzed items
   await Promise.all(itemIds.map(id =>
     sb.from('progress').upsert({ user_id: uid, item_id: id, level: userProgress[id] ?? 0, last_quizzed: now }, { onConflict: 'user_id,item_id' })
   ));
-  // Add to recentItemIds
-  itemIds.forEach(id => { if ((userProgress[id] ?? 0) < 5) recentItemIds.add(id); });
+  // Update in-memory items so Last Reviewed filter works immediately
+  itemIds.forEach(id => {
+    const item = items.find(i => i.id === id);
+    if (item) item.last_quizzed = now;
+    if ((userProgress[id] ?? 0) < 5) recentItemIds.add(id);
+  });
 }
 
 async function saveLevelBatch(updates) {
@@ -860,10 +873,21 @@ async function saveLevelBatch(updates) {
   try {
     await Promise.all(updates.map(u => saveLevel(u.item_id, u.level)));
     await saveLastQuizzed(updates.map(u => u.item_id));
-    await updateStreak();
-    showSync('Saved ✓', 'success');
-    setTimeout(() => showSync('', ''), 2000);
+    // Check if any new WK levels should unlock
+    const newUnlocks = checkAndUnlockNewLevels();
+    await updateStreak(); // also saves unlocked_levels
+    if (newUnlocks.length) {
+      const msg = newUnlocks.length === 1
+        ? `🔓 WK Level ${newUnlocks[0]} unlocked!`
+        : `🔓 Levels ${newUnlocks.join(', ')} unlocked!`;
+      showSync(msg, 'success');
+      setTimeout(() => showSync('', ''), 3000);
+    } else {
+      showSync('Saved ✓', 'success');
+      setTimeout(() => showSync('', ''), 2000);
+    }
   } catch(e) { showSync('Save failed', 'error'); }
+}
 }
 
 async function updateStreak() {
@@ -873,10 +897,22 @@ async function updateStreak() {
   if (last === today) return; // already studied today
   const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
   streak = last === yesterday ? streak + 1 : 1;
-  userSettings = { streak, last_study_date: today };
-  await sb.rpc('upsert_user_settings', { p_streak: streak, p_last_study_date: today });
+  userSettings = { ...userSettings, streak, last_study_date: today };
+  await sb.rpc('upsert_user_settings', {
+    p_streak: streak,
+    p_last_study_date: today,
+    p_unlocked_levels: JSON.stringify(Array.from(unlockedLevels))
+  });
 }
 
+async function saveUnlockedLevels() {
+  userSettings.unlocked_levels = Array.from(unlockedLevels);
+  await sb.rpc('upsert_user_settings', {
+    p_streak: userSettings.streak || 0,
+    p_last_study_date: userSettings.last_study_date || new Date().toISOString().split('T')[0],
+    p_unlocked_levels: JSON.stringify(Array.from(unlockedLevels))
+  });
+}
 async function saveNote(itemId, description, notes) {
   const { error } = await sb.rpc('upsert_note', { p_item_id: itemId, p_description: description, p_notes: notes });
   if (error) showSync('Save failed', 'error');
@@ -1015,8 +1051,13 @@ function renderDashboard() {
 
 function updateQSDashboard() {
   const locked = items.filter(i => i.level === 0).length;
+  const available = items.filter(i => i.level === 0 && isAvailableToStudy(i)).length;
   const studySub = document.getElementById('study-sub');
-  if (studySub) studySub.textContent = `${locked} items to learn`;
+  if (studySub) {
+    if (available > 0) studySub.textContent = `${available} items ready to learn`;
+    else if (locked > 0) studySub.textContent = `Keep levelling up to unlock more`;
+    else studySub.textContent = `All items studied!`;
+  }
   const weak = items.filter(i => i.level === 1).length;
   document.getElementById('weak-sub').textContent = weak > 0 ? `${weak} items slipping` : 'No weak items — great!';
   const recent = items.filter(i => recentItemIds.has(i.id) && i.level < 5).length;
@@ -1128,12 +1169,14 @@ function renderDict() {
   if (!filtered.length) { document.getElementById('dict-list').innerHTML = `<div class="empty-state"><div class="es-icon">🔍</div><div>No items found</div></div>`; return; }
   document.getElementById('dict-list').innerHTML = filtered.slice(0,200).map(item => {
     const gBadge = item.gender ? `<span class="badge gender-badge-${item.gender}">${item.gender==='Male'?'♂':item.gender==='Female'?'♀':'⚥'} ${item.gender}</span>` : '';
-    return `<div class="dict-item" onclick="openModal('${item.id}')">
-      <div class="kanji">${item.kanji}</div>
+    const locked = item.level === 0 && !isAvailableToStudy(item);
+    const lockBadge = locked ? `<span class="badge" style="background:var(--surface3);color:var(--text3)">🔒</span>` : '';
+    return `<div class="dict-item${locked?' dict-item-locked':''}" onclick="openModal('${item.id}')">
+      <div class="kanji" style="${locked?'opacity:0.5':''}'">${item.kanji}</div>
       <div class="info">
         <div class="reading">${getDisplayReading(item)}</div>
         <div class="meaning">${getDisplayMeaning(item).slice(0,60)}</div>
-        <div class="badge-row"><span class="badge level-badge-${item.level}">${LEVEL_NAMES[item.level]}</span><span class="badge cat-badge">${item.category}</span>${item.category!=='Given Name'?`<span class="badge cat-badge">${item.subcategory}</span>`:''} ${gBadge}</div>
+        <div class="badge-row"><span class="badge level-badge-${item.level}">${LEVEL_NAMES[item.level]}</span>${lockBadge}<span class="badge cat-badge">${item.category}</span>${item.category!=='Given Name'?`<span class="badge cat-badge">${item.subcategory}</span>`:''} ${gBadge}</div>
       </div></div>`;
   }).join('')+(filtered.length>200?`<div class="empty-state" style="padding:16px">Showing 200 of ${filtered.length} — refine your search</div>`:'');
 }
@@ -1522,6 +1565,21 @@ async function showResults(){
   document.getElementById('results-fraction').textContent=`${quizScore} / ${quizQueue.length} correct`;
   document.getElementById('results-breakdown').innerHTML=quizResults.map(r=>
     `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div class="results-icon">${r.correct?'✅':'❌'}</div></div>`).join('');
+  // Check if pool is now empty
+  const remaining = getQuizPool();
+  const emptyEl = document.getElementById('results-pool-empty');
+  const againBtn = document.getElementById('btn-again');
+  if (remaining.length === 0) {
+    emptyEl.style.display = 'block';
+    againBtn.disabled = true;
+    againBtn.style.opacity = '0.4';
+    againBtn.style.cursor = 'not-allowed';
+  } else {
+    emptyEl.style.display = 'none';
+    againBtn.disabled = false;
+    againBtn.style.opacity = '';
+    againBtn.style.cursor = '';
+  }
   renderDashboard();
   await saveLevelBatch(quizResults.map(r=>({item_id:r.item.id,level:r.item.level})));
 }
@@ -1542,6 +1600,82 @@ async function endQuiz(){
   renderDashboard();
 }
 
+// ── PREREQUISITE SYSTEM ──
+
+function getKanjiComponents(str) {
+  // Extract CJK kanji characters from a string
+  return [...str].filter(ch => {
+    const code = ch.codePointAt(0);
+    return (code >= 0x4E00 && code <= 0x9FFF) || (code >= 0x3400 && code <= 0x4DBF);
+  });
+}
+
+function getWKLevel(item) {
+  // Returns WK level number for a kanji item, or null
+  if (item.category !== 'Kanji') return null;
+  const m = item.subcategory.match(/^WK Level (\d+)$/);
+  return m ? parseInt(m[1]) : null;
+}
+
+function isKanjiGuruPlus(char) {
+  // Is a kanji character at Guru+ (level 3+)?
+  const kanjiItem = items.find(i => i.kanji === char && i.category === 'Kanji');
+  if (!kanjiItem) return true; // not in our DB — don't block on it
+  return kanjiItem.level >= 3;
+}
+
+function allComponentsGuruPlus(item) {
+  // Check all kanji components of an item are Guru+
+  const components = getKanjiComponents(item.kanji);
+  return components.every(ch => isKanjiGuruPlus(ch));
+}
+
+function isAvailableToStudy(item) {
+  // Only relevant for locked (level 0) items
+  if (item.level > 0) return true;
+
+  const cat = item.category;
+
+  if (cat === 'Kanji') {
+    const level = getWKLevel(item);
+    if (!level) return false;
+    return unlockedLevels.has(level);
+  }
+
+  if (cat === 'Vocab') {
+    // Component kanji must be Guru+ (lenient — only checks kanji in our DB)
+    return allComponentsGuruPlus(item);
+  }
+
+  // Proper nouns — strict, all components must be Guru+
+  return allComponentsGuruPlus(item);
+}
+
+function checkAndUnlockNewLevels() {
+  // Check each WK level — if ALL kanji in that level are Guru+, unlock next level
+  let newUnlocks = [];
+
+  for (let level = 1; level <= 61; level++) {
+    const nextLevel = level + 1;
+    if (unlockedLevels.has(nextLevel)) continue; // already unlocked
+
+    // Check if all kanji in this level are Guru+
+    const levelKanji = items.filter(i =>
+      i.category === 'Kanji' &&
+      i.subcategory === `WK Level ${level}`
+    );
+    if (!levelKanji.length) continue;
+
+    const allGuru = levelKanji.every(i => i.level >= 3);
+    if (allGuru) {
+      unlockedLevels.add(nextLevel);
+      newUnlocks.push(nextLevel);
+    }
+  }
+
+  return newUnlocks;
+}
+
 // ── STUDY CONFIG ──
 function updateSSubcat() {
   const cat = document.getElementById('sconfig-cat').value;
@@ -1555,7 +1689,8 @@ function getStudyPool() {
   return items.filter(i => {
     if (cat && i.category !== cat) return false;
     if (subcat && !subcatMatches(i, subcat)) return false;
-    return i.level === 0;
+    if (i.level !== 0) return false;
+    return isAvailableToStudy(i);
   });
 }
 function updateStudyPoolInfo() {
@@ -1764,6 +1899,21 @@ async function showStudyResults() {
       <div style="font-size:0.75rem;color:${r.correct?'var(--lvl-apprentice)':'var(--lvl-review)'}">→ ${LEVEL_NAMES[r.item.level]}</div>
       <div>${r.correct?'✅':'❌'}</div>
     </div>`).join('');
+  // Check if study pool is now empty
+  const remaining = getStudyPool();
+  const emptyEl = document.getElementById('study-pool-empty');
+  const moreBtn = document.getElementById('btn-study-more');
+  if (remaining.length === 0) {
+    emptyEl.style.display = 'block';
+    moreBtn.disabled = true;
+    moreBtn.style.opacity = '0.4';
+    moreBtn.style.cursor = 'not-allowed';
+  } else {
+    emptyEl.style.display = 'none';
+    moreBtn.disabled = false;
+    moreBtn.style.opacity = '';
+    moreBtn.style.cursor = '';
+  }
   renderDashboard();
   await saveLevelBatch(studyQuizResults.map(r=>({item_id:r.item.id,level:r.item.level})));
 }
