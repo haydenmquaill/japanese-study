@@ -404,12 +404,13 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
           <div class="config-item"><label>Subcategory</label><select id="qconfig-subcat" onchange="updateQuizPoolInfo()"><option value="">All Subcategories</option></select></div>
           <div class="config-item"><label>Min Level</label>
             <select id="qconfig-minlevel" onchange="updateQuizPoolInfo()">
-              <option value="1">1 — Review+</option><option value="2" selected>2 — Apprentice+</option>
-              <option value="3">3 — Guru+</option><option value="4">4 — Master+</option><option value="5">5 — Enlightened only</option>
+              <option value="1">1 — Review</option><option value="2" selected>2 — Apprentice</option>
+              <option value="3">3 — Guru</option><option value="4">4 — Master</option><option value="5">5 — Enlightened</option>
             </select>
           </div>
           <div class="config-item"><label>Max Level</label>
             <select id="qconfig-maxlevel" onchange="updateQuizPoolInfo()">
+              <option value="1">1 — Review</option>
               <option value="2">2 — Apprentice</option>
               <option value="3">3 — Guru</option>
               <option value="4">4 — Master</option>
@@ -946,7 +947,16 @@ function populateFilters() {
 
 function getSubcats(cat) {
   if (cat === 'Vocab') return Object.keys(VOCAB_GROUPS);
-  return [...new Set(items.filter(i => !cat || i.category === cat).map(i => i.subcategory))].sort();
+  const subcats = [...new Set(items.filter(i => !cat || i.category === cat).map(i => i.subcategory))];
+  return subcats.sort((a, b) => {
+    // Sort WK Level N numerically
+    const wkA = a.match(/^WK Level (\d+)$/);
+    const wkB = b.match(/^WK Level (\d+)$/);
+    if (wkA && wkB) return parseInt(wkA[1]) - parseInt(wkB[1]);
+    if (wkA) return -1; // WK levels before others
+    if (wkB) return 1;
+    return a.localeCompare(b);
+  });
 }
 function subcatMatches(item, subcat) {
   if (!subcat) return true;
