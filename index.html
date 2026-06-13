@@ -1616,38 +1616,24 @@ function getWKLevel(item) {
   return m ? parseInt(m[1]) : null;
 }
 
-function isKanjiGuruPlus(char) {
-  // Is a kanji character at Guru+ (level 3+)?
-  const kanjiItem = items.find(i => i.kanji === char && i.category === 'Kanji');
-  if (!kanjiItem) return true; // not in our DB — don't block on it
-  return kanjiItem.level >= 3;
-}
-
-function allComponentsGuruPlus(item) {
-  // Check all kanji components of an item are Guru+
-  const components = getKanjiComponents(item.kanji);
-  return components.every(ch => isKanjiGuruPlus(ch));
-}
-
 function isAvailableToStudy(item) {
-  // Only relevant for locked (level 0) items
+  // Already in the review cycle — always available
   if (item.level > 0) return true;
 
-  const cat = item.category;
-
-  if (cat === 'Kanji') {
+  if (item.category === 'Kanji') {
+    // Layer 1 — WK level gate
     const level = getWKLevel(item);
-    if (!level) return false;
-    return unlockedLevels.has(level);
+    return level ? unlockedLevels.has(level) : false;
   }
 
-  if (cat === 'Vocab') {
-    // Component kanji must be Guru+ (lenient — only checks kanji in our DB)
-    return allComponentsGuruPlus(item);
-  }
-
-  // Proper nouns — strict, all components must be Guru+
-  return allComponentsGuruPlus(item);
+  // Layer 2 — for vocab and proper nouns
+  // Every kanji component must have been studied (level > 0)
+  const components = getKanjiComponents(item.kanji);
+  return components.every(ch => {
+    const kanjiItem = items.find(i => i.kanji === ch && i.category === 'Kanji');
+    if (!kanjiItem) return true; // not in our DB — don't block
+    return kanjiItem.level > 0;  // must have been studied at least once
+  });
 }
 
 function checkAndUnlockNewLevels() {
