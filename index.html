@@ -1028,7 +1028,7 @@ function renderDict() {
       <div class="info">
         <div class="reading">${getDisplayReading(item)}</div>
         <div class="meaning">${getDisplayMeaning(item).slice(0,60)}</div>
-        <div class="badge-row"><span class="badge level-badge-${item.level}">${LEVEL_NAMES[item.level]}</span><span class="badge cat-badge">${item.category}</span><span class="badge cat-badge">${item.subcategory}</span>${gBadge}</div>
+        <div class="badge-row"><span class="badge level-badge-${item.level}">${LEVEL_NAMES[item.level]}</span><span class="badge cat-badge">${item.category}</span>${item.category!=='Given Name'?`<span class="badge cat-badge">${item.subcategory}</span>`:''} ${gBadge}</div>
       </div></div>`;
   }).join('')+(filtered.length>200?`<div class="empty-state" style="padding:16px">Showing 200 of ${filtered.length} — refine your search</div>`:'');
 }
