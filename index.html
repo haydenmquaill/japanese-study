@@ -282,6 +282,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .settings-msg.success{color:var(--correct);}
 .settings-msg.error{color:var(--incorrect);}
 
+.answer-hint{font-size:0.82rem;color:var(--text2);text-align:center;margin-top:6px;min-height:18px;font-style:italic;}
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
@@ -322,7 +323,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
     <div class="nav-tabs">
       <button class="nav-tab active" onclick="showView('dashboard')">Home</button>
       <button class="nav-tab" onclick="showView('dictionary')">Dict</button>
-      <button class="nav-tab" onclick="showView('quiz')">Quiz</button>
+      <button class="nav-tab" onclick="showView('review')">Review</button>
+      <button class="nav-tab" onclick="showView('study')">Study</button>
     </div>
     <div class="nav-menu-wrap">
       <button class="icon-btn" onclick="toggleNavMenu()">⋮</button>
@@ -350,13 +352,13 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
     <div class="level-breakdown"><h3>Progress by Level</h3><div class="level-bars" id="level-bars"></div></div>
     <div class="section-title">Quick Start</div>
     <div class="quick-actions">
-      <div class="quick-btn" onclick="openQSModal('review')">
+      <div class="quick-btn" onclick="showView('study')">
+        <div class="qb-icon">📖</div><div class="qb-title">Study</div>
+        <div class="qb-sub" id="study-sub">Learn locked items</div>
+      </div>
+      <div class="quick-btn" onclick="showView('review')">
         <div class="qb-icon">🔄</div><div class="qb-title">Review</div>
         <div class="qb-sub">Practice unlocked items</div>
-      </div>
-      <div class="quick-btn" onclick="openQSModal('new')">
-        <div class="qb-icon">✨</div><div class="qb-title">New</div>
-        <div class="qb-sub">Unlock locked items</div>
       </div>
       <div class="quick-btn" onclick="startWeakItems()">
         <div class="qb-icon">⚠️</div><div class="qb-title">Weak Items</div>
@@ -391,30 +393,43 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
     </div>
   </div>
 
-  <!-- QUIZ -->
-  <div id="view-quiz" class="view">
-    <div id="quiz-config-panel" class="quiz-config-panel">
+  <!-- REVIEW (was Quiz) -->
+  <div id="view-review" class="view">
+    <div id="review-config-panel" class="review-config-panel">
       <div class="quiz-config">
-        <h3>Quiz Mode</h3>
-        <div class="quiz-mode-tabs">
-          <div class="quiz-mode-tab active" id="tab-review" onclick="setQuizMode('review')">🔄 Review<br><small style="font-weight:400;color:var(--text3)">Unlocked items</small></div>
-          <div class="quiz-mode-tab" id="tab-new" onclick="setQuizMode('new')">✨ New<br><small style="font-weight:400;color:var(--text3)">Locked items</small></div>
-        </div>
-        <h3 style="margin-bottom:12px">Configure</h3>
+        <h3>Configure Review</h3>
         <div class="config-grid">
-          <div class="config-item"><label>Category</label><select id="qconfig-cat" onchange="updateQSubcat()"><option value="">All Categories</option></select></div>
-          <div class="config-item"><label>Subcategory</label><select id="qconfig-subcat"><option value="">All Subcategories</option></select></div>
-          <div class="config-item"><label>Questions</label><input type="number" id="qconfig-count" value="10" min="1" max="100"></div>
-          <div class="config-item"><label>Min Level (Review)</label>
-            <select id="qconfig-minlevel">
+          <div class="config-item"><label>Category</label><select id="qconfig-cat" onchange="updateQSubcat();updateQuizPoolInfo()"><option value="">All Categories</option></select></div>
+          <div class="config-item"><label>Subcategory</label><select id="qconfig-subcat" onchange="updateQuizPoolInfo()"><option value="">All Subcategories</option></select></div>
+          <div class="config-item"><label>Min Level</label>
+            <select id="qconfig-minlevel" onchange="updateQuizPoolInfo()">
               <option value="1">1 — Review+</option><option value="2" selected>2 — Apprentice+</option>
               <option value="3">3 — Guru+</option><option value="4">4 — Master+</option><option value="5">5 — Enlightened only</option>
             </select>
           </div>
+          <div class="config-item"><label>Max Level</label>
+            <select id="qconfig-maxlevel" onchange="updateQuizPoolInfo()">
+              <option value="2">2 — Apprentice</option>
+              <option value="3">3 — Guru</option>
+              <option value="4">4 — Master</option>
+              <option value="5" selected>5 — Enlightened</option>
+            </select>
+          </div>
+          <div class="config-item"><label>Last Reviewed</label>
+            <select id="qconfig-days" onchange="updateQuizPoolInfo()">
+              <option value="0" selected>Any time</option>
+              <option value="1">Today</option>
+              <option value="3">Last 3 days</option>
+              <option value="7">Last 7 days</option>
+              <option value="14">Last 14 days</option>
+              <option value="30">Last 30 days</option>
+            </select>
+          </div>
+          <div class="config-item"><label>Questions</label><input type="number" id="qconfig-count" value="10" min="1" max="100" oninput="updateQuizPoolInfo()"></div>
         </div>
       </div>
       <div id="quiz-pool-info" style="font-size:0.78rem;color:var(--text2);margin-bottom:11px;text-align:center;"></div>
-      <button class="start-btn" id="start-btn" onclick="startQuiz()">Start Quiz</button>
+      <button class="start-btn" id="start-btn" onclick="startQuiz()">Start Review</button>
     </div>
     <div class="quiz-active" id="quiz-active">
       <div class="quiz-progress">
@@ -440,6 +455,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       </div>
       <div class="quiz-answer-area">
         <input class="quiz-input reading-mode" id="quiz-input" placeholder="Type the reading…" onkeydown="handleQuizKey(event)">
+        <div class="answer-hint" id="answer-hint"></div>
       </div>
       <div class="quiz-btn-row">
         <button class="quiz-btn btn-submit" id="btn-submit" onclick="submitAnswer()">Submit</button>
@@ -457,7 +473,87 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
     </div>
   </div>
 
-  <!-- SETTINGS -->
+  <!-- STUDY -->
+  <div id="view-study" class="view">
+    <div id="study-config-panel">
+      <div class="quiz-config">
+        <h3>Configure Study</h3>
+        <div class="config-grid">
+          <div class="config-item"><label>Category</label><select id="sconfig-cat" onchange="updateSSubcat();updateStudyPoolInfo()"><option value="">All Categories</option></select></div>
+          <div class="config-item"><label>Subcategory</label><select id="sconfig-subcat" onchange="updateStudyPoolInfo()"><option value="">All Subcategories</option></select></div>
+          <div class="config-item" style="grid-column:1/-1"><label>Items per session</label>
+            <select id="sconfig-count" onchange="updateStudyPoolInfo()">
+              <option value="5">5 items</option>
+              <option value="10" selected>10 items</option>
+              <option value="15">15 items</option>
+              <option value="20">20 items</option>
+              <option value="999">All available</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div id="study-pool-info" style="font-size:0.78rem;color:var(--text2);margin-bottom:11px;text-align:center;"></div>
+      <button class="start-btn" id="study-start-btn" onclick="startStudy()">Start Study Session</button>
+    </div>
+    <!-- Learning Phase -->
+    <div id="study-learn-wrap" style="display:none">
+      <div class="quiz-progress">
+        <div class="progress-bar"><div class="progress-fill" id="study-learn-fill"></div></div>
+        <div class="progress-text" id="study-learn-text"></div>
+      </div>
+      <div class="quiz-card" id="study-card" style="min-height:auto;flex-direction:column;align-items:stretch;text-align:left;padding:20px;">
+        <div style="font-size:0.72rem;color:var(--text3);text-align:center;margin-bottom:8px;" id="study-card-counter"></div>
+        <div style="font-size:3rem;text-align:center;margin-bottom:10px;" id="study-card-kanji"></div>
+        <div id="study-card-readings-wrap"></div>
+        <div style="font-size:1rem;font-weight:600;text-align:center;margin-bottom:12px;" id="study-card-meaning"></div>
+        <hr style="border:none;border-top:1px solid var(--border);margin:8px 0;" id="study-card-divider">
+        <div style="font-size:0.875rem;color:var(--text2);line-height:1.6;white-space:pre-line;" id="study-card-desc"></div>
+      </div>
+      <div style="display:flex;gap:9px;margin-top:4px;">
+        <button class="quiz-btn btn-next" id="study-prev-btn" onclick="studyNav(-1)" style="flex:1">← Previous</button>
+        <button class="quiz-btn btn-submit" id="study-next-btn" onclick="studyNav(1)" style="flex:2">Next →</button>
+      </div>
+    </div>
+    <!-- Study Quiz Phase -->
+    <div id="study-quiz-wrap" style="display:none">
+      <div class="quiz-progress">
+        <div class="progress-bar"><div class="progress-fill" id="study-quiz-fill"></div></div>
+        <div class="progress-text" id="study-quiz-text"></div>
+        <button class="quiz-btn btn-end" onclick="endStudyQuiz()">End</button>
+      </div>
+      <div class="quiz-card">
+        <div class="quiz-prompt-label reading" id="study-prompt-label">Reading</div>
+        <div class="quiz-prompt" id="study-prompt"></div>
+        <div class="quiz-category-hint" id="study-hint"></div>
+        <div class="quiz-gender-hint" id="study-gender-hint"></div>
+        <div class="quiz-step-indicator" id="study-step-indicator"></div>
+      </div>
+      <div class="quiz-feedback" id="study-feedback">
+        <div class="feedback-result" id="study-feedback-result"></div>
+        <div class="feedback-answer" id="study-feedback-answer"></div>
+        <div class="feedback-description" id="study-feedback-description"></div>
+        <div class="feedback-notes" id="study-feedback-notes"></div>
+      </div>
+      <div class="quiz-answer-area">
+        <input class="quiz-input reading-mode" id="study-input" placeholder="Type the reading…" onkeydown="handleStudyKey(event)">
+        <div class="answer-hint" id="study-answer-hint"></div>
+      </div>
+      <div class="quiz-btn-row">
+        <button class="quiz-btn btn-submit" id="study-btn-submit" onclick="submitStudyAnswer()">Submit</button>
+        <button class="quiz-btn btn-next" id="study-btn-next" onclick="handleStudyNext()" style="display:none">Next →</button>
+      </div>
+    </div>
+    <!-- Study Results -->
+    <div class="quiz-results" id="study-results">
+      <div class="results-score" id="study-results-score"></div>
+      <div class="results-fraction" id="study-results-fraction"></div>
+      <div class="results-breakdown" id="study-results-breakdown"></div>
+      <div class="results-btn-row">
+        <button class="quiz-btn btn-submit" onclick="backToStudyConfig()" style="flex:1">Study More</button>
+        <button class="quiz-btn btn-next" onclick="showView('dashboard')" style="flex:1">Home</button>
+      </div>
+    </div>
+  </div>
   <div id="view-settings" class="view">
     <div class="section-title">Profile</div>
     <div class="settings-section">
@@ -579,6 +675,12 @@ let quizMode = 'review';
 let quizQueue = [], quizIndex = 0, quizScore = 0, quizResults = [];
 let currentItem = null, currentPrompts = [], currentPromptIndex = 0;
 let itemAnswered = false, itemCorrect = true;
+let promptWrongCount = 0; // wrong attempts on current prompt
+// Study state
+let studyQueue = [], studyLearnIndex = 0;
+let studyQuizQueue = [], studyQuizIndex = 0, studyQuizResults = [];
+let studyCurrentItem = null, studyCurrentPrompts = [], studyCurrentPromptIndex = 0;
+let studyItemHadWrong = false, studyPromptWrongCount = 0;
 let currentModalId = null;
 let qsMode = null;
 let recentItemIds = new Set();
@@ -826,12 +928,13 @@ function init() {
   renderDashboard();
   renderDict();
   updateQuizPoolInfo();
+  updateStudyPoolInfo();
   updateQSDashboard();
 }
 
 function populateFilters() {
   const cats = [...new Set(items.map(i => i.category))].sort();
-  ['filter-cat','qconfig-cat','qs-cat'].forEach(id => {
+  ['filter-cat','qconfig-cat','sconfig-cat','qs-cat'].forEach(id => {
     const sel = document.getElementById(id);
     if (!sel) return;
     sel.innerHTML = '<option value="">All Categories</option>';
@@ -866,9 +969,13 @@ function updateQSubcat() {
 function showView(v) {
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
-  document.getElementById('view-' + v).classList.add('active');
-  const idx = ['dashboard','dictionary','quiz','settings'].indexOf(v);
-  if (idx >= 0 && idx < 3) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  // Map view names to IDs
+  const viewId = v === 'quiz' ? 'review' : v;
+  const el = document.getElementById('view-' + viewId);
+  if (el) el.classList.add('active');
+  const tabs = ['dashboard','dictionary','review','study'];
+  const idx = tabs.indexOf(viewId);
+  if (idx >= 0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
   if (v === 'dashboard') renderDashboard();
   if (v === 'dictionary') renderDict();
   if (v === 'settings') populateSettingsName();
@@ -895,6 +1002,9 @@ function renderDashboard() {
 }
 
 function updateQSDashboard() {
+  const locked = items.filter(i => i.level === 0).length;
+  const studySub = document.getElementById('study-sub');
+  if (studySub) studySub.textContent = `${locked} items to learn`;
   const weak = items.filter(i => i.level === 1).length;
   document.getElementById('weak-sub').textContent = weak > 0 ? `${weak} items slipping` : 'No weak items — great!';
   const recent = items.filter(i => recentItemIds.has(i.id) && i.level < 5).length;
@@ -905,24 +1015,13 @@ function updateQSDashboard() {
 function openQSModal(mode) {
   qsMode = mode;
   const overlay = document.getElementById('qs-modal-overlay');
-  const title = document.getElementById('qs-modal-title');
-  const sub = document.getElementById('qs-modal-sub');
   const catField = document.getElementById('qs-cat-field');
   const levelField = document.getElementById('qs-level-field');
-  if (mode === 'review') {
-    title.textContent = '🔄 Review Quiz';
-    sub.textContent = 'Practice your unlocked items';
-    catField.style.display = 'block';
-    levelField.style.display = 'none';
-  } else if (mode === 'new') {
-    title.textContent = '✨ New Items';
-    sub.textContent = 'Unlock items from a category';
-    catField.style.display = 'block';
-    levelField.style.display = 'none';
-  } else if (mode === 'recent') {
-    title.textContent = '📅 Recent';
-    sub.textContent = 'Items you\'ve studied in the last 7 days';
-    catField.style.display = 'none';
+  catField.style.display = 'none';
+  levelField.style.display = 'none';
+  if (mode === 'recent') {
+    document.getElementById('qs-modal-title').textContent = '📅 Recent';
+    document.getElementById('qs-modal-sub').textContent = 'Items you\'ve studied in the last 7 days';
     levelField.style.display = 'block';
   }
   document.getElementById('qs-cat').value = '';
@@ -938,26 +1037,20 @@ function closeQSModal(e) {
 }
 
 function updateQSPool() {
-  const cat = document.getElementById('qs-cat').value;
   const maxLevel = parseInt(document.getElementById('qs-level').value);
-  let pool;
-  if (qsMode === 'review') pool = items.filter(i => (!cat || i.category === cat) && i.level >= 2);
-  else if (qsMode === 'new') pool = items.filter(i => (!cat || i.category === cat) && i.level === 0);
-  else if (qsMode === 'recent') pool = items.filter(i => recentItemIds.has(i.id) && i.level > 0 && i.level < maxLevel + 1);
+  let pool = [];
+  if (qsMode === 'recent') pool = items.filter(i => recentItemIds.has(i.id) && i.level > 0 && i.level <= maxLevel);
   const info = document.getElementById('qs-pool-info');
   info.textContent = `${pool.length} item${pool.length !== 1 ? 's' : ''} available`;
   document.getElementById('qs-start-btn').disabled = pool.length === 0;
 }
 
 function startQSQuiz() {
-  const cat = document.getElementById('qs-cat').value;
   const maxLevel = parseInt(document.getElementById('qs-level').value);
-  let pool;
-  if (qsMode === 'review') pool = items.filter(i => (!cat || i.category === cat) && i.level >= 2);
-  else if (qsMode === 'new') pool = items.filter(i => (!cat || i.category === cat) && i.level === 0);
-  else if (qsMode === 'recent') pool = items.filter(i => recentItemIds.has(i.id) && i.level > 0 && i.level < maxLevel + 1);
+  let pool = [];
+  if (qsMode === 'recent') pool = items.filter(i => recentItemIds.has(i.id) && i.level > 0 && i.level <= maxLevel);
   closeQSModal();
-  launchCustomQuiz(pool, qsMode === 'new' ? 'new' : 'review');
+  launchCustomQuiz(pool, 'review');
 }
 
 function startWeakItems() {
@@ -971,8 +1064,8 @@ function launchCustomQuiz(pool, mode) {
   quizMode = mode;
   quizQueue = shuffle([...pool]).slice(0, Math.min(pool.length, 20));
   quizIndex = 0; quizScore = 0; quizResults = [];
-  showView('quiz');
-  document.getElementById('quiz-config-panel').classList.add('hide');
+  showView('review');
+  document.getElementById('review-config-panel').classList.add('hide');
   document.getElementById('quiz-active').classList.add('show');
   document.getElementById('quiz-results').classList.remove('show');
   startItem();
@@ -1191,22 +1284,20 @@ function attachWanakana(el){if(window.wanakana){try{wanakana.unbind(el);}catch(e
 function detachWanakana(el){if(window.wanakana){try{wanakana.unbind(el);}catch(e){}}}
 
 // ── QUIZ CONFIG ──
-function setQuizMode(mode){
-  quizMode=mode;
-  document.getElementById('tab-review').classList.toggle('active',mode==='review');
-  document.getElementById('tab-new').classList.toggle('active',mode==='new');
-  updateQuizPoolInfo();
-}
+function setQuizMode(mode){ quizMode=mode; updateQuizPoolInfo(); }
 function getQuizPool(){
   const cat=document.getElementById('qconfig-cat')?.value||'';
   const subcat=document.getElementById('qconfig-subcat')?.value||'';
   const minLevel=parseInt(document.getElementById('qconfig-minlevel')?.value||'2');
+  const maxLevel=parseInt(document.getElementById('qconfig-maxlevel')?.value||'5');
+  const days=parseInt(document.getElementById('qconfig-days')?.value||'0');
+  const cutoff = days > 0 ? new Date(Date.now() - days*24*60*60*1000).toISOString() : null;
   return items.filter(i=>{
     if(cat&&i.category!==cat)return false;
     if(subcat&&!subcatMatches(i,subcat))return false;
-    if(quizMode==='new')return i.level===0;
-    if(quizMode==='review')return i.level>=minLevel;
-    return i.level>0;
+    if(i.level<minLevel||i.level>maxLevel)return false;
+    if(cutoff){const lq=i.last_quizzed||null;if(!lq||lq<cutoff)return false;}
+    return true;
   });
 }
 function updateQuizPoolInfo(){
@@ -1225,9 +1316,10 @@ function checkReading(input,accepted){return accepted.some(r=>normaliseReading(i
 function startQuiz(){
   const pool=getQuizPool();if(!pool.length)return;
   const count=Math.min(parseInt(document.getElementById('qconfig-count').value)||10,pool.length);
+  quizMode='review';
   quizQueue=shuffle([...pool]).slice(0,count);
   quizIndex=0;quizScore=0;quizResults=[];
-  document.getElementById('quiz-config-panel').classList.add('hide');
+  document.getElementById('review-config-panel').classList.add('hide');
   document.getElementById('quiz-active').classList.add('show');
   document.getElementById('quiz-results').classList.remove('show');
   startItem();
@@ -1236,7 +1328,7 @@ function startQuiz(){
 function startItem(){
   currentItem=quizQueue[quizIndex];
   currentPrompts=buildPrompts(currentItem);
-  currentPromptIndex=0;itemAnswered=false;itemCorrect=true;
+  currentPromptIndex=0;itemAnswered=false;itemCorrect=true;promptWrongCount=0;
   updateProgressBar();showPrompt();
 }
 
@@ -1266,6 +1358,8 @@ function showPrompt(){
   document.getElementById('quiz-feedback').classList.remove('show');
   document.getElementById('btn-submit').style.display='';
   document.getElementById('btn-next').style.display='none';
+  document.getElementById('answer-hint').textContent='';
+  promptWrongCount=0;
   setTimeout(()=>input.focus(),50);
 }
 
@@ -1278,37 +1372,44 @@ function submitAnswer(){
     const accepted=getAcceptedReadings(currentItem,prompt.type);
     correct=checkReading(userAns,accepted);
     correctAnswer=accepted.join(' / ');
-    input.className='quiz-input '+(correct?'correct':'incorrect');
   } else {
     const result=checkMeaning(userAns,currentItem);
     if(result.result==='correct')correct=true;
     else if(result.result==='close')closeMatch=true;
     correctAnswer=getMeanings(currentItem).join(', ');
-    if(correct)input.className='quiz-input correct';
-    else if(closeMatch){input.className='quiz-input shake';setTimeout(()=>{input.className='quiz-input meaning-mode';},500);}
-    else input.className='quiz-input incorrect';
   }
+  // Close match — shake and retry
   if(closeMatch){
+    input.className='quiz-input shake';
+    setTimeout(()=>{input.className='quiz-input meaning-mode';},500);
     showFeedbackMsg('close',`Close! Did you mean: ${correctAnswer}`);
     input.value='';setTimeout(()=>input.focus(),100);return;
   }
-  if(!correct)itemCorrect=false;
+  // Wrong — mark, maybe show hint, retry
+  if(!correct){
+    itemCorrect=false;
+    promptWrongCount++;
+    input.className='quiz-input incorrect';
+    if(promptWrongCount>=2){
+      document.getElementById('answer-hint').textContent=`Answer: ${correctAnswer}`;
+    }
+    input.value='';
+    setTimeout(()=>{input.className='quiz-input '+(prompt.mode==='reading'?'reading-mode':'meaning-mode');input.focus();},400);
+    return;
+  }
+  // Correct
+  input.className='quiz-input correct';
   input.disabled=true;
-
-  // Check if this is the last prompt
-  const isLastPrompt = currentPromptIndex >= currentPrompts.length - 1 || !correct;
-
+  const isLastPrompt = currentPromptIndex >= currentPrompts.length - 1;
   if(isLastPrompt){
-    // Finalise immediately — show level change in same feedback
-    finaliseItem(correct, correctAnswer);
+    finaliseItem(true, correctAnswer);
   } else {
-    // More prompts to go — show intermediate feedback
     const fb=document.getElementById('quiz-feedback');fb.classList.add('show');
     const re=document.getElementById('feedback-result');
     re.textContent='✅ Correct!';re.className='feedback-result correct';
     document.getElementById('feedback-answer').textContent='';
-    document.getElementById('feedback-description').textContent='';document.getElementById('feedback-notes').textContent='';
-    
+    document.getElementById('feedback-description').textContent='';
+    document.getElementById('feedback-notes').textContent='';
     document.getElementById('feedback-level').textContent='';
     document.getElementById('feedback-synonyms').innerHTML='';
     document.getElementById('enlightened-overlay').className='enlightened-overlay';
@@ -1319,19 +1420,17 @@ function submitAnswer(){
 
 function finaliseItem(lastCorrect, correctAnswer){
   itemAnswered=true;
-  if(!lastCorrect)itemCorrect=false;
 
   const fb=document.getElementById('quiz-feedback');fb.classList.add('show');
   const re=document.getElementById('feedback-result');
 
   const prevLevel=currentItem.level;
-  if(quizMode==='new'){if(itemCorrect)currentItem.level=2;}
-  else{if(itemCorrect)currentItem.level=Math.min(5,currentItem.level+1);else currentItem.level=Math.max(1,currentItem.level-1);}
+  if(itemCorrect)currentItem.level=Math.min(5,currentItem.level+1);
+  else currentItem.level=Math.max(1,currentItem.level-1);
 
   quizResults.push({item:currentItem,correct:itemCorrect});
   if(itemCorrect)quizScore++;
 
-  // Result display
   re.textContent=itemCorrect?'✅ Correct!':'❌ Incorrect';
   re.className='feedback-result '+(itemCorrect?'correct':'incorrect');
   document.getElementById('feedback-answer').textContent=(!itemCorrect&&correctAnswer)?`Answer: ${correctAnswer}`:'';
@@ -1419,15 +1518,254 @@ function restartQuiz(){document.getElementById('quiz-results').classList.remove(
 function backToConfig(){
   document.getElementById('quiz-results').classList.remove('show');
   document.getElementById('quiz-active').classList.remove('show');
-  document.getElementById('quiz-config-panel').classList.remove('hide');
+  document.getElementById('review-config-panel').classList.remove('hide');
   updateQuizPoolInfo();
 }
 async function endQuiz(){
   const updates=quizResults.map(r=>({item_id:r.item.id,level:r.item.level}));
   if(updates.length)await saveLevelBatch(updates);
   document.getElementById('quiz-active').classList.remove('show');
-  document.getElementById('quiz-config-panel').classList.remove('hide');
+  document.getElementById('review-config-panel').classList.remove('hide');
   updateQuizPoolInfo();
+  renderDashboard();
+}
+
+// ── STUDY CONFIG ──
+function updateSSubcat() {
+  const cat = document.getElementById('sconfig-cat').value;
+  const sel = document.getElementById('sconfig-subcat');
+  sel.innerHTML = '<option value="">All Subcategories</option>';
+  getSubcats(cat).forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+}
+function getStudyPool() {
+  const cat = document.getElementById('sconfig-cat')?.value || '';
+  const subcat = document.getElementById('sconfig-subcat')?.value || '';
+  return items.filter(i => {
+    if (cat && i.category !== cat) return false;
+    if (subcat && !subcatMatches(i, subcat)) return false;
+    return i.level === 0;
+  });
+}
+function updateStudyPoolInfo() {
+  const pool = getStudyPool();
+  const el = document.getElementById('study-pool-info');
+  if (el) el.textContent = `${pool.length} locked item${pool.length!==1?'s':''} available`;
+  const btn = document.getElementById('study-start-btn');
+  if (btn) btn.disabled = pool.length === 0;
+}
+function startStudy() {
+  const pool = getStudyPool();
+  if (!pool.length) return;
+  const count = parseInt(document.getElementById('sconfig-count').value) || 10;
+  studyQueue = shuffle([...pool]).slice(0, Math.min(count, pool.length));
+  studyLearnIndex = 0;
+  document.getElementById('study-config-panel').style.display = 'none';
+  document.getElementById('study-learn-wrap').style.display = 'block';
+  document.getElementById('study-quiz-wrap').style.display = 'none';
+  document.getElementById('study-results').classList.remove('show');
+  showStudyCard();
+}
+
+// ── STUDY LEARNING PHASE ──
+function showStudyCard() {
+  const item = studyQueue[studyLearnIndex];
+  const total = studyQueue.length;
+  document.getElementById('study-learn-fill').style.width = ((studyLearnIndex+1)/total)*100+'%';
+  document.getElementById('study-learn-text').textContent = `${studyLearnIndex+1} / ${total}`;
+  document.getElementById('study-card-counter').textContent = `Card ${studyLearnIndex+1} of ${total}`;
+  document.getElementById('study-card-kanji').textContent = item.kanji;
+  const rw = document.getElementById('study-card-readings-wrap');
+  if (item.readings) {
+    const r = item.readings, blocks = [];
+    if (r.on&&r.on.length) blocks.push(`<div class="modal-reading-block"><div class="rb-label">On'yomi</div><div class="rb-value">${r.on.join('、')}</div></div>`);
+    if (r.kun&&r.kun.length) blocks.push(`<div class="modal-reading-block"><div class="rb-label">Kun'yomi</div><div class="rb-value">${r.kun.join('、')}</div></div>`);
+    if (r.name&&r.name.length) blocks.push(`<div class="modal-reading-block"><div class="rb-label">Name</div><div class="rb-value">${r.name.join('、')}</div></div>`);
+    rw.innerHTML = `<div class="modal-readings-grid" style="margin-bottom:12px;">${blocks.join('')}</div>`;
+  } else {
+    rw.innerHTML = `<div style="font-size:1.3rem;color:var(--text2);text-align:center;margin-bottom:10px;">${item.reading||''}</div>`;
+  }
+  document.getElementById('study-card-meaning').textContent = getDisplayMeaning(item);
+  const desc = item.description || '';
+  document.getElementById('study-card-desc').textContent = desc;
+  document.getElementById('study-card-divider').style.display = desc ? 'block' : 'none';
+  document.getElementById('study-prev-btn').disabled = studyLearnIndex === 0;
+  const nb = document.getElementById('study-next-btn');
+  nb.textContent = studyLearnIndex === total-1 ? 'Start Quiz →' : 'Next →';
+}
+function studyNav(dir) {
+  if (dir === -1 && studyLearnIndex > 0) {
+    studyLearnIndex--;
+    showStudyCard();
+  } else if (dir === 1) {
+    if (studyLearnIndex < studyQueue.length - 1) {
+      studyLearnIndex++;
+      showStudyCard();
+    } else {
+      beginStudyQuiz();
+    }
+  }
+}
+
+// ── STUDY QUIZ PHASE ──
+function beginStudyQuiz() {
+  studyQuizQueue = shuffle([...studyQueue]);
+  studyQuizIndex = 0; studyQuizResults = [];
+  document.getElementById('study-learn-wrap').style.display = 'none';
+  document.getElementById('study-quiz-wrap').style.display = 'block';
+  startStudyItem();
+}
+function startStudyItem() {
+  studyCurrentItem = studyQuizQueue[studyQuizIndex];
+  studyCurrentPrompts = buildPrompts(studyCurrentItem);
+  studyCurrentPromptIndex = 0; studyItemHadWrong = false; studyPromptWrongCount = 0;
+  updateStudyQuizProgress();
+  showStudyPrompt();
+}
+function updateStudyQuizProgress() {
+  document.getElementById('study-quiz-fill').style.width = (studyQuizIndex/studyQuizQueue.length)*100+'%';
+  document.getElementById('study-quiz-text').textContent = `${studyQuizIndex+1} / ${studyQuizQueue.length}`;
+}
+function showStudyPrompt() {
+  const prompt = studyCurrentPrompts[studyCurrentPromptIndex];
+  const item = studyCurrentItem;
+  const lbl = document.getElementById('study-prompt-label');
+  lbl.textContent = prompt.label;
+  lbl.className = 'quiz-prompt-label '+(prompt.mode==='reading'?'reading':'meaning');
+  document.getElementById('study-prompt').textContent = item.kanji;
+  document.getElementById('study-hint').textContent = `${item.category} › ${item.subcategory}`;
+  const ge = document.getElementById('study-gender-hint');
+  if (item.gender) { const icon=item.gender==='Male'?'♂':item.gender==='Female'?'♀':'⚥'; const color=item.gender==='Male'?'#2980b9':item.gender==='Female'?'#e8799a':'#27ae60'; ge.textContent=`${icon} ${item.gender}`; ge.style.cssText=`color:${color};background:${color}22;border:1px solid ${color}44;display:inline-block;`; }
+  else { ge.textContent=''; ge.style.display=''; }
+  document.getElementById('study-step-indicator').innerHTML = studyCurrentPrompts.map((_,i) =>
+    `<div class="step-dot${i<studyCurrentPromptIndex?' done':i===studyCurrentPromptIndex?' active':''}"></div>`).join('');
+  const input = document.getElementById('study-input');
+  input.value=''; input.disabled=false;
+  input.className='quiz-input '+(prompt.mode==='reading'?'reading-mode':'meaning-mode');
+  input.placeholder = prompt.mode==='reading'?'Type the reading…':'Type the meaning…';
+  if (prompt.mode==='reading') attachWanakana(input); else detachWanakana(input);
+  document.getElementById('study-feedback').classList.remove('show');
+  document.getElementById('study-btn-submit').style.display='';
+  document.getElementById('study-btn-next').style.display='none';
+  document.getElementById('study-answer-hint').textContent='';
+  studyPromptWrongCount=0;
+  setTimeout(()=>input.focus(),50);
+}
+function submitStudyAnswer() {
+  const prompt = studyCurrentPrompts[studyCurrentPromptIndex];
+  const input = document.getElementById('study-input');
+  const userAns = input.value.trim();
+  if (!userAns) return;
+  let correct=false, closeMatch=false, correctAnswer='';
+  if (prompt.mode==='reading') {
+    const accepted = getAcceptedReadings(studyCurrentItem, prompt.type);
+    correct = checkReading(userAns, accepted);
+    correctAnswer = accepted.join(' / ');
+  } else {
+    const result = checkMeaning(userAns, studyCurrentItem);
+    if (result.result==='correct') correct=true;
+    else if (result.result==='close') closeMatch=true;
+    correctAnswer = getMeanings(studyCurrentItem).join(', ');
+  }
+  // Close match
+  if (closeMatch) {
+    input.className='quiz-input shake';
+    setTimeout(()=>input.className='quiz-input '+(prompt.mode==='reading'?'reading-mode':'meaning-mode'),500);
+    document.getElementById('study-feedback').classList.add('show');
+    document.getElementById('study-feedback-result').textContent='⚠️ Close!';
+    document.getElementById('study-feedback-result').className='feedback-result close';
+    document.getElementById('study-feedback-answer').textContent=`Did you mean: ${correctAnswer}`;
+    document.getElementById('study-feedback-description').textContent='';
+    document.getElementById('study-feedback-notes').textContent='';
+    input.value=''; setTimeout(()=>input.focus(),100); return;
+  }
+  // Wrong — retry
+  if (!correct) {
+    studyItemHadWrong=true; studyPromptWrongCount++;
+    input.className='quiz-input incorrect';
+    if (studyPromptWrongCount>=2) document.getElementById('study-answer-hint').textContent=`Answer: ${correctAnswer}`;
+    input.value='';
+    setTimeout(()=>{input.className='quiz-input '+(prompt.mode==='reading'?'reading-mode':'meaning-mode');input.focus();},400);
+    return;
+  }
+  // Correct
+  input.className='quiz-input correct'; input.disabled=true;
+  const isLastPrompt = studyCurrentPromptIndex >= studyCurrentPrompts.length-1;
+  if (isLastPrompt) {
+    finaliseStudyItem(correctAnswer);
+  } else {
+    document.getElementById('study-feedback').classList.add('show');
+    document.getElementById('study-feedback-result').textContent='✅ Correct!';
+    document.getElementById('study-feedback-result').className='feedback-result correct';
+    document.getElementById('study-feedback-answer').textContent='';
+    document.getElementById('study-feedback-description').textContent='';
+    document.getElementById('study-feedback-notes').textContent='';
+    document.getElementById('study-btn-submit').style.display='none';
+    document.getElementById('study-btn-next').style.display='';
+  }
+}
+function finaliseStudyItem(correctAnswer) {
+  const newLevel = studyItemHadWrong ? 1 : 2;
+  studyCurrentItem.level = newLevel;
+  studyQuizResults.push({item:studyCurrentItem, correct:!studyItemHadWrong});
+  const fb = document.getElementById('study-feedback'); fb.classList.add('show');
+  const re = document.getElementById('study-feedback-result');
+  re.textContent = !studyItemHadWrong ? '✅ Correct!' : '❌ Incorrect';
+  re.className = 'feedback-result '+(!studyItemHadWrong?'correct':'incorrect');
+  document.getElementById('study-feedback-answer').textContent = (studyItemHadWrong&&correctAnswer)?`Answer: ${correctAnswer}`:'';
+  document.getElementById('study-feedback-description').textContent = studyCurrentItem.description||'';
+  document.getElementById('study-feedback-notes').textContent = studyCurrentItem.notes?'📝 '+studyCurrentItem.notes:'';
+  document.getElementById('study-btn-submit').style.display='none';
+  document.getElementById('study-btn-next').textContent='Next →';
+  document.getElementById('study-btn-next').style.display='';
+}
+function handleStudyNext() {
+  if (studyQuizResults.length > studyQuizIndex) {
+    studyQuizIndex++;
+    if (studyQuizIndex >= studyQuizQueue.length) showStudyResults();
+    else startStudyItem();
+  } else {
+    studyCurrentPromptIndex++;
+    showStudyPrompt();
+  }
+}
+function handleStudyKey(e) {
+  if (e.key==='Enter'||e.key===' ') {
+    if (e.key===' '&&document.activeElement===document.getElementById('study-input')) return;
+    const nb=document.getElementById('study-btn-next');
+    const sb2=document.getElementById('study-btn-submit');
+    if (nb.style.display!=='none') handleStudyNext();
+    else if (sb2.style.display!=='none') submitStudyAnswer();
+    if (e.key===' ') e.preventDefault();
+  }
+}
+async function showStudyResults() {
+  document.getElementById('study-quiz-wrap').style.display='none';
+  document.getElementById('study-results').classList.add('show');
+  const correct = studyQuizResults.filter(r=>r.correct).length;
+  const total = studyQuizResults.length;
+  document.getElementById('study-results-score').textContent = Math.round((correct/total)*100)+'%';
+  document.getElementById('study-results-fraction').textContent = `${correct} / ${total} first try correct`;
+  document.getElementById('study-results-breakdown').innerHTML = studyQuizResults.map(r =>
+    `<div class="results-item">
+      <div class="results-kanji">${r.item.kanji}</div>
+      <div class="results-reading">${getDisplayReading(r.item)}</div>
+      <div style="font-size:0.75rem;color:${r.correct?'var(--lvl-apprentice)':'var(--lvl-review)'}">→ ${LEVEL_NAMES[r.item.level]}</div>
+      <div>${r.correct?'✅':'❌'}</div>
+    </div>`).join('');
+  renderDashboard();
+  await saveLevelBatch(studyQuizResults.map(r=>({item_id:r.item.id,level:r.item.level})));
+}
+function backToStudyConfig() {
+  document.getElementById('study-results').classList.remove('show');
+  document.getElementById('study-quiz-wrap').style.display='none';
+  document.getElementById('study-learn-wrap').style.display='none';
+  document.getElementById('study-config-panel').style.display='block';
+  updateStudyPoolInfo();
+}
+async function endStudyQuiz() {
+  const updates = studyQuizResults.map(r=>({item_id:r.item.id,level:r.item.level}));
+  if (updates.length) await saveLevelBatch(updates);
+  backToStudyConfig();
   renderDashboard();
 }
 
