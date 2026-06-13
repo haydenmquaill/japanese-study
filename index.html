@@ -1665,6 +1665,14 @@ function checkAndUnlockNewLevels() {
 function updateSSubcat() {
   const cat = document.getElementById('sconfig-cat').value;
   const sel = document.getElementById('sconfig-subcat');
+  const field = sel.closest('.config-item');
+  // Hide subcategory for Kanji — level gate handles ordering
+  if (cat === 'Kanji') {
+    if (field) field.style.display = 'none';
+    sel.value = '';
+    return;
+  }
+  if (field) field.style.display = '';
   sel.innerHTML = '<option value="">All Subcategories</option>';
   getSubcats(cat).forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
 }
