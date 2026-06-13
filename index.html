@@ -1317,6 +1317,12 @@ function checkMeaning(input,item){
 
 // ── PROMPTS ──
 function buildPrompts(item) {
+  // Onomatopoeia — kanji field IS the kana, so only quiz meaning
+  if (item.category === 'Onomatopoeia') {
+    return getMeanings(item).length
+      ? [{type:'meaning', label:'Meaning', mode:'meaning'}]
+      : [{type:'reading', label:'Reading', mode:'reading'}];
+  }
   if (item.readings) {
     const r=item.readings,pool=[];
     if(r.on&&r.on.length) pool.push({type:'on',label:"On'yomi",mode:'reading'});
@@ -1325,7 +1331,8 @@ function buildPrompts(item) {
     return pool.length?shuffle(pool):[{type:'reading',label:'Reading',mode:'reading'}];
   }
   const prompts=[{type:'reading',label:'Reading',mode:'reading'}];
-  if(item.category==='Vocab'&&getMeanings(item).length) prompts.push({type:'meaning',label:'Meaning',mode:'meaning'});
+  if((item.category==='Vocab'||item.category==='Idiom')&&getMeanings(item).length)
+    prompts.push({type:'meaning',label:'Meaning',mode:'meaning'});
   return prompts;
 }
 function getAcceptedReadings(item,promptType) {
@@ -1617,22 +1624,23 @@ function getWKLevel(item) {
 }
 
 function isAvailableToStudy(item) {
-  // Already in the review cycle — always available
   if (item.level > 0) return true;
 
   if (item.category === 'Kanji') {
-    // Layer 1 — WK level gate
     const level = getWKLevel(item);
     return level ? unlockedLevels.has(level) : false;
   }
 
-  // Layer 2 — for vocab and proper nouns
-  // Every kanji component must have been studied (level > 0)
+  // Onomatopoeia — pure kana, no prerequisites
+  if (item.category === 'Onomatopoeia') return true;
+
+  // Everything else — all kanji components must have been studied (level > 0)
   const components = getKanjiComponents(item.kanji);
+  if (!components.length) return true; // kana-only item
   return components.every(ch => {
     const kanjiItem = items.find(i => i.kanji === ch && i.category === 'Kanji');
-    if (!kanjiItem) return true; // not in our DB — don't block
-    return kanjiItem.level > 0;  // must have been studied at least once
+    if (!kanjiItem) return true;
+    return kanjiItem.level > 0;
   });
 }
 
