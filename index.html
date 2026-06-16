@@ -354,15 +354,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
     <div class="stats-grid" id="stats-grid"></div>
     <div class="level-breakdown"><h3>Progress by Level</h3><div class="level-bars" id="level-bars"></div></div>
     <div class="section-title">Quick Start</div>
-    <div class="quick-actions">
-      <div class="quick-btn" onclick="showView('study')">
-        <div class="qb-icon">📖</div><div class="qb-title">Study</div>
-        <div class="qb-sub" id="study-sub">Learn locked items</div>
-      </div>
-      <div class="quick-btn" onclick="showView('review')">
-        <div class="qb-icon">🔄</div><div class="qb-title">Review</div>
-        <div class="qb-sub">Practice unlocked items</div>
-      </div>
+    <div class="quick-actions" style="grid-template-columns:1fr 1fr;">
       <div class="quick-btn" onclick="startWeakItems()">
         <div class="qb-icon">⚠️</div><div class="qb-title">Weak Items</div>
         <div class="qb-sub" id="weak-sub">Level 1 — needs attention</div>
@@ -608,7 +600,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       <label>Category</label>
       <select class="qs-select" id="qs-cat" onchange="updateQSPool()"><option value="">All Categories</option></select>
     </div>
-    <div class="qs-field" id="qs-level-field" style="display:none">
+    <div class="qs-field" id="qs-level-field">
       <label>Max Level (show items below)</label>
       <select class="qs-select" id="qs-level" onchange="updateQSPool()">
         <option value="1">1 — Review</option>
@@ -874,8 +866,13 @@ async function saveLevelBatch(updates) {
     await Promise.all(updates.map(u => saveLevel(u.item_id, u.level)));
     await saveLastQuizzed(updates.map(u => u.item_id));
     // Check if any new WK levels should unlock
+    const sizeBefore = unlockedLevels.size;
     const newUnlocks = checkAndUnlockNewLevels();
-    await updateStreak(); // also saves unlocked_levels
+    // Always save unlocked levels if they changed
+    if (unlockedLevels.size !== sizeBefore) {
+      await saveUnlockedLevels();
+    }
+    await updateStreak();
     if (newUnlocks.length) {
       const msg = newUnlocks.length === 1
         ? `🔓 WK Level ${newUnlocks[0]} unlocked!`
@@ -897,14 +894,18 @@ async function updateStreak() {
   const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
   streak = last === yesterday ? streak + 1 : 1;
   userSettings = { ...userSettings, streak, last_study_date: today };
+  const levelsToSave = unlockedLevels.size > 0
+    ? JSON.stringify(Array.from(unlockedLevels))
+    : JSON.stringify(userSettings.unlocked_levels || [1]);
   await sb.rpc('upsert_user_settings', {
     p_streak: streak,
     p_last_study_date: today,
-    p_unlocked_levels: JSON.stringify(Array.from(unlockedLevels))
+    p_unlocked_levels: levelsToSave
   });
 }
 
 async function saveUnlockedLevels() {
+  if (unlockedLevels.size === 0) return; // never overwrite with empty
   userSettings.unlocked_levels = Array.from(unlockedLevels);
   await sb.rpc('upsert_user_settings', {
     p_streak: userSettings.streak || 0,
@@ -1049,14 +1050,6 @@ function renderDashboard() {
 }
 
 function updateQSDashboard() {
-  const locked = items.filter(i => i.level === 0).length;
-  const available = items.filter(i => i.level === 0 && isAvailableToStudy(i)).length;
-  const studySub = document.getElementById('study-sub');
-  if (studySub) {
-    if (available > 0) studySub.textContent = `${available} items ready to learn`;
-    else if (locked > 0) studySub.textContent = `Keep levelling up to unlock more`;
-    else studySub.textContent = `All items studied!`;
-  }
   const weak = items.filter(i => i.level === 1).length;
   document.getElementById('weak-sub').textContent = weak > 0 ? `${weak} items slipping` : 'No weak items — great!';
   const recent = items.filter(i => recentItemIds.has(i.id) && i.level < 5).length;
@@ -1067,15 +1060,8 @@ function updateQSDashboard() {
 function openQSModal(mode) {
   qsMode = mode;
   const overlay = document.getElementById('qs-modal-overlay');
-  const catField = document.getElementById('qs-cat-field');
-  const levelField = document.getElementById('qs-level-field');
-  catField.style.display = 'none';
-  levelField.style.display = 'none';
-  if (mode === 'recent') {
-    document.getElementById('qs-modal-title').textContent = '📅 Recent';
-    document.getElementById('qs-modal-sub').textContent = 'Items you\'ve studied in the last 7 days';
-    levelField.style.display = 'block';
-  }
+  document.getElementById('qs-modal-title').textContent = '📅 Recent';
+  document.getElementById('qs-modal-sub').textContent = 'Items you\'ve studied in the last 7 days';
   document.getElementById('qs-cat').value = '';
   document.getElementById('qs-level').value = '3';
   updateQSPool();
@@ -1089,18 +1075,28 @@ function closeQSModal(e) {
 }
 
 function updateQSPool() {
+  const cat = document.getElementById('qs-cat').value;
   const maxLevel = parseInt(document.getElementById('qs-level').value);
-  let pool = [];
-  if (qsMode === 'recent') pool = items.filter(i => recentItemIds.has(i.id) && i.level > 0 && i.level <= maxLevel);
+  const pool = items.filter(i =>
+    recentItemIds.has(i.id) &&
+    i.level > 0 &&
+    i.level <= maxLevel &&
+    (!cat || i.category === cat)
+  );
   const info = document.getElementById('qs-pool-info');
   info.textContent = `${pool.length} item${pool.length !== 1 ? 's' : ''} available`;
   document.getElementById('qs-start-btn').disabled = pool.length === 0;
 }
 
 function startQSQuiz() {
+  const cat = document.getElementById('qs-cat').value;
   const maxLevel = parseInt(document.getElementById('qs-level').value);
-  let pool = [];
-  if (qsMode === 'recent') pool = items.filter(i => recentItemIds.has(i.id) && i.level > 0 && i.level <= maxLevel);
+  const pool = items.filter(i =>
+    recentItemIds.has(i.id) &&
+    i.level > 0 &&
+    i.level <= maxLevel &&
+    (!cat || i.category === cat)
+  );
   closeQSModal();
   launchCustomQuiz(pool, 'review');
 }
@@ -1343,6 +1339,11 @@ function getAcceptedReadings(item,promptType) {
 // ── WANAKANA ──
 function attachWanakana(el){if(window.wanakana){try{wanakana.unbind(el);}catch(e){}wanakana.bind(el,{IMEMode:true});}}
 function detachWanakana(el){if(window.wanakana){try{wanakana.unbind(el);}catch(e){}}}
+function hasInvalidKana(str) {
+  // Returns true if string contains non-kana characters (kanji, latin etc)
+  // Allows hiragana, katakana, ー, ・, spaces
+  return /[^\u3040-\u309F\u30A0-\u30FF\u30FC\u30FB\s]/.test(str);
+}
 
 // ── QUIZ CONFIG ──
 function setQuizMode(mode){ quizMode=mode; updateQuizPoolInfo(); }
@@ -1428,6 +1429,18 @@ function submitAnswer(){
   const prompt=currentPrompts[currentPromptIndex];
   const input=document.getElementById('quiz-input');
   const userAns=input.value.trim();
+  if(!userAns) return;
+  // Shake and reject if reading mode contains non-kana characters
+  if(prompt.mode==='reading' && hasInvalidKana(userAns)){
+    input.className='quiz-input shake';
+    setTimeout(()=>input.className='quiz-input reading-mode',500);
+    document.getElementById('answer-hint').textContent='Please type in hiragana only';
+    setTimeout(()=>{
+      const hint=document.getElementById('answer-hint');
+      if(hint.textContent==='Please type in hiragana only') hint.textContent='';
+    },2000);
+    return;
+  }
   let correct=false,closeMatch=false,correctAnswer='';
   if(prompt.mode==='reading'){
     const accepted=getAcceptedReadings(currentItem,prompt.type);
@@ -1803,6 +1816,17 @@ function submitStudyAnswer() {
   const input = document.getElementById('study-input');
   const userAns = input.value.trim();
   if (!userAns) return;
+  // Shake and reject if reading mode contains non-kana characters
+  if (prompt.mode==='reading' && hasInvalidKana(userAns)) {
+    input.className='quiz-input shake';
+    setTimeout(()=>input.className='quiz-input reading-mode',500);
+    document.getElementById('study-answer-hint').textContent='Please type in hiragana only';
+    setTimeout(()=>{
+      const hint=document.getElementById('study-answer-hint');
+      if(hint.textContent==='Please type in hiragana only') hint.textContent='';
+    },2000);
+    return;
+  }
   let correct=false, closeMatch=false, correctAnswer='';
   if (prompt.mode==='reading') {
     const accepted = getAcceptedReadings(studyCurrentItem, prompt.type);
