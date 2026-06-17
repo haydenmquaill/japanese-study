@@ -894,23 +894,24 @@ async function updateStreak() {
   const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
   streak = last === yesterday ? streak + 1 : 1;
   userSettings = { ...userSettings, streak, last_study_date: today };
-  const levelsToSave = unlockedLevels.size > 0
-    ? JSON.stringify(Array.from(unlockedLevels))
-    : JSON.stringify(userSettings.unlocked_levels || [1]);
+  const levelsArr = unlockedLevels.size > 0
+    ? Array.from(unlockedLevels)
+    : (userSettings.unlocked_levels || [1]);
   await sb.rpc('upsert_user_settings', {
     p_streak: streak,
     p_last_study_date: today,
-    p_unlocked_levels: levelsToSave
+    p_unlocked_levels: levelsArr
   });
 }
 
 async function saveUnlockedLevels() {
   if (unlockedLevels.size === 0) return; // never overwrite with empty
-  userSettings.unlocked_levels = Array.from(unlockedLevels);
+  const levelsArr = Array.from(unlockedLevels);
+  userSettings.unlocked_levels = levelsArr;
   await sb.rpc('upsert_user_settings', {
     p_streak: userSettings.streak || 0,
     p_last_study_date: userSettings.last_study_date || new Date().toISOString().split('T')[0],
-    p_unlocked_levels: JSON.stringify(Array.from(unlockedLevels))
+    p_unlocked_levels: levelsArr
   });
 }
 async function saveNote(itemId, description, notes) {
