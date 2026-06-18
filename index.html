@@ -359,9 +359,9 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
         <div class="qb-icon">⚠️</div><div class="qb-title">Weak Items</div>
         <div class="qb-sub" id="weak-sub">Level 1 — needs attention</div>
       </div>
-      <div class="quick-btn" onclick="openQSModal('recent')">
-        <div class="qb-icon">📅</div><div class="qb-title">Recent</div>
-        <div class="qb-sub" id="recent-sub">Last 7 days</div>
+      <div class="quick-btn" onclick="openQSModal('stale')">
+        <div class="qb-icon">🕰️</div><div class="qb-title">Stale Items</div>
+        <div class="qb-sub" id="stale-sub">Not reviewed recently</div>
       </div>
     </div>
   </div>
@@ -414,11 +414,20 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
           <div class="config-item"><label>Last Reviewed</label>
             <select id="qconfig-days" onchange="updateQuizPoolInfo()">
               <option value="0" selected>Any time</option>
-              <option value="1">Today</option>
-              <option value="3">Last 3 days</option>
-              <option value="7">Last 7 days</option>
-              <option value="14">Last 14 days</option>
-              <option value="30">Last 30 days</option>
+              <optgroup label="Recently reviewed">
+                <option value="recent_1">Today</option>
+                <option value="recent_3">Last 3 days</option>
+                <option value="recent_7">Last 7 days</option>
+                <option value="recent_14">Last 14 days</option>
+                <option value="recent_30">Last 30 days</option>
+              </optgroup>
+              <optgroup label="Not reviewed recently">
+                <option value="stale_7">Not in last 7 days</option>
+                <option value="stale_14">Not in last 14 days</option>
+                <option value="stale_30">Not in last 30 days</option>
+                <option value="stale_60">Not in last 60 days</option>
+                <option value="stale_never">Never reviewed</option>
+              </optgroup>
             </select>
           </div>
           <div class="config-item"><label>Questions</label><input type="number" id="qconfig-count" value="10" min="1" max="100" oninput="updateQuizPoolInfo()"></div>
@@ -608,6 +617,12 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
         <option value="3" selected>3 — Guru</option>
         <option value="4">4 — Master</option>
       </select>
+    </div>
+    <div class="qs-field" id="qs-enlightened-field" style="display:none">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+        <input type="checkbox" id="qs-enlightened" onchange="updateQSPool()" checked style="width:18px;height:18px;accent-color:var(--accent);">
+        Include Enlightened (not reviewed in 60+ days)
+      </label>
     </div>
     <div class="qs-pool-info" id="qs-pool-info"></div>
     <div class="qs-btn-row">
@@ -1053,20 +1068,41 @@ function renderDashboard() {
 function updateQSDashboard() {
   const weak = items.filter(i => i.level === 1).length;
   document.getElementById('weak-sub').textContent = weak > 0 ? `${weak} items slipping` : 'No weak items — great!';
-  const recent = items.filter(i => recentItemIds.has(i.id) && i.level < 5).length;
-  document.getElementById('recent-sub').textContent = recent > 0 ? `${recent} items from this week` : 'No recent items';
+  const stale = getStalePool(true).length;
+  const staleEl = document.getElementById('stale-sub');
+  if (staleEl) staleEl.textContent = stale > 0 ? `${stale} items need a refresh` : 'All up to date!';
 }
 
 // ── QUICK START MODALS ──
+function getStalePool(includeEnlightened) {
+  const cat = document.getElementById('qs-cat')?.value || '';
+  const now = Date.now();
+  const cutoff14 = new Date(now - 14*24*60*60*1000).toISOString();
+  const cutoff60 = new Date(now - 60*24*60*60*1000).toISOString();
+  return items.filter(i => {
+    if (i.level < 2) return false; // exclude locked and review-level
+    if (!includeEnlightened && i.level === 5) return false;
+    if (cat && i.category !== cat) return false;
+    const lq = i.last_quizzed || null;
+    if (i.level === 5) return !lq || lq < cutoff60; // enlightened: 60 days
+    return !lq || lq < cutoff14; // levels 2-4: 14 days
+  });
+}
+
 function openQSModal(mode) {
   qsMode = mode;
-  const overlay = document.getElementById('qs-modal-overlay');
-  document.getElementById('qs-modal-title').textContent = '📅 Recent';
-  document.getElementById('qs-modal-sub').textContent = 'Items you\'ve studied in the last 7 days';
   document.getElementById('qs-cat').value = '';
-  document.getElementById('qs-level').value = '3';
+  document.getElementById('qs-level-field').style.display = 'none';
+  document.getElementById('qs-enlightened-field').style.display = 'none';
+
+  if (mode === 'stale') {
+    document.getElementById('qs-modal-title').textContent = '🕰️ Stale Items';
+    document.getElementById('qs-modal-sub').textContent = 'Items not reviewed recently — levels 2-4 (14+ days) and Enlightened (60+ days)';
+    document.getElementById('qs-enlightened-field').style.display = 'block';
+    document.getElementById('qs-enlightened').checked = true;
+  }
   updateQSPool();
-  overlay.classList.add('open');
+  document.getElementById('qs-modal-overlay').classList.add('open');
 }
 
 function closeQSModal(e) {
@@ -1076,28 +1112,22 @@ function closeQSModal(e) {
 }
 
 function updateQSPool() {
-  const cat = document.getElementById('qs-cat').value;
-  const maxLevel = parseInt(document.getElementById('qs-level').value);
-  const pool = items.filter(i =>
-    recentItemIds.has(i.id) &&
-    i.level > 0 &&
-    i.level <= maxLevel &&
-    (!cat || i.category === cat)
-  );
-  const info = document.getElementById('qs-pool-info');
-  info.textContent = `${pool.length} item${pool.length !== 1 ? 's' : ''} available`;
+  let pool = [];
+  if (qsMode === 'stale') {
+    const includeEnlightened = document.getElementById('qs-enlightened').checked;
+    pool = getStalePool(includeEnlightened);
+  }
+  const el = document.getElementById('qs-pool-info');
+  el.textContent = `${pool.length} item${pool.length !== 1 ? 's' : ''} available`;
   document.getElementById('qs-start-btn').disabled = pool.length === 0;
 }
 
 function startQSQuiz() {
-  const cat = document.getElementById('qs-cat').value;
-  const maxLevel = parseInt(document.getElementById('qs-level').value);
-  const pool = items.filter(i =>
-    recentItemIds.has(i.id) &&
-    i.level > 0 &&
-    i.level <= maxLevel &&
-    (!cat || i.category === cat)
-  );
+  let pool = [];
+  if (qsMode === 'stale') {
+    const includeEnlightened = document.getElementById('qs-enlightened').checked;
+    pool = getStalePool(includeEnlightened);
+  }
   closeQSModal();
   launchCustomQuiz(pool, 'review');
 }
@@ -1353,13 +1383,24 @@ function getQuizPool(){
   const subcat=document.getElementById('qconfig-subcat')?.value||'';
   const minLevel=parseInt(document.getElementById('qconfig-minlevel')?.value||'2');
   const maxLevel=parseInt(document.getElementById('qconfig-maxlevel')?.value||'5');
-  const days=parseInt(document.getElementById('qconfig-days')?.value||'0');
-  const cutoff = days > 0 ? new Date(Date.now() - days*24*60*60*1000).toISOString() : null;
+  const daysVal=document.getElementById('qconfig-days')?.value||'0';
   return items.filter(i=>{
     if(cat&&i.category!==cat)return false;
     if(subcat&&!subcatMatches(i,subcat))return false;
     if(i.level<minLevel||i.level>maxLevel)return false;
-    if(cutoff){const lq=i.last_quizzed||null;if(!lq||lq<cutoff)return false;}
+    const lq = i.last_quizzed || null;
+    if(daysVal==='0') return true; // any time
+    if(daysVal==='stale_never') return !lq; // never reviewed
+    if(daysVal.startsWith('recent_')){
+      const days = parseInt(daysVal.split('_')[1]);
+      const cutoff = new Date(Date.now() - days*24*60*60*1000).toISOString();
+      return lq && lq >= cutoff;
+    }
+    if(daysVal.startsWith('stale_')){
+      const days = parseInt(daysVal.split('_')[1]);
+      const cutoff = new Date(Date.now() - days*24*60*60*1000).toISOString();
+      return !lq || lq < cutoff;
+    }
     return true;
   });
 }
