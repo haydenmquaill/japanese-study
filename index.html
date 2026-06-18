@@ -682,6 +682,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 let items = [];
 let currentUser = null;
 let userProgress = {};
+let userLastQuizzed = {};
 let userSynonyms = {};
 let userNotes = {};
 let userSettings = { streak: 0, last_study_date: null, unlocked_levels: [] };
@@ -828,12 +829,12 @@ async function loadUserProgress() {
   ]);
   userProgress = {};
   progressRows.forEach(r => userProgress[r.item_id] = r.level);
+  userLastQuizzed = {};
+  progressRows.forEach(r => { if (r.last_quizzed) userLastQuizzed[r.item_id] = r.last_quizzed; });
   userSynonyms = {};
   synonymRows.forEach(r => { if (!userSynonyms[r.item_id]) userSynonyms[r.item_id] = []; userSynonyms[r.item_id].push(r.synonym); });
   userNotes = {};
   noteRows.forEach(r => userNotes[r.item_id] = { description: r.description, notes: r.notes });
-  // Store last_quizzed on progress rows for Later Reviewed filter
-  progressRows.forEach(r => { if (r.last_quizzed) { const item = items.find(i => i.id === r.item_id); if (item) item.last_quizzed = r.last_quizzed; } });
   if (settingsRes.data) {
     userSettings = settingsRes.data;
     unlockedLevels = new Set(settingsRes.data.unlocked_levels || []);
@@ -845,6 +846,7 @@ function applyProgress() {
   items.forEach(item => {
     item.level = userProgress[item.id] ?? 0;
     item.user_synonyms = userSynonyms[item.id] || [];
+    if (userLastQuizzed[item.id]) item.last_quizzed = userLastQuizzed[item.id];
     if (userNotes[item.id]) {
       if (userNotes[item.id].description !== null) item.description = userNotes[item.id].description;
       if (userNotes[item.id].notes !== null) item.notes = userNotes[item.id].notes;
@@ -870,6 +872,7 @@ async function saveLastQuizzed(itemIds) {
   itemIds.forEach(id => {
     const item = items.find(i => i.id === id);
     if (item) item.last_quizzed = now;
+    userLastQuizzed[id] = now;
     if ((userProgress[id] ?? 0) < 5) recentItemIds.add(id);
   });
 }
