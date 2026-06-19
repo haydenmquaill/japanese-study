@@ -1192,12 +1192,7 @@ function getCatCount(cat) {
   return items.filter(i => i.category === cat).length;
 }
 
-let renderDictTimer = null;
 function renderDict() {
-  clearTimeout(renderDictTimer);
-  renderDictTimer = setTimeout(_renderDict, 50);
-}
-function _renderDict() {
   document.getElementById('dict-skeleton')?.remove();
   const q = document.getElementById('dict-search').value.toLowerCase();
   const cat = document.getElementById('filter-cat').value;
@@ -1228,6 +1223,11 @@ function _renderDict() {
         <div class="badge-row"><span class="badge level-badge-${item.level}">${LEVEL_NAMES[item.level]}</span>${lockBadge}<span class="badge cat-badge">${item.category}</span>${item.category!=='Given Name'?`<span class="badge cat-badge">${item.subcategory}</span>`:''} ${gBadge}</div>
       </div></div>`;
   }).join('')+(filtered.length>200?`<div class="empty-state" style="padding:16px">Showing 200 of ${filtered.length} — refine your search</div>`:'');
+  // Force repaint — without this, filter changes don't visually update until tab switch
+  const dl = document.getElementById('dict-list');
+  dl.style.display = 'none';
+  dl.offsetHeight;
+  dl.style.display = '';
 }
 
 // ── MODAL ──
