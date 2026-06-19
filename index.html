@@ -371,8 +371,9 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
     <div class="dict-controls">
       <input class="search-input" id="dict-search" placeholder="Search kanji, reading, meaning…" oninput="renderDict()">
       <div class="filter-row">
-        <select class="filter-sel" id="filter-cat" onchange="updateSubcatFilter();renderDict()"><option value="">All Categories</option></select>
+        <select class="filter-sel" id="filter-cat" onchange="updateSubcatFilter();updatePosFilter();renderDict()"><option value="">All Categories</option></select>
         <select class="filter-sel" id="filter-subcat" onchange="renderDict()"><option value="">All Subcategories</option></select>
+        <select class="filter-sel" id="filter-pos" onchange="renderDict()" style="display:none"><option value="">All Parts of Speech</option></select>
         <select class="filter-sel" id="filter-level" onchange="renderDict()">
           <option value="">All Levels</option>
           <option value="0">0 — Locked</option><option value="1">1 — Review</option>
@@ -704,12 +705,13 @@ let recentItemIds = new Set();
 const LEVEL_NAMES = ['Locked','Review','Apprentice','Guru','Master','Enlightened'];
 const LEVEL_COLORS = ['#555570','#c0392b','#e67e22','#8e44ad','#2980b9','#27ae60'];
 const VOCAB_GROUPS = {
-  'Verbs':['Transitive Verb','Intransitive Verb','Godan Verb','Ichidan Verb','する Verb'],
-  'Nouns':['Noun','Proper Noun','Independent Noun','Verbal Noun','Counter'],
-  'Adjectives':['い Adjective','な Adjective','の Adjective','Adjective'],
-  'Adverbs':['Adverb'],
-  'Expressions':['Expression','Interjection','Conjunction'],
-  'Other':['Prefix','Suffix','Pronoun','Numeral'],
+  'Nouns':              ['Nouns', 'Noun'],
+  'Verbs':              ['Verbs'],
+  'Adjectives':         ['Adjectives'],
+  'Adverbs':            ['Adverbs'],
+  'Expressions':        ['Expressions'],
+  'Particles & Grammar':['Particles & Grammar'],
+  'Other':              ['Other'],
 };
 
 // ── AUTH ──
@@ -893,8 +895,8 @@ async function saveLevelBatch(updates) {
     await updateStreak();
     if (newUnlocks.length) {
       const msg = newUnlocks.length === 1
-        ? `🔓 WK Level ${newUnlocks[0]} unlocked!`
-        : `🔓 Levels ${newUnlocks.join(', ')} unlocked!`;
+        ? `🔓 ${newUnlocks[0]} unlocked!`
+        : `🔓 ${newUnlocks.length} kanji batches unlocked!`;
       showSync(msg, 'success');
       setTimeout(() => showSync('', ''), 3000);
     } else {
@@ -998,18 +1000,19 @@ function populateFilters() {
     sel.innerHTML = '<option value="">All Categories</option>';
     cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o); });
   });
+  updatePosFilter();
 }
 
 function getSubcats(cat) {
   if (cat === 'Vocab') return Object.keys(VOCAB_GROUPS);
   const subcats = [...new Set(items.filter(i => !cat || i.category === cat).map(i => i.subcategory))];
   return subcats.sort((a, b) => {
-    // Sort WK Level N numerically
-    const wkA = a.match(/^WK Level (\d+)$/);
-    const wkB = b.match(/^WK Level (\d+)$/);
-    if (wkA && wkB) return parseInt(wkA[1]) - parseInt(wkB[1]);
-    if (wkA) return -1; // WK levels before others
-    if (wkB) return 1;
+    // Sort "Category N-M" ranges numerically by start number
+    const rA = a.match(/(\d+)-(\d+)$/);
+    const rB = b.match(/(\d+)-(\d+)$/);
+    if (rA && rB) return parseInt(rA[1]) - parseInt(rB[1]);
+    if (rA) return -1;
+    if (rB) return 1;
     return a.localeCompare(b);
   });
 }
@@ -1018,9 +1021,19 @@ function subcatMatches(item, subcat) {
   if (item.category === 'Vocab' && VOCAB_GROUPS[subcat]) return VOCAB_GROUPS[subcat].includes(item.subcategory);
   return item.subcategory === subcat;
 }
+function updatePosFilter() {
+  const cat = document.getElementById('filter-cat').value;
+  const sel = document.getElementById('filter-pos');
+  if (cat !== 'Vocab') { sel.style.display = 'none'; sel.value = ''; return; }
+  // Build POS list from vocab items
+  const posSet = [...new Set(items.filter(i => i.category === 'Vocab' && i.pos).map(i => i.pos))].sort();
+  sel.innerHTML = '<option value="">All Parts of Speech</option>';
+  posSet.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; sel.appendChild(o); });
+  sel.style.display = '';
+}
+
 function updateSubcatFilter() {
   const cat = document.getElementById('filter-cat').value;
-  const sel = document.getElementById('filter-subcat');
   sel.innerHTML = '<option value="">All Subcategories</option>';
   getSubcats(cat).forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
 }
@@ -1185,9 +1198,11 @@ function renderDict() {
   const cat = document.getElementById('filter-cat').value;
   const subcat = document.getElementById('filter-subcat').value;
   const level = document.getElementById('filter-level').value;
+  const pos = document.getElementById('filter-pos').value;
   let filtered = items.filter(i => {
     if (cat && i.category !== cat) return false;
     if (subcat && !subcatMatches(i, subcat)) return false;
+    if (pos && i.pos !== pos) return false;
     if (level !== '' && i.level !== parseInt(level)) return false;
     if (q) return i.kanji.includes(q)||(i.reading||'').includes(q)||
       (i.readings?Object.values(i.readings).flat().some(r=>r.includes(q)):false)||
@@ -1231,7 +1246,7 @@ function openModal(id) {
     rw.innerHTML = `<div style="font-size:1.1rem;color:var(--text2);margin-bottom:3px;">${item.reading||''}</div>${item.romaji?`<div style="font-size:0.875rem;color:var(--text3);margin-bottom:10px;">${item.romaji}</div>`:''}`;
   }
   document.getElementById('modal-meaning').textContent = getDisplayMeaning(item);
-  document.getElementById('modal-category').textContent = `${item.category} › ${item.subcategory}${item.gender && item.gender !== item.subcategory ? ' › '+item.gender : ''}`;
+  document.getElementById('modal-category').textContent = `${item.category} › ${item.subcategory}${item.pos ? ' › ' + item.pos : ''}${item.gender && item.gender !== item.subcategory ? ' › '+item.gender : ''}`;
   // Description (read-only)
   const descEl = document.getElementById('modal-description');
   descEl.textContent = item.description || '';
@@ -1451,7 +1466,7 @@ function showPrompt(){
   lbl.textContent=prompt.label;
   lbl.className='quiz-prompt-label '+(prompt.mode==='reading'?'reading':'meaning');
   document.getElementById('quiz-prompt').textContent=item.kanji;
-  document.getElementById('quiz-hint').textContent=`${item.category} › ${item.subcategory}`;
+  document.getElementById('quiz-hint').textContent=`${item.category} › ${item.pos || item.subcategory}`;
   const ge=document.getElementById('quiz-gender-hint');
   if(item.gender){const icon=item.gender==='Male'?'♂':item.gender==='Female'?'♀':'⚥';const color=item.gender==='Male'?'#2980b9':item.gender==='Female'?'#e8799a':'#27ae60';ge.textContent=`${icon} ${item.gender}`;ge.style.cssText=`color:${color};background:${color}22;border:1px solid ${color}44;display:inline-block;`;}
   else{ge.textContent='';ge.style.display='';}
@@ -1675,56 +1690,82 @@ function getKanjiComponents(str) {
 }
 
 function getWKLevel(item) {
-  // Returns WK level number for a kanji item, or null
-  if (item.category !== 'Kanji') return null;
-  const m = item.subcategory.match(/^WK Level (\d+)$/);
-  return m ? parseInt(m[1]) : null;
+  // Returns batch key for a kanji item, or null
+  const kanji_cats = new Set(['Joyo', 'Jinmeiyo', 'Kanji Extended']);
+  if (!kanji_cats.has(item.category)) return null;
+  const m = item.subcategory.match(/^(.+) (\d+)-(\d+)$/);
+  if (!m) return null;
+  const lo = parseInt(m[2]);
+  const batchNum = Math.ceil(lo / 200);
+  return `${item.category}:${batchNum}`;
 }
 
 function isAvailableToStudy(item) {
   if (item.level > 0) return true;
 
-  if (item.category === 'Kanji') {
-    const level = getWKLevel(item);
-    return level ? unlockedLevels.has(level) : false;
+  const kanji_cats = new Set(['Joyo', 'Jinmeiyo', 'Kanji Extended']);
+  if (kanji_cats.has(item.category)) {
+    return isBatchUnlocked(item);
   }
 
   // Onomatopoeia — pure kana, no prerequisites
   if (item.category === 'Onomatopoeia') return true;
 
-  // Everything else — all kanji components must have been studied (level > 0)
+  // Everything else — unlock if ANY kanji component has been studied (level > 0)
   const components = getKanjiComponents(item.kanji);
   if (!components.length) return true; // kana-only item
-  return components.every(ch => {
-    const kanjiItem = items.find(i => i.kanji === ch && i.category === 'Kanji');
-    if (!kanjiItem) return true;
+  return components.some(ch => {
+    const kanjiItem = items.find(i => i.kanji === ch && kanji_cats.has(i.category));
+    if (!kanjiItem) return true; // unknown kanji — don't block
     return kanjiItem.level > 0;
   });
 }
 
 function checkAndUnlockNewLevels() {
-  // Check each WK level — if ALL kanji in that level are Guru+, unlock next level
   let newUnlocks = [];
 
-  for (let level = 1; level <= 61; level++) {
-    const nextLevel = level + 1;
-    if (unlockedLevels.has(nextLevel)) continue; // already unlocked
+  // Each category has its own independent unlock chain
+  // Batch N+1 unlocks when any kanji from batch N has been studied
+  const categories = [
+    { name: 'Joyo', max: 11 },       // up to Joyo 2001-2200
+    { name: 'Jinmeiyo', max: 5 },    // up to Jinmeiyo 801-1000
+    { name: 'Kanji Extended', max: 5 }, // up to Extended 801-1000
+  ];
 
-    // Check if all kanji in this level are Guru+
-    const levelKanji = items.filter(i =>
-      i.category === 'Kanji' &&
-      i.subcategory === `WK Level ${level}`
-    );
-    if (!levelKanji.length) continue;
+  for (const { name, max } of categories) {
+    for (let batch = 1; batch <= max; batch++) {
+      const nextBatch = batch + 1;
+      const batchKey = `${name}:${nextBatch}`;
+      if (unlockedLevels.has(batchKey)) continue;
 
-    const allGuru = levelKanji.every(i => i.level >= 3);
-    if (allGuru) {
-      unlockedLevels.add(nextLevel);
-      newUnlocks.push(nextLevel);
+      const lo = (batch - 1) * 200 + 1;
+      const hi = batch * 200;
+      const batchKanji = items.filter(i =>
+        i.category === name &&
+        i.subcategory === `${name} ${lo}-${hi}`
+      );
+      if (!batchKanji.length) continue;
+
+      if (batchKanji.some(i => i.level > 0)) {
+        unlockedLevels.add(batchKey);
+        newUnlocks.push(`${name} ${(nextBatch-1)*200+1}-${nextBatch*200}`);
+      }
     }
   }
 
   return newUnlocks;
+}
+
+function isBatchUnlocked(item) {
+  if (item.category !== 'Joyo' && item.category !== 'Jinmeiyo' && item.category !== 'Kanji Extended') return false;
+  // Batch 1 of each category always unlocked
+  const m = item.subcategory.match(/^(.+) (\d+)-(\d+)$/);
+  if (!m) return false;
+  const catName = m[1];
+  const lo = parseInt(m[2]);
+  if (lo === 1) return true; // first batch always unlocked
+  const batchNum = Math.ceil(lo / 200);
+  return unlockedLevels.has(`${catName}:${batchNum}`);
 }
 
 // ── STUDY CONFIG ──
@@ -1732,8 +1773,8 @@ function updateSSubcat() {
   const cat = document.getElementById('sconfig-cat').value;
   const sel = document.getElementById('sconfig-subcat');
   const field = sel.closest('.config-item');
-  // Hide subcategory for Kanji — level gate handles ordering
-  if (cat === 'Kanji') {
+  // Hide subcategory for kanji categories — batch gate handles ordering
+  if (['Joyo', 'Jinmeiyo', 'Kanji Extended'].includes(cat)) {
     if (field) field.style.display = 'none';
     sel.value = '';
     return;
