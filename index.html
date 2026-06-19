@@ -372,7 +372,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       <input class="search-input" id="dict-search" placeholder="Search kanji, reading, meaning…" oninput="renderDict()">
       <div class="filter-row">
         <select class="filter-sel" id="filter-cat" onchange="updateSubcatFilter();updatePosFilter();renderDict()"><option value="">All Categories</option></select>
-        <select class="filter-sel" id="filter-subcat" onchange="renderDict()"><option value="">All Subcategories</option></select>
+        <select class="filter-sel" id="filter-subcat" onchange="updatePosFilter();renderDict()"><option value="">All Subcategories</option></select>
         <select class="filter-sel" id="filter-pos" onchange="renderDict()" style="display:none"><option value="">All Parts of Speech</option></select>
         <select class="filter-sel" id="filter-level" onchange="renderDict()">
           <option value="">All Levels</option>
@@ -1023,10 +1023,14 @@ function subcatMatches(item, subcat) {
 }
 function updatePosFilter() {
   const cat = document.getElementById('filter-cat').value;
+  const subcat = document.getElementById('filter-subcat').value;
   const sel = document.getElementById('filter-pos');
   if (cat !== 'Vocab') { sel.style.display = 'none'; sel.value = ''; return; }
-  // Build POS list from vocab items
-  const posSet = [...new Set(items.filter(i => i.category === 'Vocab' && i.pos).map(i => i.pos))].sort();
+  // Build POS list from vocab items matching current subcategory selection
+  const posSet = [...new Set(
+    items.filter(i => i.category === 'Vocab' && i.pos && (!subcat || subcatMatches(i, subcat)))
+         .map(i => i.pos)
+  )].sort();
   sel.innerHTML = '<option value="">All Parts of Speech</option>';
   posSet.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; sel.appendChild(o); });
   sel.style.display = '';
@@ -1034,6 +1038,7 @@ function updatePosFilter() {
 
 function updateSubcatFilter() {
   const cat = document.getElementById('filter-cat').value;
+  const sel = document.getElementById('filter-subcat');
   sel.innerHTML = '<option value="">All Subcategories</option>';
   getSubcats(cat).forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
 }
@@ -1199,6 +1204,7 @@ function renderDict() {
   const subcat = document.getElementById('filter-subcat').value;
   const level = document.getElementById('filter-level').value;
   const pos = document.getElementById('filter-pos').value;
+  console.log('renderDict called — cat:', cat, 'items:', items.length, 'dict-list exists:', !!document.getElementById('dict-list'));
   let filtered = items.filter(i => {
     if (cat && i.category !== cat) return false;
     if (subcat && !subcatMatches(i, subcat)) return false;
