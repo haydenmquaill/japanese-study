@@ -371,9 +371,10 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
     <div class="dict-controls">
       <input class="search-input" id="dict-search" placeholder="Search kanji, reading, meaning…" oninput="renderDict()">
       <div class="filter-row">
-        <select class="filter-sel" id="filter-cat" onchange="updateSubcatFilter();updatePosFilter();renderDict()"><option value="">All Categories</option></select>
-        <select class="filter-sel" id="filter-subcat" onchange="updatePosFilter();renderDict()"><option value="">All Subcategories</option></select>
-        <select class="filter-sel" id="filter-pos" onchange="renderDict()" style="display:none"><option value="">All Parts of Speech</option></select>
+        <select class="filter-sel" id="filter-cat" onchange="updateSubcatFilter();updatePosFilter();updateTagFilter();renderDict()"><option value="">All Categories</option></select>
+        <select class="filter-sel" id="filter-subcat" onchange="updatePosFilter();updateTagFilter();renderDict()"><option value="">All Subcategories</option></select>
+        <select class="filter-sel" id="filter-pos" onchange="updateTagFilter();renderDict()" style="display:none"><option value="">All Parts of Speech</option></select>
+        <select class="filter-sel" id="filter-tag" onchange="renderDict()" style="display:none"><option value="">All Tags</option></select>
         <select class="filter-sel" id="filter-level" onchange="renderDict()">
           <option value="">All Levels</option>
           <option value="0">0 — Locked</option><option value="1">1 — Review</option>
@@ -711,6 +712,7 @@ const VOCAB_GROUPS = {
   'Adverbs':            ['Adverbs'],
   'Expressions':        ['Expressions'],
   'Particles & Grammar':['Particles & Grammar'],
+  'Onomatopoeia':       ['Onomatopoeia'],
   'Other':              ['Other'],
 };
 
@@ -1001,6 +1003,7 @@ function populateFilters() {
     cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o); });
   });
   updatePosFilter();
+  updateTagFilter();
 }
 
 function getSubcats(cat) {
@@ -1033,6 +1036,25 @@ function updatePosFilter() {
   )].sort();
   sel.innerHTML = '<option value="">All Parts of Speech</option>';
   posSet.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; sel.appendChild(o); });
+  sel.style.display = '';
+}
+
+function updateTagFilter() {
+  const cat = document.getElementById('filter-cat').value;
+  const subcat = document.getElementById('filter-subcat').value;
+  const pos = document.getElementById('filter-pos').value;
+  const sel = document.getElementById('filter-tag');
+  if (cat !== 'Vocab') { sel.style.display = 'none'; sel.value = ''; return; }
+  // Build tag list from matching vocab items
+  const tagSet = [...new Set(
+    items.filter(i => i.category === 'Vocab'
+      && (!subcat || subcatMatches(i, subcat))
+      && (!pos || i.pos === pos)
+      && (i.tags||[]).length > 0
+    ).flatMap(i => i.tags||[])
+  )].sort();
+  sel.innerHTML = '<option value="">All Tags</option>';
+  tagSet.forEach(t => { const o = document.createElement('option'); o.value = t; o.textContent = t; sel.appendChild(o); });
   sel.style.display = '';
 }
 
@@ -1204,11 +1226,12 @@ function renderDict() {
   const subcat = document.getElementById('filter-subcat').value;
   const level = document.getElementById('filter-level').value;
   const pos = document.getElementById('filter-pos').value;
-  console.log('renderDict called — cat:', cat, 'items:', items.length, 'dict-list exists:', !!document.getElementById('dict-list'));
+  const tag = document.getElementById('filter-tag').value;
   let filtered = items.filter(i => {
     if (cat && i.category !== cat) return false;
     if (subcat && !subcatMatches(i, subcat)) return false;
     if (pos && i.pos !== pos) return false;
+    if (tag && !(i.tags||[]).includes(tag)) return false;
     if (level !== '' && i.level !== parseInt(level)) return false;
     if (q) return i.kanji.includes(q)||(i.reading||'').includes(q)||
       (i.readings?Object.values(i.readings).flat().some(r=>r.includes(q)):false)||
