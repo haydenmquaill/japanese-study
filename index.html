@@ -1192,7 +1192,12 @@ function getCatCount(cat) {
   return items.filter(i => i.category === cat).length;
 }
 
+let renderDictTimer = null;
 function renderDict() {
+  clearTimeout(renderDictTimer);
+  renderDictTimer = setTimeout(_renderDict, 50);
+}
+function _renderDict() {
   document.getElementById('dict-skeleton')?.remove();
   const q = document.getElementById('dict-search').value.toLowerCase();
   const cat = document.getElementById('filter-cat').value;
