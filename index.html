@@ -155,13 +155,22 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:300;padding:20px;overflow-y:auto;}
 .modal-overlay.open{display:flex;align-items:flex-start;justify-content:center;padding-top:60px;}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;width:100%;max-width:480px;position:relative;}
-.modal-close{position:absolute;top:12px;right:12px;background:var(--surface3);border:none;color:var(--text2);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;}
+.stroke-svg path:not(.guide){fill:none;stroke:var(--text);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
+.stroke-svg path.stroke-done{stroke:var(--text);}
+.stroke-svg path.stroke-active{stroke:var(--accent);}
+.stroke-svg path.stroke-pending{stroke:var(--text3);opacity:0.3;}
+.stroke-num{font-size:10px;fill:var(--text3);font-family:sans-serif;}
+.stroke-anim path{stroke-dasharray:1000;stroke-dashoffset:1000;animation:drawStroke 0.6s ease forwards;}
+@keyframes drawStroke{to{stroke-dashoffset:0;}}position:absolute;top:12px;right:12px;background:var(--surface3);border:none;color:var(--text2);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;}
 .modal-kanji{font-size:2.8rem;margin-bottom:6px;}
 .modal-divider{border:none;border-top:1px solid var(--border);margin:10px 0;}
 .modal-field{margin-bottom:10px;}
 .modal-field-label{font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;}
 .modal-field-value{font-size:0.875rem;}
 .modal-edit-btn{font-size:0.7rem;color:var(--accent);cursor:pointer;background:none;border:none;padding:0;}
+.stroke-toggle{display:inline-flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-left:6px;vertical-align:middle;}
+.stroke-toggle span{font-size:0.7rem;padding:2px 8px;cursor:pointer;color:var(--text3);background:none;transition:all 0.15s;white-space:nowrap;}
+.stroke-toggle span.active{background:var(--accent);color:#fff;font-weight:600;}
 .modal-edit-input{width:100%;background:var(--surface2);border:1px solid var(--accent);border-radius:var(--radius-sm);padding:7px 10px;color:var(--text);font-size:0.875rem;outline:none;margin-top:4px;}
 .modal-edit-row{display:flex;gap:6px;margin-top:4px;}
 .modal-save-btn{background:var(--accent);border:none;color:white;border-radius:var(--radius-sm);padding:6px 12px;cursor:pointer;font-size:0.8rem;}
@@ -648,6 +657,21 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
     </div>
     <div class="modal-field"><div class="modal-field-label">Meaning</div><div class="modal-field-value" id="modal-meaning"></div></div>
     <div class="modal-field"><div class="modal-field-label">Category</div><div class="modal-field-value" id="modal-category"></div></div>
+    <div class="modal-field" id="modal-stroke-field" style="display:none">
+      <div class="modal-field-label">Stroke Order
+        <div class="stroke-toggle" id="stroke-anim-toggle" onclick="toggleStrokeAnim()">
+          <span id="stroke-anim-stop" class="active">⏹ Stop</span>
+          <span id="stroke-anim-play">▶ Play</span>
+        </div>
+        <div class="stroke-toggle" id="stroke-speed-toggle" onclick="toggleStrokeSpeed()">
+          <span id="stroke-speed-normal" class="active">Fast</span>
+          <span id="stroke-speed-slow">Slow</span>
+        </div>
+      </div>
+      <div id="modal-stroke-wrap" style="display:flex;align-items:center;justify-content:center;min-height:60px;">
+        <div id="modal-stroke-svg" style="width:160px;height:160px;"></div>
+      </div>
+    </div>
     <div class="modal-field" id="modal-desc-field">
       <div class="modal-field-label">Description</div>
       <div id="modal-description" style="color:var(--text2);font-size:0.85rem;white-space:pre-line;line-height:1.5;"></div>
@@ -992,6 +1016,7 @@ function init() {
   updateQuizPoolInfo();
   updateStudyPoolInfo();
   updateQSDashboard();
+  loadKanjiVG(); // preload stroke data in background
 }
 
 function populateFilters() {
@@ -1259,12 +1284,226 @@ function renderDict() {
   dl.style.display = '';
 }
 
-// ── MODAL ──
+// ── STROKE ORDER ──
+let strokePaths = [];
+let strokeAnimTimer = null;
+let strokeAnimRunning = false;
+let strokeAnimSlow = false;
+let kanjiVG = null; // loaded once from Supabase Storage
+
+async function loadKanjiVG() {
+  if (kanjiVG) return; // already loaded
+  try {
+    const { data: urlData } = await sb.storage.from('study-data').createSignedUrl('kanjivg.json', 3600);
+    if (!urlData?.signedUrl) return;
+    const res = await fetch(urlData.signedUrl);
+    if (!res.ok) return;
+    kanjiVG = await res.json();
+    console.log(`KanjiVG loaded: ${Object.keys(kanjiVG).length} kanji`);
+  } catch(e) {
+    console.warn('KanjiVG load failed:', e.message);
+  }
+}
+
+function toggleStrokeSpeed() {
+  strokeAnimSlow = !strokeAnimSlow;
+  document.getElementById('stroke-speed-normal').classList.toggle('active', !strokeAnimSlow);
+  document.getElementById('stroke-speed-slow').classList.toggle('active', strokeAnimSlow);
+}
+
+function getStrokeTimings() {
+  // Returns [drawDuration (ms), pauseBetween (ms), pauseAtEnd (ms)]
+  return strokeAnimSlow
+    ? [900, 800, 1200]   // slow: 0.9s draw, 0.8s pause, 1.2s at end before repeat
+    : [500, 500, 1000];  // normal: 0.5s draw, 0.5s pause, 1s at end
+}
+
+async function loadStrokeOrder(kanji) {
+  const field = document.getElementById('modal-stroke-field');
+  const wrap = document.getElementById('modal-stroke-svg');
+  strokePaths = [];
+  strokeAnimRunning = false;
+  // Reset toggles to default state
+  document.getElementById('stroke-anim-stop')?.classList.add('active');
+  document.getElementById('stroke-anim-play')?.classList.remove('active');
+
+  // Only show for single kanji characters in Joyo/Jinmeiyo/Kanji Extended
+  const item = items.find(i => i.id === currentModalId);
+  const kanji_cats = new Set(['Joyo','Jinmeiyo','Kanji Extended']);
+  if (!item || !kanji_cats.has(item.category) || [...kanji].length !== 1) {
+    field.style.display = 'none';
+    return;
+  }
+
+  field.style.display = '';
+  wrap.innerHTML = '<div style="color:var(--text3);font-size:0.8rem;text-align:center;padding:20px;">Loading…</div>';
+
+  try {
+    // Load kanjiVG if not already loaded
+    if (!kanjiVG) await loadKanjiVG();
+    if (!kanjiVG) throw new Error('KanjiVG not available');
+
+    const paths = kanjiVG[kanji];
+    if (!paths || !paths.length) throw new Error('No stroke data');
+
+    renderStrokeOrder(paths, wrap);
+  } catch(e) {
+    console.warn('Stroke order:', e.message);
+    wrap.innerHTML = '<div style="color:var(--text3);font-size:0.8rem;text-align:center;padding:20px;">Stroke order not available</div>';
+    document.getElementById('stroke-anim-toggle').style.display = 'none';
+  }
+}
+
+function renderStrokeOrder(paths, container) {
+  if (!paths || !paths.length) { container.innerHTML = '<div style="color:var(--text3);font-size:0.8rem;text-align:center;">No stroke data</div>'; return; }
+
+  strokePaths = paths;
+
+  // Build SVG with numbered strokes
+  const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox','0 0 109 109');
+  svg.setAttribute('width','160');
+  svg.setAttribute('height','160');
+  svg.classList.add('stroke-svg');
+
+  // Draw guide box
+  const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  rect.setAttribute('x','0'); rect.setAttribute('y','0');
+  rect.setAttribute('width','109'); rect.setAttribute('height','109');
+  rect.setAttribute('fill','none'); rect.setAttribute('stroke','var(--text3)');
+  rect.setAttribute('stroke-width','3'); rect.setAttribute('opacity','0.25');
+  svg.appendChild(rect);
+
+  // Cross guides — very faint
+  ['M54.5,0 L54.5,109','M0,54.5 L109,54.5'].forEach(d => {
+    const line = document.createElementNS('http://www.w3.org/2000/svg','path');
+    line.setAttribute('d',d);
+    line.setAttribute('stroke','var(--text3)');
+    line.setAttribute('stroke-width','2');
+    line.setAttribute('stroke-dasharray','3,4');
+    line.setAttribute('opacity','0.2');
+    line.classList.add('guide');
+    svg.appendChild(line);
+  });
+
+  // Draw strokes
+  paths.forEach((d, idx) => {
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', d);
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke','var(--text)');
+    path.setAttribute('stroke-width','3');
+    path.setAttribute('stroke-linecap','round');
+    path.setAttribute('stroke-linejoin','round');
+    path.id = `stroke-path-${idx}`;
+    svg.appendChild(path);
+  });
+
+  // Stroke count label bottom-right
+  const countLabel = document.createElementNS('http://www.w3.org/2000/svg','text');
+  countLabel.setAttribute('x','106'); countLabel.setAttribute('y','107');
+  countLabel.setAttribute('text-anchor','end');
+  countLabel.setAttribute('font-size','7');
+  countLabel.setAttribute('fill','var(--text3)');
+  countLabel.setAttribute('opacity','0.6');
+  countLabel.setAttribute('font-family','sans-serif');
+  countLabel.textContent = `${paths.length} strokes`;
+  svg.appendChild(countLabel);
+
+  container.innerHTML = '';
+  container.appendChild(svg);
+  document.getElementById('stroke-anim-toggle').style.display = '';
+}
+
+function toggleStrokeAnim() {
+  const playEl = document.getElementById('stroke-anim-play');
+  const stopEl = document.getElementById('stroke-anim-stop');
+  if (strokeAnimRunning) {
+    clearTimeout(strokeAnimTimer);
+    strokeAnimRunning = false;
+    if (stopEl) stopEl.classList.add('active');
+    if (playEl) playEl.classList.remove('active');
+    strokePaths.forEach((_, i) => {
+      const el = document.getElementById(`stroke-path-${i}`);
+      if (el) {
+        el.setAttribute('stroke','var(--text)');
+        el.setAttribute('opacity','1');
+        el.style.strokeDasharray = '';
+        el.style.strokeDashoffset = '';
+        el.style.transition = '';
+      }
+    });
+    const countLabel = document.querySelector('#modal-stroke-svg text');
+    if (countLabel) countLabel.textContent = `${strokePaths.length} strokes`;
+    return;
+  }
+  strokeAnimRunning = true;
+  if (stopEl) stopEl.classList.remove('active');
+  if (playEl) playEl.classList.add('active');
+  animateStrokes(0);
+}
+
+function animateStrokes(idx) {
+  if (!strokeAnimRunning) return;
+  const [drawMs, pauseMs, endMs] = getStrokeTimings();
+
+  if (idx >= strokePaths.length) {
+    // End of cycle — restore all strokes then loop
+    strokePaths.forEach((_, i) => {
+      const el = document.getElementById(`stroke-path-${i}`);
+      if (el) {
+        el.setAttribute('stroke','var(--text)');
+        el.setAttribute('opacity','1');
+        el.style.strokeDasharray = '';
+        el.style.strokeDashoffset = '';
+        el.style.transition = '';
+      }
+    });
+    const countLabel = document.querySelector('#modal-stroke-svg text');
+    if (countLabel) countLabel.textContent = `${strokePaths.length} strokes`;
+    strokeAnimTimer = setTimeout(() => animateStrokes(0), endMs);
+    return;
+  }
+
+  const countLabel = document.querySelector('#modal-stroke-svg text');
+  if (countLabel) countLabel.textContent = `Stroke ${idx + 1} of ${strokePaths.length}`;
+
+  // Dim all strokes
+  strokePaths.forEach((_, i) => {
+    const el = document.getElementById(`stroke-path-${i}`);
+    if (!el) return;
+    el.style.transition = '';
+    el.style.strokeDasharray = '';
+    el.style.strokeDashoffset = '';
+    el.setAttribute('stroke', i < idx ? 'var(--text)' : 'var(--text3)');
+    el.setAttribute('opacity', i < idx ? '1' : '0.25');
+  });
+
+  // Animate current stroke
+  const current = document.getElementById(`stroke-path-${idx}`);
+  if (current) {
+    current.setAttribute('stroke','var(--accent)');
+    current.setAttribute('opacity','1');
+    const len = current.getTotalLength();
+    current.style.transition = 'none';
+    current.style.strokeDasharray = `${len}`;
+    current.style.strokeDashoffset = `${len}`;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        current.style.transition = `stroke-dashoffset ${drawMs}ms ease`;
+        current.style.strokeDashoffset = '0';
+      });
+    });
+  }
+  strokeAnimTimer = setTimeout(() => animateStrokes(idx + 1), drawMs + pauseMs);
+}
+
 function openModal(id) {
   currentModalId = id;
   const item = items.find(i => i.id === id);
   if (!item) return;
   document.getElementById('modal-kanji').textContent = item.kanji;
+  loadStrokeOrder(item.kanji);
   const rw = document.getElementById('modal-reading-wrap');
   if (item.readings) {
     document.getElementById('modal-readings-section').style.display = 'block';
@@ -1302,7 +1541,12 @@ function renderModalSynonyms(item) {
   document.getElementById('modal-add-syn-btn').style.display = getMeanings(item).length ? 'block' : 'none';
 }
 function closeModal(e) { if(e.target===document.getElementById('modal-overlay')) closeModalBtn(); }
-function closeModalBtn() { document.getElementById('modal-overlay').classList.remove('open'); currentModalId=null; }
+function closeModalBtn() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  currentModalId=null;
+  if(strokeAnimTimer) clearTimeout(strokeAnimTimer);
+  strokeAnimRunning=false;
+}
 function toggleEdit(f) { const el=document.getElementById(`modal-${f}-edit`); const open=el.style.display!=='none'; el.style.display=open?'none':'block'; if(!open) document.getElementById(`modal-${f}-input`).focus(); }
 function cancelEdit(f) { document.getElementById(`modal-${f}-edit`).style.display='none'; }
 async function saveEdit(f) {
