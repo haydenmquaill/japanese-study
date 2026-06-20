@@ -335,8 +335,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
     <div class="nav-tabs">
       <button class="nav-tab active" onclick="showView('dashboard')">Home</button>
       <button class="nav-tab" onclick="showView('dictionary')">Dict</button>
-      <button class="nav-tab" onclick="showView('review')">Review</button>
-      <button class="nav-tab" onclick="showView('study')">Study</button>
+      <button class="nav-tab" onclick="showView('read')">Read</button>
+      <button class="nav-tab" onclick="showView('write')">Write</button>
     </div>
     <div class="nav-menu-wrap">
       <button class="icon-btn" onclick="toggleNavMenu()">⋮</button>
@@ -360,9 +360,9 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 
   <!-- DASHBOARD -->
   <div id="view-dashboard" class="view active">
+    <div class="section-title">Reading Progress</div>
     <div class="stats-grid" id="stats-grid"></div>
-    <div class="level-breakdown"><h3>Progress by Level</h3><div class="level-bars" id="level-bars"></div></div>
-    <div class="section-title">Quick Start</div>
+    <div class="level-breakdown"><div class="level-bars" id="level-bars"></div></div>
     <div class="quick-actions" style="grid-template-columns:1fr 1fr;">
       <div class="quick-btn" onclick="startWeakItems()">
         <div class="qb-icon">⚠️</div><div class="qb-title">Weak Items</div>
@@ -371,6 +371,19 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       <div class="quick-btn" onclick="openQSModal('stale')">
         <div class="qb-icon">🕰️</div><div class="qb-title">Stale Items</div>
         <div class="qb-sub" id="stale-sub">Not reviewed recently</div>
+      </div>
+    </div>
+    <div class="section-title" style="margin-top:18px;">Writing Progress</div>
+    <div class="stats-grid" id="write-stats-grid"></div>
+    <div class="level-breakdown"><div class="level-bars" id="write-level-bars"></div></div>
+    <div class="quick-actions" style="grid-template-columns:1fr 1fr;">
+      <div class="quick-btn" onclick="startWeakWriters()">
+        <div class="qb-icon">✏️</div><div class="qb-title">Weak Writers</div>
+        <div class="qb-sub" id="weak-write-sub">Level 1 — needs practice</div>
+      </div>
+      <div class="quick-btn" onclick="openWriteReviewModal('stale')">
+        <div class="qb-icon">📝</div><div class="qb-title">Stale Writing</div>
+        <div class="qb-sub" id="stale-write-sub">Not practised recently</div>
       </div>
     </div>
   </div>
@@ -399,11 +412,17 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
     </div>
   </div>
 
-  <!-- REVIEW (was Quiz) -->
-  <div id="view-review" class="view">
+  <!-- READ (Review + Study) -->
+  <div id="view-read" class="view">
+    <!-- Mode toggle -->
+    <div style="display:flex;gap:8px;margin-bottom:4px;">
+      <button class="quiz-btn btn-submit" id="read-mode-review" onclick="setReadMode('review')" style="flex:1">Review</button>
+      <button class="quiz-btn btn-next" id="read-mode-study" onclick="setReadMode('study')" style="flex:1">Study</button>
+    </div>
+    <!-- REVIEW PANEL -->
+  <div id="view-review" style="display:block">
     <div id="review-config-panel" class="review-config-panel">
       <div class="quiz-config">
-        <h3>Configure Review</h3>
         <div class="config-grid">
           <div class="config-item"><label>Category</label><select id="qconfig-cat" onchange="updateQSubcat();updateQuizPoolInfo()"><option value="">All Categories</option></select></div>
           <div class="config-item"><label>Subcategory</label><select id="qconfig-subcat" onchange="updateQuizPoolInfo()"><option value="">All Subcategories</option></select></div>
@@ -424,7 +443,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
           </div>
           <div class="config-item"><label>Last Reviewed</label>
             <select id="qconfig-days" onchange="updateQuizPoolInfo()">
-              <option value="0" selected>Any time</option>
+              <option value="0" selected>Anytime</option>
+              <option value="stale">Stale (14d / 60d)</option>
               <optgroup label="Recently reviewed">
                 <option value="recent_1">Today</option>
                 <option value="recent_3">Last 3 days</option>
@@ -441,7 +461,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
               </optgroup>
             </select>
           </div>
-          <div class="config-item"><label>Questions</label><input type="number" id="qconfig-count" value="10" min="1" max="100" oninput="updateQuizPoolInfo()"></div>
+          <div class="config-item"><label>Items</label><input type="number" id="qconfig-count" value="10" min="1" max="100" oninput="updateQuizPoolInfo()"></div>
         </div>
       </div>
       <div id="quiz-pool-info" style="font-size:0.78rem;color:var(--text2);margin-bottom:11px;text-align:center;"></div>
@@ -482,23 +502,21 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       <div class="results-score" id="results-score"></div>
       <div class="results-fraction" id="results-fraction"></div>
       <div class="results-breakdown" id="results-breakdown"></div>
-      <div id="results-pool-empty" style="display:none;font-size:0.85rem;color:var(--correct);text-align:center;padding:10px 0;">🎉 All items in this pool completed!</div>
+      <div id="results-pool-empty" style="display:none;font-size:0.85rem;color:var(--correct);text-align:center;padding:10px 0;">All items in this batch completed!</div>
       <div class="results-btn-row">
         <button class="quiz-btn btn-submit" id="btn-again" onclick="restartQuiz()" style="flex:1">Again</button>
         <button class="quiz-btn btn-next" onclick="backToConfig()" style="flex:1">Config</button>
       </div>
     </div>
   </div>
-
-  <!-- STUDY -->
-  <div id="view-study" class="view">
+    <!-- STUDY PANEL -->
+  <div id="view-study" style="display:none">
     <div id="study-config-panel">
       <div class="quiz-config">
-        <h3>Configure Study</h3>
         <div class="config-grid">
           <div class="config-item"><label>Category</label><select id="sconfig-cat" onchange="updateSSubcat();updateStudyPoolInfo()"><option value="">All Categories</option></select></div>
           <div class="config-item"><label>Subcategory</label><select id="sconfig-subcat" onchange="updateStudyPoolInfo()"><option value="">All Subcategories</option></select></div>
-          <div class="config-item" style="grid-column:1/-1"><label>Items per session</label>
+          <div class="config-item" style="grid-column:1/-1"><label>Items</label>
             <select id="sconfig-count" onchange="updateStudyPoolInfo()">
               <option value="5">5 items</option>
               <option value="10" selected>10 items</option>
@@ -510,13 +528,14 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
         </div>
       </div>
       <div id="study-pool-info" style="font-size:0.78rem;color:var(--text2);margin-bottom:11px;text-align:center;"></div>
-      <button class="start-btn" id="study-start-btn" onclick="startStudy()">Start Study Session</button>
+      <button class="start-btn" id="study-start-btn" onclick="startStudy()">Start Study</button>
     </div>
     <!-- Learning Phase -->
     <div id="study-learn-wrap" style="display:none">
       <div class="quiz-progress">
         <div class="progress-bar"><div class="progress-fill" id="study-learn-fill"></div></div>
         <div class="progress-text" id="study-learn-text"></div>
+        <button class="quiz-btn btn-end" onclick="endStudyLearn()">End</button>
       </div>
       <div class="quiz-card" id="study-card" style="min-height:auto;flex-direction:column;align-items:stretch;text-align:left;padding:20px;">
         <div style="font-size:0.72rem;color:var(--text3);text-align:center;margin-bottom:8px;" id="study-card-counter"></div>
@@ -565,10 +584,165 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       <div class="results-score" id="study-results-score"></div>
       <div class="results-fraction" id="study-results-fraction"></div>
       <div class="results-breakdown" id="study-results-breakdown"></div>
-      <div id="study-pool-empty" style="display:none;font-size:0.85rem;color:var(--correct);text-align:center;padding:10px 0;">🎉 All locked items in this category studied!</div>
+      <div id="study-pool-empty" style="display:none;font-size:0.85rem;color:var(--correct);text-align:center;padding:10px 0;">All items in this batch studied!</div>
       <div class="results-btn-row">
-        <button class="quiz-btn btn-submit" id="btn-study-more" onclick="backToStudyConfig()" style="flex:1">Study More</button>
-        <button class="quiz-btn btn-next" onclick="showView('dashboard')" style="flex:1">Home</button>
+        <button class="quiz-btn btn-submit" id="btn-study-more" onclick="continueStudy()" style="flex:1">Again</button>
+        <button class="quiz-btn btn-next" onclick="backToStudyConfig()" style="flex:1">Config</button>
+      </div>
+    </div>
+  </div>
+  </div><!-- end view-study -->
+  </div><!-- end view-read -->
+  <!-- WRITE -->
+  <div id="view-write" class="view">
+    <!-- Config Panel -->
+    <div id="write-config-panel">
+      <!-- Mode toggle — outside config box, matching Read tab -->
+      <div style="display:flex;gap:8px;margin-bottom:4px;">
+        <button class="quiz-btn btn-submit" id="write-mode-review" onclick="setWriteMode('review')" style="flex:1">Review</button>
+        <button class="quiz-btn btn-next" id="write-mode-study" onclick="setWriteMode('study')" style="flex:1">Study</button>
+      </div>
+      <div class="quiz-config">
+        <div class="config-grid">
+          <div class="config-item"><label>Category</label>
+            <select id="wconfig-cat" onchange="updateWSubcat();updateWritePoolInfo()">
+              <option value="Joyo">Joyo</option>
+              <option value="Jinmeiyo">Jinmeiyo</option>
+              <option value="Kanji Extended">Kanji Extended</option>
+            </select>
+          </div>
+          <div class="config-item"><label>Subcategory</label>
+            <select id="wconfig-subcat" onchange="updateWritePoolInfo()"><option value="">All Subcategories</option></select>
+          </div>
+          <!-- Min/Max level — review only -->
+          <div class="config-item" id="wconfig-level-wrap" style="display:none"><label>Min Level</label>
+            <select id="wconfig-minlevel" onchange="updateWritePoolInfo()">
+              <option value="1" selected>1 — Needs practice</option>
+              <option value="2">2 — Shaky</option>
+              <option value="3">3 — Confident</option>
+              <option value="4">4 — Strong</option>
+              <option value="5">5 — Mastered</option>
+            </select>
+          </div>
+          <div class="config-item" id="wconfig-maxlevel-wrap" style="display:none"><label>Max Level</label>
+            <select id="wconfig-maxlevel" onchange="updateWritePoolInfo()">
+              <option value="1">1 — Needs practice</option>
+              <option value="2">2 — Shaky</option>
+              <option value="3">3 — Confident</option>
+              <option value="4">4 — Strong</option>
+              <option value="5" selected>5 — Mastered</option>
+            </select>
+          </div>
+          <!-- Last Reviewed — review only -->
+          <div class="config-item" id="wconfig-reviewed-wrap" style="display:none"><label>Last Reviewed</label>
+            <select id="wconfig-reviewed" onchange="updateWritePoolInfo()">
+              <option value="random" selected>Anytime</option>
+              <option value="stale">Stale (14d / 60d)</option>
+              <optgroup label="Recently reviewed">
+                <option value="today">Today</option>
+                <option value="3">Last 3 days</option>
+                <option value="7">Last 7 days</option>
+                <option value="14">Last 14 days</option>
+                <option value="30">Last 30 days</option>
+              </optgroup>
+              <optgroup label="Not reviewed recently">
+                <option value="not7">Not in last 7 days</option>
+                <option value="not14">Not in last 14 days</option>
+                <option value="not30">Not in last 30 days</option>
+                <option value="never">Never reviewed</option>
+              </optgroup>
+            </select>
+          </div>
+          <!-- Items — study: full width select, review: number input -->
+          <div class="config-item" id="wconfig-count-wrap" style="display:none;grid-column:1/-1"><label>Items</label>
+            <select id="wconfig-count" onchange="updateWritePoolInfo()">
+              <option value="5">5 items</option>
+              <option value="10" selected>10 items</option>
+              <option value="20">20 items</option>
+            </select>
+          </div>
+          <div class="config-item" id="wconfig-rcount-wrap" style="display:none"><label>Items</label>
+            <input type="number" id="wconfig-rcount" value="20" min="1" max="200" oninput="updateWritePoolInfo()">
+          </div>
+        </div>
+      </div>
+      <div id="write-pool-info" style="font-size:0.78rem;color:var(--text2);margin-bottom:11px;text-align:center;"></div>
+      <button class="start-btn" id="write-start-btn" onclick="startWriteSession()">Start Study</button>
+    </div>
+
+    <!-- Study: Learning Phase -->
+    <div id="write-learn-wrap" style="display:none">
+      <div class="quiz-progress">
+        <div class="progress-bar"><div class="progress-fill" id="write-learn-fill"></div></div>
+        <div class="progress-text" id="write-learn-text"></div>
+        <button class="quiz-btn btn-end" onclick="endWriteLearn()">End</button>
+      </div>
+      <div class="quiz-card" style="min-height:auto;flex-direction:column;align-items:center;padding:20px;gap:12px;">
+        <div style="font-size:0.72rem;color:var(--text3);" id="write-learn-counter"></div>
+        <div style="font-size:4rem;font-weight:300;letter-spacing:0.05em;" id="write-learn-kanji"></div>
+        <div id="write-learn-readings" style="font-size:0.95rem;color:var(--text2);text-align:center;"></div>
+        <div style="font-size:1rem;font-weight:600;text-align:center;" id="write-learn-meaning"></div>
+        <!-- Stroke order embedded -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div class="stroke-toggle" id="write-anim-toggle" onclick="toggleWriteAnim()">
+              <span id="write-anim-stop" class="active">■</span>
+              <span id="write-anim-play">▶</span>
+            </div>
+          </div>
+          <div id="write-learn-stroke-svg" style="width:160px;height:160px;"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:9px;margin-top:4px;">
+        <button class="quiz-btn btn-next" id="write-prev-btn" onclick="writeLearnNav(-1)" style="flex:1">← Prev</button>
+        <button class="quiz-btn btn-submit" id="write-learn-next" onclick="writeLearnNav(1)" style="flex:2">Next →</button>
+      </div>
+    </div>
+
+    <!-- Review Phase (both study round and review mode) -->
+    <div id="write-review-wrap" style="display:none">
+      <div class="quiz-progress">
+        <div class="progress-bar"><div class="progress-fill" id="write-review-fill"></div></div>
+        <div class="progress-text" id="write-review-text"></div>
+        <button class="quiz-btn btn-end" onclick="endWriteReview()">End</button>
+      </div>
+      <!-- Prompt (meaning + reading) -->
+      <div class="quiz-card" style="min-height:auto;flex-direction:column;align-items:center;padding:20px;gap:8px;" id="write-prompt-card">
+        <div style="font-size:0.72rem;color:var(--text3);" id="write-review-counter"></div>
+        <div style="font-size:0.85rem;color:var(--text3);">Write this kanji:</div>
+        <div style="font-size:1.1rem;font-weight:600;text-align:center;" id="write-review-meaning"></div>
+        <div style="font-size:0.95rem;color:var(--text2);text-align:center;" id="write-review-reading"></div>
+        <button class="quiz-btn btn-submit" onclick="revealWriteAnswer()" style="margin-top:8px;width:100%;">Reveal ↓</button>
+      </div>
+      <!-- Answer reveal -->
+      <div id="write-answer-card" style="display:none;flex-direction:column;align-items:center;gap:12px;padding:20px;background:var(--surface);border-radius:var(--radius);margin-top:8px;">
+        <div style="font-size:4rem;font-weight:300;" id="write-answer-kanji"></div>
+        <div id="write-answer-readings" style="font-size:0.95rem;color:var(--text2);text-align:center;"></div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div class="stroke-toggle" id="write-rev-anim-toggle" onclick="toggleWriteRevAnim()">
+            <span id="write-rev-anim-stop" class="active">■</span>
+            <span id="write-rev-anim-play">▶</span>
+          </div>
+        </div>
+        <div id="write-answer-stroke-svg" style="width:160px;height:160px;"></div>
+        <!-- Self grade -->
+        <div style="display:flex;gap:8px;width:100%;margin-top:4px;">
+          <button class="quiz-btn" style="flex:1;background:var(--incorrect);color:white;" onclick="gradeWrite(1)">✕</button>
+          <button class="quiz-btn" style="flex:1;background:orange;color:white;" onclick="gradeWrite(2)">△</button>
+          <button class="quiz-btn" style="flex:1;background:var(--correct);color:white;" onclick="gradeWrite(3)">○</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="write-results" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;text-align:center;">
+      <div class="results-score" id="write-results-score"></div>
+      <div class="results-fraction" id="write-results-fraction"></div>
+      <div class="results-breakdown" id="write-results-breakdown"></div>
+      <div id="write-pool-empty" style="display:none;font-size:0.85rem;color:var(--correct);text-align:center;padding:10px 0;">All items in this batch completed!</div>
+      <div class="results-btn-row">
+        <button class="quiz-btn btn-submit" id="btn-write-again" onclick="restartWriteSession()" style="flex:1">Again</button>
+        <button class="quiz-btn btn-next" onclick="backToWriteConfig()" style="flex:1">Config</button>
       </div>
     </div>
   </div>
@@ -612,36 +786,6 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 </div>
 
 <!-- QUICK START MODAL -->
-<div class="qs-modal-overlay" id="qs-modal-overlay" onclick="closeQSModal(event)">
-  <div class="qs-modal">
-    <div class="qs-modal-title" id="qs-modal-title"></div>
-    <div class="qs-modal-sub" id="qs-modal-sub"></div>
-    <div class="qs-field" id="qs-cat-field">
-      <label>Category</label>
-      <select class="qs-select" id="qs-cat" onchange="updateQSPool()"><option value="">All Categories</option></select>
-    </div>
-    <div class="qs-field" id="qs-level-field">
-      <label>Max Level (show items below)</label>
-      <select class="qs-select" id="qs-level" onchange="updateQSPool()">
-        <option value="1">1 — Review</option>
-        <option value="2">2 — Apprentice</option>
-        <option value="3" selected>3 — Guru</option>
-        <option value="4">4 — Master</option>
-      </select>
-    </div>
-    <div class="qs-field" id="qs-enlightened-field" style="display:none">
-      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
-        <input type="checkbox" id="qs-enlightened" onchange="updateQSPool()" checked style="width:18px;height:18px;accent-color:var(--accent);">
-        Include Enlightened (not reviewed in 60+ days)
-      </label>
-    </div>
-    <div class="qs-pool-info" id="qs-pool-info"></div>
-    <div class="qs-btn-row">
-      <button class="qs-cancel-btn" onclick="closeQSModal()">Cancel</button>
-      <button class="qs-start-btn" id="qs-start-btn" onclick="startQSQuiz()">Start</button>
-    </div>
-  </div>
-</div>
 
 <!-- ITEM DETAIL MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
@@ -709,6 +853,8 @@ let items = [];
 let currentUser = null;
 let userProgress = {};
 let userLastQuizzed = {};
+let userWriteProgress = {};
+let userWriteLastQuizzed = {};
 let userSynonyms = {};
 let userNotes = {};
 let userSettings = { streak: 0, last_study_date: null, unlocked_levels: [] };
@@ -724,7 +870,6 @@ let studyQuizQueue = [], studyQuizIndex = 0, studyQuizResults = [];
 let studyCurrentItem = null, studyCurrentPrompts = [], studyCurrentPromptIndex = 0;
 let studyItemHadWrong = false, studyPromptWrongCount = 0;
 let currentModalId = null;
-let qsMode = null;
 let recentItemIds = new Set();
 
 const LEVEL_NAMES = ['Locked','Review','Apprentice','Guru','Master','Enlightened'];
@@ -846,8 +991,9 @@ async function fetchAllRows(table, columns, userId) {
 
 async function loadUserProgress() {
   const uid = currentUser.id;
-  const [progressRows, synonymRows, noteRows, settingsRes, recentRes] = await Promise.all([
+  const [progressRows, writeProgressRows, synonymRows, noteRows, settingsRes, recentRes] = await Promise.all([
     fetchAllRows('progress', 'item_id,level,last_quizzed', uid),
+    fetchAllRows('write_progress', 'item_id,level,last_quizzed', uid),
     fetchAllRows('synonyms', 'item_id,synonym', uid),
     fetchAllRows('notes', 'item_id,description,notes', uid),
     sb.from('user_settings').select('streak,last_study_date,unlocked_levels').eq('user_id', uid).single(),
@@ -859,6 +1005,10 @@ async function loadUserProgress() {
   progressRows.forEach(r => userProgress[r.item_id] = r.level);
   userLastQuizzed = {};
   progressRows.forEach(r => { if (r.last_quizzed) userLastQuizzed[r.item_id] = r.last_quizzed; });
+  userWriteProgress = {};
+  writeProgressRows.forEach(r => userWriteProgress[r.item_id] = r.level);
+  userWriteLastQuizzed = {};
+  writeProgressRows.forEach(r => { if (r.last_quizzed) userWriteLastQuizzed[r.item_id] = r.last_quizzed; });
   userSynonyms = {};
   synonymRows.forEach(r => { if (!userSynonyms[r.item_id]) userSynonyms[r.item_id] = []; userSynonyms[r.item_id].push(r.synonym); });
   userNotes = {};
@@ -1021,7 +1171,7 @@ function init() {
 
 function populateFilters() {
   const cats = [...new Set(items.map(i => i.category))].sort();
-  ['filter-cat','qconfig-cat','sconfig-cat','qs-cat'].forEach(id => {
+  ['filter-cat','qconfig-cat','sconfig-cat'].forEach(id => {
     const sel = document.getElementById(id);
     if (!sel) return;
     sel.innerHTML = '<option value="">All Categories</option>';
@@ -1102,14 +1252,18 @@ function showView(v) {
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
   // Map view names to IDs
-  const viewId = v === 'quiz' ? 'review' : v;
+  const viewId = (v === 'quiz' || v === 'review' || v === 'study') ? 'read' : v;
   const el = document.getElementById('view-' + viewId);
   if (el) el.classList.add('active');
-  const tabs = ['dashboard','dictionary','review','study'];
+  const tabs = ['dashboard','dictionary','read','write'];
   const idx = tabs.indexOf(viewId);
   if (idx >= 0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
   if (v === 'dashboard') renderDashboard();
   if (v === 'dictionary') renderDict();
+  if (v === 'read') setReadMode(readMode);
+  if (v === 'review') setReadMode('review');
+  if (v === 'study') setReadMode('study');
+  if (v === 'write') initWriteTab();
   if (v === 'settings') populateSettingsName();
 }
 
@@ -1131,6 +1285,7 @@ function renderDashboard() {
       <div class="level-bar-count">${c}</div>
     </div>`).join('');
   updateQSDashboard();
+  renderWriteDashboard();
 }
 
 function updateQSDashboard() {
@@ -1143,7 +1298,7 @@ function updateQSDashboard() {
 
 // ── QUICK START MODALS ──
 function getStalePool(includeEnlightened) {
-  const cat = document.getElementById('qs-cat')?.value || '';
+  const cat = document.getElementById('qconfig-cat')?.value || '';
   const now = Date.now();
   const cutoff14 = new Date(now - 14*24*60*60*1000).toISOString();
   const cutoff60 = new Date(now - 60*24*60*60*1000).toISOString();
@@ -1158,64 +1313,25 @@ function getStalePool(includeEnlightened) {
 }
 
 function openQSModal(mode) {
-  qsMode = mode;
-  document.getElementById('qs-cat').value = '';
-  document.getElementById('qs-level-field').style.display = 'none';
-  document.getElementById('qs-enlightened-field').style.display = 'none';
-
   if (mode === 'stale') {
-    document.getElementById('qs-modal-title').textContent = '🕰️ Stale Items';
-    document.getElementById('qs-modal-sub').textContent = 'Items not reviewed recently — levels 2-4 (14+ days) and Enlightened (60+ days)';
-    document.getElementById('qs-enlightened-field').style.display = 'block';
-    document.getElementById('qs-enlightened').checked = true;
+    showView('review');
+    const minSel = document.getElementById('qconfig-minlevel');
+    const maxSel = document.getElementById('qconfig-maxlevel');
+    const daysSel = document.getElementById('qconfig-days');
+    if (minSel) minSel.value = '2';
+    if (maxSel) maxSel.value = '5';
+    if (daysSel) daysSel.value = 'stale';
+    updateQuizPoolInfo();
   }
-  updateQSPool();
-  document.getElementById('qs-modal-overlay').classList.add('open');
-}
-
-function closeQSModal(e) {
-  if (!e || e.target === document.getElementById('qs-modal-overlay')) {
-    document.getElementById('qs-modal-overlay').classList.remove('open');
-  }
-}
-
-function updateQSPool() {
-  let pool = [];
-  if (qsMode === 'stale') {
-    const includeEnlightened = document.getElementById('qs-enlightened').checked;
-    pool = getStalePool(includeEnlightened);
-  }
-  const el = document.getElementById('qs-pool-info');
-  el.textContent = `${pool.length} item${pool.length !== 1 ? 's' : ''} available`;
-  document.getElementById('qs-start-btn').disabled = pool.length === 0;
-}
-
-function startQSQuiz() {
-  let pool = [];
-  if (qsMode === 'stale') {
-    const includeEnlightened = document.getElementById('qs-enlightened').checked;
-    pool = getStalePool(includeEnlightened);
-  }
-  closeQSModal();
-  launchCustomQuiz(pool, 'review');
 }
 
 function startWeakItems() {
-  const pool = items.filter(i => i.level === 1);
-  if (!pool.length) { alert('No weak items — you\'re doing great!'); return; }
-  launchCustomQuiz(pool, 'review');
-}
-
-function launchCustomQuiz(pool, mode) {
-  if (!pool.length) return;
-  quizMode = mode;
-  quizQueue = shuffle([...pool]).slice(0, Math.min(pool.length, 20));
-  quizIndex = 0; quizScore = 0; quizResults = [];
   showView('review');
-  document.getElementById('review-config-panel').classList.add('hide');
-  document.getElementById('quiz-active').classList.add('show');
-  document.getElementById('quiz-results').classList.remove('show');
-  startItem();
+  const minSel = document.getElementById('qconfig-minlevel');
+  const maxSel = document.getElementById('qconfig-maxlevel');
+  if (minSel) minSel.value = '1';
+  if (maxSel) maxSel.value = '1';
+  updateQuizPoolInfo();
 }
 
 // ── DICTIONARY ──
@@ -1687,6 +1803,13 @@ function getQuizPool(){
     const lq = i.last_quizzed || null;
     if(daysVal==='0') return true; // any time
     if(daysVal==='stale_never') return !lq; // never reviewed
+    if(daysVal==='stale') {
+      // Stale: levels 2-4 not reviewed in 14d, level 5 not reviewed in 60d
+      const cutoff14 = new Date(Date.now() - 14*24*60*60*1000).toISOString();
+      const cutoff60 = new Date(Date.now() - 60*24*60*60*1000).toISOString();
+      if(i.level === 5) return !lq || lq < cutoff60;
+      return !lq || lq < cutoff14;
+    }
     if(daysVal.startsWith('recent_')){
       const days = parseInt(daysVal.split('_')[1]);
       const cutoff = new Date(Date.now() - days*24*60*60*1000).toISOString();
@@ -1733,7 +1856,7 @@ function startItem(){
 }
 
 function updateProgressBar(){
-  document.getElementById('progress-fill').style.width=(quizIndex/quizQueue.length)*100+'%';
+  document.getElementById('progress-fill').style.width=((quizIndex+1)/quizQueue.length)*100+'%';
   document.getElementById('progress-text').textContent=`${quizIndex+1} / ${quizQueue.length}`;
 }
 
@@ -1818,7 +1941,7 @@ function submitAnswer(){
   } else {
     const fb=document.getElementById('quiz-feedback');fb.classList.add('show');
     const re=document.getElementById('feedback-result');
-    re.textContent='✅ Correct!';re.className='feedback-result correct';
+    re.textContent='○ Correct!';re.className='feedback-result correct';
     document.getElementById('feedback-answer').textContent='';
     document.getElementById('feedback-description').textContent='';
     document.getElementById('feedback-notes').textContent='';
@@ -1843,7 +1966,7 @@ function finaliseItem(lastCorrect, correctAnswer){
   quizResults.push({item:currentItem,correct:itemCorrect});
   if(itemCorrect)quizScore++;
 
-  re.textContent=itemCorrect?'✅ Correct!':'❌ Incorrect';
+  re.textContent=itemCorrect?'○ Correct!':'✕ Incorrect';
   re.className='feedback-result '+(itemCorrect?'correct':'incorrect');
   document.getElementById('feedback-answer').textContent=(!itemCorrect&&correctAnswer)?`Answer: ${correctAnswer}`:'';
   const desc=currentItem.description||'';document.getElementById('feedback-description').textContent=desc;document.getElementById('feedback-notes').textContent=currentItem.notes?'📝 '+currentItem.notes:'';
@@ -1880,7 +2003,7 @@ function finaliseItem(lastCorrect, correctAnswer){
 function showFeedbackMsg(type,msg){
   const fb=document.getElementById('quiz-feedback');fb.classList.add('show');
   const re=document.getElementById('feedback-result');
-  if(type==='close'){re.textContent='⚠️ Close!';re.className='feedback-result close';}
+  if(type==='close'){re.textContent='△ Close!';re.className='feedback-result close';}
   document.getElementById('feedback-answer').textContent=msg;
   ['feedback-description','feedback-notes','feedback-level','feedback-synonyms'].forEach(id=>document.getElementById(id).textContent='');
   document.getElementById('enlightened-overlay').className='enlightened-overlay';
@@ -1921,7 +2044,7 @@ async function showResults(){
   document.getElementById('results-score').textContent=pct+'%';
   document.getElementById('results-fraction').textContent=`${quizScore} / ${quizQueue.length} correct`;
   document.getElementById('results-breakdown').innerHTML=quizResults.map(r=>
-    `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div class="results-icon">${r.correct?'✅':'❌'}</div></div>`).join('');
+    `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div class="results-icon">${r.correct?'<span style="color:var(--correct)">○</span>':'<span style="color:var(--incorrect)">✕</span>'}</div></div>`).join('');
   // Check if pool is now empty
   const remaining = getQuizPool();
   const emptyEl = document.getElementById('results-pool-empty');
@@ -2074,7 +2197,7 @@ function getStudyPool() {
 function updateStudyPoolInfo() {
   const pool = getStudyPool();
   const el = document.getElementById('study-pool-info');
-  if (el) el.textContent = `${pool.length} locked item${pool.length!==1?'s':''} available`;
+  if (el) el.textContent = `${pool.length} item${pool.length!==1?'s':''} available`;
   const btn = document.getElementById('study-start-btn');
   if (btn) btn.disabled = pool.length === 0;
 }
@@ -2113,7 +2236,7 @@ function showStudyCard() {
   const desc = item.description || '';
   document.getElementById('study-card-desc').textContent = desc;
   document.getElementById('study-card-divider').style.display = desc ? 'block' : 'none';
-  document.getElementById('study-prev-btn').disabled = studyLearnIndex === 0;
+  document.getElementById('study-prev-btn').style.visibility = studyLearnIndex === 0 ? 'hidden' : '';
   const nb = document.getElementById('study-next-btn');
   nb.textContent = studyLearnIndex === total-1 ? 'Start Quiz →' : 'Next →';
 }
@@ -2147,7 +2270,7 @@ function startStudyItem() {
   showStudyPrompt();
 }
 function updateStudyQuizProgress() {
-  document.getElementById('study-quiz-fill').style.width = (studyQuizIndex/studyQuizQueue.length)*100+'%';
+  document.getElementById('study-quiz-fill').style.width = ((studyQuizIndex+1)/studyQuizQueue.length)*100+'%';
   document.getElementById('study-quiz-text').textContent = `${studyQuizIndex+1} / ${studyQuizQueue.length}`;
 }
 function showStudyPrompt() {
@@ -2207,7 +2330,7 @@ function submitStudyAnswer() {
     input.className='quiz-input shake';
     setTimeout(()=>input.className='quiz-input '+(prompt.mode==='reading'?'reading-mode':'meaning-mode'),500);
     document.getElementById('study-feedback').classList.add('show');
-    document.getElementById('study-feedback-result').textContent='⚠️ Close!';
+    document.getElementById('study-feedback-result').textContent='△ Close!';
     document.getElementById('study-feedback-result').className='feedback-result close';
     document.getElementById('study-feedback-answer').textContent=`Did you mean: ${correctAnswer}`;
     document.getElementById('study-feedback-description').textContent='';
@@ -2230,7 +2353,7 @@ function submitStudyAnswer() {
     finaliseStudyItem(correctAnswer);
   } else {
     document.getElementById('study-feedback').classList.add('show');
-    document.getElementById('study-feedback-result').textContent='✅ Correct!';
+    document.getElementById('study-feedback-result').textContent='○ Correct!';
     document.getElementById('study-feedback-result').className='feedback-result correct';
     document.getElementById('study-feedback-answer').textContent='';
     document.getElementById('study-feedback-description').textContent='';
@@ -2245,7 +2368,7 @@ function finaliseStudyItem(correctAnswer) {
   studyQuizResults.push({item:studyCurrentItem, correct:!studyItemHadWrong});
   const fb = document.getElementById('study-feedback'); fb.classList.add('show');
   const re = document.getElementById('study-feedback-result');
-  re.textContent = !studyItemHadWrong ? '✅ Correct!' : '❌ Incorrect';
+  re.textContent = !studyItemHadWrong ? '○ Correct!' : '✕ Incorrect';
   re.className = 'feedback-result '+(!studyItemHadWrong?'correct':'incorrect');
   document.getElementById('study-feedback-answer').textContent = (studyItemHadWrong&&correctAnswer)?`Answer: ${correctAnswer}`:'';
   document.getElementById('study-feedback-description').textContent = studyCurrentItem.description||'';
@@ -2286,7 +2409,7 @@ async function showStudyResults() {
       <div class="results-kanji">${r.item.kanji}</div>
       <div class="results-reading">${getDisplayReading(r.item)}</div>
       <div style="font-size:0.75rem;color:${r.correct?'var(--lvl-apprentice)':'var(--lvl-review)'}">→ ${LEVEL_NAMES[r.item.level]}</div>
-      <div>${r.correct?'✅':'❌'}</div>
+      <div>${r.correct?'<span style="color:var(--correct)">○</span>':'<span style="color:var(--incorrect)">✕</span>'}</div>
     </div>`).join('');
   // Check if study pool is now empty
   const remaining = getStudyPool();
@@ -2306,6 +2429,14 @@ async function showStudyResults() {
   renderDashboard();
   await saveLevelBatch(studyQuizResults.map(r=>({item_id:r.item.id,level:r.item.level})));
 }
+function continueStudy() {
+  document.getElementById('study-results').classList.remove('show');
+  startStudy();
+}
+function endStudyLearn() {
+  document.getElementById('study-learn-wrap').style.display = 'none';
+  backToStudyConfig();
+}
 function backToStudyConfig() {
   document.getElementById('study-results').classList.remove('show');
   document.getElementById('study-quiz-wrap').style.display='none';
@@ -2319,6 +2450,585 @@ async function endStudyQuiz() {
   backToStudyConfig();
   renderDashboard();
 }
+
+
+// ── READ TAB ──
+function setReadMode(mode) {
+  readMode = mode;
+  const isReview = mode === 'review';
+  document.getElementById('read-mode-review').className = isReview ? 'quiz-btn btn-submit' : 'quiz-btn btn-next';
+  document.getElementById('read-mode-study').className = isReview ? 'quiz-btn btn-next' : 'quiz-btn btn-submit';
+  document.getElementById('view-review').style.display = isReview ? 'block' : 'none';
+  document.getElementById('view-study').style.display = isReview ? 'none' : 'block';
+}
+
+// ── WRITE TAB ──
+const WRITE_KANJI_CATS = new Set(['Joyo','Jinmeiyo','Kanji Extended']);
+let writeMode = 'review'; // 'study' or 'review'
+let readMode = 'review';  // 'study' or 'review'
+let writeLearnItems = [];  // items in current study learn phase
+let writeLearnIdx = 0;
+let writeReviewItems = []; // items in review phase
+let writeReviewIdx = 0;
+let writeReviewResults = []; // {item, grade}
+let writeIsStudyRound = false; // true = post-learn review, false = standalone review
+
+// Separate stroke animation state for write tab (learn phase)
+let wLearnPaths = []; let wLearnTimer = null; let wLearnRunning = false;
+let wRevPaths = []; let wRevTimer = null; let wRevRunning = false;
+const WRITE_SLOW = true; // write tab always uses slow speed
+
+function initWriteTab() {
+  // Only reset to config if not mid-session
+  const inLearn = document.getElementById('write-learn-wrap').style.display !== 'none';
+  const inReview = document.getElementById('write-review-wrap').style.display !== 'none';
+  const inResults = document.getElementById('write-results').style.display !== 'none';
+  if (!inLearn && !inReview && !inResults) {
+    setWriteMode(writeMode || 'review');
+    updateWSubcat();
+    updateWritePoolInfo();
+  }
+}
+
+function setWriteMode(mode) {
+  writeMode = mode;
+  const isReview = mode === 'review';
+  document.getElementById('write-mode-review').className = isReview ? 'quiz-btn btn-submit' : 'quiz-btn btn-next';
+  document.getElementById('write-mode-study').className = isReview ? 'quiz-btn btn-next' : 'quiz-btn btn-submit';
+  document.getElementById('wconfig-level-wrap').style.display = isReview ? '' : 'none';
+  document.getElementById('wconfig-maxlevel-wrap').style.display = isReview ? '' : 'none';
+  document.getElementById('wconfig-reviewed-wrap').style.display = isReview ? '' : 'none';
+  document.getElementById('wconfig-count-wrap').style.display = isReview ? 'none' : '';
+  document.getElementById('wconfig-rcount-wrap').style.display = isReview ? '' : 'none';
+  document.getElementById('write-start-btn').textContent = isReview ? 'Start Review' : 'Start Study';
+  updateWritePoolInfo();
+}
+
+function updateWSubcat() {
+  const cat = document.getElementById('wconfig-cat').value;
+  const sel = document.getElementById('wconfig-subcat');
+  const subcats = [...new Set(items.filter(i => i.category === cat).map(i => i.subcategory))].sort((a,b) => {
+    const ma = a.match(/(\d+)-(\d+)$/); const mb = b.match(/(\d+)-(\d+)$/);
+    return (ma && mb) ? parseInt(ma[1]) - parseInt(mb[1]) : a.localeCompare(b);
+  });
+  sel.innerHTML = '<option value="">All Subcategories</option>';
+  subcats.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+  updateWritePoolInfo();
+}
+
+function getWritePool() {
+  const cat = document.getElementById('wconfig-cat').value;
+  const subcat = document.getElementById('wconfig-subcat').value;
+  let pool = items.filter(i => i.category === cat && (!subcat || i.subcategory === subcat));
+
+  if (writeMode === 'study') {
+    // Study mode: unwritten kanji (write_level 0) in order
+    return pool.filter(i => (userWriteProgress[i.id] ?? 0) === 0);
+  } else {
+    // Review mode: filter by last_quizzed and level
+    const filter = document.getElementById('wconfig-reviewed').value;
+    const minLevel = parseInt(document.getElementById('wconfig-minlevel')?.value || '1');
+    const maxLevel = parseInt(document.getElementById('wconfig-maxlevel')?.value || '5');
+    const now = Date.now();
+    const day = 86400000;
+    return pool.filter(i => {
+      const lq = userWriteLastQuizzed[i.id] ? new Date(userWriteLastQuizzed[i.id]).getTime() : null;
+      const wl = userWriteProgress[i.id] ?? 0;
+      if (wl === 0) return false;
+      if (wl < minLevel || wl > maxLevel) return false;
+      if (filter === 'random') return true;
+      if (filter === 'stale') {
+        // Stale: levels 1-4 not reviewed in 14d, level 5 not reviewed in 60d
+        const cutoff14 = now - 14 * day;
+        const cutoff60 = now - 60 * day;
+        const lqMs = lq || 0;
+        if (wl === 5) return lqMs < cutoff60;
+        return lqMs < cutoff14;
+      }
+      if (filter === 'today') return lq && lq >= new Date().setHours(0,0,0,0);
+      if (filter === 'never') return !lq;
+      if (filter.startsWith('not')) {
+        const days = parseInt(filter.replace('not',''));
+        return !lq || lq < now - days * day;
+      }
+      const days = parseInt(filter);
+      return lq && lq >= now - days * day;
+    });
+  }
+}
+
+function updateWritePoolInfo() {
+  const pool = getWritePool();
+  const el = document.getElementById('write-pool-info');
+  el.textContent = `${pool.length} item${pool.length!==1?'s':''} available`;
+  document.getElementById('write-start-btn').disabled = pool.length === 0;
+}
+
+function startWriteSession() {
+  if (writeMode === 'study') {
+    const count = parseInt(document.getElementById('wconfig-count').value);
+    writeLearnItems = getWritePool().slice(0, count);
+    writeLearnIdx = 0;
+    writeIsStudyRound = false;
+    startWriteLearn();
+  } else {
+    const count = parseInt(document.getElementById('wconfig-rcount').value) || 20;
+    let pool = getWritePool();
+    if (document.getElementById('wconfig-reviewed').value === 'random') {
+      pool = pool.sort(() => Math.random() - 0.5);
+    }
+    writeReviewItems = pool.slice(0, count);
+    writeReviewIdx = 0;
+    writeReviewResults = [];
+    writeIsStudyRound = false;
+    showWriteReviewItem();
+  }
+}
+
+// ── STUDY LEARN PHASE ──
+function startWriteLearn() {
+  document.getElementById('write-config-panel').style.display = 'none';
+  document.getElementById('write-learn-wrap').style.display = 'block';
+  document.getElementById('write-review-wrap').style.display = 'none';
+  document.getElementById('write-results').style.display = 'none';
+  showWriteLearnItem();
+}
+
+function showWriteLearnItem() {
+  const item = writeLearnItems[writeLearnIdx];
+  const total = writeLearnItems.length;
+  document.getElementById('write-learn-counter').textContent = `${writeLearnIdx + 1} / ${total}`;
+  document.getElementById('write-learn-fill').style.width = `${((writeLearnIdx + 1) / total) * 100}%`;
+  document.getElementById('write-learn-text').textContent = `Learning ${writeLearnIdx + 1} of ${total}`;
+  document.getElementById('write-learn-kanji').textContent = item.kanji;
+  // Readings
+  const on = item.readings?.on || []; const kun = item.readings?.kun || [];
+  document.getElementById('write-learn-readings').innerHTML =
+    (on.length ? `<span style="color:var(--accent)">音: ${on.join('、')}</span>` : '') +
+    (on.length && kun.length ? '　' : '') +
+    (kun.length ? `<span>訓: ${kun.join('、')}</span>` : '');
+  document.getElementById('write-learn-meaning').textContent = (item.meanings || [item.meaning || '']).slice(0,3).join('、');
+  // Next/End button
+  document.getElementById('write-learn-next').textContent = writeLearnIdx === total - 1 ? 'Start Review →' : 'Next →';
+  document.getElementById('write-prev-btn').style.visibility = writeLearnIdx === 0 ? 'hidden' : '';
+  // Load stroke order
+  loadWriteStroke(item.kanji, 'write-learn-stroke-svg', 'write-anim-toggle', 'write-anim-stop', 'write-anim-play', wLearnPaths, wLearnTimer, wLearnRunning);
+}
+
+function writeLearnNav(dir) {
+  // Stop animation
+  stopWriteAnim('learn');
+  if (dir === 1 && writeLearnIdx === writeLearnItems.length - 1) {
+    // Move to review round
+    writeReviewItems = [...writeLearnItems].sort(() => Math.random() - 0.5);
+    writeReviewIdx = 0;
+    writeReviewResults = [];
+    writeIsStudyRound = true;
+    document.getElementById('write-learn-wrap').style.display = 'none';
+    showWriteReviewItem();
+    return;
+  }
+  writeLearnIdx = Math.max(0, Math.min(writeLearnItems.length - 1, writeLearnIdx + dir));
+  showWriteLearnItem();
+}
+
+function endWriteLearn() {
+  stopWriteAnim('learn');
+  backToWriteConfig();
+}
+
+// ── REVIEW PHASE ──
+function showWriteReviewItem() {
+  document.getElementById('write-config-panel').style.display = 'none';
+  document.getElementById('write-learn-wrap').style.display = 'none';
+  document.getElementById('write-review-wrap').style.display = 'block';
+  document.getElementById('write-results').style.display = 'none';
+
+  const item = writeReviewItems[writeReviewIdx];
+  const total = writeReviewItems.length;
+  document.getElementById('write-review-counter').textContent = `${writeReviewIdx + 1} / ${total}`;
+  document.getElementById('write-review-fill').style.width = `${((writeReviewIdx + 1) / total) * 100}%`;
+  document.getElementById('write-review-text').textContent = `${writeIsStudyRound ? 'Review round' : 'Review'} ${writeReviewIdx + 1} of ${total}`;
+  document.getElementById('write-review-meaning').textContent = (item.meanings || [item.meaning || '']).slice(0,3).join('、');
+  const on = item.readings?.on || []; const kun = item.readings?.kun || [];
+  document.getElementById('write-review-reading').innerHTML =
+    (on.length ? `音: ${on.join('、')}` : '') +
+    (on.length && kun.length ? '　' : '') +
+    (kun.length ? `訓: ${kun.join('、')}` : '');
+
+  // Hide answer card
+  document.getElementById('write-prompt-card').style.display = '';
+  document.getElementById('write-answer-card').style.display = 'none';
+  stopWriteAnim('rev');
+}
+
+function revealWriteAnswer() {
+  const item = writeReviewItems[writeReviewIdx];
+  document.getElementById('write-prompt-card').style.display = 'none';
+  document.getElementById('write-answer-card').style.display = 'flex';
+  document.getElementById('write-answer-kanji').textContent = item.kanji;
+  const on = item.readings?.on || []; const kun = item.readings?.kun || [];
+  document.getElementById('write-answer-readings').innerHTML =
+    (on.length ? `<span style="color:var(--accent)">音: ${on.join('、')}</span>` : '') +
+    (on.length && kun.length ? '　' : '') +
+    (kun.length ? `<span>訓: ${kun.join('、')}</span>` : '');
+  loadWriteStroke(item.kanji, 'write-answer-stroke-svg', 'write-rev-anim-toggle', 'write-rev-anim-stop', 'write-rev-anim-play', wRevPaths, wRevTimer, wRevRunning);
+}
+
+function gradeWrite(grade) {
+  const item = writeReviewItems[writeReviewIdx];
+
+  // Calculate new write level
+  let newLevel;
+  if (writeIsStudyRound) {
+    // Study round: ✗→1, △→2, ✓→3
+    newLevel = grade;
+  } else {
+    // Review mode: ✗→drop (min 1), △→same, ✓→raise (max 5)
+    const current = userWriteProgress[item.id] ?? 1;
+    if (grade === 1) newLevel = Math.max(1, current - 1);
+    else if (grade === 2) newLevel = current;
+    else newLevel = Math.min(5, current + 1);
+  }
+
+  writeReviewResults.push({ item, grade, newLevel });
+  saveWriteLevel(item.id, newLevel);
+  stopWriteAnim('rev');
+
+  writeReviewIdx++;
+  if (writeReviewIdx >= writeReviewItems.length) {
+    showWriteResults();
+  } else {
+    showWriteReviewItem();
+  }
+}
+
+function endWriteReview() {
+  stopWriteAnim('rev');
+  if (writeReviewResults.length > 0) showWriteResults();
+  else backToWriteConfig();
+}
+
+function showWriteResults() {
+  document.getElementById('write-review-wrap').style.display = 'none';
+  document.getElementById('write-results').style.display = 'block';
+
+  const total = writeReviewResults.length;
+  const got = writeReviewResults.filter(r => r.grade === 3).length;
+  const shaky = writeReviewResults.filter(r => r.grade === 2).length;
+  const missed = writeReviewResults.filter(r => r.grade === 1).length;
+
+  document.getElementById('write-results-score').textContent = `${Math.round(got/total*100)}%`;
+  document.getElementById('write-results-fraction').textContent = `${got} of ${total} recalled`;
+  document.getElementById('write-results-breakdown').innerHTML = writeReviewResults.map(r => {
+    const icon = r.grade === 3 ? '<span style="color:var(--correct)">○</span>' : r.grade === 2 ? '<span style="color:orange">△</span>' : '<span style="color:var(--incorrect)">✕</span>';
+    const on = r.item.readings?.on || [];
+    const kun = r.item.readings?.kun || [];
+    const reading = on.length ? on[0] : kun.length ? kun[0] : '';
+    return `<div class="results-item">
+      <div class="results-kanji">${r.item.kanji}</div>
+      <div class="results-reading">${reading}</div>
+      <div style="font-size:0.75rem;color:var(--text2)">→ ${LEVEL_NAMES[r.newLevel]}</div>
+      <div>${icon}</div>
+    </div>`;
+  }).join('');
+
+  saveWriteLastQuizzed(writeReviewResults.map(r => r.item.id));
+
+  // Check if more items available
+  const remaining = getWritePool();
+  const emptyEl = document.getElementById('write-pool-empty');
+  const againBtn = document.getElementById('btn-write-again');
+  if (remaining.length === 0) {
+    emptyEl.style.display = 'block';
+    againBtn.disabled = true;
+    againBtn.style.opacity = '0.4';
+    againBtn.style.cursor = 'not-allowed';
+  } else {
+    emptyEl.style.display = 'none';
+    againBtn.disabled = false;
+    againBtn.style.opacity = '';
+    againBtn.style.cursor = '';
+  }
+}
+
+function restartWriteSession() {
+  document.getElementById('write-results').style.display = 'none';
+  if (writeIsStudyRound || writeMode === 'study') {
+    startWriteSession();
+  } else {
+    // Review — get fresh pool
+    const count = parseInt(document.getElementById('wconfig-rcount').value) || 20;
+    let pool = getWritePool().sort(() => Math.random() - 0.5);
+    writeReviewItems = pool.slice(0, count);
+    writeReviewIdx = 0;
+    writeReviewResults = [];
+    showWriteReviewItem();
+  }
+}
+
+function backToWriteConfig() {
+  stopWriteAnim('learn');
+  stopWriteAnim('rev');
+  document.getElementById('write-config-panel').style.display = 'block';
+  document.getElementById('write-learn-wrap').style.display = 'none';
+  document.getElementById('write-review-wrap').style.display = 'none';
+  document.getElementById('write-results').style.display = 'none';
+  updateWritePoolInfo();
+}
+
+// ── WRITE STROKE ORDER ──
+function loadWriteStroke(kanji, svgId, toggleId, stopId, playId) {
+  const container = document.getElementById(svgId);
+  if (!container) return;
+  // Reset toggle
+  document.getElementById(stopId)?.classList.add('active');
+  document.getElementById(playId)?.classList.remove('active');
+
+  if (!kanjiVG || !kanjiVG[kanji]) {
+    container.innerHTML = '<div style="color:var(--text3);font-size:0.75rem;text-align:center;padding:20px;">Not available</div>';
+    return;
+  }
+  const paths = kanjiVG[kanji];
+  // Build SVG
+  const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox','0 0 109 109'); svg.setAttribute('width','160'); svg.setAttribute('height','160');
+  svg.classList.add('stroke-svg'); svg.id = `${svgId}-svg`;
+
+  const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  rect.setAttribute('x','0'); rect.setAttribute('y','0'); rect.setAttribute('width','109'); rect.setAttribute('height','109');
+  rect.setAttribute('fill','none'); rect.setAttribute('stroke','var(--text3)'); rect.setAttribute('stroke-width','3'); rect.setAttribute('opacity','0.25');
+  svg.appendChild(rect);
+
+  ['M54.5,0 L54.5,109','M0,54.5 L109,54.5'].forEach(d => {
+    const line = document.createElementNS('http://www.w3.org/2000/svg','path');
+    line.setAttribute('d',d); line.setAttribute('stroke','var(--text3)');
+    line.setAttribute('stroke-width','2'); line.setAttribute('stroke-dasharray','3,4');
+    line.setAttribute('opacity','0.2'); line.classList.add('guide');
+    svg.appendChild(line);
+  });
+
+  paths.forEach((d, idx) => {
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d',d); path.setAttribute('fill','none');
+    path.setAttribute('stroke','var(--text)'); path.setAttribute('stroke-width','3');
+    path.setAttribute('stroke-linecap','round'); path.setAttribute('stroke-linejoin','round');
+    path.id = `${svgId}-s${idx}`;
+    svg.appendChild(path);
+  });
+
+  const countLabel = document.createElementNS('http://www.w3.org/2000/svg','text');
+  countLabel.setAttribute('x','106'); countLabel.setAttribute('y','107');
+  countLabel.setAttribute('text-anchor','end'); countLabel.setAttribute('font-size','7');
+  countLabel.setAttribute('fill','var(--text3)'); countLabel.setAttribute('opacity','0.6');
+  countLabel.setAttribute('font-family','sans-serif');
+  countLabel.textContent = `${paths.length} strokes`;
+  svg.appendChild(countLabel);
+
+  container.innerHTML = '';
+  container.appendChild(svg);
+}
+
+function toggleWriteAnim() { toggleWriteAnimFor('learn'); }
+function toggleWriteRevAnim() { toggleWriteAnimFor('rev'); }
+
+function getWriteTimings(slow) {
+  return slow ? [900, 800, 1200] : [500, 500, 1000];
+}
+
+function toggleWriteAnimFor(phase) {
+  const isLearn = phase === 'learn';
+  const svgId = isLearn ? 'write-learn-stroke-svg' : 'write-answer-stroke-svg';
+  const stopId = isLearn ? 'write-anim-stop' : 'write-rev-anim-stop';
+  const playId = isLearn ? 'write-anim-play' : 'write-rev-anim-play';
+  const slow = WRITE_SLOW;
+
+  const running = isLearn ? wLearnRunning : wRevRunning;
+  if (running) {
+    stopWriteAnim(phase);
+    return;
+  }
+
+  // Get paths from SVG
+  const svg = document.getElementById(`${svgId}-svg`);
+  if (!svg) return;
+  const pathEls = [...svg.querySelectorAll('path:not(.guide)')];
+  if (!pathEls.length) return;
+
+  document.getElementById(stopId)?.classList.remove('active');
+  document.getElementById(playId)?.classList.add('active');
+
+  if (isLearn) { wLearnRunning = true; animateWriteStrokes(pathEls, phase, slow, svgId); }
+  else { wRevRunning = true; animateWriteStrokes(pathEls, phase, slow, svgId); }
+}
+
+function stopWriteAnim(phase) {
+  const isLearn = phase === 'learn';
+  if (isLearn) { clearTimeout(wLearnTimer); wLearnRunning = false; }
+  else { clearTimeout(wRevTimer); wRevRunning = false; }
+  const svgId = isLearn ? 'write-learn-stroke-svg' : 'write-answer-stroke-svg';
+  const stopId = isLearn ? 'write-anim-stop' : 'write-rev-anim-stop';
+  const playId = isLearn ? 'write-anim-play' : 'write-rev-anim-play';
+  document.getElementById(stopId)?.classList.add('active');
+  document.getElementById(playId)?.classList.remove('active');
+  const svg = document.getElementById(`${svgId}-svg`);
+  if (svg) svg.querySelectorAll('path:not(.guide)').forEach(el => {
+    el.setAttribute('stroke','var(--text)'); el.setAttribute('opacity','1');
+    el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; el.style.transition = '';
+  });
+  const countLabel = svg?.querySelector('text');
+  if (countLabel) {
+    const cnt = svg.querySelectorAll('path:not(.guide)').length;
+    countLabel.textContent = `${cnt} strokes`;
+  }
+}
+
+function animateWriteStrokes(pathEls, phase, slow, svgId) {
+  const isLearn = phase === 'learn';
+  const [drawMs, pauseMs, endMs] = getWriteTimings(slow);
+  let idx = 0;
+
+  function step() {
+    const running = isLearn ? wLearnRunning : wRevRunning;
+    if (!running) return;
+
+    if (idx >= pathEls.length) {
+      // Loop
+      pathEls.forEach(el => {
+        el.setAttribute('stroke','var(--text)'); el.setAttribute('opacity','1');
+        el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; el.style.transition = '';
+      });
+      const svg = document.getElementById(`${svgId}-svg`);
+      const countLabel = svg?.querySelector('text');
+      if (countLabel) countLabel.textContent = `${pathEls.length} strokes`;
+      const timer = setTimeout(() => { idx = 0; step(); }, endMs);
+      if (isLearn) wLearnTimer = timer; else wRevTimer = timer;
+      return;
+    }
+
+    const svg = document.getElementById(`${svgId}-svg`);
+    const countLabel = svg?.querySelector('text');
+    if (countLabel) countLabel.textContent = `Stroke ${idx + 1} of ${pathEls.length}`;
+
+    pathEls.forEach((el, i) => {
+      el.style.transition = ''; el.style.strokeDasharray = ''; el.style.strokeDashoffset = '';
+      el.setAttribute('stroke', i < idx ? 'var(--text)' : 'var(--text3)');
+      el.setAttribute('opacity', i < idx ? '1' : '0.25');
+    });
+
+    const current = pathEls[idx];
+    current.setAttribute('stroke','var(--accent)'); current.setAttribute('opacity','1');
+    const len = current.getTotalLength();
+    current.style.transition = 'none';
+    current.style.strokeDasharray = `${len}`;
+    current.style.strokeDashoffset = `${len}`;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      current.style.transition = `stroke-dashoffset ${drawMs}ms ease`;
+      current.style.strokeDashoffset = '0';
+    }));
+
+    const timer = setTimeout(() => { idx++; step(); }, drawMs + pauseMs);
+    if (isLearn) wLearnTimer = timer; else wRevTimer = timer;
+  }
+
+  step();
+}
+
+// ── WRITE DB ──
+async function saveWriteLevel(itemId, level) {
+  const { error } = await sb.rpc('upsert_write_progress', {
+    p_user_id: currentUser.id, p_item_id: itemId, p_level: level, p_last_quizzed: new Date().toISOString()
+  });
+  if (error) console.error('saveWriteLevel:', error);
+  else { userWriteProgress[itemId] = level; userWriteLastQuizzed[itemId] = new Date().toISOString(); }
+}
+
+async function saveWriteLastQuizzed(itemIds) {
+  if (!itemIds.length) return;
+  const now = new Date().toISOString();
+  const uid = currentUser.id;
+  await Promise.all(itemIds.map(id =>
+    sb.from('write_progress').upsert({
+      user_id: uid, item_id: id,
+      level: userWriteProgress[id] ?? 1,
+      last_quizzed: now
+    }, { onConflict: 'user_id,item_id' })
+  ));
+  itemIds.forEach(id => userWriteLastQuizzed[id] = now);
+}
+
+// ── WRITE DASHBOARD ──
+function renderWriteDashboard() {
+  const kanji_cats = ['Joyo','Jinmeiyo','Kanji Extended'];
+  const grid = document.getElementById('write-stats-grid');
+  const bars = document.getElementById('write-level-bars');
+  if (!grid || !bars) return;
+
+  // Stats grid — level breakdown per category
+  let gridHtml = '';
+  kanji_cats.forEach(cat => {
+    const catItems = items.filter(i => i.category === cat);
+    const levels = [0,1,2,3,4,5].map(l => catItems.filter(i => (userWriteProgress[i.id] ?? 0) === l).length);
+    const studied = catItems.length - levels[0];
+    gridHtml += `<div class="stat-card" style="cursor:default">
+      <div class="stat-value">${studied}<span style="font-size:0.6rem;color:var(--text3)">/${catItems.length}</span></div>
+      <div class="stat-label">${cat}</div>
+      <div style="font-size:0.65rem;color:var(--text3);margin-top:4px;line-height:1.6;">
+        ${levels.slice(1).map((c,i) => `<span style="color:${LEVEL_COLORS[i+1]}">${c}</span>`).join(' · ')}
+      </div>
+    </div>`;
+  });
+  grid.innerHTML = gridHtml;
+
+  // Level bars — all kanji write levels
+  const allKanji = items.filter(i => WRITE_KANJI_CATS.has(i.category));
+  const levelCounts = [0,1,2,3,4,5].map(l => allKanji.filter(i => (userWriteProgress[i.id] ?? 0) === l).length);
+  const total = allKanji.length;
+  bars.innerHTML = [0,1,2,3,4,5].map(l => `
+    <div class="level-bar-row">
+      <div class="level-bar-label"><div class="level-dot" style="background:${LEVEL_COLORS[l]}"></div><span style="color:${LEVEL_COLORS[l]}">${LEVEL_NAMES[l]}</span></div>
+      <div class="level-bar-track"><div class="level-bar-fill" style="width:${total ? levelCounts[l]/total*100 : 0}%;background:${LEVEL_COLORS[l]}"></div></div>
+      <div class="level-bar-count">${levelCounts[l]}</div>
+    </div>`).join('');
+
+  // Quick action tiles
+  const weakCount = allKanji.filter(i => (userWriteProgress[i.id] ?? 0) === 1).length;
+  document.getElementById('weak-write-sub').textContent = weakCount ? `${weakCount} kanji at level 1` : 'None — great work!';
+
+  const now = Date.now();
+  const cutoff14 = new Date(now - 14 * 86400000).toISOString();
+  const cutoff60 = new Date(now - 60 * 86400000).toISOString();
+  const staleCount = allKanji.filter(i => {
+    const lq = userWriteLastQuizzed[i.id];
+    const wl = userWriteProgress[i.id] ?? 0;
+    if (wl === 0) return false;
+    if (wl === 5) return !lq || lq < cutoff60;
+    return !lq || lq < cutoff14;
+  }).length;
+  document.getElementById('stale-write-sub').textContent = staleCount ? `${staleCount} kanji not reviewed recently` : 'All up to date!';
+}
+
+function startWeakWriters() {
+  showView('write');
+  setWriteMode('review');
+  document.getElementById('wconfig-reviewed').value = 'random';
+  document.getElementById('wconfig-minlevel').value = '1';
+  document.getElementById('wconfig-maxlevel').value = '1';
+  updateWritePoolInfo();
+}
+
+function openWriteReviewModal(type) {
+  showView('write');
+  setWriteMode('review');
+  if (type === 'stale') {
+    document.getElementById('wconfig-reviewed').value = 'stale';
+    document.getElementById('wconfig-minlevel').value = '1';
+    document.getElementById('wconfig-maxlevel').value = '5';
+  }
+  updateWritePoolInfo();
+}
+
+// ── WRITE TAB END ──
 
 // ── START ──
 loadPrefs();
