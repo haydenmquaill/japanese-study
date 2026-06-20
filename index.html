@@ -686,8 +686,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
           <div style="display:flex;align-items:center;gap:6px;">
             <div class="stroke-toggle" id="write-anim-toggle" onclick="toggleWriteAnim()">
-              <span id="write-anim-stop" class="active">■</span>
-              <span id="write-anim-play">▶</span>
+              <span id="write-anim-stop">■</span>
+              <span id="write-anim-play" class="active">▶</span>
             </div>
           </div>
           <div id="write-learn-stroke-svg" style="width:160px;height:160px;"></div>
@@ -720,8 +720,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
         <div id="write-answer-readings" style="font-size:0.95rem;color:var(--text2);text-align:center;"></div>
         <div style="display:flex;align-items:center;gap:6px;">
           <div class="stroke-toggle" id="write-rev-anim-toggle" onclick="toggleWriteRevAnim()">
-            <span id="write-rev-anim-stop" class="active">■</span>
-            <span id="write-rev-anim-play">▶</span>
+            <span id="write-rev-anim-stop">■</span>
+            <span id="write-rev-anim-play" class="active">▶</span>
           </div>
         </div>
         <div id="write-answer-stroke-svg" style="width:160px;height:160px;"></div>
@@ -2474,8 +2474,8 @@ let writeReviewResults = []; // {item, grade}
 let writeIsStudyRound = false; // true = post-learn review, false = standalone review
 
 // Separate stroke animation state for write tab (learn phase)
-let wLearnPaths = []; let wLearnTimer = null; let wLearnRunning = false;
-let wRevPaths = []; let wRevTimer = null; let wRevRunning = false;
+let wLearnPaths = []; let wLearnTimer = null; let wLearnRunning = false; let wLearnIdx = 0;
+let wRevPaths = []; let wRevTimer = null; let wRevRunning = false; let wRevIdx = 0;
 const WRITE_SLOW = true; // write tab always uses slow speed
 
 function initWriteTab() {
@@ -2613,6 +2613,8 @@ function showWriteLearnItem() {
   document.getElementById('write-prev-btn').style.visibility = writeLearnIdx === 0 ? 'hidden' : '';
   // Load stroke order
   loadWriteStroke(item.kanji, 'write-learn-stroke-svg', 'write-anim-toggle', 'write-anim-stop', 'write-anim-play', wLearnPaths, wLearnTimer, wLearnRunning);
+  // Small delay to let SVG render before animating
+  setTimeout(() => startWriteAnim('learn'), 100);
 }
 
 function writeLearnNav(dir) {
@@ -2673,6 +2675,7 @@ function revealWriteAnswer() {
     (on.length && kun.length ? '　' : '') +
     (kun.length ? `<span>訓: ${kun.join('、')}</span>` : '');
   loadWriteStroke(item.kanji, 'write-answer-stroke-svg', 'write-rev-anim-toggle', 'write-rev-anim-stop', 'write-rev-anim-play', wRevPaths, wRevTimer, wRevRunning);
+  setTimeout(() => startWriteAnim('rev'), 100);
 }
 
 function gradeWrite(grade) {
@@ -2781,9 +2784,9 @@ function backToWriteConfig() {
 function loadWriteStroke(kanji, svgId, toggleId, stopId, playId) {
   const container = document.getElementById(svgId);
   if (!container) return;
-  // Reset toggle
-  document.getElementById(stopId)?.classList.add('active');
-  document.getElementById(playId)?.classList.remove('active');
+  // Set toggle to playing state — auto-start follows
+  document.getElementById(stopId)?.classList.remove('active');
+  document.getElementById(playId)?.classList.add('active');
 
   if (!kanjiVG || !kanjiVG[kanji]) {
     container.innerHTML = '<div style="color:var(--text3);font-size:0.75rem;text-align:center;padding:20px;">Not available</div>';
@@ -2838,39 +2841,47 @@ function getWriteTimings(slow) {
 
 function toggleWriteAnimFor(phase) {
   const isLearn = phase === 'learn';
-  const svgId = isLearn ? 'write-learn-stroke-svg' : 'write-answer-stroke-svg';
   const stopId = isLearn ? 'write-anim-stop' : 'write-rev-anim-stop';
   const playId = isLearn ? 'write-anim-play' : 'write-rev-anim-play';
-  const slow = WRITE_SLOW;
-
   const running = isLearn ? wLearnRunning : wRevRunning;
+
   if (running) {
-    stopWriteAnim(phase);
+    // Pause — freeze mid-stroke, don't reset
+    if (isLearn) { clearTimeout(wLearnTimer); wLearnRunning = false; }
+    else { clearTimeout(wRevTimer); wRevRunning = false; }
+    document.getElementById(stopId)?.classList.add('active');
+    document.getElementById(playId)?.classList.remove('active');
     return;
   }
 
-  // Get paths from SVG
+  // Resume from current index (or start from 0 if at end)
+  const svgId = isLearn ? 'write-learn-stroke-svg' : 'write-answer-stroke-svg';
   const svg = document.getElementById(`${svgId}-svg`);
   if (!svg) return;
   const pathEls = [...svg.querySelectorAll('path:not(.guide)')];
   if (!pathEls.length) return;
 
+  // If at end of last loop cycle, restart from beginning
+  const curIdx = isLearn ? wLearnIdx : wRevIdx;
+  const startIdx = curIdx >= pathEls.length ? 0 : curIdx;
+  if (isLearn) { wLearnRunning = true; wLearnIdx = startIdx; }
+  else { wRevRunning = true; wRevIdx = startIdx; }
+
   document.getElementById(stopId)?.classList.remove('active');
   document.getElementById(playId)?.classList.add('active');
-
-  if (isLearn) { wLearnRunning = true; animateWriteStrokes(pathEls, phase, slow, svgId); }
-  else { wRevRunning = true; animateWriteStrokes(pathEls, phase, slow, svgId); }
+  animateWriteStrokes(pathEls, phase, WRITE_SLOW, svgId);
 }
 
 function stopWriteAnim(phase) {
+  // Full stop/reset — used when navigating away from item
   const isLearn = phase === 'learn';
-  if (isLearn) { clearTimeout(wLearnTimer); wLearnRunning = false; }
-  else { clearTimeout(wRevTimer); wRevRunning = false; }
+  if (isLearn) { clearTimeout(wLearnTimer); wLearnRunning = false; wLearnIdx = 0; }
+  else { clearTimeout(wRevTimer); wRevRunning = false; wRevIdx = 0; }
   const svgId = isLearn ? 'write-learn-stroke-svg' : 'write-answer-stroke-svg';
   const stopId = isLearn ? 'write-anim-stop' : 'write-rev-anim-stop';
   const playId = isLearn ? 'write-anim-play' : 'write-rev-anim-play';
-  document.getElementById(stopId)?.classList.add('active');
-  document.getElementById(playId)?.classList.remove('active');
+  document.getElementById(stopId)?.classList.remove('active');
+  document.getElementById(playId)?.classList.add('active');
   const svg = document.getElementById(`${svgId}-svg`);
   if (svg) svg.querySelectorAll('path:not(.guide)').forEach(el => {
     el.setAttribute('stroke','var(--text)'); el.setAttribute('opacity','1');
@@ -2878,22 +2889,35 @@ function stopWriteAnim(phase) {
   });
   const countLabel = svg?.querySelector('text');
   if (countLabel) {
-    const cnt = svg.querySelectorAll('path:not(.guide)').length;
-    countLabel.textContent = `${cnt} strokes`;
+    const cnt = svg?.querySelectorAll('path:not(.guide)').length || 0;
+    if (cnt) countLabel.textContent = `${cnt} strokes`;
   }
+}
+
+function startWriteAnim(phase) {
+  // Auto-start — called after loadWriteStroke completes
+  const isLearn = phase === 'learn';
+  const svgId = isLearn ? 'write-learn-stroke-svg' : 'write-answer-stroke-svg';
+  const svg = document.getElementById(`${svgId}-svg`);
+  if (!svg) return;
+  const pathEls = [...svg.querySelectorAll('path:not(.guide)')];
+  if (!pathEls.length) return;
+  if (isLearn) { wLearnRunning = true; wLearnIdx = 0; }
+  else { wRevRunning = true; wRevIdx = 0; }
+  animateWriteStrokes(pathEls, phase, WRITE_SLOW, svgId);
 }
 
 function animateWriteStrokes(pathEls, phase, slow, svgId) {
   const isLearn = phase === 'learn';
   const [drawMs, pauseMs, endMs] = getWriteTimings(slow);
-  let idx = 0;
 
   function step() {
     const running = isLearn ? wLearnRunning : wRevRunning;
     if (!running) return;
+    const idx = isLearn ? wLearnIdx : wRevIdx;
 
     if (idx >= pathEls.length) {
-      // Loop
+      // End of cycle — show all, pause briefly then loop
       pathEls.forEach(el => {
         el.setAttribute('stroke','var(--text)'); el.setAttribute('opacity','1');
         el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; el.style.transition = '';
@@ -2901,7 +2925,10 @@ function animateWriteStrokes(pathEls, phase, slow, svgId) {
       const svg = document.getElementById(`${svgId}-svg`);
       const countLabel = svg?.querySelector('text');
       if (countLabel) countLabel.textContent = `${pathEls.length} strokes`;
-      const timer = setTimeout(() => { idx = 0; step(); }, endMs);
+      const timer = setTimeout(() => {
+        if (isLearn) wLearnIdx = 0; else wRevIdx = 0;
+        step();
+      }, endMs);
       if (isLearn) wLearnTimer = timer; else wRevTimer = timer;
       return;
     }
@@ -2927,7 +2954,10 @@ function animateWriteStrokes(pathEls, phase, slow, svgId) {
       current.style.strokeDashoffset = '0';
     }));
 
-    const timer = setTimeout(() => { idx++; step(); }, drawMs + pauseMs);
+    const timer = setTimeout(() => {
+      if (isLearn) wLearnIdx++; else wRevIdx++;
+      step();
+    }, drawMs + pauseMs);
     if (isLearn) wLearnTimer = timer; else wRevTimer = timer;
   }
 
