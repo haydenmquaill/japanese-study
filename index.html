@@ -595,195 +595,234 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
   </div><!-- end view-read -->
   <!-- WRITE -->
   <div id="view-write" class="view">
-    <!-- Config Panel -->
-    <div id="write-config-panel">
-      <!-- Mode toggle — outside config box, matching Read tab -->
-      <div style="display:flex;gap:8px;margin-bottom:4px;">
-        <button class="quiz-btn btn-submit" id="write-mode-review" onclick="setWriteMode('review')" style="flex:1">Review</button>
-        <button class="quiz-btn btn-next" id="write-mode-study" onclick="setWriteMode('study')" style="flex:1">Study</button>
-      </div>
-      <div class="quiz-config">
-        <div class="config-grid">
-          <div class="config-item"><label>Category</label>
-            <select id="wconfig-cat" onchange="updateWSubcat();updateWritePoolInfo()">
-              <option value="Joyo">Joyo</option>
-              <option value="Jinmeiyo">Jinmeiyo</option>
-              <option value="Kanji Extended">Kanji Extended</option>
-            </select>
-          </div>
-          <div class="config-item"><label>Subcategory</label>
-            <select id="wconfig-subcat" onchange="updateWritePoolInfo()"><option value="">All Subcategories</option></select>
-          </div>
-          <!-- Min/Max level — review only -->
-          <div class="config-item" id="wconfig-level-wrap" style="display:none"><label>Min Level</label>
-            <select id="wconfig-minlevel" onchange="updateWritePoolInfo()">
-              <option value="1" selected>1 — Needs practice</option>
-              <option value="2">2 — Shaky</option>
-              <option value="3">3 — Confident</option>
-              <option value="4">4 — Strong</option>
-              <option value="5">5 — Mastered</option>
-            </select>
-          </div>
-          <div class="config-item" id="wconfig-maxlevel-wrap" style="display:none"><label>Max Level</label>
-            <select id="wconfig-maxlevel" onchange="updateWritePoolInfo()">
-              <option value="1">1 — Needs practice</option>
-              <option value="2">2 — Shaky</option>
-              <option value="3">3 — Confident</option>
-              <option value="4">4 — Strong</option>
-              <option value="5" selected>5 — Mastered</option>
-            </select>
-          </div>
-          <!-- Last Reviewed — review only -->
-          <div class="config-item" id="wconfig-reviewed-wrap" style="display:none"><label>Last Reviewed</label>
-            <select id="wconfig-reviewed" onchange="updateWritePoolInfo()">
-              <option value="random" selected>Anytime</option>
-              <option value="stale">Stale (14d / 60d)</option>
-              <optgroup label="Recently reviewed">
-                <option value="today">Today</option>
-                <option value="3">Last 3 days</option>
-                <option value="7">Last 7 days</option>
-                <option value="14">Last 14 days</option>
-                <option value="30">Last 30 days</option>
-              </optgroup>
-              <optgroup label="Not reviewed recently">
-                <option value="not7">Not in last 7 days</option>
-                <option value="not14">Not in last 14 days</option>
-                <option value="not30">Not in last 30 days</option>
-                <option value="never">Never reviewed</option>
-              </optgroup>
-            </select>
-          </div>
-          <!-- Items — study: full width select, review: number input -->
-          <div class="config-item" id="wconfig-count-wrap" style="display:none;grid-column:1/-1"><label>Items</label>
-            <select id="wconfig-count" onchange="updateWritePoolInfo()">
-              <option value="5">5 items</option>
-              <option value="10" selected>10 items</option>
-              <option value="20">20 items</option>
-            </select>
-          </div>
-          <div class="config-item" id="wconfig-rcount-wrap" style="display:none"><label>Items</label>
-            <input type="number" id="wconfig-rcount" value="20" min="1" max="200" oninput="updateWritePoolInfo()">
-          </div>
-        </div>
-      </div>
-      <div id="write-pool-info" style="font-size:0.78rem;color:var(--text2);margin-bottom:11px;text-align:center;"></div>
-      <button class="start-btn" id="write-start-btn" onclick="startWriteSession()">Start Study</button>
+    <!-- Mode toggle — always visible -->
+    <div style="display:flex;gap:8px;margin-bottom:4px;">
+      <button class="quiz-btn btn-submit" id="write-mode-review" onclick="setWriteMode('review')" style="flex:1">Review</button>
+      <button class="quiz-btn btn-next" id="write-mode-study" onclick="setWriteMode('study')" style="flex:1">Study</button>
     </div>
 
-    <!-- Study: Learning Phase -->
-    <div id="write-learn-wrap" style="display:none">
-      <div class="quiz-progress">
-        <div class="progress-bar"><div class="progress-fill" id="write-learn-fill"></div></div>
-        <div class="progress-text" id="write-learn-text"></div>
-        <button class="quiz-btn btn-end" onclick="endWriteLearn()">End</button>
-      </div>
-      <div class="quiz-card" style="min-height:auto;flex-direction:column;align-items:center;padding:20px;gap:12px;">
-        <div style="font-size:0.72rem;color:var(--text3);" id="write-learn-counter"></div>
-        <div style="font-size:4rem;font-weight:300;letter-spacing:0.05em;" id="write-learn-kanji"></div>
-        <div id="write-learn-readings" style="font-size:0.95rem;color:var(--text2);text-align:center;"></div>
-        <div style="font-size:1rem;font-weight:600;text-align:center;" id="write-learn-meaning"></div>
-        <!-- Stroke order embedded -->
-        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
-          <div style="display:flex;align-items:center;gap:6px;">
-            <div class="stroke-toggle" id="write-anim-toggle" onclick="toggleWriteAnim()">
-              <span id="write-anim-stop">■</span>
-              <span id="write-anim-play" class="active">▶</span>
+    <!-- ═══ REVIEW SECTION ═══ -->
+    <div id="write-review-section" style="display:block">
+      <!-- Review Config -->
+      <div id="wr-config-panel">
+        <div class="quiz-config">
+          <div class="config-grid">
+            <div class="config-item"><label>Category</label>
+              <select id="wr-cat" onchange="updateWRSubcat();updateWRPoolInfo()">
+                <option value="Joyo">Joyo</option>
+                <option value="Jinmeiyo">Jinmeiyo</option>
+                <option value="Kanji Extended">Kanji Extended</option>
+              </select>
+            </div>
+            <div class="config-item"><label>Subcategory</label>
+              <select id="wr-subcat" onchange="updateWRPoolInfo()"><option value="">All Subcategories</option></select>
+            </div>
+            <div class="config-item"><label>Min Level</label>
+              <select id="wr-minlevel" onchange="updateWRPoolInfo()">
+                <option value="1" selected>1 — Needs practice</option>
+                <option value="2">2 — Shaky</option>
+                <option value="3">3 — Confident</option>
+                <option value="4">4 — Strong</option>
+                <option value="5">5 — Mastered</option>
+              </select>
+            </div>
+            <div class="config-item"><label>Max Level</label>
+              <select id="wr-maxlevel" onchange="updateWRPoolInfo()">
+                <option value="1">1 — Needs practice</option>
+                <option value="2">2 — Shaky</option>
+                <option value="3">3 — Confident</option>
+                <option value="4">4 — Strong</option>
+                <option value="5" selected>5 — Mastered</option>
+              </select>
+            </div>
+            <div class="config-item"><label>Last Reviewed</label>
+              <select id="wr-reviewed" onchange="updateWRPoolInfo()">
+                <option value="random" selected>Anytime</option>
+                <option value="stale">Stale (14d / 60d)</option>
+                <optgroup label="Recently reviewed">
+                  <option value="today">Today</option>
+                  <option value="3">Last 3 days</option>
+                  <option value="7">Last 7 days</option>
+                  <option value="14">Last 14 days</option>
+                  <option value="30">Last 30 days</option>
+                </optgroup>
+                <optgroup label="Not reviewed recently">
+                  <option value="not7">Not in last 7 days</option>
+                  <option value="not14">Not in last 14 days</option>
+                  <option value="not30">Not in last 30 days</option>
+                  <option value="never">Never reviewed</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="config-item"><label>Items</label>
+              <input type="number" id="wr-count" value="20" min="1" max="200" oninput="updateWRPoolInfo()">
             </div>
           </div>
-          <div id="write-learn-stroke-svg" style="width:160px;height:160px;"></div>
         </div>
+        <div id="wr-pool-info" style="font-size:0.78rem;color:var(--text2);margin-bottom:11px;text-align:center;"></div>
+        <button class="start-btn" id="wr-start-btn" onclick="startWRSession()">Start Review</button>
       </div>
-      <div style="display:flex;gap:9px;margin-top:4px;">
-        <button class="quiz-btn btn-next" id="write-prev-btn" onclick="writeLearnNav(-1)" style="flex:1">← Prev</button>
-        <button class="quiz-btn btn-submit" id="write-learn-next" onclick="writeLearnNav(1)" style="flex:2">Next →</button>
-      </div>
-    </div>
-
-    <!-- Review Phase (both study round and review mode) -->
-    <div id="write-review-wrap" style="display:none">
-      <div class="quiz-progress">
-        <div class="progress-bar"><div class="progress-fill" id="write-review-fill"></div></div>
-        <div class="progress-text" id="write-review-text"></div>
-        <button class="quiz-btn btn-end" onclick="endWriteReview()">End</button>
-      </div>
-      <!-- Prompt (meaning + reading) -->
-      <div class="quiz-card" style="min-height:auto;flex-direction:column;align-items:center;padding:20px;gap:8px;" id="write-prompt-card">
-        <div style="font-size:0.72rem;color:var(--text3);" id="write-review-counter"></div>
-        <div style="font-size:0.85rem;color:var(--text3);">Write this kanji:</div>
-        <div style="font-size:1.1rem;font-weight:600;text-align:center;" id="write-review-meaning"></div>
-        <div style="font-size:0.95rem;color:var(--text2);text-align:center;" id="write-review-reading"></div>
-        <button class="quiz-btn btn-submit" onclick="revealWriteAnswer()" style="margin-top:8px;width:100%;">Reveal ↓</button>
-      </div>
-      <!-- Answer reveal -->
-      <div id="write-answer-card" style="display:none;flex-direction:column;align-items:center;gap:12px;padding:20px;background:var(--surface);border-radius:var(--radius);margin-top:8px;">
-        <div style="font-size:4rem;font-weight:300;" id="write-answer-kanji"></div>
-        <div id="write-answer-readings" style="font-size:0.95rem;color:var(--text2);text-align:center;"></div>
-        <div style="display:flex;align-items:center;gap:6px;">
-          <div class="stroke-toggle" id="write-rev-anim-toggle" onclick="toggleWriteRevAnim()">
-            <span id="write-rev-anim-stop">■</span>
-            <span id="write-rev-anim-play" class="active">▶</span>
+      <!-- Review Active -->
+      <div id="wr-active" style="display:none">
+        <div class="quiz-progress">
+          <div class="progress-bar"><div class="progress-fill" id="wr-fill"></div></div>
+          <div class="progress-text" id="wr-text"></div>
+          <button class="quiz-btn btn-end" onclick="endWRSession()">End</button>
+        </div>
+        <div class="quiz-card" style="min-height:auto;flex-direction:column;align-items:center;padding:20px;gap:8px;">
+          <div style="font-size:0.72rem;color:var(--text3);" id="wr-counter"></div>
+          <div style="font-size:1.1rem;font-weight:600;text-align:center;" id="wr-meaning"></div>
+          <div style="font-size:0.95rem;color:var(--text2);text-align:center;" id="wr-reading"></div>
+          <div style="position:relative;width:160px;height:160px;margin:4px 0;">
+            <svg viewBox="0 0 109 109" width="160" height="160" style="position:absolute;top:0;left:0;">
+              <rect x="0" y="0" width="109" height="109" fill="none" stroke="var(--text3)" stroke-width="3" opacity="0.25"/>
+              <path d="M54.5,0 L54.5,109" stroke="var(--text3)" stroke-width="2" stroke-dasharray="3,4" opacity="0.2" class="guide"/>
+              <path d="M0,54.5 L109,54.5" stroke="var(--text3)" stroke-width="2" stroke-dasharray="3,4" opacity="0.2" class="guide"/>
+            </svg>
+            <canvas id="wr-canvas" width="160" height="160" style="position:absolute;top:0;left:0;touch-action:none;cursor:crosshair;"></canvas>
+            <div id="wr-stroke-svg" style="position:absolute;top:0;left:0;width:160px;height:160px;pointer-events:none;display:none;"></div>
+          </div>
+          <div id="wr-anim-controls" style="display:none;">
+            <div class="stroke-toggle" id="wr-anim-toggle" onclick="toggleWRAnim()">
+              <span id="wr-anim-stop">■</span>
+              <span id="wr-anim-play" class="active">▶</span>
+            </div>
+          </div>
+          <div id="wr-draw-btns" style="display:flex;gap:6px;width:160px;">
+            <button class="quiz-btn" style="flex:1;font-size:0.9rem;" onclick="undoCanvas('wr')" id="wr-undo-btn">↩</button>
+            <button class="quiz-btn" style="flex:1;font-size:0.9rem;" onclick="redoCanvas('wr')" id="wr-redo-btn">↪</button>
+            <button class="quiz-btn" style="flex:1;font-size:0.9rem;" onclick="clearWRCanvas()">✕</button>
+          </div>
+          <button class="quiz-btn btn-submit" style="width:160px;" id="wr-reveal-btn" onclick="revealWRAnswer()">Reveal Answer</button>
+        </div>
+        <div id="wr-grade-card" style="display:none;padding:12px 20px;background:var(--surface);border-radius:var(--radius);margin-top:8px;">
+          <div style="display:flex;gap:8px;width:100%;">
+            <button class="quiz-btn" style="flex:1;background:var(--incorrect);color:white;" onclick="gradeWR(1)">✕</button>
+            <button class="quiz-btn" style="flex:1;background:orange;color:white;" onclick="gradeWR(2)">△</button>
+            <button class="quiz-btn" style="flex:1;background:var(--correct);color:white;" onclick="gradeWR(3)">○</button>
           </div>
         </div>
-        <div id="write-answer-stroke-svg" style="width:160px;height:160px;"></div>
-        <!-- Self grade -->
-        <div style="display:flex;gap:8px;width:100%;margin-top:4px;">
-          <button class="quiz-btn" style="flex:1;background:var(--incorrect);color:white;" onclick="gradeWrite(1)">✕</button>
-          <button class="quiz-btn" style="flex:1;background:orange;color:white;" onclick="gradeWrite(2)">△</button>
-          <button class="quiz-btn" style="flex:1;background:var(--correct);color:white;" onclick="gradeWrite(3)">○</button>
+      </div>
+      <!-- Review Results -->
+      <div id="wr-results" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;text-align:center;">
+        <div class="results-score" id="wr-results-score"></div>
+        <div class="results-fraction" id="wr-results-fraction"></div>
+        <div class="results-breakdown" id="wr-results-breakdown"></div>
+        <div id="wr-pool-empty" style="display:none;font-size:0.85rem;color:var(--correct);text-align:center;padding:10px 0;">All items in this batch completed!</div>
+        <div class="results-btn-row">
+          <button class="quiz-btn btn-submit" id="wr-again-btn" onclick="restartWRSession()" style="flex:1">Again</button>
+          <button class="quiz-btn btn-next" onclick="showWRConfig()" style="flex:1">Config</button>
         </div>
       </div>
     </div>
 
-    <!-- Results -->
-    <div id="write-results" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;text-align:center;">
-      <div class="results-score" id="write-results-score"></div>
-      <div class="results-fraction" id="write-results-fraction"></div>
-      <div class="results-breakdown" id="write-results-breakdown"></div>
-      <div id="write-pool-empty" style="display:none;font-size:0.85rem;color:var(--correct);text-align:center;padding:10px 0;">All items in this batch completed!</div>
-      <div class="results-btn-row">
-        <button class="quiz-btn btn-submit" id="btn-write-again" onclick="restartWriteSession()" style="flex:1">Again</button>
-        <button class="quiz-btn btn-next" onclick="backToWriteConfig()" style="flex:1">Config</button>
+    <!-- ═══ STUDY SECTION ═══ -->
+    <div id="write-study-section" style="display:none">
+      <!-- Study Config -->
+      <div id="ws-config-panel">
+        <div class="quiz-config">
+          <div class="config-grid">
+            <div class="config-item"><label>Category</label>
+              <select id="ws-cat" onchange="updateWSSubcat();updateWSPoolInfo()">
+                <option value="Joyo">Joyo</option>
+                <option value="Jinmeiyo">Jinmeiyo</option>
+                <option value="Kanji Extended">Kanji Extended</option>
+              </select>
+            </div>
+            <div class="config-item"><label>Subcategory</label>
+              <select id="ws-subcat" onchange="updateWSPoolInfo()"><option value="">All Subcategories</option></select>
+            </div>
+            <div class="config-item" style="grid-column:1/-1"><label>Items</label>
+              <select id="ws-count" onchange="updateWSPoolInfo()">
+                <option value="5">5 items</option>
+                <option value="10" selected>10 items</option>
+                <option value="20">20 items</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div id="ws-pool-info" style="font-size:0.78rem;color:var(--text2);margin-bottom:11px;text-align:center;"></div>
+        <button class="start-btn" id="ws-start-btn" onclick="startWSSession()">Start Study</button>
+      </div>
+      <!-- Study Learn Phase -->
+      <div id="ws-learn-wrap" style="display:none">
+        <div class="quiz-progress">
+          <div class="progress-bar"><div class="progress-fill" id="ws-learn-fill"></div></div>
+          <div class="progress-text" id="ws-learn-text"></div>
+          <button class="quiz-btn btn-end" onclick="endWSLearn()">End</button>
+        </div>
+        <div class="quiz-card" style="min-height:auto;flex-direction:column;align-items:center;padding:20px;gap:12px;">
+          <div style="font-size:0.72rem;color:var(--text3);" id="ws-learn-counter"></div>
+          <div style="font-size:4rem;font-weight:300;letter-spacing:0.05em;" id="ws-learn-kanji"></div>
+          <div id="ws-learn-readings" style="font-size:0.95rem;color:var(--text2);text-align:center;"></div>
+          <div style="font-size:1rem;font-weight:600;text-align:center;" id="ws-learn-meaning"></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <div class="stroke-toggle" id="ws-anim-toggle" onclick="toggleWSAnim()">
+              <span id="ws-anim-stop">■</span>
+              <span id="ws-anim-play" class="active">▶</span>
+            </div>
+            <div id="ws-learn-stroke-svg" style="width:160px;height:160px;"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:9px;margin-top:4px;">
+          <button class="quiz-btn btn-next" id="ws-prev-btn" onclick="wsLearnNav(-1)" style="flex:1">← Prev</button>
+          <button class="quiz-btn btn-submit" id="ws-learn-next" onclick="wsLearnNav(1)" style="flex:2">Next →</button>
+        </div>
+      </div>
+      <!-- Study Review Round -->
+      <div id="ws-review-wrap" style="display:none">
+        <div class="quiz-progress">
+          <div class="progress-bar"><div class="progress-fill" id="ws-review-fill"></div></div>
+          <div class="progress-text" id="ws-review-text"></div>
+          <button class="quiz-btn btn-end" onclick="endWSReview()">End</button>
+        </div>
+        <div class="quiz-card" style="min-height:auto;flex-direction:column;align-items:center;padding:20px;gap:8px;">
+          <div style="font-size:0.72rem;color:var(--text3);" id="ws-review-counter"></div>
+          <div style="font-size:1.1rem;font-weight:600;text-align:center;" id="ws-review-meaning"></div>
+          <div style="font-size:0.95rem;color:var(--text2);text-align:center;" id="ws-review-reading"></div>
+          <div style="position:relative;width:160px;height:160px;margin:4px 0;">
+            <svg viewBox="0 0 109 109" width="160" height="160" style="position:absolute;top:0;left:0;">
+              <rect x="0" y="0" width="109" height="109" fill="none" stroke="var(--text3)" stroke-width="3" opacity="0.25"/>
+              <path d="M54.5,0 L54.5,109" stroke="var(--text3)" stroke-width="2" stroke-dasharray="3,4" opacity="0.2" class="guide"/>
+              <path d="M0,54.5 L109,54.5" stroke="var(--text3)" stroke-width="2" stroke-dasharray="3,4" opacity="0.2" class="guide"/>
+            </svg>
+            <canvas id="ws-canvas" width="160" height="160" style="position:absolute;top:0;left:0;touch-action:none;cursor:crosshair;"></canvas>
+            <div id="ws-stroke-svg" style="position:absolute;top:0;left:0;width:160px;height:160px;pointer-events:none;display:none;"></div>
+          </div>
+          <div id="ws-anim-controls" style="display:none;">
+            <div class="stroke-toggle" id="ws-rev-anim-toggle" onclick="toggleWSRevAnim()">
+              <span id="ws-rev-anim-stop">■</span>
+              <span id="ws-rev-anim-play" class="active">▶</span>
+            </div>
+          </div>
+          <div id="ws-draw-btns" style="display:flex;gap:6px;width:160px;">
+            <button class="quiz-btn" style="flex:1;font-size:0.9rem;" onclick="undoCanvas('ws')" id="ws-undo-btn">↩</button>
+            <button class="quiz-btn" style="flex:1;font-size:0.9rem;" onclick="redoCanvas('ws')" id="ws-redo-btn">↪</button>
+            <button class="quiz-btn" style="flex:1;font-size:0.9rem;" onclick="clearWSCanvas()">✕</button>
+          </div>
+          <button class="quiz-btn btn-submit" style="width:160px;" id="ws-reveal-btn" onclick="revealWSAnswer()">Reveal Answer</button>
+        </div>
+        <div id="ws-grade-card" style="display:none;padding:12px 20px;background:var(--surface);border-radius:var(--radius);margin-top:8px;">
+          <div style="display:flex;gap:8px;width:100%;">
+            <button class="quiz-btn" style="flex:1;background:var(--incorrect);color:white;" onclick="gradeWS(1)">✕</button>
+            <button class="quiz-btn" style="flex:1;background:orange;color:white;" onclick="gradeWS(2)">△</button>
+            <button class="quiz-btn" style="flex:1;background:var(--correct);color:white;" onclick="gradeWS(3)">○</button>
+          </div>
+        </div>
+      </div>
+      <!-- Study Results -->
+      <div id="ws-results" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;text-align:center;">
+        <div class="results-score" id="ws-results-score"></div>
+        <div class="results-fraction" id="ws-results-fraction"></div>
+        <div class="results-breakdown" id="ws-results-breakdown"></div>
+        <div id="ws-pool-empty" style="display:none;font-size:0.85rem;color:var(--correct);text-align:center;padding:10px 0;">All items in this batch completed!</div>
+        <div class="results-btn-row">
+          <button class="quiz-btn btn-submit" id="ws-again-btn" onclick="restartWSSession()" style="flex:1">Again</button>
+          <button class="quiz-btn btn-next" onclick="showWSConfig()" style="flex:1">Config</button>
+        </div>
       </div>
     </div>
   </div>
-  <div id="view-settings" class="view">
-    <div class="section-title">Profile</div>
-    <div class="settings-section">
-      <h3>Display Name</h3>
-      <div class="settings-field">
-        <label>Name shown in the app</label>
-        <input class="settings-input" id="settings-name" placeholder="Your name">
-      </div>
-      <button class="settings-btn" onclick="saveDisplayName()">Save Name</button>
-      <div class="settings-msg" id="settings-name-msg"></div>
-    </div>
-
-    <div class="section-title">Security</div>
-    <div class="settings-section">
-      <h3>Change Password</h3>
-      <div class="settings-field">
-        <label>Current Password</label>
-        <input class="settings-input" id="settings-current-pw" type="password" placeholder="••••••••">
-      </div>
-      <div class="settings-field">
-        <label>New Password</label>
-        <input class="settings-input" id="settings-new-pw" type="password" placeholder="••••••••">
-      </div>
-      <div class="settings-field">
-        <label>Confirm New Password</label>
-        <input class="settings-input" id="settings-confirm-pw" type="password" placeholder="••••••••">
-      </div>
-      <button class="settings-btn" onclick="changePassword()">Update Password</button>
-      <div class="settings-msg" id="settings-pw-msg"></div>
-    </div>
-
-    <div class="section-title">Account</div>
-    <div class="settings-section">
-      <h3>Sign Out</h3>
-      <button class="settings-btn danger" onclick="signOut()">🚪 Sign Out</button>
-    </div>
-  </div>
-</div>
 
 <!-- QUICK START MODAL -->
 
@@ -2464,327 +2503,82 @@ function setReadMode(mode) {
 
 // ── WRITE TAB ──
 const WRITE_KANJI_CATS = new Set(['Joyo','Jinmeiyo','Kanji Extended']);
-let writeMode = 'review'; // 'study' or 'review'
-let readMode = 'review';  // 'study' or 'review'
-let writeLearnItems = [];  // items in current study learn phase
-let writeLearnIdx = 0;
-let writeReviewItems = []; // items in review phase
-let writeReviewIdx = 0;
-let writeReviewResults = []; // {item, grade}
-let writeIsStudyRound = false; // true = post-learn review, false = standalone review
 
-// Separate stroke animation state for write tab (learn phase)
-let wLearnPaths = []; let wLearnTimer = null; let wLearnRunning = false; let wLearnIdx = 0;
-let wRevPaths = []; let wRevTimer = null; let wRevRunning = false; let wRevIdx = 0;
-const WRITE_SLOW = true; // write tab always uses slow speed
+// ── SHARED WRITE STATE ──
+const WRITE_SLOW = true;
 
-function initWriteTab() {
-  // Only reset to config if not mid-session
-  const inLearn = document.getElementById('write-learn-wrap').style.display !== 'none';
-  const inReview = document.getElementById('write-review-wrap').style.display !== 'none';
-  const inResults = document.getElementById('write-results').style.display !== 'none';
-  if (!inLearn && !inReview && !inResults) {
-    setWriteMode(writeMode || 'review');
-    updateWSubcat();
-    updateWritePoolInfo();
-  }
-}
+// Canvas state
+let wrCtx = null; let wrDrawActive = false; let wrRevealed = false;
+let wsCtx = null; let wsDrawActive = false; let wsRevealed = false;
+
+// ── MODE TOGGLE ──
+let writeMode = 'review';
 
 function setWriteMode(mode) {
   writeMode = mode;
   const isReview = mode === 'review';
   document.getElementById('write-mode-review').className = isReview ? 'quiz-btn btn-submit' : 'quiz-btn btn-next';
   document.getElementById('write-mode-study').className = isReview ? 'quiz-btn btn-next' : 'quiz-btn btn-submit';
-  document.getElementById('wconfig-level-wrap').style.display = isReview ? '' : 'none';
-  document.getElementById('wconfig-maxlevel-wrap').style.display = isReview ? '' : 'none';
-  document.getElementById('wconfig-reviewed-wrap').style.display = isReview ? '' : 'none';
-  document.getElementById('wconfig-count-wrap').style.display = isReview ? 'none' : '';
-  document.getElementById('wconfig-rcount-wrap').style.display = isReview ? '' : 'none';
-  document.getElementById('write-start-btn').textContent = isReview ? 'Start Review' : 'Start Study';
-  updateWritePoolInfo();
+  document.getElementById('write-review-section').style.display = isReview ? 'block' : 'none';
+  document.getElementById('write-study-section').style.display = isReview ? 'none' : 'block';
 }
 
-function updateWSubcat() {
-  const cat = document.getElementById('wconfig-cat').value;
-  const sel = document.getElementById('wconfig-subcat');
-  const subcats = [...new Set(items.filter(i => i.category === cat).map(i => i.subcategory))].sort((a,b) => {
-    const ma = a.match(/(\d+)-(\d+)$/); const mb = b.match(/(\d+)-(\d+)$/);
-    return (ma && mb) ? parseInt(ma[1]) - parseInt(mb[1]) : a.localeCompare(b);
-  });
-  sel.innerHTML = '<option value="">All Subcategories</option>';
-  subcats.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
-  updateWritePoolInfo();
+function initWriteTab() {
+  // Just update toggle state — each section maintains its own state
+  setWriteMode(writeMode || 'review');
+  updateWRPoolInfo();
+  updateWSPoolInfo();
 }
 
-function getWritePool() {
-  const cat = document.getElementById('wconfig-cat').value;
-  const subcat = document.getElementById('wconfig-subcat').value;
-  let pool = items.filter(i => i.category === cat && (!subcat || i.subcategory === subcat));
-
-  if (writeMode === 'study') {
-    // Study mode: unwritten kanji (write_level 0) in order
-    return pool.filter(i => (userWriteProgress[i.id] ?? 0) === 0);
-  } else {
-    // Review mode: filter by last_quizzed and level
-    const filter = document.getElementById('wconfig-reviewed').value;
-    const minLevel = parseInt(document.getElementById('wconfig-minlevel')?.value || '1');
-    const maxLevel = parseInt(document.getElementById('wconfig-maxlevel')?.value || '5');
-    const now = Date.now();
-    const day = 86400000;
-    return pool.filter(i => {
-      const lq = userWriteLastQuizzed[i.id] ? new Date(userWriteLastQuizzed[i.id]).getTime() : null;
-      const wl = userWriteProgress[i.id] ?? 0;
-      if (wl === 0) return false;
-      if (wl < minLevel || wl > maxLevel) return false;
-      if (filter === 'random') return true;
-      if (filter === 'stale') {
-        // Stale: levels 1-4 not reviewed in 14d, level 5 not reviewed in 60d
-        const cutoff14 = now - 14 * day;
-        const cutoff60 = now - 60 * day;
-        const lqMs = lq || 0;
-        if (wl === 5) return lqMs < cutoff60;
-        return lqMs < cutoff14;
-      }
-      if (filter === 'today') return lq && lq >= new Date().setHours(0,0,0,0);
-      if (filter === 'never') return !lq;
-      if (filter.startsWith('not')) {
-        const days = parseInt(filter.replace('not',''));
-        return !lq || lq < now - days * day;
-      }
-      const days = parseInt(filter);
-      return lq && lq >= now - days * day;
-    });
-  }
+// ── SHARED HELPERS ──
+function getWriteTimings() {
+  return WRITE_SLOW ? [900, 800, 1200] : [500, 500, 1000];
 }
 
-function updateWritePoolInfo() {
-  const pool = getWritePool();
-  const el = document.getElementById('write-pool-info');
-  el.textContent = `${pool.length} item${pool.length!==1?'s':''} available`;
-  document.getElementById('write-start-btn').disabled = pool.length === 0;
-}
-
-function startWriteSession() {
-  if (writeMode === 'study') {
-    const count = parseInt(document.getElementById('wconfig-count').value);
-    writeLearnItems = getWritePool().slice(0, count);
-    writeLearnIdx = 0;
-    writeIsStudyRound = false;
-    startWriteLearn();
-  } else {
-    const count = parseInt(document.getElementById('wconfig-rcount').value) || 20;
-    let pool = getWritePool();
-    if (document.getElementById('wconfig-reviewed').value === 'random') {
-      pool = pool.sort(() => Math.random() - 0.5);
-    }
-    writeReviewItems = pool.slice(0, count);
-    writeReviewIdx = 0;
-    writeReviewResults = [];
-    writeIsStudyRound = false;
-    showWriteReviewItem();
-  }
-}
-
-// ── STUDY LEARN PHASE ──
-function startWriteLearn() {
-  document.getElementById('write-config-panel').style.display = 'none';
-  document.getElementById('write-learn-wrap').style.display = 'block';
-  document.getElementById('write-review-wrap').style.display = 'none';
-  document.getElementById('write-results').style.display = 'none';
-  showWriteLearnItem();
-}
-
-function showWriteLearnItem() {
-  const item = writeLearnItems[writeLearnIdx];
-  const total = writeLearnItems.length;
-  document.getElementById('write-learn-counter').textContent = `${writeLearnIdx + 1} / ${total}`;
-  document.getElementById('write-learn-fill').style.width = `${((writeLearnIdx + 1) / total) * 100}%`;
-  document.getElementById('write-learn-text').textContent = `Learning ${writeLearnIdx + 1} of ${total}`;
-  document.getElementById('write-learn-kanji').textContent = item.kanji;
-  // Readings
+function getReadingHtml(item) {
   const on = item.readings?.on || []; const kun = item.readings?.kun || [];
-  document.getElementById('write-learn-readings').innerHTML =
-    (on.length ? `<span style="color:var(--accent)">音: ${on.join('、')}</span>` : '') +
-    (on.length && kun.length ? '　' : '') +
-    (kun.length ? `<span>訓: ${kun.join('、')}</span>` : '');
-  document.getElementById('write-learn-meaning').textContent = (item.meanings || [item.meaning || '']).slice(0,3).join('、');
-  // Next/End button
-  document.getElementById('write-learn-next').textContent = writeLearnIdx === total - 1 ? 'Start Review →' : 'Next →';
-  document.getElementById('write-prev-btn').style.visibility = writeLearnIdx === 0 ? 'hidden' : '';
-  // Load stroke order
-  loadWriteStroke(item.kanji, 'write-learn-stroke-svg', 'write-anim-toggle', 'write-anim-stop', 'write-anim-play', wLearnPaths, wLearnTimer, wLearnRunning);
-  // Small delay to let SVG render before animating
-  setTimeout(() => startWriteAnim('learn'), 100);
+  return (on.length ? `<span style="color:var(--accent)">音: ${on.join('、')}</span>` : '') +
+         (on.length && kun.length ? '　' : '') +
+         (kun.length ? `<span>訓: ${kun.join('、')}</span>` : '');
 }
 
-function writeLearnNav(dir) {
-  // Stop animation
-  stopWriteAnim('learn');
-  if (dir === 1 && writeLearnIdx === writeLearnItems.length - 1) {
-    // Move to review round
-    writeReviewItems = [...writeLearnItems].sort(() => Math.random() - 0.5);
-    writeReviewIdx = 0;
-    writeReviewResults = [];
-    writeIsStudyRound = true;
-    document.getElementById('write-learn-wrap').style.display = 'none';
-    showWriteReviewItem();
-    return;
-  }
-  writeLearnIdx = Math.max(0, Math.min(writeLearnItems.length - 1, writeLearnIdx + dir));
-  showWriteLearnItem();
+function getMeaningText(item) {
+  return (item.meanings || [item.meaning || '']).slice(0,3).join('、');
 }
 
-function endWriteLearn() {
-  stopWriteAnim('learn');
-  backToWriteConfig();
+// ── WRITE LEVEL LOGIC ──
+function calcStudyLevel(grade) { return grade; } // ✗→1 △→2 ○→3
+function calcReviewLevel(currentLevel, grade) {
+  if (grade === 1) return Math.max(1, currentLevel - 1);
+  if (grade === 2) return currentLevel;
+  return Math.min(5, currentLevel + 1);
 }
 
-// ── REVIEW PHASE ──
-function showWriteReviewItem() {
-  document.getElementById('write-config-panel').style.display = 'none';
-  document.getElementById('write-learn-wrap').style.display = 'none';
-  document.getElementById('write-review-wrap').style.display = 'block';
-  document.getElementById('write-results').style.display = 'none';
+// ── STROKE ANIMATION ──
+// Each phase has completely independent state
+const animState = {
+  'learn':  { running: false, idx: 0, timer: null },
+  'rev-wr': { running: false, idx: 0, timer: null },
+  'rev-ws': { running: false, idx: 0, timer: null },
+};
 
-  const item = writeReviewItems[writeReviewIdx];
-  const total = writeReviewItems.length;
-  document.getElementById('write-review-counter').textContent = `${writeReviewIdx + 1} / ${total}`;
-  document.getElementById('write-review-fill').style.width = `${((writeReviewIdx + 1) / total) * 100}%`;
-  document.getElementById('write-review-text').textContent = `${writeIsStudyRound ? 'Review round' : 'Review'} ${writeReviewIdx + 1} of ${total}`;
-  document.getElementById('write-review-meaning').textContent = (item.meanings || [item.meaning || '']).slice(0,3).join('、');
-  const on = item.readings?.on || []; const kun = item.readings?.kun || [];
-  document.getElementById('write-review-reading').innerHTML =
-    (on.length ? `音: ${on.join('、')}` : '') +
-    (on.length && kun.length ? '　' : '') +
-    (kun.length ? `訓: ${kun.join('、')}` : '');
-
-  // Hide answer card
-  document.getElementById('write-prompt-card').style.display = '';
-  document.getElementById('write-answer-card').style.display = 'none';
-  stopWriteAnim('rev');
+function getAnimPhaseState(phase) {
+  const s = animState[phase] || animState['learn'];
+  return {
+    get running() { return s.running; },
+    get idx() { return s.idx; },
+    setRunning: v => s.running = v,
+    setIdx: v => s.idx = v,
+    getTimer: () => s.timer,
+    setTimer: v => s.timer = v,
+  };
 }
 
-function revealWriteAnswer() {
-  const item = writeReviewItems[writeReviewIdx];
-  document.getElementById('write-prompt-card').style.display = 'none';
-  document.getElementById('write-answer-card').style.display = 'flex';
-  document.getElementById('write-answer-kanji').textContent = item.kanji;
-  const on = item.readings?.on || []; const kun = item.readings?.kun || [];
-  document.getElementById('write-answer-readings').innerHTML =
-    (on.length ? `<span style="color:var(--accent)">音: ${on.join('、')}</span>` : '') +
-    (on.length && kun.length ? '　' : '') +
-    (kun.length ? `<span>訓: ${kun.join('、')}</span>` : '');
-  loadWriteStroke(item.kanji, 'write-answer-stroke-svg', 'write-rev-anim-toggle', 'write-rev-anim-stop', 'write-rev-anim-play', wRevPaths, wRevTimer, wRevRunning);
-  setTimeout(() => startWriteAnim('rev'), 100);
-}
-
-function gradeWrite(grade) {
-  const item = writeReviewItems[writeReviewIdx];
-
-  // Calculate new write level
-  let newLevel;
-  if (writeIsStudyRound) {
-    // Study round: ✗→1, △→2, ✓→3
-    newLevel = grade;
-  } else {
-    // Review mode: ✗→drop (min 1), △→same, ✓→raise (max 5)
-    const current = userWriteProgress[item.id] ?? 1;
-    if (grade === 1) newLevel = Math.max(1, current - 1);
-    else if (grade === 2) newLevel = current;
-    else newLevel = Math.min(5, current + 1);
-  }
-
-  writeReviewResults.push({ item, grade, newLevel });
-  saveWriteLevel(item.id, newLevel);
-  stopWriteAnim('rev');
-
-  writeReviewIdx++;
-  if (writeReviewIdx >= writeReviewItems.length) {
-    showWriteResults();
-  } else {
-    showWriteReviewItem();
-  }
-}
-
-function endWriteReview() {
-  stopWriteAnim('rev');
-  if (writeReviewResults.length > 0) showWriteResults();
-  else backToWriteConfig();
-}
-
-function showWriteResults() {
-  document.getElementById('write-review-wrap').style.display = 'none';
-  document.getElementById('write-results').style.display = 'block';
-
-  const total = writeReviewResults.length;
-  const got = writeReviewResults.filter(r => r.grade === 3).length;
-  const shaky = writeReviewResults.filter(r => r.grade === 2).length;
-  const missed = writeReviewResults.filter(r => r.grade === 1).length;
-
-  document.getElementById('write-results-score').textContent = `${Math.round(got/total*100)}%`;
-  document.getElementById('write-results-fraction').textContent = `${got} of ${total} recalled`;
-  document.getElementById('write-results-breakdown').innerHTML = writeReviewResults.map(r => {
-    const icon = r.grade === 3 ? '<span style="color:var(--correct)">○</span>' : r.grade === 2 ? '<span style="color:orange">△</span>' : '<span style="color:var(--incorrect)">✕</span>';
-    const on = r.item.readings?.on || [];
-    const kun = r.item.readings?.kun || [];
-    const reading = on.length ? on[0] : kun.length ? kun[0] : '';
-    return `<div class="results-item">
-      <div class="results-kanji">${r.item.kanji}</div>
-      <div class="results-reading">${reading}</div>
-      <div style="font-size:0.75rem;color:var(--text2)">→ ${LEVEL_NAMES[r.newLevel]}</div>
-      <div>${icon}</div>
-    </div>`;
-  }).join('');
-
-  saveWriteLastQuizzed(writeReviewResults.map(r => r.item.id));
-
-  // Check if more items available
-  const remaining = getWritePool();
-  const emptyEl = document.getElementById('write-pool-empty');
-  const againBtn = document.getElementById('btn-write-again');
-  if (remaining.length === 0) {
-    emptyEl.style.display = 'block';
-    againBtn.disabled = true;
-    againBtn.style.opacity = '0.4';
-    againBtn.style.cursor = 'not-allowed';
-  } else {
-    emptyEl.style.display = 'none';
-    againBtn.disabled = false;
-    againBtn.style.opacity = '';
-    againBtn.style.cursor = '';
-  }
-}
-
-function restartWriteSession() {
-  document.getElementById('write-results').style.display = 'none';
-  if (writeIsStudyRound || writeMode === 'study') {
-    startWriteSession();
-  } else {
-    // Review — get fresh pool
-    const count = parseInt(document.getElementById('wconfig-rcount').value) || 20;
-    let pool = getWritePool().sort(() => Math.random() - 0.5);
-    writeReviewItems = pool.slice(0, count);
-    writeReviewIdx = 0;
-    writeReviewResults = [];
-    showWriteReviewItem();
-  }
-}
-
-function backToWriteConfig() {
-  stopWriteAnim('learn');
-  stopWriteAnim('rev');
-  document.getElementById('write-config-panel').style.display = 'block';
-  document.getElementById('write-learn-wrap').style.display = 'none';
-  document.getElementById('write-review-wrap').style.display = 'none';
-  document.getElementById('write-results').style.display = 'none';
-  updateWritePoolInfo();
-}
-
-// ── WRITE STROKE ORDER ──
-function loadWriteStroke(kanji, svgId, toggleId, stopId, playId) {
-  const container = document.getElementById(svgId);
+function loadStrokeInto(kanji, containerId, stopId, playId, phase, hideStrokes = false) {
+  const container = document.getElementById(containerId);
   if (!container) return;
-  // Set toggle to playing state — auto-start follows
+  const s = getAnimPhaseState(phase);
+  clearTimeout(s.getTimer()); s.setRunning(false); s.setIdx(0);
   document.getElementById(stopId)?.classList.remove('active');
   document.getElementById(playId)?.classList.add('active');
 
@@ -2793,175 +2587,656 @@ function loadWriteStroke(kanji, svgId, toggleId, stopId, playId) {
     return;
   }
   const paths = kanjiVG[kanji];
-  // Build SVG
   const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
   svg.setAttribute('viewBox','0 0 109 109'); svg.setAttribute('width','160'); svg.setAttribute('height','160');
-  svg.classList.add('stroke-svg'); svg.id = `${svgId}-svg`;
+  svg.classList.add('stroke-svg'); svg.id = `${containerId}-svg`;
 
-  const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
-  rect.setAttribute('x','0'); rect.setAttribute('y','0'); rect.setAttribute('width','109'); rect.setAttribute('height','109');
-  rect.setAttribute('fill','none'); rect.setAttribute('stroke','var(--text3)'); rect.setAttribute('stroke-width','3'); rect.setAttribute('opacity','0.25');
-  svg.appendChild(rect);
-
-  ['M54.5,0 L54.5,109','M0,54.5 L109,54.5'].forEach(d => {
-    const line = document.createElementNS('http://www.w3.org/2000/svg','path');
-    line.setAttribute('d',d); line.setAttribute('stroke','var(--text3)');
-    line.setAttribute('stroke-width','2'); line.setAttribute('stroke-dasharray','3,4');
-    line.setAttribute('opacity','0.2'); line.classList.add('guide');
-    svg.appendChild(line);
-  });
+  if (!hideStrokes) {
+    const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x','0'); rect.setAttribute('y','0'); rect.setAttribute('width','109'); rect.setAttribute('height','109');
+    rect.setAttribute('fill','none'); rect.setAttribute('stroke','var(--text3)'); rect.setAttribute('stroke-width','3'); rect.setAttribute('opacity','0.25');
+    svg.appendChild(rect);
+    ['M54.5,0 L54.5,109','M0,54.5 L109,54.5'].forEach(d => {
+      const line = document.createElementNS('http://www.w3.org/2000/svg','path');
+      line.setAttribute('d',d); line.setAttribute('stroke','var(--text3)');
+      line.setAttribute('stroke-width','2'); line.setAttribute('stroke-dasharray','3,4');
+      line.setAttribute('opacity','0.2'); line.classList.add('guide');
+      svg.appendChild(line);
+    });
+  }
 
   paths.forEach((d, idx) => {
     const path = document.createElementNS('http://www.w3.org/2000/svg','path');
     path.setAttribute('d',d); path.setAttribute('fill','none');
-    path.setAttribute('stroke','var(--text)'); path.setAttribute('stroke-width','3');
-    path.setAttribute('stroke-linecap','round'); path.setAttribute('stroke-linejoin','round');
-    path.id = `${svgId}-s${idx}`;
+    path.setAttribute('stroke', hideStrokes ? 'none' : 'var(--text)');
+    path.setAttribute('stroke-width','3'); path.setAttribute('stroke-linecap','round'); path.setAttribute('stroke-linejoin','round');
+    path.id = `${containerId}-svg-s${idx}`;
     svg.appendChild(path);
   });
 
   const countLabel = document.createElementNS('http://www.w3.org/2000/svg','text');
-  countLabel.setAttribute('x','106'); countLabel.setAttribute('y','107');
-  countLabel.setAttribute('text-anchor','end'); countLabel.setAttribute('font-size','7');
-  countLabel.setAttribute('fill','var(--text3)'); countLabel.setAttribute('opacity','0.6');
-  countLabel.setAttribute('font-family','sans-serif');
+  countLabel.setAttribute('x','106'); countLabel.setAttribute('y','107'); countLabel.setAttribute('text-anchor','end');
+  countLabel.setAttribute('font-size','7'); countLabel.setAttribute('fill','var(--text3)');
+  countLabel.setAttribute('opacity', hideStrokes ? '0' : '0.6'); countLabel.setAttribute('font-family','sans-serif');
   countLabel.textContent = `${paths.length} strokes`;
   svg.appendChild(countLabel);
-
-  container.innerHTML = '';
-  container.appendChild(svg);
+  container.innerHTML = ''; container.appendChild(svg);
 }
 
-function toggleWriteAnim() { toggleWriteAnimFor('learn'); }
-function toggleWriteRevAnim() { toggleWriteAnimFor('rev'); }
-
-function getWriteTimings(slow) {
-  return slow ? [900, 800, 1200] : [500, 500, 1000];
-}
-
-function toggleWriteAnimFor(phase) {
-  const isLearn = phase === 'learn';
-  const stopId = isLearn ? 'write-anim-stop' : 'write-rev-anim-stop';
-  const playId = isLearn ? 'write-anim-play' : 'write-rev-anim-play';
-  const running = isLearn ? wLearnRunning : wRevRunning;
-
-  if (running) {
-    // Pause — freeze mid-stroke, don't reset
-    if (isLearn) { clearTimeout(wLearnTimer); wLearnRunning = false; }
-    else { clearTimeout(wRevTimer); wRevRunning = false; }
-    document.getElementById(stopId)?.classList.add('active');
-    document.getElementById(playId)?.classList.remove('active');
-    return;
-  }
-
-  // Resume from current index (or start from 0 if at end)
-  const svgId = isLearn ? 'write-learn-stroke-svg' : 'write-answer-stroke-svg';
-  const svg = document.getElementById(`${svgId}-svg`);
+function startAnim(containerId, phase) {
+  const svg = document.getElementById(`${containerId}-svg`);
   if (!svg) return;
   const pathEls = [...svg.querySelectorAll('path:not(.guide)')];
   if (!pathEls.length) return;
-
-  // If at end of last loop cycle, restart from beginning
-  const curIdx = isLearn ? wLearnIdx : wRevIdx;
-  const startIdx = curIdx >= pathEls.length ? 0 : curIdx;
-  if (isLearn) { wLearnRunning = true; wLearnIdx = startIdx; }
-  else { wRevRunning = true; wRevIdx = startIdx; }
-
-  document.getElementById(stopId)?.classList.remove('active');
-  document.getElementById(playId)?.classList.add('active');
-  animateWriteStrokes(pathEls, phase, WRITE_SLOW, svgId);
+  const s = getAnimPhaseState(phase);
+  s.setRunning(true); s.setIdx(0);
+  animateStrokes(pathEls, phase, containerId);
 }
 
-function stopWriteAnim(phase) {
-  // Full stop/reset — used when navigating away from item
-  const isLearn = phase === 'learn';
-  if (isLearn) { clearTimeout(wLearnTimer); wLearnRunning = false; wLearnIdx = 0; }
-  else { clearTimeout(wRevTimer); wRevRunning = false; wRevIdx = 0; }
-  const svgId = isLearn ? 'write-learn-stroke-svg' : 'write-answer-stroke-svg';
-  const stopId = isLearn ? 'write-anim-stop' : 'write-rev-anim-stop';
-  const playId = isLearn ? 'write-anim-play' : 'write-rev-anim-play';
-  document.getElementById(stopId)?.classList.remove('active');
-  document.getElementById(playId)?.classList.add('active');
-  const svg = document.getElementById(`${svgId}-svg`);
+function pauseAnim(phase) {
+  const s = getAnimPhaseState(phase);
+  clearTimeout(s.getTimer()); s.setRunning(false);
+}
+
+function resumeAnim(containerId, phase) {
+  const svg = document.getElementById(`${containerId}-svg`);
+  if (!svg) return;
+  const pathEls = [...svg.querySelectorAll('path:not(.guide)')];
+  if (!pathEls.length) return;
+  const s = getAnimPhaseState(phase);
+  if (s.idx >= pathEls.length) s.setIdx(0);
+  s.setRunning(true);
+  animateStrokes(pathEls, phase, containerId);
+}
+
+function resetAnim(containerId, phase) {
+  const s = getAnimPhaseState(phase);
+  clearTimeout(s.getTimer()); s.setRunning(false); s.setIdx(0);
+  const svg = document.getElementById(`${containerId}-svg`);
   if (svg) svg.querySelectorAll('path:not(.guide)').forEach(el => {
     el.setAttribute('stroke','var(--text)'); el.setAttribute('opacity','1');
     el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; el.style.transition = '';
   });
   const countLabel = svg?.querySelector('text');
-  if (countLabel) {
+  if (countLabel && countLabel.getAttribute('opacity') !== '0') {
     const cnt = svg?.querySelectorAll('path:not(.guide)').length || 0;
     if (cnt) countLabel.textContent = `${cnt} strokes`;
   }
 }
 
-function startWriteAnim(phase) {
-  // Auto-start — called after loadWriteStroke completes
-  const isLearn = phase === 'learn';
-  const svgId = isLearn ? 'write-learn-stroke-svg' : 'write-answer-stroke-svg';
-  const svg = document.getElementById(`${svgId}-svg`);
-  if (!svg) return;
-  const pathEls = [...svg.querySelectorAll('path:not(.guide)')];
-  if (!pathEls.length) return;
-  if (isLearn) { wLearnRunning = true; wLearnIdx = 0; }
-  else { wRevRunning = true; wRevIdx = 0; }
-  animateWriteStrokes(pathEls, phase, WRITE_SLOW, svgId);
-}
-
-function animateWriteStrokes(pathEls, phase, slow, svgId) {
-  const isLearn = phase === 'learn';
-  const [drawMs, pauseMs, endMs] = getWriteTimings(slow);
+function animateStrokes(pathEls, phase, containerId) {
+  const [drawMs, pauseMs, endMs] = getWriteTimings();
+  const isOverlay = phase === 'rev-wr' || phase === 'rev-ws';
+  const s = getAnimPhaseState(phase);
 
   function step() {
-    const running = isLearn ? wLearnRunning : wRevRunning;
-    if (!running) return;
-    const idx = isLearn ? wLearnIdx : wRevIdx;
+    if (!s.running) return;
+    const idx = s.idx;
 
     if (idx >= pathEls.length) {
-      // End of cycle — show all, pause briefly then loop
       pathEls.forEach(el => {
-        el.setAttribute('stroke','var(--text)'); el.setAttribute('opacity','1');
+        el.setAttribute('stroke', isOverlay ? 'var(--accent)' : 'var(--text)');
+        el.setAttribute('opacity','1');
         el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; el.style.transition = '';
       });
-      const svg = document.getElementById(`${svgId}-svg`);
-      const countLabel = svg?.querySelector('text');
-      if (countLabel) countLabel.textContent = `${pathEls.length} strokes`;
+      const svg = document.getElementById(`${containerId}-svg`);
+      const lbl = svg?.querySelector('text');
+      if (lbl && lbl.getAttribute('opacity') !== '0') lbl.textContent = `${pathEls.length} strokes`;
       const timer = setTimeout(() => {
-        if (isLearn) wLearnIdx = 0; else wRevIdx = 0;
-        step();
+        if (isOverlay) pathEls.forEach(el => { el.setAttribute('stroke','none'); el.setAttribute('opacity','0'); });
+        s.setIdx(0); step();
       }, endMs);
-      if (isLearn) wLearnTimer = timer; else wRevTimer = timer;
-      return;
+      s.setTimer(timer); return;
     }
 
-    const svg = document.getElementById(`${svgId}-svg`);
-    const countLabel = svg?.querySelector('text');
-    if (countLabel) countLabel.textContent = `Stroke ${idx + 1} of ${pathEls.length}`;
+    const svg = document.getElementById(`${containerId}-svg`);
+    const lbl = svg?.querySelector('text');
+    if (lbl && lbl.getAttribute('opacity') !== '0') lbl.textContent = `Stroke ${idx + 1} of ${pathEls.length}`;
 
     pathEls.forEach((el, i) => {
       el.style.transition = ''; el.style.strokeDasharray = ''; el.style.strokeDashoffset = '';
-      el.setAttribute('stroke', i < idx ? 'var(--text)' : 'var(--text3)');
-      el.setAttribute('opacity', i < idx ? '1' : '0.25');
+      if (i < idx) { el.setAttribute('stroke', isOverlay ? 'var(--accent)' : 'var(--text)'); el.setAttribute('opacity','1'); }
+      else { el.setAttribute('stroke', isOverlay ? 'none' : 'var(--text3)'); el.setAttribute('opacity', isOverlay ? '0' : '0.25'); }
     });
 
     const current = pathEls[idx];
     current.setAttribute('stroke','var(--accent)'); current.setAttribute('opacity','1');
     const len = current.getTotalLength();
     current.style.transition = 'none';
-    current.style.strokeDasharray = `${len}`;
-    current.style.strokeDashoffset = `${len}`;
+    current.style.strokeDasharray = `${len}`; current.style.strokeDashoffset = `${len}`;
     requestAnimationFrame(() => requestAnimationFrame(() => {
       current.style.transition = `stroke-dashoffset ${drawMs}ms ease`;
       current.style.strokeDashoffset = '0';
     }));
 
-    const timer = setTimeout(() => {
-      if (isLearn) wLearnIdx++; else wRevIdx++;
-      step();
-    }, drawMs + pauseMs);
-    if (isLearn) wLearnTimer = timer; else wRevTimer = timer;
+    const timer = setTimeout(() => { s.setIdx(s.idx + 1); step(); }, drawMs + pauseMs);
+    s.setTimer(timer);
   }
-
   step();
+}
+
+// ── CANVAS HELPERS ──
+// Canvas history stacks
+const canvasHistory = { wr: [], ws: [] };
+const canvasFuture  = { wr: [], ws: [] };
+
+function saveSnapshot(prefix) {
+  const canvas = document.getElementById(`${prefix}-canvas`);
+  if (!canvas) return;
+  canvasHistory[prefix].push(canvas.toDataURL());
+  canvasFuture[prefix] = []; // clear redo stack on new stroke
+  updateUndoRedoBtns(prefix);
+}
+
+function updateUndoRedoBtns(prefix) {
+  const undoBtn = document.getElementById(`${prefix}-undo-btn`);
+  const redoBtn = document.getElementById(`${prefix}-redo-btn`);
+  if (undoBtn) undoBtn.style.opacity = canvasHistory[prefix].length ? '1' : '0.3';
+  if (redoBtn) redoBtn.style.opacity = canvasFuture[prefix].length  ? '1' : '0.3';
+}
+
+function undoCanvas(prefix) {
+  if (!canvasHistory[prefix].length) return;
+  const canvas = document.getElementById(`${prefix}-canvas`);
+  if (!canvas) return;
+  canvasFuture[prefix].push(canvas.toDataURL());
+  const prev = canvasHistory[prefix].pop();
+  const img = new Image();
+  img.onload = () => {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0);
+    updateUndoRedoBtns(prefix);
+  };
+  img.src = prev;
+}
+
+function redoCanvas(prefix) {
+  if (!canvasFuture[prefix].length) return;
+  const canvas = document.getElementById(`${prefix}-canvas`);
+  if (!canvas) return;
+  canvasHistory[prefix].push(canvas.toDataURL());
+  const next = canvasFuture[prefix].pop();
+  const img = new Image();
+  img.onload = () => {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0);
+    updateUndoRedoBtns(prefix);
+  };
+  img.src = next;
+}
+
+function initCanvas(canvasId, ctxRef) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || canvas._initialized) return;
+  canvas._initialized = true;
+  const prefix = canvasId.replace('-canvas','');
+  const ctx = canvas.getContext('2d');
+  ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#e2e8f0';
+  ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return { x: (src.clientX - rect.left) * (canvas.width / rect.width),
+             y: (src.clientY - rect.top)  * (canvas.height / rect.height) };
+  }
+  let active = false;
+  const onStart = e => {
+    // Save snapshot BEFORE stroke so undo can restore pre-stroke state
+    saveSnapshot(prefix);
+    active = true;
+    const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y);
+  };
+  const onMove  = e => { if (!active) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); };
+  const onEnd   = () => { active = false; };
+
+  canvas.addEventListener('mousedown', onStart);
+  canvas.addEventListener('mousemove', onMove);
+  canvas.addEventListener('mouseup', onEnd);
+  canvas.addEventListener('mouseleave', onEnd);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); onStart(e); }, { passive: false });
+  canvas.addEventListener('touchmove',  e => { e.preventDefault(); onMove(e);  }, { passive: false });
+  canvas.addEventListener('touchend',   e => { onEnd(); });
+
+  // Init undo/redo button states
+  updateUndoRedoBtns(prefix);
+  return ctx;
+}
+
+function clearCanvas(canvasId, revealed) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const prefix = canvasId.replace('-canvas','');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  canvas.style.opacity = revealed ? '0.25' : '1';
+  ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#e2e8f0';
+  canvasHistory[prefix] = []; canvasFuture[prefix] = [];
+  updateUndoRedoBtns(prefix);
+}
+
+function handleRevealBtn(btnId, canvasId, revealedFlag, setRevealed) {
+  const btn = document.getElementById(btnId);
+  const canvas = document.getElementById(canvasId);
+  if (!revealedFlag) {
+    setRevealed(true);
+    if (canvas) canvas.style.opacity = '0.25';
+    btn.textContent = 'Hide Attempt';
+    return 'first';
+  } else if (canvas && canvas.style.opacity !== '0') {
+    canvas.style.opacity = '0';
+    btn.textContent = 'Show Attempt';
+    return 'hide';
+  } else {
+    if (canvas) canvas.style.opacity = '0.25';
+    btn.textContent = 'Hide Attempt';
+    return 'show';
+  }
+}
+
+// ══════════════════════════════════════════════════
+// ── WRITE REVIEW (WR) ──
+// ══════════════════════════════════════════════════
+let wrItems = []; let wrIdx = 0; let wrResults = [];
+
+function updateWRSubcat() {
+  const cat = document.getElementById('wr-cat').value;
+  const sel = document.getElementById('wr-subcat');
+  const subcats = [...new Set(items.filter(i => i.category === cat).map(i => i.subcategory))].sort((a,b) => {
+    const ma = a.match(/(\d+)-(\d+)$/); const mb = b.match(/(\d+)-(\d+)$/);
+    return (ma && mb) ? parseInt(ma[1]) - parseInt(mb[1]) : a.localeCompare(b);
+  });
+  sel.innerHTML = '<option value="">All Subcategories</option>';
+  subcats.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+  updateWRPoolInfo();
+}
+
+function getWRPool() {
+  const cat = document.getElementById('wr-cat').value;
+  const subcat = document.getElementById('wr-subcat').value;
+  const minLevel = parseInt(document.getElementById('wr-minlevel').value);
+  const maxLevel = parseInt(document.getElementById('wr-maxlevel').value);
+  const filter = document.getElementById('wr-reviewed').value;
+  const now = Date.now(); const day = 86400000;
+  return items.filter(i => {
+    if (!WRITE_KANJI_CATS.has(i.category)) return false;
+    if (cat && i.category !== cat) return false;
+    if (subcat && i.subcategory !== subcat) return false;
+    const wl = userWriteProgress[i.id] ?? 0;
+    if (wl === 0) return false;
+    if (wl < minLevel || wl > maxLevel) return false;
+    const lq = userWriteLastQuizzed[i.id] ? new Date(userWriteLastQuizzed[i.id]).getTime() : null;
+    if (filter === 'random') return true;
+    if (filter === 'stale') { const c14 = now - 14*day; const c60 = now - 60*day; return wl === 5 ? (!lq||lq<c60) : (!lq||lq<c14); }
+    if (filter === 'today') return lq && lq >= new Date().setHours(0,0,0,0);
+    if (filter === 'never') return !lq;
+    if (filter.startsWith('not')) { const days = parseInt(filter.replace('not','')); return !lq || lq < now - days*day; }
+    const days = parseInt(filter); return lq && lq >= now - days*day;
+  });
+}
+
+function updateWRPoolInfo() {
+  const pool = getWRPool();
+  const el = document.getElementById('wr-pool-info');
+  if (el) el.textContent = `${pool.length} item${pool.length!==1?'s':''} available`;
+  const btn = document.getElementById('wr-start-btn');
+  if (btn) btn.disabled = pool.length === 0;
+}
+
+function startWRSession() {
+  const count = parseInt(document.getElementById('wr-count').value) || 20;
+  let pool = getWRPool().sort(() => Math.random() - 0.5);
+  wrItems = pool.slice(0, count);
+  wrIdx = 0; wrResults = [];
+  document.getElementById('wr-config-panel').style.display = 'none';
+  document.getElementById('wr-results').style.display = 'none';
+  showWRConfig._lastPool = pool;
+  showWRItem();
+}
+
+function showWRItem() {
+  document.getElementById('wr-active').style.display = 'block';
+  const item = wrItems[wrIdx];
+  const total = wrItems.length;
+  document.getElementById('wr-counter').textContent = `${wrIdx + 1} / ${total}`;
+  document.getElementById('wr-fill').style.width = `${((wrIdx + 1) / total) * 100}%`;
+  document.getElementById('wr-text').textContent = `Review ${wrIdx + 1} of ${total}`;
+  document.getElementById('wr-meaning').textContent = getMeaningText(item);
+  document.getElementById('wr-reading').innerHTML = '';
+  document.getElementById('wr-grade-card').style.display = 'none';
+  document.getElementById('wr-anim-controls').style.display = 'none';
+  document.getElementById('wr-reveal-btn').textContent = 'Reveal Answer';
+  document.getElementById('wr-draw-btns').style.display = '';
+  document.getElementById('wr-canvas').style.pointerEvents = '';
+  const strokeDiv = document.getElementById('wr-stroke-svg');
+  if (strokeDiv) { strokeDiv.style.display = 'none'; strokeDiv.innerHTML = ''; }
+  resetAnim('wr-stroke-svg', 'rev-wr');
+  clearCanvas('wr-canvas', false);
+  wrRevealed = false;
+  if (!wrCtx) wrCtx = initCanvas('wr-canvas');
+}
+
+function revealWRAnswer() {
+  const item = wrItems[wrIdx];
+  const result = handleRevealBtn('wr-reveal-btn', 'wr-canvas', wrRevealed, v => wrRevealed = v);
+  if (result === 'first') {
+    document.getElementById('wr-reading').innerHTML = getReadingHtml(item);
+    document.getElementById('wr-grade-card').style.display = 'block';
+    document.getElementById('wr-anim-controls').style.display = '';
+    // Hide draw controls, disable canvas
+    document.getElementById('wr-draw-btns').style.display = 'none';
+    document.getElementById('wr-canvas').style.pointerEvents = 'none';
+    const strokeDiv = document.getElementById('wr-stroke-svg');
+    if (strokeDiv) strokeDiv.style.display = 'block';
+    loadStrokeInto(item.kanji, 'wr-stroke-svg', 'wr-anim-stop', 'wr-anim-play', 'rev-wr', true);
+    setTimeout(() => startAnim('wr-stroke-svg', 'rev-wr'), 100);
+  }
+}
+
+function toggleWRAnim() {
+  if (animState['rev-wr'].running) { pauseAnim('rev-wr'); document.getElementById('wr-anim-stop').classList.add('active'); document.getElementById('wr-anim-play').classList.remove('active'); }
+  else { resumeAnim('wr-stroke-svg', 'rev-wr'); document.getElementById('wr-anim-stop').classList.remove('active'); document.getElementById('wr-anim-play').classList.add('active'); }
+}
+
+function clearWRCanvas() { clearCanvas('wr-canvas', wrRevealed); }
+
+function gradeWR(grade) {
+  const item = wrItems[wrIdx];
+  const current = userWriteProgress[item.id] ?? 1;
+  const newLevel = calcReviewLevel(current, grade);
+  wrResults.push({ item, grade, newLevel });
+  saveWriteLevel(item.id, newLevel);
+  resetAnim('wr-stroke-svg', 'rev-wr');
+  wrIdx++;
+  if (wrIdx >= wrItems.length) showWRResults();
+  else showWRItem();
+}
+
+function endWRSession() {
+  resetAnim('wr-stroke-svg', 'rev-wr');
+  if (wrResults.length > 0) showWRResults();
+  else showWRConfig();
+}
+
+function showWRResults() {
+  document.getElementById('wr-active').style.display = 'none';
+  document.getElementById('wr-results').style.display = 'block';
+  const total = wrResults.length;
+  const got = wrResults.filter(r => r.grade === 3).length;
+  document.getElementById('wr-results-score').textContent = `${Math.round(got/total*100)}%`;
+  document.getElementById('wr-results-fraction').textContent = `${got} of ${total} recalled`;
+  document.getElementById('wr-results-breakdown').innerHTML = wrResults.map(r => {
+    const icon = r.grade===3?'<span style="color:var(--correct)">○</span>':r.grade===2?'<span style="color:orange">△</span>':'<span style="color:var(--incorrect)">✕</span>';
+    const on = r.item.readings?.on||[]; const kun = r.item.readings?.kun||[];
+    const reading = on.length?on[0]:kun.length?kun[0]:'';
+    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${reading}</div><div style="font-size:0.75rem;color:var(--text2)">→ ${LEVEL_NAMES[r.newLevel]}</div><div>${icon}</div></div>`;
+  }).join('');
+  saveWriteLastQuizzed(wrResults.map(r => r.item.id));
+  const remaining = getWRPool();
+  const emptyEl = document.getElementById('wr-pool-empty');
+  const againBtn = document.getElementById('wr-again-btn');
+  emptyEl.style.display = remaining.length === 0 ? 'block' : 'none';
+  againBtn.disabled = remaining.length === 0;
+  againBtn.style.opacity = remaining.length === 0 ? '0.4' : '';
+}
+
+function restartWRSession() {
+  document.getElementById('wr-results').style.display = 'none';
+  const count = parseInt(document.getElementById('wr-count').value) || 20;
+  wrItems = getWRPool().sort(() => Math.random() - 0.5).slice(0, count);
+  wrIdx = 0; wrResults = [];
+  showWRItem();
+}
+
+function showWRConfig() {
+  document.getElementById('wr-active').style.display = 'none';
+  document.getElementById('wr-results').style.display = 'none';
+  document.getElementById('wr-config-panel').style.display = 'block';
+  updateWRPoolInfo();
+}
+
+// ══════════════════════════════════════════════════
+// ── WRITE STUDY (WS) ──
+// ══════════════════════════════════════════════════
+let wsLearnItems = []; let wsLearnIdx = 0;
+let wsReviewItems = []; let wsReviewIdx = 0; let wsReviewResults = [];
+
+function updateWSSubcat() {
+  const cat = document.getElementById('ws-cat').value;
+  const sel = document.getElementById('ws-subcat');
+  const subcats = [...new Set(items.filter(i => i.category === cat).map(i => i.subcategory))].sort((a,b) => {
+    const ma = a.match(/(\d+)-(\d+)$/); const mb = b.match(/(\d+)-(\d+)$/);
+    return (ma && mb) ? parseInt(ma[1]) - parseInt(mb[1]) : a.localeCompare(b);
+  });
+  sel.innerHTML = '<option value="">All Subcategories</option>';
+  subcats.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+  updateWSPoolInfo();
+}
+
+function getWSPool() {
+  const cat = document.getElementById('ws-cat').value;
+  const subcat = document.getElementById('ws-subcat').value;
+  return items.filter(i => WRITE_KANJI_CATS.has(i.category) && (!cat||i.category===cat) && (!subcat||i.subcategory===subcat) && (userWriteProgress[i.id]??0)===0);
+}
+
+function updateWSPoolInfo() {
+  const pool = getWSPool();
+  const el = document.getElementById('ws-pool-info');
+  if (el) el.textContent = `${pool.length} item${pool.length!==1?'s':''} available`;
+  const btn = document.getElementById('ws-start-btn');
+  if (btn) btn.disabled = pool.length === 0;
+}
+
+function startWSSession() {
+  const count = parseInt(document.getElementById('ws-count').value);
+  wsLearnItems = getWSPool().slice(0, count);
+  wsLearnIdx = 0;
+  document.getElementById('ws-config-panel').style.display = 'none';
+  document.getElementById('ws-results').style.display = 'none';
+  showWSLearnItem();
+}
+
+function showWSLearnItem() {
+  document.getElementById('ws-learn-wrap').style.display = 'block';
+  document.getElementById('ws-review-wrap').style.display = 'none';
+  const item = wsLearnItems[wsLearnIdx];
+  const total = wsLearnItems.length;
+  document.getElementById('ws-learn-counter').textContent = `${wsLearnIdx + 1} / ${total}`;
+  document.getElementById('ws-learn-fill').style.width = `${((wsLearnIdx + 1) / total) * 100}%`;
+  document.getElementById('ws-learn-text').textContent = `Learning ${wsLearnIdx + 1} of ${total}`;
+  document.getElementById('ws-learn-kanji').textContent = item.kanji;
+  document.getElementById('ws-learn-readings').innerHTML = getReadingHtml(item);
+  document.getElementById('ws-learn-meaning').textContent = getMeaningText(item);
+  document.getElementById('ws-learn-next').textContent = wsLearnIdx === total - 1 ? 'Start Review →' : 'Next →';
+  document.getElementById('ws-prev-btn').style.visibility = wsLearnIdx === 0 ? 'hidden' : '';
+  resetAnim('ws-learn-stroke-svg', 'learn');
+  loadStrokeInto(item.kanji, 'ws-learn-stroke-svg', 'ws-anim-stop', 'ws-anim-play', 'learn', false);
+  setTimeout(() => startAnim('ws-learn-stroke-svg', 'learn'), 100);
+}
+
+function toggleWSAnim() {
+  if (animState['learn'].running) { pauseAnim('learn'); document.getElementById('ws-anim-stop').classList.add('active'); document.getElementById('ws-anim-play').classList.remove('active'); }
+  else { resumeAnim('ws-learn-stroke-svg', 'learn'); document.getElementById('ws-anim-stop').classList.remove('active'); document.getElementById('ws-anim-play').classList.add('active'); }
+}
+
+function wsLearnNav(dir) {
+  pauseAnim('learn');
+  if (dir === 1 && wsLearnIdx === wsLearnItems.length - 1) {
+    wsReviewItems = [...wsLearnItems].sort(() => Math.random() - 0.5);
+    wsReviewIdx = 0; wsReviewResults = [];
+    document.getElementById('ws-learn-wrap').style.display = 'none';
+    showWSReviewItem(); return;
+  }
+  wsLearnIdx = Math.max(0, Math.min(wsLearnItems.length - 1, wsLearnIdx + dir));
+  showWSLearnItem();
+}
+
+function endWSLearn() {
+  pauseAnim('learn');
+  showWSConfig();
+}
+
+function showWSReviewItem() {
+  document.getElementById('ws-review-wrap').style.display = 'block';
+  const item = wsReviewItems[wsReviewIdx];
+  const total = wsReviewItems.length;
+  document.getElementById('ws-review-counter').textContent = `${wsReviewIdx + 1} / ${total}`;
+  document.getElementById('ws-review-fill').style.width = `${((wsReviewIdx + 1) / total) * 100}%`;
+  document.getElementById('ws-review-text').textContent = `Review round ${wsReviewIdx + 1} of ${total}`;
+  document.getElementById('ws-review-meaning').textContent = getMeaningText(item);
+  document.getElementById('ws-review-reading').innerHTML = '';
+  document.getElementById('ws-grade-card').style.display = 'none';
+  document.getElementById('ws-anim-controls').style.display = 'none';
+  document.getElementById('ws-reveal-btn').textContent = 'Reveal Answer';
+  document.getElementById('ws-draw-btns').style.display = '';
+  document.getElementById('ws-canvas').style.pointerEvents = '';
+  const strokeDiv = document.getElementById('ws-stroke-svg');
+  if (strokeDiv) { strokeDiv.style.display = 'none'; strokeDiv.innerHTML = ''; }
+  resetAnim('ws-stroke-svg', 'rev-ws');
+  clearCanvas('ws-canvas', false);
+  wsRevealed = false;
+  if (!wsCtx) wsCtx = initCanvas('ws-canvas');
+}
+
+function revealWSAnswer() {
+  const item = wsReviewItems[wsReviewIdx];
+  const result = handleRevealBtn('ws-reveal-btn', 'ws-canvas', wsRevealed, v => wsRevealed = v);
+  if (result === 'first') {
+    document.getElementById('ws-review-reading').innerHTML = getReadingHtml(item);
+    document.getElementById('ws-grade-card').style.display = 'block';
+    document.getElementById('ws-anim-controls').style.display = '';
+    // Hide draw controls, disable canvas
+    document.getElementById('ws-draw-btns').style.display = 'none';
+    document.getElementById('ws-canvas').style.pointerEvents = 'none';
+    const strokeDiv = document.getElementById('ws-stroke-svg');
+    if (strokeDiv) strokeDiv.style.display = 'block';
+    loadStrokeInto(item.kanji, 'ws-stroke-svg', 'ws-rev-anim-stop', 'ws-rev-anim-play', 'rev-ws', true);
+    setTimeout(() => startAnim('ws-stroke-svg', 'rev-ws'), 100);
+  }
+}
+
+function toggleWSRevAnim() {
+  if (animState['rev-ws'].running) { pauseAnim('rev-ws'); document.getElementById('ws-rev-anim-stop').classList.add('active'); document.getElementById('ws-rev-anim-play').classList.remove('active'); }
+  else { resumeAnim('ws-stroke-svg', 'rev-ws'); document.getElementById('ws-rev-anim-stop').classList.remove('active'); document.getElementById('ws-rev-anim-play').classList.add('active'); }
+}
+
+function clearWSCanvas() { clearCanvas('ws-canvas', wsRevealed); }
+
+function gradeWS(grade) {
+  const item = wsReviewItems[wsReviewIdx];
+  const newLevel = calcStudyLevel(grade);
+  wsReviewResults.push({ item, grade, newLevel });
+  saveWriteLevel(item.id, newLevel);
+  resetAnim('ws-stroke-svg', 'rev-ws');
+  wsReviewIdx++;
+  if (wsReviewIdx >= wsReviewItems.length) showWSResults();
+  else showWSReviewItem();
+}
+
+function endWSReview() {
+  resetAnim('ws-stroke-svg', 'rev-ws');
+  if (wsReviewResults.length > 0) showWSResults();
+  else showWSConfig();
+}
+
+function showWSResults() {
+  document.getElementById('ws-learn-wrap').style.display = 'none';
+  document.getElementById('ws-review-wrap').style.display = 'none';
+  document.getElementById('ws-results').style.display = 'block';
+  const total = wsReviewResults.length;
+  const got = wsReviewResults.filter(r => r.grade === 3).length;
+  document.getElementById('ws-results-score').textContent = `${Math.round(got/total*100)}%`;
+  document.getElementById('ws-results-fraction').textContent = `${got} of ${total} recalled`;
+  document.getElementById('ws-results-breakdown').innerHTML = wsReviewResults.map(r => {
+    const icon = r.grade===3?'<span style="color:var(--correct)">○</span>':r.grade===2?'<span style="color:orange">△</span>':'<span style="color:var(--incorrect)">✕</span>';
+    const on = r.item.readings?.on||[]; const kun = r.item.readings?.kun||[];
+    const reading = on.length?on[0]:kun.length?kun[0]:'';
+    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${reading}</div><div style="font-size:0.75rem;color:var(--text2)">→ ${LEVEL_NAMES[r.newLevel]}</div><div>${icon}</div></div>`;
+  }).join('');
+  saveWriteLastQuizzed(wsReviewResults.map(r => r.item.id));
+  const remaining = getWSPool();
+  const emptyEl = document.getElementById('ws-pool-empty');
+  const againBtn = document.getElementById('ws-again-btn');
+  emptyEl.style.display = remaining.length === 0 ? 'block' : 'none';
+  againBtn.disabled = remaining.length === 0;
+  againBtn.style.opacity = remaining.length === 0 ? '0.4' : '';
+}
+
+function restartWSSession() {
+  document.getElementById('ws-results').style.display = 'none';
+  wsLearnItems = getWSPool().slice(0, parseInt(document.getElementById('ws-count').value));
+  wsLearnIdx = 0;
+  showWSLearnItem();
+}
+
+function showWSConfig() {
+  document.getElementById('ws-learn-wrap').style.display = 'none';
+  document.getElementById('ws-review-wrap').style.display = 'none';
+  document.getElementById('ws-results').style.display = 'none';
+  document.getElementById('ws-config-panel').style.display = 'block';
+  updateWSPoolInfo();
+}
+
+// ── WRITE DASHBOARD ──
+function renderWriteDashboard() {
+  const kanji_cats = ['Joyo','Jinmeiyo','Kanji Extended'];
+  const grid = document.getElementById('write-stats-grid');
+  const bars = document.getElementById('write-level-bars');
+  if (!grid || !bars) return;
+
+  let gridHtml = '';
+  kanji_cats.forEach(cat => {
+    const catItems = items.filter(i => i.category === cat);
+    const levels = [0,1,2,3,4,5].map(l => catItems.filter(i => (userWriteProgress[i.id]??0)===l).length);
+    const studied = catItems.length - levels[0];
+    gridHtml += `<div class="stat-card" style="cursor:default">
+      <div class="stat-value">${studied}<span style="font-size:0.6rem;color:var(--text3)">/${catItems.length}</span></div>
+      <div class="stat-label">${cat}</div>
+      <div style="font-size:0.65rem;color:var(--text3);margin-top:4px;line-height:1.6;">
+        ${levels.slice(1).map((c,i)=>`<span style="color:${LEVEL_COLORS[i+1]}">${c}</span>`).join(' · ')}
+      </div></div>`;
+  });
+  grid.innerHTML = gridHtml;
+
+  const allKanji = items.filter(i => WRITE_KANJI_CATS.has(i.category));
+  const levelCounts = [0,1,2,3,4,5].map(l => allKanji.filter(i=>(userWriteProgress[i.id]??0)===l).length);
+  const total = allKanji.length;
+  bars.innerHTML = [0,1,2,3,4,5].map(l => `
+    <div class="level-bar-row">
+      <div class="level-bar-label"><div class="level-dot" style="background:${LEVEL_COLORS[l]}"></div><span style="color:${LEVEL_COLORS[l]}">${LEVEL_NAMES[l]}</span></div>
+      <div class="level-bar-track"><div class="level-bar-fill" style="width:${total?levelCounts[l]/total*100:0}%;background:${LEVEL_COLORS[l]}"></div></div>
+      <div class="level-bar-count">${levelCounts[l]}</div>
+    </div>`).join('');
+
+  const weakCount = allKanji.filter(i=>(userWriteProgress[i.id]??0)===1).length;
+  document.getElementById('weak-write-sub').textContent = weakCount ? `${weakCount} kanji at level 1` : 'None — great work!';
+  const now = Date.now(); const c14 = new Date(now-14*86400000).toISOString(); const c60 = new Date(now-60*86400000).toISOString();
+  const staleCount = allKanji.filter(i => {
+    const lq = userWriteLastQuizzed[i.id]; const wl = userWriteProgress[i.id]??0;
+    if (wl===0) return false;
+    return wl===5 ? (!lq||lq<c60) : (!lq||lq<c14);
+  }).length;
+  document.getElementById('stale-write-sub').textContent = staleCount ? `${staleCount} kanji not reviewed recently` : 'All up to date!';
+}
+
+function startWeakWriters() {
+  showView('write'); setWriteMode('review');
+  document.getElementById('wr-reviewed').value = 'random';
+  document.getElementById('wr-minlevel').value = '1';
+  document.getElementById('wr-maxlevel').value = '1';
+  updateWRPoolInfo();
+}
+
+function openWriteReviewModal(type) {
+  showView('write'); setWriteMode('review');
+  if (type === 'stale') {
+    document.getElementById('wr-reviewed').value = 'stale';
+    document.getElementById('wr-minlevel').value = '1';
+    document.getElementById('wr-maxlevel').value = '5';
+  }
+  updateWRPoolInfo();
 }
 
 // ── WRITE DB ──
@@ -2975,87 +3250,11 @@ async function saveWriteLevel(itemId, level) {
 
 async function saveWriteLastQuizzed(itemIds) {
   if (!itemIds.length) return;
-  const now = new Date().toISOString();
-  const uid = currentUser.id;
+  const now = new Date().toISOString(); const uid = currentUser.id;
   await Promise.all(itemIds.map(id =>
-    sb.from('write_progress').upsert({
-      user_id: uid, item_id: id,
-      level: userWriteProgress[id] ?? 1,
-      last_quizzed: now
-    }, { onConflict: 'user_id,item_id' })
+    sb.from('write_progress').upsert({ user_id: uid, item_id: id, level: userWriteProgress[id]??1, last_quizzed: now }, { onConflict: 'user_id,item_id' })
   ));
   itemIds.forEach(id => userWriteLastQuizzed[id] = now);
-}
-
-// ── WRITE DASHBOARD ──
-function renderWriteDashboard() {
-  const kanji_cats = ['Joyo','Jinmeiyo','Kanji Extended'];
-  const grid = document.getElementById('write-stats-grid');
-  const bars = document.getElementById('write-level-bars');
-  if (!grid || !bars) return;
-
-  // Stats grid — level breakdown per category
-  let gridHtml = '';
-  kanji_cats.forEach(cat => {
-    const catItems = items.filter(i => i.category === cat);
-    const levels = [0,1,2,3,4,5].map(l => catItems.filter(i => (userWriteProgress[i.id] ?? 0) === l).length);
-    const studied = catItems.length - levels[0];
-    gridHtml += `<div class="stat-card" style="cursor:default">
-      <div class="stat-value">${studied}<span style="font-size:0.6rem;color:var(--text3)">/${catItems.length}</span></div>
-      <div class="stat-label">${cat}</div>
-      <div style="font-size:0.65rem;color:var(--text3);margin-top:4px;line-height:1.6;">
-        ${levels.slice(1).map((c,i) => `<span style="color:${LEVEL_COLORS[i+1]}">${c}</span>`).join(' · ')}
-      </div>
-    </div>`;
-  });
-  grid.innerHTML = gridHtml;
-
-  // Level bars — all kanji write levels
-  const allKanji = items.filter(i => WRITE_KANJI_CATS.has(i.category));
-  const levelCounts = [0,1,2,3,4,5].map(l => allKanji.filter(i => (userWriteProgress[i.id] ?? 0) === l).length);
-  const total = allKanji.length;
-  bars.innerHTML = [0,1,2,3,4,5].map(l => `
-    <div class="level-bar-row">
-      <div class="level-bar-label"><div class="level-dot" style="background:${LEVEL_COLORS[l]}"></div><span style="color:${LEVEL_COLORS[l]}">${LEVEL_NAMES[l]}</span></div>
-      <div class="level-bar-track"><div class="level-bar-fill" style="width:${total ? levelCounts[l]/total*100 : 0}%;background:${LEVEL_COLORS[l]}"></div></div>
-      <div class="level-bar-count">${levelCounts[l]}</div>
-    </div>`).join('');
-
-  // Quick action tiles
-  const weakCount = allKanji.filter(i => (userWriteProgress[i.id] ?? 0) === 1).length;
-  document.getElementById('weak-write-sub').textContent = weakCount ? `${weakCount} kanji at level 1` : 'None — great work!';
-
-  const now = Date.now();
-  const cutoff14 = new Date(now - 14 * 86400000).toISOString();
-  const cutoff60 = new Date(now - 60 * 86400000).toISOString();
-  const staleCount = allKanji.filter(i => {
-    const lq = userWriteLastQuizzed[i.id];
-    const wl = userWriteProgress[i.id] ?? 0;
-    if (wl === 0) return false;
-    if (wl === 5) return !lq || lq < cutoff60;
-    return !lq || lq < cutoff14;
-  }).length;
-  document.getElementById('stale-write-sub').textContent = staleCount ? `${staleCount} kanji not reviewed recently` : 'All up to date!';
-}
-
-function startWeakWriters() {
-  showView('write');
-  setWriteMode('review');
-  document.getElementById('wconfig-reviewed').value = 'random';
-  document.getElementById('wconfig-minlevel').value = '1';
-  document.getElementById('wconfig-maxlevel').value = '1';
-  updateWritePoolInfo();
-}
-
-function openWriteReviewModal(type) {
-  showView('write');
-  setWriteMode('review');
-  if (type === 'stale') {
-    document.getElementById('wconfig-reviewed').value = 'stale';
-    document.getElementById('wconfig-minlevel').value = '1';
-    document.getElementById('wconfig-maxlevel').value = '5';
-  }
-  updateWritePoolInfo();
 }
 
 // ── WRITE TAB END ──
