@@ -2974,6 +2974,8 @@ function showWRResults() {
     return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${reading}</div><div style="font-size:0.75rem;color:var(--text2)">→ ${LEVEL_NAMES[r.newLevel]}</div><div>${icon}</div></div>`;
   }).join('');
   saveWriteLastQuizzed(wrResults.map(r => r.item.id));
+  // Update in-memory levels immediately so pool check is accurate
+  wrResults.forEach(r => userWriteProgress[r.item.id] = r.newLevel);
   const remaining = getWRPool();
   const emptyEl = document.getElementById('wr-pool-empty');
   const againBtn = document.getElementById('wr-again-btn');
@@ -3156,6 +3158,8 @@ function showWSResults() {
     return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${reading}</div><div style="font-size:0.75rem;color:var(--text2)">→ ${LEVEL_NAMES[r.newLevel]}</div><div>${icon}</div></div>`;
   }).join('');
   saveWriteLastQuizzed(wsReviewResults.map(r => r.item.id));
+  // Update in-memory levels immediately so pool check is accurate
+  wsReviewResults.forEach(r => userWriteProgress[r.item.id] = r.newLevel);
   const remaining = getWSPool();
   const emptyEl = document.getElementById('ws-pool-empty');
   const againBtn = document.getElementById('ws-again-btn');
