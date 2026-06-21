@@ -841,6 +841,44 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
     </div>
   </div>
 
+<!-- SETTINGS -->
+<div id="view-settings" class="view">
+  <div class="settings-section">
+    <h3>Profile</h3>
+    <div class="settings-field">
+      <label>Display Name</label>
+      <input class="settings-input" id="settings-name" type="text" placeholder="Your name">
+    </div>
+    <div class="settings-field">
+      <label>Email</label>
+      <input class="settings-input" id="settings-email" type="email" disabled style="opacity:0.5;cursor:not-allowed;">
+    </div>
+    <button class="settings-btn" onclick="saveDisplayName()">Save Name</button>
+    <div class="settings-msg" id="settings-name-msg"></div>
+  </div>
+  <div class="settings-section">
+    <h3>Change Password</h3>
+    <div class="settings-field">
+      <label>Current Password</label>
+      <input class="settings-input" id="settings-current-pw" type="password" placeholder="••••••••">
+    </div>
+    <div class="settings-field">
+      <label>New Password</label>
+      <input class="settings-input" id="settings-new-pw" type="password" placeholder="••••••••">
+    </div>
+    <div class="settings-field">
+      <label>Confirm New Password</label>
+      <input class="settings-input" id="settings-confirm-pw" type="password" placeholder="••••••••">
+    </div>
+    <button class="settings-btn" onclick="changePassword()">Update Password</button>
+    <div class="settings-msg" id="settings-pw-msg"></div>
+  </div>
+  <div class="settings-section">
+    <h3>Account</h3>
+    <button class="settings-btn danger" onclick="signOut()">Sign Out</button>
+  </div>
+</div>
+
 <!-- QUICK START MODAL -->
 
 <!-- ITEM DETAIL MODAL -->
@@ -1658,8 +1696,10 @@ async function removeUserSynonym(id,syn) {
 // ── SETTINGS ──
 function populateSettingsName() {
   const name = currentUser?.user_metadata?.display_name || '';
-  const input = document.getElementById('settings-name');
-  if (input) input.value = name;
+  const nameInput = document.getElementById('settings-name');
+  const emailInput = document.getElementById('settings-email');
+  if (nameInput) nameInput.value = name;
+  if (emailInput) emailInput.value = currentUser?.email || '';
 }
 async function saveDisplayName() {
   const name = document.getElementById('settings-name').value.trim();
