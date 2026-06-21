@@ -391,7 +391,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
   <!-- DICTIONARY -->
   <div id="view-dictionary" class="view">
     <div class="dict-controls">
-      <input class="search-input" id="dict-search" placeholder="Search kanji, reading, meaning…" oninput="renderDict()">
+      <input class="search-input" id="dict-search" placeholder='Search kanji, reading, meaning… use "quotes" for exact match' oninput="renderDict()">
       <div class="filter-row">
         <select class="filter-sel" id="filter-cat" onchange="updateSubcatFilter();updatePosFilter();updateTagFilter();renderDict()"><option value="">All Categories</option></select>
         <select class="filter-sel" id="filter-subcat" onchange="updatePosFilter();updateTagFilter();renderDict()"><option value="">All Subcategories</option></select>
@@ -1413,9 +1413,15 @@ function renderDict() {
     if (pos && i.pos !== pos) return false;
     if (tag && !(i.tags||[]).includes(tag)) return false;
     if (level !== '' && i.level !== parseInt(level)) return false;
-    if (q) return i.kanji.includes(q)||(i.reading||'').includes(q)||
-      (i.readings?Object.values(i.readings).flat().some(r=>r.includes(q)):false)||
-      (i.romaji||'').toLowerCase().includes(q)||getDisplayMeaning(i).toLowerCase().includes(q)||(i.description||'').toLowerCase().includes(q);
+    if (q) {
+      const exact = q.startsWith('"') && q.endsWith('"') && q.length > 2;
+      const term = exact ? q.slice(1,-1) : q;
+      const allMeanings = (i.meanings || (i.meaning ? [i.meaning] : [])).map(m => m.toLowerCase());
+      if (exact) return i.kanji === term || allMeanings.some(m => m === term);
+      return i.kanji.includes(term)||(i.reading||'').includes(term)||
+        (i.readings?Object.values(i.readings).flat().some(r=>r.includes(term)):false)||
+        (i.romaji||'').toLowerCase().includes(term)||allMeanings.some(m => m.includes(term));
+    }
     return true;
   });
   document.getElementById('dict-count').textContent = `${filtered.length} item${filtered.length!==1?'s':''}`;
