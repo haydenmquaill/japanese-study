@@ -27,6 +27,7 @@
   --radius:12px;--radius-sm:8px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow-x:hidden;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.25s,color 0.25s;}
 
 /* ── AUTH ── */
@@ -503,6 +504,10 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
         <div class="feedback-notes" id="feedback-notes"></div>
         <div class="feedback-level" id="feedback-level"></div>
         <div class="feedback-synonyms" id="feedback-synonyms"></div>
+        <div class="study-examples" id="feedback-examples" style="display:none">
+          <div class="ex-label">Example Sentences</div>
+          <div id="feedback-examples-wrap"></div>
+        </div>
       </div>
       <div class="quiz-answer-area">
         <input class="quiz-input reading-mode" id="quiz-input" placeholder="Type the reading…" onkeydown="handleQuizKey(event)">
@@ -588,6 +593,10 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
         <div class="feedback-answer" id="study-feedback-answer"></div>
         <div class="feedback-description" id="study-feedback-description"></div>
         <div class="feedback-notes" id="study-feedback-notes"></div>
+        <div class="study-examples" id="study-feedback-examples" style="display:none">
+          <div class="ex-label">Example Sentences</div>
+          <div id="study-feedback-examples-wrap"></div>
+        </div>
       </div>
       <div class="quiz-answer-area">
         <input class="quiz-input reading-mode" id="study-input" placeholder="Type the reading…" onkeydown="handleStudyKey(event)">
@@ -717,10 +726,14 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
           <button class="quiz-btn btn-submit" style="width:160px;" id="wr-reveal-btn" onclick="revealWRAnswer()">Reveal Answer</button>
         </div>
         <div id="wr-grade-card" style="display:none;padding:12px 20px;background:var(--surface);border-radius:var(--radius);margin-top:8px;">
-          <div style="display:flex;gap:8px;width:100%;">
+          <div style="display:flex;gap:8px;width:100%;margin-bottom:10px;">
             <button class="quiz-btn" style="flex:1;background:var(--incorrect);color:white;" onclick="gradeWR(1)">✕</button>
             <button class="quiz-btn" style="flex:1;background:orange;color:white;" onclick="gradeWR(2)">△</button>
             <button class="quiz-btn" style="flex:1;background:var(--correct);color:white;" onclick="gradeWR(3)">○</button>
+          </div>
+          <div class="study-examples" id="wr-examples" style="display:none;">
+            <div class="ex-label">Example Sentences</div>
+            <div id="wr-examples-wrap"></div>
           </div>
         </div>
       </div>
@@ -828,10 +841,14 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
           <button class="quiz-btn btn-submit" style="width:160px;" id="ws-reveal-btn" onclick="revealWSAnswer()">Reveal Answer</button>
         </div>
         <div id="ws-grade-card" style="display:none;padding:12px 20px;background:var(--surface);border-radius:var(--radius);margin-top:8px;">
-          <div style="display:flex;gap:8px;width:100%;">
+          <div style="display:flex;gap:8px;width:100%;margin-bottom:10px;">
             <button class="quiz-btn" style="flex:1;background:var(--incorrect);color:white;" onclick="gradeWS(1)">✕</button>
             <button class="quiz-btn" style="flex:1;background:orange;color:white;" onclick="gradeWS(2)">△</button>
             <button class="quiz-btn" style="flex:1;background:var(--correct);color:white;" onclick="gradeWS(3)">○</button>
+          </div>
+          <div class="study-examples" id="ws-examples" style="display:none;">
+            <div class="ex-label">Example Sentences</div>
+            <div id="ws-examples-wrap"></div>
           </div>
         </div>
       </div>
@@ -1354,6 +1371,10 @@ function updateQSubcat() {
 }
 
 // ── VIEWS ──
+function setPageScroll(enabled) {
+  document.body.style.overflow = enabled ? '' : 'hidden';
+}
+
 function showView(v) {
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
@@ -1364,6 +1385,8 @@ function showView(v) {
   const tabs = ['dashboard','dictionary','read','write'];
   const idx = tabs.indexOf(viewId);
   if (idx >= 0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  // Dictionary scrolls freely; all other views are self-contained
+  setPageScroll(viewId === 'dictionary');
   if (v === 'dashboard') renderDashboard();
   if (v === 'dictionary') renderDict();
   if (v === 'read') setReadMode(readMode);
@@ -2008,6 +2031,7 @@ function showPrompt(){
   input.disabled=false;
   if(prompt.mode==='reading')attachWanakana(input);else detachWanakana(input);
   document.getElementById('quiz-feedback').classList.remove('show');
+  setPageScroll(false);
   document.getElementById('btn-submit').style.display='';
   document.getElementById('btn-next').style.display='none';
   document.getElementById('answer-hint').textContent='';
@@ -2099,6 +2123,8 @@ function finaliseItem(lastCorrect, correctAnswer){
   re.className='feedback-result '+(itemCorrect?'correct':'incorrect');
   document.getElementById('feedback-answer').textContent=(!itemCorrect&&correctAnswer)?`Answer: ${correctAnswer}`:'';
   const desc=currentItem.description||'';document.getElementById('feedback-description').textContent=desc;document.getElementById('feedback-notes').textContent=currentItem.notes?'📝 '+currentItem.notes:'';
+  showExamples(currentItem, 'feedback-examples-wrap', 'feedback-examples');
+  setPageScroll(true);
   
 
   // Level change
@@ -2340,6 +2366,7 @@ function startStudy() {
   document.getElementById('study-learn-wrap').style.display = 'block';
   document.getElementById('study-quiz-wrap').style.display = 'none';
   document.getElementById('study-results').classList.remove('show');
+  setPageScroll(true);
   showStudyCard();
 }
 
@@ -2395,6 +2422,7 @@ function beginStudyQuiz() {
   studyQuizIndex = 0; studyQuizResults = [];
   document.getElementById('study-learn-wrap').style.display = 'none';
   document.getElementById('study-quiz-wrap').style.display = 'block';
+  setPageScroll(false);
   startStudyItem();
 }
 function startStudyItem() {
@@ -2427,6 +2455,9 @@ function showStudyPrompt() {
   input.placeholder = prompt.mode==='reading'?'Type the reading…':'Type the meaning…';
   if (prompt.mode==='reading') attachWanakana(input); else detachWanakana(input);
   document.getElementById('study-feedback').classList.remove('show');
+  document.getElementById('study-feedback-examples').style.display = 'none';
+  document.getElementById('study-feedback-examples-wrap').innerHTML = '';
+  setPageScroll(false);
   document.getElementById('study-btn-submit').style.display='';
   document.getElementById('study-btn-next').style.display='none';
   document.getElementById('study-answer-hint').textContent='';
@@ -2508,6 +2539,8 @@ function finaliseStudyItem(correctAnswer) {
   document.getElementById('study-feedback-answer').textContent = (studyItemHadWrong&&correctAnswer)?`Answer: ${correctAnswer}`:'';
   document.getElementById('study-feedback-description').textContent = studyCurrentItem.description||'';
   document.getElementById('study-feedback-notes').textContent = studyCurrentItem.notes?'📝 '+studyCurrentItem.notes:'';
+  showExamples(studyCurrentItem, 'study-feedback-examples-wrap', 'study-feedback-examples');
+  setPageScroll(true);
   document.getElementById('study-btn-submit').style.display='none';
   document.getElementById('study-btn-next').textContent='Next →';
   document.getElementById('study-btn-next').style.display='';
@@ -3018,6 +3051,9 @@ function showWRItem() {
   document.getElementById('wr-reveal-btn').textContent = 'Reveal Answer';
   document.getElementById('wr-draw-btns').style.display = '';
   document.getElementById('wr-canvas').style.pointerEvents = '';
+  document.getElementById('wr-examples').style.display = 'none';
+  document.getElementById('wr-examples-wrap').innerHTML = '';
+  setPageScroll(false);
   const strokeDiv = document.getElementById('wr-stroke-svg');
   if (strokeDiv) { strokeDiv.style.display = 'none'; strokeDiv.innerHTML = ''; }
   resetAnim('wr-stroke-svg', 'rev-wr');
@@ -3040,6 +3076,9 @@ function revealWRAnswer() {
     if (strokeDiv) strokeDiv.style.display = 'block';
     loadStrokeInto(item.kanji, 'wr-stroke-svg', 'wr-anim-stop', 'wr-anim-play', 'rev-wr', true);
     setTimeout(() => startAnim('wr-stroke-svg', 'rev-wr'), 100);
+    // Show examples
+    showExamples(item, 'wr-examples-wrap', 'wr-examples');
+    setPageScroll(true);
   }
 }
 
@@ -3145,6 +3184,7 @@ function startWSSession() {
   wsLearnIdx = 0;
   document.getElementById('ws-config-panel').style.display = 'none';
   document.getElementById('ws-results').style.display = 'none';
+  setPageScroll(true);
   showWSLearnItem();
 }
 
@@ -3183,6 +3223,7 @@ function wsLearnNav(dir) {
     wsReviewItems = [...wsLearnItems].sort(() => Math.random() - 0.5);
     wsReviewIdx = 0; wsReviewResults = [];
     document.getElementById('ws-learn-wrap').style.display = 'none';
+    setPageScroll(false);
     showWSReviewItem(); return;
   }
   wsLearnIdx = Math.max(0, Math.min(wsLearnItems.length - 1, wsLearnIdx + dir));
@@ -3208,6 +3249,9 @@ function showWSReviewItem() {
   document.getElementById('ws-reveal-btn').textContent = 'Reveal Answer';
   document.getElementById('ws-draw-btns').style.display = '';
   document.getElementById('ws-canvas').style.pointerEvents = '';
+  document.getElementById('ws-examples').style.display = 'none';
+  document.getElementById('ws-examples-wrap').innerHTML = '';
+  setPageScroll(false);
   const strokeDiv = document.getElementById('ws-stroke-svg');
   if (strokeDiv) { strokeDiv.style.display = 'none'; strokeDiv.innerHTML = ''; }
   resetAnim('ws-stroke-svg', 'rev-ws');
@@ -3230,6 +3274,8 @@ function revealWSAnswer() {
     if (strokeDiv) strokeDiv.style.display = 'block';
     loadStrokeInto(item.kanji, 'ws-stroke-svg', 'ws-rev-anim-stop', 'ws-rev-anim-play', 'rev-ws', true);
     setTimeout(() => startAnim('ws-stroke-svg', 'rev-ws'), 100);
+    showExamples(item, 'ws-examples-wrap', 'ws-examples');
+    setPageScroll(true);
   }
 }
 
