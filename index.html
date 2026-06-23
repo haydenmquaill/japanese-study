@@ -1692,12 +1692,6 @@ function getDisplayReading(item) {
   }
   return item.reading || '';
 }
-function levelArrow(prevLevel, newLevel) {
-  const color = LEVEL_COLORS[newLevel] || 'var(--text3)';
-  if (newLevel > prevLevel) return `<span style="color:${color}">↑</span>`;
-  if (newLevel < prevLevel) return `<span style="color:${color}">↓</span>`;
-  return `<span style="color:${color}">→</span>`;
-}
 function renderExamples(examples) {
   if (!examples || !examples.length) return '';
   return examples.map(ex => {
@@ -2220,7 +2214,6 @@ function finaliseItem(lastCorrect, correctAnswer){
     const everWrong=quizSession.everWrong[currentItem.id]||false;
     if(!everWrong){currentItem.level=Math.min(5,currentItem.level+1);}
     else if(!currentItem._levelDropped){currentItem.level=Math.max(1,currentItem.level-1);currentItem._levelDropped=true;}
-    currentItem._prevLevel=prevLevel; // store for results display
   }
 
   re.textContent=requeued?(itemEverWrong?'✕ Incorrect — try again':'△ Close — try again'):(!(quizSession.everWrong[currentItem.id]))?'○ Correct!':'○ Got it!';
@@ -2316,13 +2309,9 @@ async function showResults(endedEarly=false){
   document.getElementById('results-fraction').textContent = `${correct} / ${total} correct`;
   document.getElementById('results-breakdown').innerHTML = results.map(r => {
     const icon = r.correct ? '<span style="color:var(--correct)">○</span>' : '<span style="color:var(--incorrect)">✕</span>';
-    const arrow1=levelArrow(r.item._prevLevel??r.item.level,r.item.level);
-    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div style="font-size:0.75rem">${arrow1} ${LEVEL_NAMES[r.item.level]}</div><div class="results-icon">${icon}</div></div>`;
+    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div style="font-size:0.75rem;color:${LEVEL_COLORS[r.item.level]}">${LEVEL_NAMES[r.item.level]}</div><div class="results-icon">${icon}</div></div>`;
   }).join('');
-  // Save
-  await saveLevelBatch(results.map(r=>({item_id:r.item.id,level:r.item.level})));
-  renderDashboard();
-  // Button logic
+  // Buttons — set before save so UI is instant
   const nextBtn = document.getElementById('btn-next-batch');
   const emptyEl = document.getElementById('results-pool-empty');
   const moreBatches = quizSession.batchOffset < quizSession.allItems.length;
@@ -2333,6 +2322,8 @@ async function showResults(endedEarly=false){
     nextBtn.style.display = '';
     emptyEl.style.display = 'none';
   }
+  renderDashboard();
+  await saveLevelBatch(results.map(r=>({item_id:r.item.id,level:r.item.level})));
 }
 
 function restartQuiz(){document.getElementById('quiz-results').classList.remove('show');startQuiz();}
@@ -2579,7 +2570,7 @@ function beginStudyQuiz(){
 
 function startStudyItem(){
   studyCurrentItem=batchNextItem(studySession);
-  if(!studyCurrentItem){endStudyBatch();return;}
+  if(!studyCurrentItem){showStudyResults();return;}
   studyCurrentPrompts=buildPrompts(studyCurrentItem);
   studyCurrentPromptIndex=0;studyItemHadWrong=false;studyPromptWrongCount=0;studyItemFinalised=false;
   updateStudyQuizProgress();showStudyPrompt();
@@ -2762,30 +2753,23 @@ function handleStudyKey(e) {
 async function showStudyResults(endedEarly=false){
   document.getElementById('study-quiz-wrap').style.display='none';
   document.getElementById('study-results').classList.add('show');
-  const results = studySession.results;
-  const correct = results.filter(r=>r.correct).length;
-  const total = results.length;
-  document.getElementById('study-results-score').textContent = total ? Math.round((correct/total)*100)+'%' : '—';
-  document.getElementById('study-results-fraction').textContent = `${correct} / ${total} first try correct`;
-  document.getElementById('study-results-breakdown').innerHTML = results.map(r =>
-    (()=>{const arrow2=levelArrow(r.item._prevLevel??r.item.level,r.item.level);return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div style="font-size:0.75rem">${arrow2} ${LEVEL_NAMES[r.item.level]}</div><div>${r.correct?'<span style="color:var(--correct)">○</span>':'<span style="color:var(--incorrect)">✕</span>'}</div></div>`;})()
-  ).join('');
-  await saveLevelBatch(results.map(r=>({item_id:r.item.id,level:r.item.level})));
+  const results=studySession.results;
+  const correct=results.filter(r=>r.correct).length;
+  const total=results.length;
+  document.getElementById('study-results-score').textContent=total?Math.round((correct/total)*100)+'%':'—';
+  document.getElementById('study-results-fraction').textContent=`${correct} / ${total} first try correct`;
+  document.getElementById('study-results-breakdown').innerHTML=results.map(r=>{
+    const icon=r.correct?'<span style="color:var(--correct)">○</span>':'<span style="color:var(--incorrect)">✕</span>';
+    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div style="font-size:0.75rem;color:${LEVEL_COLORS[r.item.level]}">${LEVEL_NAMES[r.item.level]}</div><div>${icon}</div></div>`;
+  }).join('');
+  // Buttons — set before save
+  const nextBtn=document.getElementById('btn-study-next-batch');
+  const emptyEl=document.getElementById('study-pool-empty');
+  const moreBatches=studySession.batchOffset<studySession.allItems.length;
+  if(endedEarly||!moreBatches){nextBtn.style.display='none';emptyEl.style.display=moreBatches?'none':'block';}
+  else{nextBtn.style.display='';emptyEl.style.display='none';}
   renderDashboard();
-  const nextBtn = document.getElementById('btn-study-next-batch');
-  const emptyEl = document.getElementById('study-pool-empty');
-  const moreBatches = studySession.batchOffset < studySession.allItems.length;
-  if (endedEarly || !moreBatches) {
-    nextBtn.style.display = 'none';
-    emptyEl.style.display = moreBatches ? 'none' : 'block';
-  } else {
-    nextBtn.style.display = '';
-    emptyEl.style.display = 'none';
-  }
-}
-function continueStudy() {
-  document.getElementById('study-results').classList.remove('show');
-  startStudy();
+  await saveLevelBatch(results.map(r=>({item_id:r.item.id,level:r.item.level})));
 }
 function endStudyLearn(){
   if(!confirm('End session? Current batch progress will be lost.'))return;
@@ -2805,10 +2789,6 @@ async function endStudyQuiz(){
   backToStudyConfig();
 }
 
-function endStudyBatch(){
-  // All items in current batch queue done — handled by batchAdvance
-  // This should not normally be called
-}
 
 // ── READ TAB ──
 function setReadMode(mode) {
@@ -2877,15 +2857,6 @@ function getMeaningText(item) {
 }
 
 // ── WRITE LEVEL LOGIC ──
-function calcStudyLevel(grade) { return grade; } // ✗→1 △→2 ○→3
-function calcReviewLevel(currentLevel, grade) {
-  if (grade === 1) return Math.max(1, currentLevel - 1);
-  if (grade === 2) return currentLevel;
-  return Math.min(5, currentLevel + 1);
-}
-
-// ── STROKE ANIMATION ──
-// Each phase has completely independent state
 const animState = {
   'learn':  { running: false, idx: 0, timer: null },
   'rev-wr': { running: false, idx: 0, timer: null },
@@ -3319,55 +3290,34 @@ function endWRSession(){
 async function showWRResults(endedEarly=false){
   document.getElementById('wr-active').style.display = 'none';
   document.getElementById('wr-results').style.display = 'block';
-  // Build results from graded items only (no duplicates, no undefined levels)
   const grades = wrSession.grades || {};
   const results = Object.values(grades).map(({item, grade}) => {
     const current = userWriteProgress[item.id] ?? 1;
     const everWrong = wrSession.everWrong[item.id] || false;
     let newLevel;
-    if(grade===3){
-      newLevel = everWrong ? Math.max(1,current-1) : Math.min(5,current+1);
-    } else if(grade===1){
-      newLevel = Math.max(1,current-1);
-    } else {
-      newLevel = current; // △ only — no change
-    }
-    return {item, grade, newLevel};
+    if(grade===3){newLevel=everWrong?Math.max(1,current-1):Math.min(5,current+1);}
+    else if(grade===1){newLevel=Math.max(1,current-1);}
+    else{newLevel=current;}
+    return {item,grade,newLevel};
   });
-  const correct = results.filter(r=>r.grade===3&&!wrSession.everWrong[r.item.id]).length;
-  const total = results.length;
-  document.getElementById('wr-results-score').textContent = total ? Math.round((correct/total)*100)+'%' : '—';
-  document.getElementById('wr-results-fraction').textContent = `${correct} / ${total} first try correct`;
-  document.getElementById('wr-results-breakdown').innerHTML = results.map(r => {
-    const everWrong = wrSession.everWrong[r.item.id];
-    const icon = r.grade===3 ? '<span style="color:var(--correct)">○</span>' :
-      r.grade===1 ? '<span style="color:var(--incorrect)">✕</span>' : '<span style="color:orange">△</span>';
-    const oldLvlWR=userWriteProgress[r.item.id]??0;
-    const arrowWR=levelArrow(oldLvlWR,r.newLevel);
-    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getReadingHtml(r.item)}</div><div style="font-size:0.75rem">${arrowWR} ${LEVEL_NAMES[r.newLevel]}</div><div>${icon}</div></div>`;
+  const correct=results.filter(r=>r.grade===3&&!wrSession.everWrong[r.item.id]).length;
+  const total=results.length;
+  document.getElementById('wr-results-score').textContent=total?Math.round((correct/total)*100)+'%':'—';
+  document.getElementById('wr-results-fraction').textContent=`${correct} / ${total} first try correct`;
+  document.getElementById('wr-results-breakdown').innerHTML=results.map(r=>{
+    const icon=r.grade===3?'<span style="color:var(--correct)">○</span>':r.grade===1?'<span style="color:var(--incorrect)">✕</span>':'<span style="color:orange">△</span>';
+    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getReadingHtml(r.item)}</div><div style="font-size:0.75rem;color:${LEVEL_COLORS[r.newLevel]}">${LEVEL_NAMES[r.newLevel]}</div><div>${icon}</div></div>`;
   }).join('');
+  // Buttons — set before save
+  const nextBtn=document.getElementById('wr-next-batch-btn');
+  const emptyEl=document.getElementById('wr-pool-empty');
+  const moreBatches=wrSession.batchOffset<wrSession.allItems.length;
+  if(endedEarly||!moreBatches){nextBtn.style.display='none';emptyEl.style.display=moreBatches?'none':'block';}
+  else{nextBtn.style.display='';emptyEl.style.display='none';}
   renderDashboard();
-  await Promise.all(results.map(r => saveWriteLevel(r.item.id, r.newLevel)));
-  const nextBtn = document.getElementById('wr-next-batch-btn');
-  const emptyEl = document.getElementById('wr-pool-empty');
-  const moreBatches = wrSession.batchOffset < wrSession.allItems.length;
-  if (endedEarly || !moreBatches) {
-    nextBtn.style.display = 'none';
-    emptyEl.style.display = moreBatches ? 'none' : 'block';
-  } else {
-    nextBtn.style.display = '';
-    emptyEl.style.display = 'none';
-  }
+  await Promise.all(results.map(r=>saveWriteLevel(r.item.id,r.newLevel)));
 }
 
-function restartWRSession(){
-  document.getElementById('wr-results').style.display='none';
-  const count=parseInt(document.getElementById('wr-count').value)||20;
-  const pool=getWRPool().sort(()=>Math.random()-0.5).slice(0,count);
-  wrSession=createBatchSession(pool);
-  batchStartNext(wrSession);
-  showWRItem();
-}
 
 function showWRConfig() {
   document.getElementById('wr-active').style.display = 'none';
@@ -3552,54 +3502,37 @@ function endWSReview(){
 }
 
 async function showWSResults(endedEarly=false){
-  document.getElementById('ws-learn-wrap').style.display = 'none';
-  document.getElementById('ws-review-wrap').style.display = 'none';
-  document.getElementById('ws-results').style.display = 'block';
-  const grades = wsSession.grades || {};
-  const results = Object.values(grades).map(({item, grade}) => {
-    const current = userWriteProgress[item.id] ?? 0;
-    const everWrong = wsSession.everWrong[item.id] || false;
+  document.getElementById('ws-learn-wrap').style.display='none';
+  document.getElementById('ws-review-wrap').style.display='none';
+  document.getElementById('ws-results').style.display='block';
+  const grades=wsSession.grades||{};
+  const results=Object.values(grades).map(({item,grade})=>{
+    const current=userWriteProgress[item.id]??0;
+    const everWrong=wsSession.everWrong[item.id]||false;
     let newLevel;
-    if(grade===3){
-      newLevel = current===0 ? (everWrong?1:2) : (everWrong?Math.max(1,current-1):Math.min(5,current+1));
-    } else if(grade===1){
-      newLevel = current===0 ? 1 : Math.max(1,current-1);
-    } else {
-      newLevel = current; // △ — no change
-    }
-    return {item, grade, newLevel};
+    if(grade===3){newLevel=current===0?(everWrong?1:2):(everWrong?Math.max(1,current-1):Math.min(5,current+1));}
+    else if(grade===1){newLevel=current===0?1:Math.max(1,current-1);}
+    else{newLevel=current;}
+    return {item,grade,newLevel};
   });
-  const correct = results.filter(r=>r.grade===3&&!wsSession.everWrong[r.item.id]).length;
-  const total = results.length;
-  document.getElementById('ws-results-score').textContent = total ? Math.round((correct/total)*100)+'%' : '—';
-  document.getElementById('ws-results-fraction').textContent = `${correct} / ${total} first try correct`;
-  document.getElementById('ws-results-breakdown').innerHTML = results.map(r => {
-    const icon = r.grade===3 ? '<span style="color:var(--correct)">○</span>' :
-      r.grade===1 ? '<span style="color:var(--incorrect)">✕</span>' : '<span style="color:orange">△</span>';
-    const oldLvlWS=userWriteProgress[r.item.id]??0;
-    const arrowWS=levelArrow(oldLvlWS,r.newLevel);
-    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getReadingHtml(r.item)}</div><div style="font-size:0.75rem">${arrowWS} ${LEVEL_NAMES[r.newLevel]}</div><div>${icon}</div></div>`;
+  const correct=results.filter(r=>r.grade===3&&!wsSession.everWrong[r.item.id]).length;
+  const total=results.length;
+  document.getElementById('ws-results-score').textContent=total?Math.round((correct/total)*100)+'%':'—';
+  document.getElementById('ws-results-fraction').textContent=`${correct} / ${total} first try correct`;
+  document.getElementById('ws-results-breakdown').innerHTML=results.map(r=>{
+    const icon=r.grade===3?'<span style="color:var(--correct)">○</span>':r.grade===1?'<span style="color:var(--incorrect)">✕</span>':'<span style="color:orange">△</span>';
+    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getReadingHtml(r.item)}</div><div style="font-size:0.75rem;color:${LEVEL_COLORS[r.newLevel]}">${LEVEL_NAMES[r.newLevel]}</div><div>${icon}</div></div>`;
   }).join('');
+  // Buttons — set before save
+  const nextBtn=document.getElementById('ws-next-batch-btn');
+  const emptyEl=document.getElementById('ws-pool-empty');
+  const moreBatches=wsSession.batchOffset<wsSession.allItems.length;
+  if(endedEarly||!moreBatches){nextBtn.style.display='none';emptyEl.style.display=moreBatches?'none':'block';}
+  else{nextBtn.style.display='';emptyEl.style.display='none';}
   renderDashboard();
-  await Promise.all(results.map(r => saveWriteLevel(r.item.id, r.newLevel)));
-  const nextBtn = document.getElementById('ws-next-batch-btn');
-  const emptyEl = document.getElementById('ws-pool-empty');
-  const moreBatches = wsSession.batchOffset < wsSession.allItems.length;
-  if (endedEarly || !moreBatches) {
-    nextBtn.style.display = 'none';
-    emptyEl.style.display = moreBatches ? 'none' : 'block';
-  } else {
-    nextBtn.style.display = '';
-    emptyEl.style.display = 'none';
-  }
+  await Promise.all(results.filter(r=>r.newLevel!==undefined).map(r=>saveWriteLevel(r.item.id,r.newLevel)));
 }
 
-function restartWSSession() {
-  document.getElementById('ws-results').style.display = 'none';
-  wsLearnItems = getWSPool().slice(0, parseInt(document.getElementById('ws-count').value));
-  wsLearnIdx = 0;
-  showWSLearnItem();
-}
 
 function showWSConfig() {
   document.getElementById('ws-learn-wrap').style.display = 'none';
