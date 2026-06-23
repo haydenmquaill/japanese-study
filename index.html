@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>日本語辞典</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="日本語辞典">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0e0d0c">
+<link rel="manifest" href="manifest.json">
 <script src="wanakana.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -74,7 +80,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 
 /* ── DASHBOARD ── */
 .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 10px;text-align:center;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.15s;}
+.stat-card:hover{border-color:var(--accent);background:var(--surface2);}
 .stat-card .num{font-size:1.7rem;font-weight:700;}
 .stat-card .lbl{font-size:0.72rem;color:var(--text2);margin-top:2px;}
 .level-breakdown{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;}
@@ -86,6 +93,9 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .level-bar-track{flex:1;height:7px;background:var(--surface3);border-radius:4px;overflow:hidden;}
 .level-bar-fill{height:100%;border-radius:4px;transition:width 0.4s ease;}
 .level-bar-count{width:30px;text-align:right;font-size:0.78rem;color:var(--text2);}
+.dash-toggle{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.dash-toggle-btn{font-size:0.75rem;padding:4px 10px;border-radius:99px;border:1px solid var(--border);background:none;color:var(--text2);cursor:pointer;transition:all 0.15s;}
+.dash-toggle-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600;}
 .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .quick-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all 0.15s;text-align:left;position:relative;}
 .quick-btn:hover{border-color:var(--accent);background:var(--surface2);}
@@ -371,29 +381,25 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
   <div id="view-dashboard" class="view active">
     <div class="section-title">Reading Progress</div>
     <div class="stats-grid" id="stats-grid"></div>
-    <div class="level-breakdown"><div class="level-bars" id="level-bars"></div></div>
-    <div class="quick-actions" style="grid-template-columns:1fr 1fr;">
-      <div class="quick-btn" onclick="startWeakItems()">
-        <div class="qb-icon">⚠️</div><div class="qb-title">Weak Items</div>
-        <div class="qb-sub" id="weak-sub">Level 1 — needs attention</div>
+    <div class="level-breakdown">
+      <div class="dash-toggle" id="read-toggle">
+        <button class="dash-toggle-btn active" onclick="setReadToggle('all')">All</button>
+        <button class="dash-toggle-btn" onclick="setReadToggle('kanji')">Kanji</button>
+        <button class="dash-toggle-btn" onclick="setReadToggle('vocab')">Vocabulary</button>
+        <button class="dash-toggle-btn" onclick="setReadToggle('proper')">Proper Nouns</button>
       </div>
-      <div class="quick-btn" onclick="openQSModal('stale')">
-        <div class="qb-icon">🕰️</div><div class="qb-title">Stale Items</div>
-        <div class="qb-sub" id="stale-sub">Not reviewed recently</div>
-      </div>
+      <div class="level-bars" id="level-bars"></div>
     </div>
     <div class="section-title" style="margin-top:18px;">Writing Progress</div>
     <div class="stats-grid" id="write-stats-grid"></div>
-    <div class="level-breakdown"><div class="level-bars" id="write-level-bars"></div></div>
-    <div class="quick-actions" style="grid-template-columns:1fr 1fr;">
-      <div class="quick-btn" onclick="startWeakWriters()">
-        <div class="qb-icon">✏️</div><div class="qb-title">Weak Writers</div>
-        <div class="qb-sub" id="weak-write-sub">Level 1 — needs practice</div>
+    <div class="level-breakdown">
+      <div class="dash-toggle" id="write-toggle">
+        <button class="dash-toggle-btn active" onclick="setWriteToggle('all')">All</button>
+        <button class="dash-toggle-btn" onclick="setWriteToggle('Joyo')">Joyo</button>
+        <button class="dash-toggle-btn" onclick="setWriteToggle('Jinmeiyo')">Jinmeiyo</button>
+        <button class="dash-toggle-btn" onclick="setWriteToggle('Kanji Extended')">Extended</button>
       </div>
-      <div class="quick-btn" onclick="openWriteReviewModal('stale')">
-        <div class="qb-icon">📝</div><div class="qb-title">Stale Writing</div>
-        <div class="qb-sub" id="stale-write-sub">Not practised recently</div>
-      </div>
+      <div class="level-bars" id="write-level-bars"></div>
     </div>
   </div>
 
@@ -409,8 +415,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
         <select class="filter-sel" id="filter-level" onchange="renderDict()">
           <option value="">All Levels</option>
           <option value="0">0 — Locked</option><option value="1">1 — Review</option>
-          <option value="2">2 — Apprentice</option><option value="3">3 — Guru</option>
-          <option value="4">4 — Master</option><option value="5">5 — Enlightened</option>
+          <option value="2">2 — Forming</option><option value="3">3 — Stable</option>
+          <option value="4">4 — Strong</option><option value="5">5 — Cemented</option>
         </select>
       </div>
     </div>
@@ -437,17 +443,17 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
           <div class="config-item"><label>Subcategory</label><select id="qconfig-subcat" onchange="updateQuizPoolInfo()"><option value="">All Subcategories</option></select></div>
           <div class="config-item"><label>Min Level</label>
             <select id="qconfig-minlevel" onchange="updateQuizPoolInfo()">
-              <option value="1">1 — Review</option><option value="2" selected>2 — Apprentice</option>
-              <option value="3">3 — Guru</option><option value="4">4 — Master</option><option value="5">5 — Enlightened</option>
+              <option value="1">1 — Fragile</option><option value="2" selected>2 — Forming</option>
+              <option value="3">3 — Stable</option><option value="4">4 — Strong</option><option value="5">5 — Cemented</option>
             </select>
           </div>
           <div class="config-item"><label>Max Level</label>
             <select id="qconfig-maxlevel" onchange="updateQuizPoolInfo()">
-              <option value="1">1 — Review</option>
-              <option value="2">2 — Apprentice</option>
-              <option value="3">3 — Guru</option>
-              <option value="4">4 — Master</option>
-              <option value="5" selected>5 — Enlightened</option>
+              <option value="1">1 — Fragile</option>
+              <option value="2">2 — Forming</option>
+              <option value="3">3 — Stable</option>
+              <option value="4">4 — Strong</option>
+              <option value="5" selected>5 — Cemented</option>
             </select>
           </div>
           <div class="config-item"><label>Last Reviewed</label>
@@ -632,20 +638,20 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
             </div>
             <div class="config-item"><label>Min Level</label>
               <select id="wr-minlevel" onchange="updateWRPoolInfo()">
-                <option value="1" selected>1 — Needs practice</option>
-                <option value="2">2 — Shaky</option>
-                <option value="3">3 — Confident</option>
+                <option value="1" selected>1 — Fragile</option>
+                <option value="2">2 — Forming</option>
+                <option value="3">3 — Stable</option>
                 <option value="4">4 — Strong</option>
-                <option value="5">5 — Mastered</option>
+                <option value="5">5 — Cemented</option>
               </select>
             </div>
             <div class="config-item"><label>Max Level</label>
               <select id="wr-maxlevel" onchange="updateWRPoolInfo()">
-                <option value="1">1 — Needs practice</option>
-                <option value="2">2 — Shaky</option>
-                <option value="3">3 — Confident</option>
+                <option value="1">1 — Fragile</option>
+                <option value="2">2 — Forming</option>
+                <option value="3">3 — Stable</option>
                 <option value="4">4 — Strong</option>
-                <option value="5" selected>5 — Mastered</option>
+                <option value="5" selected>5 — Cemented</option>
               </select>
             </div>
             <div class="config-item"><label>Last Reviewed</label>
@@ -660,6 +666,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
                   <option value="30">Last 30 days</option>
                 </optgroup>
                 <optgroup label="Not reviewed recently">
+                  <option value="not1">Not today</option>
+                  <option value="not3">Not in last 3 days</option>
                   <option value="not7">Not in last 7 days</option>
                   <option value="not14">Not in last 14 days</option>
                   <option value="not30">Not in last 30 days</option>
@@ -970,7 +978,7 @@ let studyItemHadWrong = false, studyPromptWrongCount = 0;
 let currentModalId = null;
 let recentItemIds = new Set();
 
-const LEVEL_NAMES = ['Locked','Review','Apprentice','Guru','Master','Enlightened'];
+const LEVEL_NAMES = ['Locked','Fragile','Forming','Stable','Strong','Cemented'];
 const LEVEL_COLORS = ['#555570','#c0392b','#e67e22','#8e44ad','#2980b9','#27ae60'];
 const VOCAB_GROUPS = {
   'Nouns':              ['Nouns', 'Noun'],
@@ -1366,32 +1374,124 @@ function showView(v) {
 }
 
 // ── DASHBOARD ──
+let readToggle = 'all';
+let writeToggle = 'all';
+
+const KANJI_CATS = new Set(['Joyo','Jinmeiyo','Kanji Extended']);
+const PROPER_CATS = new Set(['Surname','Given Name','Station','City','Town','Historical','Poetic','Prefecture','Landmark','Idiom']);
+
+function getReadItems(toggle) {
+  if (toggle === 'kanji') return items.filter(i => KANJI_CATS.has(i.category));
+  if (toggle === 'vocab') return items.filter(i => i.category === 'Vocab');
+  if (toggle === 'proper') return items.filter(i => PROPER_CATS.has(i.category));
+  return items;
+}
+
+function getWriteItems(toggle) {
+  if (toggle === 'all') return items.filter(i => WRITE_KANJI_CATS.has(i.category));
+  return items.filter(i => i.category === toggle);
+}
+
+function setReadToggle(val) {
+  readToggle = val;
+  document.querySelectorAll('#read-toggle .dash-toggle-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderReadGraph();
+}
+
+function setWriteToggle(val) {
+  writeToggle = val;
+  document.querySelectorAll('#write-toggle .dash-toggle-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderWriteGraph();
+}
+
 function renderDashboard() {
-  const streak = userSettings.streak || 0;
-  const needsReview = items.filter(i => i.level === 1).length;
-  const mastered = items.filter(i => i.level >= 4).length;
+  renderReadStats();
+  renderReadGraph();
+  renderWriteStats();
+  renderWriteGraph();
+}
+
+function renderReadStats() {
+  const studied = items.filter(i => i.level > 0).length;
+  const fragile = items.filter(i => i.level === 1).length;
+  const now = Date.now();
+  const c14 = new Date(now - 14*86400000).toISOString();
+  const c60 = new Date(now - 60*86400000).toISOString();
+  const stale = items.filter(i => {
+    if (i.level < 2) return false;
+    const lq = i.last_quizzed || null;
+    return i.level === 5 ? (!lq || lq < c60) : (!lq || lq < c14);
+  }).length;
   document.getElementById('stats-grid').innerHTML = `
-    <div class="stat-card"><div class="num" style="color:#e67e22">${streak}</div><div class="lbl">🔥 Day Streak</div></div>
-    <div class="stat-card"><div class="num" style="color:var(--lvl-review)">${needsReview}</div><div class="lbl">⚠️ Needs Review</div></div>
-    <div class="stat-card"><div class="num" style="color:var(--lvl-master)">${mastered}</div><div class="lbl">🏆 Mastered</div></div>`;
-  const counts = [0,1,2,3,4,5].map(l => items.filter(i => i.level === l).length);
+    <div class="stat-card" onclick="startWeakItems()">
+      <div class="num" style="color:var(--lvl-review)">${fragile.toLocaleString()}</div>
+      <div class="lbl">⚠️ At Risk</div>
+    </div>
+    <div class="stat-card" onclick="openQSModal('stale')">
+      <div class="num" style="color:#e67e22">${stale.toLocaleString()}</div>
+      <div class="lbl">🕰️ Gone Stale</div>
+    </div>
+    <div class="stat-card" onclick="showView('dictionary')">
+      <div class="num" style="color:var(--accent)">${studied.toLocaleString()}</div>
+      <div class="lbl">📚 Items Studied</div>
+    </div>`;
+}
+
+function renderReadGraph() {
+  const pool = getReadItems(readToggle);
+  const counts = [0,1,2,3,4,5].map(l => pool.filter(i => i.level === l).length);
   const maxCount = Math.max(...counts, 1);
   document.getElementById('level-bars').innerHTML = counts.map((c, l) => `
     <div class="level-bar-row">
       <div class="level-bar-label"><div class="level-dot" style="background:${LEVEL_COLORS[l]}"></div><span style="color:${LEVEL_COLORS[l]}">${LEVEL_NAMES[l]}</span></div>
       <div class="level-bar-track"><div class="level-bar-fill" style="width:${(c/maxCount)*100}%;background:${LEVEL_COLORS[l]}"></div></div>
-      <div class="level-bar-count">${c}</div>
+      <div class="level-bar-count">${c.toLocaleString()}</div>
     </div>`).join('');
-  updateQSDashboard();
-  renderWriteDashboard();
+}
+
+function renderWriteStats() {
+  const allKanji = items.filter(i => WRITE_KANJI_CATS.has(i.category));
+  const studied = allKanji.filter(i => (userWriteProgress[i.id] ?? 0) > 0).length;
+  const fragile = allKanji.filter(i => (userWriteProgress[i.id] ?? 0) === 1).length;
+  const now = Date.now();
+  const c14 = new Date(now - 14*86400000).toISOString();
+  const c60 = new Date(now - 60*86400000).toISOString();
+  const stale = allKanji.filter(i => {
+    const lq = userWriteLastQuizzed[i.id]; const wl = userWriteProgress[i.id] ?? 0;
+    if (wl === 0) return false;
+    return wl === 5 ? (!lq || lq < c60) : (!lq || lq < c14);
+  }).length;
+  document.getElementById('write-stats-grid').innerHTML = `
+    <div class="stat-card" onclick="startWeakWriters()">
+      <div class="num" style="color:var(--lvl-review)">${fragile.toLocaleString()}</div>
+      <div class="lbl">⚠️ Fragile</div>
+    </div>
+    <div class="stat-card" onclick="openWriteReviewModal('stale')">
+      <div class="num" style="color:#e67e22">${stale.toLocaleString()}</div>
+      <div class="lbl">🕰️ Gone Stale</div>
+    </div>
+    <div class="stat-card" onclick="showView('dictionary')">
+      <div class="num" style="color:var(--accent)">${studied.toLocaleString()}</div>
+      <div class="lbl">📚 Items Studied</div>
+    </div>`;
+}
+
+function renderWriteGraph() {
+  const pool = getWriteItems(writeToggle);
+  const counts = [0,1,2,3,4,5].map(l => pool.filter(i => (userWriteProgress[i.id] ?? 0) === l).length);
+  const maxCount = Math.max(...counts, 1);
+  document.getElementById('write-level-bars').innerHTML = counts.map((c, l) => `
+    <div class="level-bar-row">
+      <div class="level-bar-label"><div class="level-dot" style="background:${LEVEL_COLORS[l]}"></div><span style="color:${LEVEL_COLORS[l]}">${LEVEL_NAMES[l]}</span></div>
+      <div class="level-bar-track"><div class="level-bar-fill" style="width:${(c/maxCount)*100}%;background:${LEVEL_COLORS[l]}"></div></div>
+      <div class="level-bar-count">${c.toLocaleString()}</div>
+    </div>`).join('');
 }
 
 function updateQSDashboard() {
-  const weak = items.filter(i => i.level === 1).length;
-  document.getElementById('weak-sub').textContent = weak > 0 ? `${weak} items slipping` : 'No weak items — great!';
-  const stale = getStalePool(true).length;
-  const staleEl = document.getElementById('stale-sub');
-  if (staleEl) staleEl.textContent = stale > 0 ? `${stale} items need a refresh` : 'All up to date!';
+  // kept for compatibility — stats now rendered directly in renderReadStats
 }
 
 // ── QUICK START MODALS ──
@@ -1410,26 +1510,64 @@ function getStalePool(includeEnlightened) {
   });
 }
 
+function resetReadConfig() {
+  document.getElementById('qconfig-cat').value = '';
+  document.getElementById('qconfig-subcat').value = '';
+  document.getElementById('qconfig-minlevel').value = '1';
+  document.getElementById('qconfig-maxlevel').value = '5';
+  document.getElementById('qconfig-days').value = '0';
+  document.getElementById('qconfig-count').value = '20';
+  updateSubcatQuizFilter?.();
+  updateQuizPoolInfo();
+}
+
+function resetWriteConfig() {
+  document.getElementById('wr-cat').value = '';
+  document.getElementById('wr-subcat').value = '';
+  document.getElementById('wr-minlevel').value = '1';
+  document.getElementById('wr-maxlevel').value = '5';
+  document.getElementById('wr-reviewed').value = 'random';
+  document.getElementById('wr-count').value = '20';
+  updateWRSubcatFilter?.();
+  updateWRPoolInfo();
+}
+
 function openQSModal(mode) {
+  showView('review');
+  resetReadConfig();
   if (mode === 'stale') {
-    showView('review');
-    const minSel = document.getElementById('qconfig-minlevel');
-    const maxSel = document.getElementById('qconfig-maxlevel');
-    const daysSel = document.getElementById('qconfig-days');
-    if (minSel) minSel.value = '2';
-    if (maxSel) maxSel.value = '5';
-    if (daysSel) daysSel.value = 'stale';
-    updateQuizPoolInfo();
+    document.getElementById('qconfig-minlevel').value = '2';
+    document.getElementById('qconfig-maxlevel').value = '5';
+    document.getElementById('qconfig-days').value = 'stale';
   }
+  updateQuizPoolInfo();
 }
 
 function startWeakItems() {
   showView('review');
-  const minSel = document.getElementById('qconfig-minlevel');
-  const maxSel = document.getElementById('qconfig-maxlevel');
-  if (minSel) minSel.value = '1';
-  if (maxSel) maxSel.value = '1';
+  resetReadConfig();
+  document.getElementById('qconfig-minlevel').value = '1';
+  document.getElementById('qconfig-maxlevel').value = '1';
   updateQuizPoolInfo();
+}
+
+function startWeakWriters() {
+  showView('write'); setWriteMode('review');
+  resetWriteConfig();
+  document.getElementById('wr-minlevel').value = '1';
+  document.getElementById('wr-maxlevel').value = '1';
+  updateWRPoolInfo();
+}
+
+function openWriteReviewModal(type) {
+  showView('write'); setWriteMode('review');
+  resetWriteConfig();
+  if (type === 'stale') {
+    document.getElementById('wr-reviewed').value = 'stale';
+    document.getElementById('wr-minlevel').value = '2';
+    document.getElementById('wr-maxlevel').value = '5';
+  }
+  updateWRPoolInfo();
 }
 
 // ── DICTIONARY ──
@@ -3161,62 +3299,8 @@ function showWSConfig() {
 
 // ── WRITE DASHBOARD ──
 function renderWriteDashboard() {
-  const kanji_cats = ['Joyo','Jinmeiyo','Kanji Extended'];
-  const grid = document.getElementById('write-stats-grid');
-  const bars = document.getElementById('write-level-bars');
-  if (!grid || !bars) return;
-
-  let gridHtml = '';
-  kanji_cats.forEach(cat => {
-    const catItems = items.filter(i => i.category === cat);
-    const levels = [0,1,2,3,4,5].map(l => catItems.filter(i => (userWriteProgress[i.id]??0)===l).length);
-    const studied = catItems.length - levels[0];
-    gridHtml += `<div class="stat-card" style="cursor:default">
-      <div class="stat-value">${studied}<span style="font-size:0.6rem;color:var(--text3)">/${catItems.length}</span></div>
-      <div class="stat-label">${cat}</div>
-      <div style="font-size:0.65rem;color:var(--text3);margin-top:4px;line-height:1.6;">
-        ${levels.slice(1).map((c,i)=>`<span style="color:${LEVEL_COLORS[i+1]}">${c}</span>`).join(' · ')}
-      </div></div>`;
-  });
-  grid.innerHTML = gridHtml;
-
-  const allKanji = items.filter(i => WRITE_KANJI_CATS.has(i.category));
-  const levelCounts = [0,1,2,3,4,5].map(l => allKanji.filter(i=>(userWriteProgress[i.id]??0)===l).length);
-  const total = allKanji.length;
-  bars.innerHTML = [0,1,2,3,4,5].map(l => `
-    <div class="level-bar-row">
-      <div class="level-bar-label"><div class="level-dot" style="background:${LEVEL_COLORS[l]}"></div><span style="color:${LEVEL_COLORS[l]}">${LEVEL_NAMES[l]}</span></div>
-      <div class="level-bar-track"><div class="level-bar-fill" style="width:${total?levelCounts[l]/total*100:0}%;background:${LEVEL_COLORS[l]}"></div></div>
-      <div class="level-bar-count">${levelCounts[l]}</div>
-    </div>`).join('');
-
-  const weakCount = allKanji.filter(i=>(userWriteProgress[i.id]??0)===1).length;
-  document.getElementById('weak-write-sub').textContent = weakCount ? `${weakCount} kanji at level 1` : 'None — great work!';
-  const now = Date.now(); const c14 = new Date(now-14*86400000).toISOString(); const c60 = new Date(now-60*86400000).toISOString();
-  const staleCount = allKanji.filter(i => {
-    const lq = userWriteLastQuizzed[i.id]; const wl = userWriteProgress[i.id]??0;
-    if (wl===0) return false;
-    return wl===5 ? (!lq||lq<c60) : (!lq||lq<c14);
-  }).length;
-  document.getElementById('stale-write-sub').textContent = staleCount ? `${staleCount} kanji not reviewed recently` : 'All up to date!';
-}
-
-function startWeakWriters() {
-  showView('write'); setWriteMode('review');
-  document.getElementById('wr-reviewed').value = 'random';
-  document.getElementById('wr-minlevel').value = '1';
-  document.getElementById('wr-maxlevel').value = '1';
-  updateWRPoolInfo();
-}
-
-function openWriteReviewModal(type) {
-  showView('write'); setWriteMode('review');
-  if (type === 'stale') {
-    document.getElementById('wr-reviewed').value = 'stale';
-    document.getElementById('wr-minlevel').value = '1';
-    document.getElementById('wr-maxlevel').value = '5';
-  }
-  updateWRPoolInfo();
+  renderWriteStats();
+  renderWriteGraph();
 }
 
 // ── WRITE DB ──
