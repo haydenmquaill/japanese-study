@@ -537,13 +537,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
           <div class="config-item"><label>Category</label><select id="sconfig-cat" onchange="updateSSubcat();updateStudyPoolInfo()"><option value="">All Categories</option></select></div>
           <div class="config-item"><label>Subcategory</label><select id="sconfig-subcat" onchange="updateStudyPoolInfo()"><option value="">All Subcategories</option></select></div>
           <div class="config-item" style="grid-column:1/-1"><label>Items</label>
-            <select id="sconfig-count" onchange="updateStudyPoolInfo()">
-              <option value="5">5 items</option>
-              <option value="10" selected>10 items</option>
-              <option value="15">15 items</option>
-              <option value="20">20 items</option>
-              <option value="999">All available</option>
-            </select>
+            <input type="number" id="sconfig-count" value="5" min="1" max="999" oninput="updateStudyPoolInfo()">
+          </div>
           </div>
         </div>
       </div>
@@ -767,11 +762,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
               <select id="ws-subcat" onchange="updateWSPoolInfo()"><option value="">All Subcategories</option></select>
             </div>
             <div class="config-item" style="grid-column:1/-1"><label>Items</label>
-              <select id="ws-count" onchange="updateWSPoolInfo()">
-                <option value="5">5 items</option>
-                <option value="10" selected>10 items</option>
-                <option value="20">20 items</option>
-              </select>
+              <input type="number" id="ws-count" value="5" min="1" max="999" oninput="updateWSPoolInfo()">
             </div>
           </div>
         </div>
@@ -985,11 +976,17 @@ let unlockedLevels = new Set(); // WK level numbers that are unlocked
 let quizMode = 'review';
 let quizQueue = [], quizIndex = 0, quizScore = 0, quizResults = [];
 let currentItem = null, currentPrompts = [], currentPromptIndex = 0;
-let itemAnswered = false, itemCorrect = true;
+let itemAnswered = false, itemCorrect = true, itemEverWrong = false;
+let quizRequeue = []; // items to re-show
 let promptWrongCount = 0; // wrong attempts on current prompt
 // Study state
 let studyQueue = [], studyLearnIndex = 0;
 let studyQuizQueue = [], studyQuizIndex = 0, studyQuizResults = [];
+let studyAllItems = []; // full session item list
+let studyBatchSize = 4;
+let studyBatchOffset = 0; // how many items from studyAllItems we've processed
+let studyQuizRequeue = []; // requeue within current batch review
+let studyCurrentEverWrong = false;
 let studyCurrentItem = null, studyCurrentPrompts = [], studyCurrentPromptIndex = 0;
 let studyItemHadWrong = false, studyPromptWrongCount = 0;
 let currentModalId = null;
@@ -1994,7 +1991,10 @@ function startQuiz(){
   const count=Math.min(parseInt(document.getElementById('qconfig-count').value)||10,pool.length);
   quizMode='review';
   quizQueue=shuffle([...pool]).slice(0,count);
+  quizRequeue=[];
   quizIndex=0;quizScore=0;quizResults=[];
+  // Clear any session level drop flags
+  quizQueue.forEach(i=>delete i._levelDropped);
   document.getElementById('review-config-panel').classList.add('hide');
   document.getElementById('quiz-active').classList.add('show');
   document.getElementById('quiz-results').classList.remove('show');
@@ -2004,13 +2004,19 @@ function startQuiz(){
 function startItem(){
   currentItem=quizQueue[quizIndex];
   currentPrompts=buildPrompts(currentItem);
-  currentPromptIndex=0;itemAnswered=false;itemCorrect=true;promptWrongCount=0;
+  currentPromptIndex=0;itemAnswered=false;itemCorrect=true;
+  itemEverWrong = currentItem._everWrong || false; // preserve across requeue
+  promptWrongCount=0;
   updateProgressBar();showPrompt();
 }
 
 function updateProgressBar(){
-  document.getElementById('progress-fill').style.width=((quizIndex+1)/quizQueue.length)*100+'%';
-  document.getElementById('progress-text').textContent=`${quizIndex+1} / ${quizQueue.length}`;
+  const total=quizQueue.length;
+  const requeueCount=quizRequeue.length;
+  document.getElementById('progress-fill').style.width=((quizIndex+1)/total)*100+'%';
+  document.getElementById('progress-text').textContent=requeueCount>0
+    ? `${quizIndex+1} / ${total} · ${requeueCount} to retry`
+    : `${quizIndex+1} / ${total}`;
 }
 
 function showPrompt(){
@@ -2076,7 +2082,7 @@ function submitAnswer(){
   }
   // Wrong — mark, maybe show hint, retry
   if(!correct){
-    itemCorrect=false;
+    itemCorrect=false; itemEverWrong=true; currentItem._everWrong=true;
     promptWrongCount++;
     input.className='quiz-input incorrect';
     if(promptWrongCount>=2){
@@ -2114,46 +2120,69 @@ function finaliseItem(lastCorrect, correctAnswer){
   const re=document.getElementById('feedback-result');
 
   const prevLevel=currentItem.level;
-  if(itemCorrect)currentItem.level=Math.min(5,currentItem.level+1);
-  else currentItem.level=Math.max(1,currentItem.level-1);
+  const firstTryCorrect = !currentItem._everWrong && lastCorrect;
+  const requeued = !lastCorrect;
 
-  quizResults.push({item:currentItem,correct:itemCorrect});
-  if(itemCorrect)quizScore++;
+  // Only apply level change when item is done (not re-queued)
+  if (!requeued) {
+    if (firstTryCorrect) {
+      currentItem.level=Math.min(5,currentItem.level+1);
+    } else if (currentItem._everWrong && !currentItem._levelDropped) {
+      currentItem.level=Math.max(1,currentItem.level-1);
+      currentItem._levelDropped=true;
+    }
+  }
 
-  re.textContent=itemCorrect?'○ Correct!':'✕ Incorrect';
-  re.className='feedback-result '+(itemCorrect?'correct':'incorrect');
-  document.getElementById('feedback-answer').textContent=(!itemCorrect&&correctAnswer)?`Answer: ${correctAnswer}`:'';
+  // Re-queue if not correct on this pass (△/✕ means retry)
+  if (requeued) {
+    quizRequeue.push(currentItem);
+  } else {
+    // Item finished — record result based on whether ever wrong
+    quizResults.push({item:currentItem, correct: !currentItem._everWrong});
+    if (!currentItem._everWrong) quizScore++;
+    delete currentItem._everWrong;
+  }
+
+  re.textContent = requeued ? (itemEverWrong ? '✕ Incorrect — try again later' : '△ Close — try again later') : firstTryCorrect ? '○ Correct!' : '○ Got it!';
+  re.className='feedback-result '+(requeued?(itemEverWrong?'incorrect':'close'):firstTryCorrect?'correct':'correct');
+  document.getElementById('feedback-answer').textContent=(!firstTryCorrect&&correctAnswer)?`Answer: ${correctAnswer}`:'';
   const desc=currentItem.description||'';document.getElementById('feedback-description').textContent=desc;document.getElementById('feedback-notes').textContent=currentItem.notes?'📝 '+currentItem.notes:'';
   showExamples(currentItem, 'feedback-examples-wrap', 'feedback-examples');
   setPageScroll(true);
-  
 
-  // Level change
+  // Level change display — only when item is done
   const lc=currentItem.level-prevLevel;
   const arrow=lc>0?'↑':lc<0?'↓':'→';
-  document.getElementById('feedback-level').innerHTML=`<span style="color:${LEVEL_COLORS[currentItem.level]}">${arrow} ${LEVEL_NAMES[prevLevel]} → ${LEVEL_NAMES[currentItem.level]}</span>`;
+  if (!requeued) {
+    document.getElementById('feedback-level').innerHTML=`<span style="color:${LEVEL_COLORS[currentItem.level]}">${arrow} ${LEVEL_NAMES[prevLevel]} → ${LEVEL_NAMES[currentItem.level]}</span>`;
+  } else {
+    document.getElementById('feedback-level').innerHTML='';
+  }
 
-  // Animation
+  // Animation — only when done
   const fb2=document.getElementById('quiz-feedback');
-  if(lc>0)fb2.classList.add('feedback-levelup');
-  setTimeout(()=>fb2.classList.remove('feedback-levelup'),400);
-  if(currentItem.level===5&&prevLevel<5){
-    const overlay=document.getElementById('enlightened-overlay');
-    overlay.className='enlightened-overlay burst';
-    setTimeout(()=>overlay.className='enlightened-overlay',1000);
+  if (!requeued) {
+    if(lc>0)fb2.classList.add('feedback-levelup');
+    setTimeout(()=>fb2.classList.remove('feedback-levelup'),400);
+    if(currentItem.level===5&&prevLevel<5){
+      const overlay=document.getElementById('enlightened-overlay');
+      overlay.className='enlightened-overlay burst';
+      setTimeout(()=>overlay.className='enlightened-overlay',1000);
+    }
   }
 
   // Synonym add for wrong meaning
   const se=document.getElementById('feedback-synonyms');
   const lastPrompt=currentPrompts[currentPromptIndex];
-  if(lastPrompt&&lastPrompt.mode==='meaning'&&!itemCorrect){
+  if(lastPrompt&&lastPrompt.mode==='meaning'&&itemEverWrong){
     const userAns=document.getElementById('quiz-input').value.trim();
     se.innerHTML=`<span class="add-syn-inline" onclick="showInlineSyn('${userAns.replace(/'/g,"\\'")}')">+ Add as synonym</span><div class="syn-inline-row" id="syn-inline-row" style="display:none"><input class="syn-inline-input" id="syn-inline-input" value="${userAns}"><button class="syn-inline-save" onclick="saveInlineSyn()">Save</button></div>`;
   } else se.innerHTML='';
 
   document.getElementById('btn-submit').style.display='none';
-  document.getElementById('btn-next').textContent='Next →';
-  document.getElementById('btn-next').style.display='';
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.textContent = requeued ? 'Continue →' : 'Next →';
+  nextBtn.style.display='';
 }
 
 function showFeedbackMsg(type,msg){
@@ -2180,7 +2209,22 @@ function handleNext(){
   }
 }
 
-function advanceItem(){quizIndex++;if(quizIndex>=quizQueue.length)showResults();else startItem();}
+function advanceItem(){
+  quizIndex++;
+  if(quizIndex>=quizQueue.length){
+    // Primary queue done — move requeue items in
+    if(quizRequeue.length>0){
+      quizQueue=[...quizRequeue];
+      quizRequeue=[];
+      quizIndex=0;
+      startItem();
+    } else {
+      showResults();
+    }
+  } else {
+    startItem();
+  }
+}
 
 function handleQuizKey(e){
   if(e.key==='Enter'||e.key===' '){
@@ -2228,6 +2272,15 @@ function backToConfig(){
   updateQuizPoolInfo();
 }
 async function endQuiz(){
+  // Finalise any requeued items — they get level drop since they weren't completed
+  quizRequeue.forEach(item => {
+    if (item._everWrong && !item._levelDropped) {
+      item.level=Math.max(1,item.level-1);
+    }
+    quizResults.push({item, correct:false});
+    delete item._everWrong; delete item._levelDropped;
+  });
+  quizRequeue=[];
   const updates=quizResults.map(r=>({item_id:r.item.id,level:r.item.level}));
   if(updates.length)await saveLevelBatch(updates);
   document.getElementById('quiz-active').classList.remove('show');
@@ -2360,13 +2413,23 @@ function updateStudyPoolInfo() {
 function startStudy() {
   const pool = getStudyPool();
   if (!pool.length) return;
-  const count = parseInt(document.getElementById('sconfig-count').value) || 10;
-  studyQueue = shuffle([...pool]).slice(0, Math.min(count, pool.length));
-  studyLearnIndex = 0;
+  const count = Math.min(parseInt(document.getElementById('sconfig-count').value)||5, pool.length);
+  studyAllItems = shuffle([...pool]).slice(0, count);
+  studyBatchOffset = 0;
+  studyQuizResults = [];
   document.getElementById('study-config-panel').style.display = 'none';
   document.getElementById('study-learn-wrap').style.display = 'block';
   document.getElementById('study-quiz-wrap').style.display = 'none';
   document.getElementById('study-results').classList.remove('show');
+  startStudyBatch();
+}
+
+function startStudyBatch() {
+  // Get next batch of 4 (or remainder)
+  const remaining = studyAllItems.slice(studyBatchOffset);
+  const batchSize = Math.min(studyBatchSize, remaining.length);
+  studyQueue = remaining.slice(0, batchSize);
+  studyLearnIndex = 0;
   setPageScroll(true);
   showStudyCard();
 }
@@ -2375,9 +2438,11 @@ function startStudy() {
 function showStudyCard() {
   const item = studyQueue[studyLearnIndex];
   const total = studyQueue.length;
+  const batchNum = Math.floor(studyBatchOffset / studyBatchSize) + 1;
+  const totalBatches = Math.ceil(studyAllItems.length / studyBatchSize);
   document.getElementById('study-learn-fill').style.width = ((studyLearnIndex+1)/total)*100+'%';
   document.getElementById('study-learn-text').textContent = `${studyLearnIndex+1} / ${total}`;
-  document.getElementById('study-card-counter').textContent = `Card ${studyLearnIndex+1} of ${total}`;
+  document.getElementById('study-card-counter').textContent = `Batch ${batchNum} of ${totalBatches} · Card ${studyLearnIndex+1} of ${total}`;
   document.getElementById('study-card-kanji').textContent = item.kanji;
   const rw = document.getElementById('study-card-readings-wrap');
   if (item.readings) {
@@ -2420,22 +2485,31 @@ function studyNav(dir) {
 // ── STUDY QUIZ PHASE ──
 function beginStudyQuiz() {
   studyQuizQueue = shuffle([...studyQueue]);
-  studyQuizIndex = 0; studyQuizResults = [];
+  studyQuizRequeue = [];
+  studyQuizIndex = 0;
   document.getElementById('study-learn-wrap').style.display = 'none';
   document.getElementById('study-quiz-wrap').style.display = 'block';
   setPageScroll(false);
   startStudyItem();
 }
+let studyItemFinalised = false;
+
 function startStudyItem() {
   studyCurrentItem = studyQuizQueue[studyQuizIndex];
   studyCurrentPrompts = buildPrompts(studyCurrentItem);
-  studyCurrentPromptIndex = 0; studyItemHadWrong = false; studyPromptWrongCount = 0;
+  studyCurrentPromptIndex = 0; studyItemHadWrong = studyCurrentItem._everWrong || false; studyPromptWrongCount = 0;
+  studyItemFinalised = false;
   updateStudyQuizProgress();
   showStudyPrompt();
 }
 function updateStudyQuizProgress() {
+  const batchNum = Math.floor(studyBatchOffset / studyBatchSize) + 1;
+  const totalBatches = Math.ceil(studyAllItems.length / studyBatchSize);
+  const requeueCount = studyQuizRequeue.length;
   document.getElementById('study-quiz-fill').style.width = ((studyQuizIndex+1)/studyQuizQueue.length)*100+'%';
-  document.getElementById('study-quiz-text').textContent = `${studyQuizIndex+1} / ${studyQuizQueue.length}`;
+  document.getElementById('study-quiz-text').textContent = requeueCount > 0
+    ? `Batch ${batchNum}/${totalBatches} · ${studyQuizIndex+1}/${studyQuizQueue.length} · ${requeueCount} to retry`
+    : `Batch ${batchNum}/${totalBatches} · ${studyQuizIndex+1}/${studyQuizQueue.length}`;
 }
 function showStudyPrompt() {
   const prompt = studyCurrentPrompts[studyCurrentPromptIndex];
@@ -2492,25 +2566,25 @@ function submitStudyAnswer() {
     else if (result.result==='close') closeMatch=true;
     correctAnswer = getMeanings(studyCurrentItem).join(', ');
   }
-  // Close match
+  // Close match — re-queue
   if (closeMatch) {
     input.className='quiz-input shake';
     setTimeout(()=>input.className='quiz-input '+(prompt.mode==='reading'?'reading-mode':'meaning-mode'),500);
-    document.getElementById('study-feedback').classList.add('show');
-    document.getElementById('study-feedback-result').textContent='△ Close!';
-    document.getElementById('study-feedback-result').className='feedback-result close';
-    document.getElementById('study-feedback-answer').textContent=`Did you mean: ${correctAnswer}`;
-    document.getElementById('study-feedback-description').textContent='';
-    document.getElementById('study-feedback-notes').textContent='';
-    input.value=''; setTimeout(()=>input.focus(),100); return;
-  }
-  // Wrong — retry
-  if (!correct) {
-    studyItemHadWrong=true; studyPromptWrongCount++;
-    input.className='quiz-input incorrect';
-    if (studyPromptWrongCount>=2) document.getElementById('study-answer-hint').textContent=`Answer: ${correctAnswer}`;
     input.value='';
-    setTimeout(()=>{input.className='quiz-input '+(prompt.mode==='reading'?'reading-mode':'meaning-mode');input.focus();},400);
+    setTimeout(()=>{
+      finaliseStudyItemWrong(correctAnswer);
+    }, 400);
+    return;
+  }
+  // Wrong — re-queue immediately
+  if (!correct) {
+    studyItemHadWrong=true; studyCurrentItem._everWrong=true; studyPromptWrongCount++;
+    input.className='quiz-input incorrect';
+    input.value='';
+    setTimeout(()=>{
+      input.className='quiz-input '+(prompt.mode==='reading'?'reading-mode':'meaning-mode');
+      finaliseStudyItemWrong(correctAnswer);
+    }, 600);
     return;
   }
   // Correct
@@ -2530,30 +2604,105 @@ function submitStudyAnswer() {
   }
 }
 function finaliseStudyItem(correctAnswer) {
-  const newLevel = studyItemHadWrong ? 1 : 2;
-  studyCurrentItem.level = newLevel;
-  studyQuizResults.push({item:studyCurrentItem, correct:!studyItemHadWrong});
+  const item = studyCurrentItem;
+  const gotItNow = true; // they just got ○
+  const everWrong = item._everWrong || false;
+
+  // Re-queue if this isn't a clean ○ pass (i.e. they had ✕ before but just got ○ now is fine — done)
+  // Actually: done when they get ○ regardless; re-queue only if this finalise is NOT a correct answer
+  // Wait — finaliseStudyItem is only called on correct。 So always done here。
+  // Level: up if never wrong, no change if △ only, down if ever ✕
+  let newLevel;
+  if (!everWrong) {
+    newLevel = Math.min(5, (item.level || 0) + 1); // first try correct → level up (or set to 2 from 0)
+    if (item.level === 0) newLevel = 2;
+  } else {
+    newLevel = item.level === 0 ? 1 : Math.max(1, item.level - 1); // ever wrong → level down
+  }
+  // But for brand new items (level 0), always set to at least 1
+  if (item.level === 0 && !everWrong) newLevel = 2;
+  if (item.level === 0 && everWrong) newLevel = 1;
+
+  item.level = newLevel;
+  delete item._everWrong;
+
+  studyQuizResults.push({item, correct: !everWrong});
+
   const fb = document.getElementById('study-feedback'); fb.classList.add('show');
   const re = document.getElementById('study-feedback-result');
-  re.textContent = !studyItemHadWrong ? '○ Correct!' : '✕ Incorrect';
-  re.className = 'feedback-result '+(!studyItemHadWrong?'correct':'incorrect');
-  document.getElementById('study-feedback-answer').textContent = (studyItemHadWrong&&correctAnswer)?`Answer: ${correctAnswer}`:'';
-  document.getElementById('study-feedback-description').textContent = studyCurrentItem.description||'';
-  document.getElementById('study-feedback-notes').textContent = studyCurrentItem.notes?'📝 '+studyCurrentItem.notes:'';
-  showExamples(studyCurrentItem, 'study-feedback-examples-wrap', 'study-feedback-examples');
+  re.textContent = !everWrong ? '○ Correct!' : '○ Got it!';
+  re.className = 'feedback-result correct';
+  document.getElementById('study-feedback-answer').textContent = '';
+  document.getElementById('study-feedback-description').textContent = item.description||'';
+  document.getElementById('study-feedback-notes').textContent = item.notes?'📝 '+item.notes:'';
+  showExamples(item, 'study-feedback-examples-wrap', 'study-feedback-examples');
   setPageScroll(true);
   document.getElementById('study-btn-submit').style.display='none';
-  document.getElementById('study-btn-next').textContent='Next →';
+
+  // Check if batch quiz is done
+  studyItemFinalised = true;
+  studyQuizIndex++;
+  const batchDone = studyQuizIndex >= studyQuizQueue.length && studyQuizRequeue.length === 0;
+  const allDone = batchDone && studyBatchOffset + studyQueue.length >= studyAllItems.length;
+
+  document.getElementById('study-btn-next').textContent = allDone ? 'See Results →' : batchDone ? 'Next Batch →' : 'Next →';
   document.getElementById('study-btn-next').style.display='';
 }
+
+function finaliseStudyItemWrong(correctAnswer) {
+  // Called when item is not yet correct — re-queue it
+  const item = studyCurrentItem;
+  studyQuizRequeue.push(item);
+
+  const fb = document.getElementById('study-feedback'); fb.classList.add('show');
+  const re = document.getElementById('study-feedback-result');
+  re.textContent = item._everWrong ? '✕ Incorrect — try again' : '△ Close — try again';
+  re.className = 'feedback-result ' + (item._everWrong ? 'incorrect' : 'close');
+  document.getElementById('study-feedback-answer').textContent = correctAnswer ? `Answer: ${correctAnswer}` : '';
+  document.getElementById('study-feedback-description').textContent = item.description||'';
+  document.getElementById('study-feedback-notes').textContent = item.notes?'📝 '+item.notes:'';
+  showExamples(item, 'study-feedback-examples-wrap', 'study-feedback-examples');
+  setPageScroll(true);
+  document.getElementById('study-btn-submit').style.display='none';
+  document.getElementById('study-btn-next').textContent='Continue →';
+  document.getElementById('study-btn-next').style.display='';
+  studyItemFinalised = true;
+  studyQuizIndex++;
+}
 function handleStudyNext() {
-  if (studyQuizResults.length > studyQuizIndex) {
-    studyQuizIndex++;
-    if (studyQuizIndex >= studyQuizQueue.length) showStudyResults();
-    else startStudyItem();
-  } else {
+  if (!studyItemFinalised) {
+    // Still doing prompts — move to next prompt
     studyCurrentPromptIndex++;
-    showStudyPrompt();
+    if (studyCurrentPromptIndex < studyCurrentPrompts.length) {
+      showStudyPrompt();
+    } else {
+      finaliseStudyItem('');
+    }
+    return;
+  }
+
+  // Item was finalised — advance
+  if (studyQuizIndex >= studyQuizQueue.length) {
+    if (studyQuizRequeue.length > 0) {
+      // Retry requeued items in this batch
+      studyQuizQueue = [...studyQuizRequeue];
+      studyQuizRequeue = [];
+      studyQuizIndex = 0;
+      startStudyItem();
+    } else {
+      // Batch complete
+      studyBatchOffset += studyQueue.length;
+      if (studyBatchOffset >= studyAllItems.length) {
+        showStudyResults();
+      } else {
+        // Move to next batch learn phase
+        document.getElementById('study-quiz-wrap').style.display = 'none';
+        document.getElementById('study-learn-wrap').style.display = 'block';
+        startStudyBatch();
+      }
+    }
+  } else {
+    startStudyItem();
   }
 }
 function handleStudyKey(e) {
@@ -2614,10 +2763,16 @@ function backToStudyConfig() {
   updateStudyPoolInfo();
 }
 async function endStudyQuiz() {
-  const updates = studyQuizResults.map(r=>({item_id:r.item.id,level:r.item.level}));
-  if (updates.length) await saveLevelBatch(updates);
-  backToStudyConfig();
-  renderDashboard();
+  // Finalise any requeued items with level drop
+  studyQuizRequeue.forEach(item => {
+    if (!item._levelDropped) {
+      item.level = Math.max(1, item.level - 1);
+    }
+    studyQuizResults.push({item, correct: false});
+    delete item._everWrong; delete item._levelDropped;
+  });
+  studyQuizRequeue = [];
+  showStudyResults();
 }
 
 
@@ -2982,6 +3137,8 @@ function handleRevealBtn(btnId, canvasId, revealedFlag, setRevealed) {
 // ── WRITE REVIEW (WR) ──
 // ══════════════════════════════════════════════════
 let wrItems = []; let wrIdx = 0; let wrResults = [];
+let wrRequeue = []; // items to retry
+let wrEverWrong = {}; // item.id → bool, tracks if ✕ ever hit this session
 
 function updateWRSubcat() {
   const cat = document.getElementById('wr-cat').value;
@@ -3031,7 +3188,7 @@ function startWRSession() {
   const count = parseInt(document.getElementById('wr-count').value) || 20;
   let pool = getWRPool().sort(() => Math.random() - 0.5);
   wrItems = pool.slice(0, count);
-  wrIdx = 0; wrResults = [];
+  wrIdx = 0; wrResults = []; wrRequeue = []; wrEverWrong = {};
   document.getElementById('wr-config-panel').style.display = 'none';
   document.getElementById('wr-results').style.display = 'none';
   showWRConfig._lastPool = pool;
@@ -3044,7 +3201,9 @@ function showWRItem() {
   const total = wrItems.length;
   document.getElementById('wr-counter').textContent = `${wrIdx + 1} / ${total}`;
   document.getElementById('wr-fill').style.width = `${((wrIdx + 1) / total) * 100}%`;
-  document.getElementById('wr-text').textContent = `Review ${wrIdx + 1} of ${total}`;
+  document.getElementById('wr-text').textContent = wrRequeue.length > 0
+    ? `Review ${wrIdx + 1} of ${total} · ${wrRequeue.length} to retry`
+    : `Review ${wrIdx + 1} of ${total}`;
   document.getElementById('wr-meaning').textContent = getMeaningText(item);
   document.getElementById('wr-reading').innerHTML = '';
   document.getElementById('wr-grade-card').style.display = 'none';
@@ -3093,17 +3252,60 @@ function clearWRCanvas() { clearCanvas('wr-canvas', wrRevealed); }
 function gradeWR(grade) {
   const item = wrItems[wrIdx];
   const current = userWriteProgress[item.id] ?? 1;
-  const newLevel = calcReviewLevel(current, grade);
-  wrResults.push({ item, grade, newLevel });
-  saveWriteLevel(item.id, newLevel);
-  resetAnim('wr-stroke-svg', 'rev-wr');
-  wrIdx++;
-  if (wrIdx >= wrItems.length) showWRResults();
-  else showWRItem();
+
+  if (grade === 1) wrEverWrong[item.id] = true; // ✕ marks ever-wrong
+
+  if (grade === 3) {
+    // ○ — item done
+    let newLevel;
+    if (!wrEverWrong[item.id]) {
+      newLevel = Math.min(5, current + 1); // first try ○ → level up
+    } else {
+      newLevel = Math.max(1, current - 1); // ever ✕ → level down
+    }
+    wrResults.push({ item, grade, newLevel });
+    saveWriteLevel(item.id, newLevel);
+    resetAnim('wr-stroke-svg', 'rev-wr');
+    wrIdx++;
+    if (wrIdx >= wrItems.length) {
+      if (wrRequeue.length > 0) {
+        wrItems = [...wrRequeue];
+        wrRequeue = [];
+        wrIdx = 0;
+        showWRItem();
+      } else {
+        showWRResults();
+      }
+    } else {
+      showWRItem();
+    }
+  } else {
+    // △ or ✕ — re-queue
+    wrRequeue.push(item);
+    resetAnim('wr-stroke-svg', 'rev-wr');
+    wrIdx++;
+    if (wrIdx >= wrItems.length) {
+      // Primary queue done, start requeue
+      wrItems = [...wrRequeue];
+      wrRequeue = [];
+      wrIdx = 0;
+      showWRItem();
+    } else {
+      showWRItem();
+    }
+  }
 }
 
 function endWRSession() {
   resetAnim('wr-stroke-svg', 'rev-wr');
+  // Finalise requeued items with level drop
+  wrRequeue.forEach(item => {
+    const current = userWriteProgress[item.id] ?? 1;
+    const newLevel = Math.max(1, current - 1);
+    wrResults.push({ item, grade: 1, newLevel });
+    saveWriteLevel(item.id, newLevel);
+  });
+  wrRequeue = [];
   if (wrResults.length > 0) showWRResults();
   else showWRConfig();
 }
@@ -3136,7 +3338,7 @@ function restartWRSession() {
   document.getElementById('wr-results').style.display = 'none';
   const count = parseInt(document.getElementById('wr-count').value) || 20;
   wrItems = getWRPool().sort(() => Math.random() - 0.5).slice(0, count);
-  wrIdx = 0; wrResults = [];
+  wrIdx = 0; wrResults = []; wrRequeue = []; wrEverWrong = {};
   showWRItem();
 }
 
@@ -3152,6 +3354,8 @@ function showWRConfig() {
 // ══════════════════════════════════════════════════
 let wsLearnItems = []; let wsLearnIdx = 0;
 let wsReviewItems = []; let wsReviewIdx = 0; let wsReviewResults = [];
+let wsRequeue = [];
+let wsEverWrong = {};
 
 function updateWSSubcat() {
   const cat = document.getElementById('ws-cat').value;
@@ -3222,7 +3426,7 @@ function wsLearnNav(dir) {
   pauseAnim('learn');
   if (dir === 1 && wsLearnIdx === wsLearnItems.length - 1) {
     wsReviewItems = [...wsLearnItems].sort(() => Math.random() - 0.5);
-    wsReviewIdx = 0; wsReviewResults = [];
+    wsReviewIdx = 0; wsReviewResults = []; wsRequeue = []; wsEverWrong = {};
     document.getElementById('ws-learn-wrap').style.display = 'none';
     setPageScroll(false);
     showWSReviewItem(); return;
@@ -3242,7 +3446,9 @@ function showWSReviewItem() {
   const total = wsReviewItems.length;
   document.getElementById('ws-review-counter').textContent = `${wsReviewIdx + 1} / ${total}`;
   document.getElementById('ws-review-fill').style.width = `${((wsReviewIdx + 1) / total) * 100}%`;
-  document.getElementById('ws-review-text').textContent = `Review round ${wsReviewIdx + 1} of ${total}`;
+  document.getElementById('ws-review-text').textContent = wsRequeue.length > 0
+    ? `Review ${wsReviewIdx + 1} of ${total} · ${wsRequeue.length} to retry`
+    : `Review round ${wsReviewIdx + 1} of ${total}`;
   document.getElementById('ws-review-meaning').textContent = getMeaningText(item);
   document.getElementById('ws-review-reading').innerHTML = '';
   document.getElementById('ws-grade-card').style.display = 'none';
@@ -3289,17 +3495,61 @@ function clearWSCanvas() { clearCanvas('ws-canvas', wsRevealed); }
 
 function gradeWS(grade) {
   const item = wsReviewItems[wsReviewIdx];
-  const newLevel = calcStudyLevel(grade);
-  wsReviewResults.push({ item, grade, newLevel });
-  saveWriteLevel(item.id, newLevel);
-  resetAnim('ws-stroke-svg', 'rev-ws');
-  wsReviewIdx++;
-  if (wsReviewIdx >= wsReviewItems.length) showWSResults();
-  else showWSReviewItem();
+
+  if (grade === 1) wsEverWrong[item.id] = true;
+
+  if (grade === 3) {
+    // ○ — done
+    let newLevel;
+    if (!wsEverWrong[item.id]) {
+      newLevel = Math.min(5, (userWriteProgress[item.id] ?? 0) + 1);
+      if ((userWriteProgress[item.id] ?? 0) === 0) newLevel = 2;
+    } else {
+      newLevel = Math.max(1, (userWriteProgress[item.id] ?? 1) - 1);
+      if ((userWriteProgress[item.id] ?? 0) === 0) newLevel = 1;
+    }
+    wsReviewResults.push({ item, grade, newLevel });
+    saveWriteLevel(item.id, newLevel);
+    resetAnim('ws-stroke-svg', 'rev-ws');
+    wsReviewIdx++;
+    if (wsReviewIdx >= wsReviewItems.length) {
+      if (wsRequeue.length > 0) {
+        wsReviewItems = [...wsRequeue];
+        wsRequeue = [];
+        wsReviewIdx = 0;
+        showWSReviewItem();
+      } else {
+        showWSResults();
+      }
+    } else {
+      showWSReviewItem();
+    }
+  } else {
+    // △ or ✕ — re-queue
+    wsRequeue.push(item);
+    resetAnim('ws-stroke-svg', 'rev-ws');
+    wsReviewIdx++;
+    if (wsReviewIdx >= wsReviewItems.length) {
+      wsReviewItems = [...wsRequeue];
+      wsRequeue = [];
+      wsReviewIdx = 0;
+      showWSReviewItem();
+    } else {
+      showWSReviewItem();
+    }
+  }
 }
 
 function endWSReview() {
   resetAnim('ws-stroke-svg', 'rev-ws');
+  // Finalise requeued items with level drop
+  wsRequeue.forEach(item => {
+    const current = userWriteProgress[item.id] ?? 1;
+    const newLevel = Math.max(1, current - 1);
+    wsReviewResults.push({ item, grade: 1, newLevel });
+    saveWriteLevel(item.id, newLevel);
+  });
+  wsRequeue = [];
   if (wsReviewResults.length > 0) showWSResults();
   else showWSConfig();
 }
