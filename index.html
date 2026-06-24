@@ -444,7 +444,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
           <div class="config-item"><label>Subcategory</label><select id="qconfig-subcat" onchange="updateQuizPoolInfo()"><option value="">All Subcategories</option></select></div>
           <div class="config-item"><label>Min Level</label>
             <select id="qconfig-minlevel" onchange="updateQuizPoolInfo()">
-              <option value="1">1 — Fragile</option><option value="2" selected>2 — Forming</option>
+              <option value="1" selected>1 — Fragile</option><option value="2">2 — Forming</option>
               <option value="3">3 — Stable</option><option value="4">4 — Strong</option><option value="5">5 — Cemented</option>
             </select>
           </div>
@@ -2033,7 +2033,7 @@ function setQuizMode(mode){ quizMode=mode; updateQuizPoolInfo(); }
 function getQuizPool(){
   const cat=document.getElementById('qconfig-cat')?.value||'';
   const subcat=document.getElementById('qconfig-subcat')?.value||'';
-  const minLevel=parseInt(document.getElementById('qconfig-minlevel')?.value||'2');
+  const minLevel=parseInt(document.getElementById('qconfig-minlevel')?.value||'1');
   const maxLevel=parseInt(document.getElementById('qconfig-maxlevel')?.value||'5');
   const daysVal=document.getElementById('qconfig-days')?.value||'0';
   return items.filter(i=>{
