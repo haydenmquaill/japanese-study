@@ -2570,7 +2570,7 @@ function startStudyItem(){
   studyCurrentItem=batchNextItem(studySession);
   if(!studyCurrentItem){showStudyResults();return;}
   studyCurrentPrompts=buildPrompts(studyCurrentItem);
-  studyCurrentPromptIndex=0;studyItemHadWrong=false;studyPromptWrongCount=0;studyItemFinalised=false;
+  studyCurrentPromptIndex=0;studyItemHadWrong=studySession.everWrong[studyCurrentItem.id]||false;studyPromptWrongCount=0;studyItemFinalised=false;
   updateStudyQuizProgress();showStudyPrompt();
 }
 function updateStudyQuizProgress(){
@@ -3273,7 +3273,7 @@ function gradeWR(grade){
   if(isWrong)wrSession.everWrong[item.id]=true;
   // Track grade for this item
   if(!wrSession.grades)wrSession.grades={};
-  wrSession.grades[item.id]={item,grade};
+  if(!wrSession.grades[item.id]) wrSession.grades[item.id]={item,grade};
   resetAnim('wr-stroke-svg','rev-wr');
   const result=batchAdvance(wrSession,passed,isWrong);
   if(result==='next'){showWRItem();}
@@ -3488,7 +3488,7 @@ function gradeWS(grade){
   const isWrong=(grade===1);
   if(isWrong)wsSession.everWrong[item.id]=true;
   if(!wsSession.grades)wsSession.grades={};
-  wsSession.grades[item.id]={item,grade};
+  if(!wsSession.grades[item.id]) wsSession.grades[item.id]={item,grade};
   resetAnim('ws-stroke-svg','rev-ws');
   const result=batchAdvance(wsSession,passed,isWrong);
   if(result==='next'){showWSReviewItem();}
