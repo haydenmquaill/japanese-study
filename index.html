@@ -2330,6 +2330,7 @@ function backToConfig(){
 }
 function nextBatch(){
   document.getElementById('quiz-results').classList.remove('show');
+  document.getElementById('btn-next-batch').style.display = 'none';
   batchStartNext(quizSession);
   quizSession.results = [];
   quizSession.answeredItems = {};
@@ -2338,12 +2339,14 @@ function nextBatch(){
 }
 function studyNextBatch(){
   document.getElementById('study-results').classList.remove('show');
+  document.getElementById('btn-study-next-batch').style.display = 'none';
   batchStartNext(studySession);
-  studySession.results = []; // fresh results for this batch
+  studySession.results = [];
   startStudyBatch();
 }
 function wrNextBatch(){
   document.getElementById('wr-results').style.display = 'none';
+  document.getElementById('wr-next-batch-btn').style.display = 'none';
   batchStartNext(wrSession);
   wrSession.results = [];
   wrSession.answeredItems = {};
@@ -2352,11 +2355,11 @@ function wrNextBatch(){
 }
 function wsNextBatch(){
   document.getElementById('ws-results').style.display = 'none';
+  document.getElementById('ws-next-batch-btn').style.display = 'none';
   batchStartNext(wsSession);
   wsSession.results = [];
   wsSession.answeredItems = {};
   wsSession.grades = {};
-  // Show learn phase for new batch
   document.getElementById('ws-review-wrap').style.display = 'none';
   document.getElementById('ws-learn-wrap').style.display = 'block';
   wsLearnIdx = 0;
