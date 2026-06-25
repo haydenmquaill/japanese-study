@@ -1006,6 +1006,7 @@ function createBatchSession(allItems, shuffleItems=true) {
     answeredItems: {},
     results: [],
     isRepeatRound: false,
+    retriedItems: {},
   };
 }
 
@@ -2357,6 +2358,7 @@ function studyNextBatch(){
   document.getElementById('btn-study-next-batch').style.display = 'none';
   batchStartNext(studySession);
   studySession.results = [];
+  studySession.retriedItems = {};
   startStudyBatch();
 }
 function wrNextBatch(){
@@ -2693,9 +2695,10 @@ function submitStudyAnswer() {
 function finaliseStudyItem(correctAnswer){
   const item=studyCurrentItem;
   const everWrong=studyItemHadWrong;
-  // Level change applied here based on session everWrong flag
-  // batchAdvance will add to results — we just set level now
-  if(!everWrong){
+  // Track if this item needed a retry (△ or ✕ first round)
+  const wasRetried = studySession.retriedItems?.[item.id] || false;
+  // Level change: ○ first attempt → 2 (Forming), △ only or ✕ → 1 (Fragile)
+  if(!everWrong && !wasRetried){
     item.level=item.level===0?2:Math.min(5,item.level+1);
   }else{
     item.level=item.level===0?1:Math.max(1,item.level-1);
@@ -2726,6 +2729,8 @@ function finaliseStudyItem(correctAnswer){
 function finaliseStudyItemWrong(correctAnswer){
   const item=studyCurrentItem;
   if(studyItemHadWrong)studySession.everWrong[item.id]=true;
+  if(!studySession.retriedItems)studySession.retriedItems={};
+  studySession.retriedItems[item.id]=true;
   const fb=document.getElementById('study-feedback');fb.classList.add('show');
   const re=document.getElementById('study-feedback-result');
   re.textContent=studyItemHadWrong?'✕ Incorrect — will retry':'△ Close — will retry';
