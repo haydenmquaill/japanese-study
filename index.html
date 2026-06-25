@@ -1091,6 +1091,7 @@ let promptWrongCount = 0;
 let studyLearnIndex = 0;
 let studySession = null;
 let studyItemFinalised = false;
+let studyBatchAdvanced = false;
 let studyCurrentItem = null, studyCurrentPrompts = [], studyCurrentPromptIndex = 0;
 let studyItemHadWrong = false, studyPromptWrongCount = 0;
 let currentModalId = null;
@@ -1491,10 +1492,10 @@ function showView(v) {
   setPageScroll(viewId === 'dictionary');
   if (v === 'dashboard') renderDashboard();
   if (v === 'dictionary') renderDict();
-  if (v === 'read') setReadMode(readMode);
-  if (v === 'review') setReadMode('review');
-  if (v === 'study') setReadMode('study');
-  if (v === 'write') initWriteTab();
+  if (v === 'read') { setReadMode(readMode); updateQuizPoolInfo(); updateStudyPoolInfo(); }
+  if (v === 'review') { setReadMode('review'); updateQuizPoolInfo(); updateStudyPoolInfo(); }
+  if (v === 'study') { setReadMode('study'); updateStudyPoolInfo(); updateQuizPoolInfo(); }
+  if (v === 'write') { initWriteTab(); updateWRPoolInfo(); updateWSPoolInfo(); }
   if (v === 'settings') populateSettingsName();
 }
 
@@ -2584,7 +2585,7 @@ function startStudyItem(){
   studyCurrentItem=batchNextItem(studySession);
   if(!studyCurrentItem){showStudyResults();return;}
   studyCurrentPrompts=buildPrompts(studyCurrentItem);
-  studyCurrentPromptIndex=0;studyItemHadWrong=studySession.everWrong[studyCurrentItem.id]||false;studyPromptWrongCount=0;studyItemFinalised=false;
+  studyCurrentPromptIndex=0;studyItemHadWrong=studySession.everWrong[studyCurrentItem.id]||false;studyPromptWrongCount=0;studyItemFinalised=false;studyBatchAdvanced=false;
   updateStudyQuizProgress();showStudyPrompt();
 }
 function updateStudyQuizProgress(){
@@ -2724,7 +2725,6 @@ function finaliseStudyItem(correctAnswer){
 
 function finaliseStudyItemWrong(correctAnswer){
   const item=studyCurrentItem;
-  studyItemFinalised=true;
   if(studyItemHadWrong)studySession.everWrong[item.id]=true;
   const fb=document.getElementById('study-feedback');fb.classList.add('show');
   const re=document.getElementById('study-feedback-result');
@@ -2738,6 +2738,10 @@ function finaliseStudyItemWrong(correctAnswer){
   document.getElementById('study-btn-submit').style.display='none';
   document.getElementById('study-btn-next').textContent='Continue →';
   document.getElementById('study-btn-next').style.display='';
+  // Call batchAdvance now to re-queue — handleStudyNext will just go to next item
+  studyItemFinalised=true;
+  studyBatchAdvanced=true;
+  batchAdvance(studySession, false, studyItemHadWrong);
 }
 function handleStudyNext(){
   if(!studyItemFinalised){
@@ -2746,10 +2750,26 @@ function handleStudyNext(){
     else{finaliseStudyItem('');}
     return;
   }
-  // Item finalised — advance batch session
-  const result=batchAdvance(studySession,!studyItemHadWrong,studyItemHadWrong);
+  let result;
+  if(studyBatchAdvanced){
+    // batchAdvance already called (wrong/close path) — determine state from session
+    if(studySession.currentIdx < studySession.currentQueue.length){
+      result='next';
+    } else if(studySession.failedThisRound.length > 0){
+      // Trigger retry round
+      studySession.currentQueue=shuffle([...studySession.failedThisRound]);
+      studySession.failedThisRound=[];
+      studySession.currentIdx=0;
+      studySession.isRepeatRound=true;
+      result='next';
+    } else {
+      studySession.batchOffset+=studySession.currentBatch.length;
+      result=studySession.batchOffset>=studySession.allItems.length?'session-done':'batch-done';
+    }
+  } else {
+    result=batchAdvance(studySession,true,false);
+  }
   if(result==='next'){startStudyItem();}
-  else if(result==='batch-done'){showStudyResults();}
   else{showStudyResults();}
 }
 function handleStudyKey(e) {
