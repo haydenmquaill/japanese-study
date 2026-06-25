@@ -2534,7 +2534,7 @@ function applyConfigDefaults() {
   if (d.rs_subcat !== undefined) { const el = document.getElementById('sconfig-subcat'); if (el) el.value = d.rs_subcat; }
   if (d.rs_count !== undefined) { const el = document.getElementById('sconfig-count'); if (el) el.value = d.rs_count; }
   // Write Review
-  if (d.wr_cat !== undefined) { const el = document.getElementById('wr-cat'); if (el) { el.value = d.wr_cat; updateWRSubcat?.(); } }
+  if (d.wr_cat !== undefined) { const el = document.getElementById('wr-cat'); if (el) { el.value = d.wr_cat; updateWRSubcatFilter?.(); } }
   if (d.wr_subcat !== undefined) { const el = document.getElementById('wr-subcat'); if (el) el.value = d.wr_subcat; }
   if (d.wr_minlevel !== undefined) { const el = document.getElementById('wr-minlevel'); if (el) el.value = d.wr_minlevel; }
   if (d.wr_maxlevel !== undefined) { const el = document.getElementById('wr-maxlevel'); if (el) el.value = d.wr_maxlevel; }
