@@ -3282,6 +3282,11 @@ function toggleWRAnim() {
   else { resumeAnim('wr-stroke-svg', 'rev-wr'); document.getElementById('wr-anim-stop').classList.remove('active'); document.getElementById('wr-anim-play').classList.add('active'); }
 }
 
+function toggleWSAnim() {
+  if (animState['learn'].running) { pauseAnim('learn'); document.getElementById('ws-anim-stop').classList.add('active'); document.getElementById('ws-anim-play').classList.remove('active'); }
+  else { resumeAnim('ws-learn-stroke-svg', 'learn'); document.getElementById('ws-anim-stop').classList.remove('active'); document.getElementById('ws-anim-play').classList.add('active'); }
+}
+
 function clearWRCanvas() { clearCanvas('wr-canvas', wrRevealed); }
 
 function enterPracticeMode(svgId, canvasId, canvasCtxRef, drawBtnsId, practiceBtnId, ctxSetter) {
