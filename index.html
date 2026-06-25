@@ -724,7 +724,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
         <div id="wr-grade-card" style="display:none;padding:12px 20px;background:var(--surface);border-radius:var(--radius);margin-top:8px;">
           <div style="display:flex;gap:8px;width:100%;margin-bottom:10px;">
             <button class="quiz-btn" style="flex:1;background:var(--incorrect);color:white;" onclick="gradeWR(1)">✕</button>
-            <button class="quiz-btn" style="flex:1;background:orange;color:white;" onclick="gradeWR(2)">△</button>
+            <button class="quiz-btn" id="wr-triangle-btn" style="flex:1;background:orange;color:white;" onclick="gradeWR(2)">△</button>
             <button class="quiz-btn" style="flex:1;background:var(--correct);color:white;" onclick="gradeWR(3)">○</button>
           </div>
           <div class="study-examples" id="wr-examples" style="display:none;">
@@ -849,7 +849,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
         <div id="ws-grade-card" style="display:none;padding:12px 20px;background:var(--surface);border-radius:var(--radius);margin-top:8px;">
           <div style="display:flex;gap:8px;width:100%;margin-bottom:10px;">
             <button class="quiz-btn" style="flex:1;background:var(--incorrect);color:white;" onclick="gradeWS(1)">✕</button>
-            <button class="quiz-btn" style="flex:1;background:orange;color:white;" onclick="gradeWS(2)">△</button>
+            <button class="quiz-btn" id="ws-triangle-btn" style="flex:1;background:orange;color:white;" onclick="gradeWS(2)">△</button>
             <button class="quiz-btn" style="flex:1;background:var(--correct);color:white;" onclick="gradeWS(3)">○</button>
           </div>
           <div class="study-examples" id="ws-examples" style="display:none;">
@@ -3233,6 +3233,9 @@ function showWRItem(){
   const s=wrSession;
   const p=batchProgress(s);
   const total=s.currentQueue.length;
+  // Hide △ in retry rounds
+  const triangleBtn = document.getElementById('wr-triangle-btn');
+  if (triangleBtn) triangleBtn.style.display = s.isRepeatRound ? 'none' : '';
   const done=s.currentIdx;
   document.getElementById('wr-counter').textContent=`${done+1} / ${total}`;
   document.getElementById('wr-fill').style.width=`${((done+1)/total)*100}%`;
@@ -3505,6 +3508,9 @@ function showWSReviewItem(){
   if(!item){showWSResults();return;}
   const s=wsSession;
   const p=batchProgress(s);
+  // Hide △ in retry rounds
+  const triangleBtn = document.getElementById('ws-triangle-btn');
+  if (triangleBtn) triangleBtn.style.display = s.isRepeatRound ? 'none' : '';
   const total=s.currentQueue.length;
   const done=s.currentIdx;
   document.getElementById('ws-review-counter').textContent=`${done+1} / ${total}`;
