@@ -727,12 +727,6 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
             <button class="quiz-btn" style="flex:1;background:orange;color:white;" onclick="gradeWR(2)">△</button>
             <button class="quiz-btn" style="flex:1;background:var(--correct);color:white;" onclick="gradeWR(3)">○</button>
           </div>
-          <div id="wr-reveal-draw-btns" style="display:none;flex-direction:row;gap:6px;width:160px;margin:0 auto 6px;">
-            <button class="quiz-btn" style="flex:1;font-size:0.9rem;" onclick="undoCanvas('wr')" id="wr-reveal-undo-btn">↩</button>
-            <button class="quiz-btn" style="flex:1;font-size:0.9rem;" onclick="redoCanvas('wr')" id="wr-reveal-redo-btn">↪</button>
-            <button class="quiz-btn" style="flex:1;font-size:0.9rem;" onclick="clearCanvas('wr-canvas',true)">✕</button>
-          </div>
-          <button class="quiz-btn btn-next" id="wr-practice-btn" onclick="toggleWRPractice()" style="width:160px;display:none;margin:0 auto 8px;">✏️ Practice</button>
           <div class="study-examples" id="wr-examples" style="display:none;">
             <div class="ex-label">Example Sentences</div>
             <div id="wr-examples-wrap"></div>
@@ -807,7 +801,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
               <button class="quiz-btn" style="flex:1;font-size:0.9rem;" onclick="redoCanvas('ws-learn')" id="ws-learn-redo-btn">↪</button>
               <button class="quiz-btn" style="flex:1;font-size:0.9rem;" onclick="clearCanvas('ws-learn-canvas', false)">✕</button>
             </div>
-            <button class="quiz-btn btn-next" id="ws-learn-practice-btn" onclick="toggleWSLearnPractice()" style="width:160px;">✏️ Practice</button>
+            <button class="quiz-btn btn-next" id="ws-learn-practice-btn" onclick="toggleWSLearnPractice()" style="width:160px;background:var(--incorrect);color:white;">Practice</button>
           </div>
           <div class="study-examples" id="ws-learn-examples" style="display:none;width:100%;text-align:left;">
             <div class="ex-label">Example Sentences</div>
@@ -858,12 +852,6 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
             <button class="quiz-btn" style="flex:1;background:orange;color:white;" onclick="gradeWS(2)">△</button>
             <button class="quiz-btn" style="flex:1;background:var(--correct);color:white;" onclick="gradeWS(3)">○</button>
           </div>
-          <div id="ws-reveal-draw-btns" style="display:none;flex-direction:row;gap:6px;width:160px;margin:0 auto 6px;">
-            <button class="quiz-btn" style="flex:1;font-size:0.9rem;" onclick="undoCanvas('ws')" id="ws-reveal-undo-btn">↩</button>
-            <button class="quiz-btn" style="flex:1;font-size:0.9rem;" onclick="redoCanvas('ws')" id="ws-reveal-redo-btn">↪</button>
-            <button class="quiz-btn" style="flex:1;font-size:0.9rem;" onclick="clearCanvas('ws-canvas',true)">✕</button>
-          </div>
-          <button class="quiz-btn btn-next" id="ws-practice-btn" onclick="toggleWSPractice()" style="width:160px;display:none;margin:0 auto 8px;">✏️ Practice</button>
           <div class="study-examples" id="ws-examples" style="display:none;">
             <div class="ex-label">Example Sentences</div>
             <div id="ws-examples-wrap"></div>
@@ -2939,14 +2927,17 @@ function loadStrokeInto(kanji, containerId, stopId, playId, phase, hideStrokes =
     });
   }
 
+  const strokeGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
+  strokeGroup.classList.add('stroke-group');
   paths.forEach((d, idx) => {
     const path = document.createElementNS('http://www.w3.org/2000/svg','path');
     path.setAttribute('d',d); path.setAttribute('fill','none');
     path.setAttribute('stroke', hideStrokes ? 'none' : 'var(--text)');
     path.setAttribute('stroke-width','3'); path.setAttribute('stroke-linecap','round'); path.setAttribute('stroke-linejoin','round');
     path.id = `${containerId}-svg-s${idx}`;
-    svg.appendChild(path);
+    strokeGroup.appendChild(path);
   });
+  svg.appendChild(strokeGroup);
 
   const countLabel = document.createElementNS('http://www.w3.org/2000/svg','text');
   countLabel.setAttribute('x','106'); countLabel.setAttribute('y','107'); countLabel.setAttribute('text-anchor','end');
@@ -3257,9 +3248,6 @@ function showWRItem(){
   document.getElementById('wr-canvas').style.pointerEvents='';
   document.getElementById('wr-examples').style.display='none';
   document.getElementById('wr-examples-wrap').innerHTML='';
-  document.getElementById('wr-practice-btn').style.display='none';
-  document.getElementById('wr-practice-btn').textContent='✏️ Practice';
-  document.getElementById('wr-reveal-draw-btns').style.display='none';
   setPageScroll(false);
   const strokeDiv=document.getElementById('wr-stroke-svg');
   if(strokeDiv){strokeDiv.style.display='none';strokeDiv.innerHTML='';}
@@ -3285,7 +3273,6 @@ function revealWRAnswer() {
     setTimeout(() => startAnim('wr-stroke-svg', 'rev-wr'), 100);
     // Show examples
     showExamples(item, 'wr-examples-wrap', 'wr-examples');
-    document.getElementById('wr-practice-btn').style.display = 'block';
     setPageScroll(true);
   }
 }
@@ -3298,10 +3285,10 @@ function toggleWRAnim() {
 function clearWRCanvas() { clearCanvas('wr-canvas', wrRevealed); }
 
 function enterPracticeMode(svgId, canvasId, canvasCtxRef, drawBtnsId, practiceBtnId, ctxSetter) {
-  // Fade animation strokes, hide outline paths, enable canvas
   const svgEl = document.getElementById(svgId);
   if (svgEl) {
-    svgEl.querySelectorAll('path:not(.guide)').forEach(p => p.style.opacity = '0.15');
+    const group = svgEl.querySelector('.stroke-group');
+    if (group) group.style.opacity = '0.2';
   }
   const canvas = document.getElementById(canvasId);
   if (canvas) {
@@ -3311,11 +3298,10 @@ function enterPracticeMode(svgId, canvasId, canvasCtxRef, drawBtnsId, practiceBt
     ctxSetter(ctx);
   }
   document.getElementById(drawBtnsId).style.display = 'flex';
-  document.getElementById(practiceBtnId).textContent = '⏹ Stop Practice';
+  document.getElementById(practiceBtnId).textContent = 'Stop Practice';
 }
 
 function exitPracticeMode(svgId, canvasId, drawBtnsId, practiceBtnId, ctxSetter) {
-  // Wipe canvas, hide it, restore animation opacity
   const canvas = document.getElementById(canvasId);
   if (canvas) {
     const ctx = canvas.getContext('2d');
@@ -3326,10 +3312,11 @@ function exitPracticeMode(svgId, canvasId, drawBtnsId, practiceBtnId, ctxSetter)
   }
   const svgEl = document.getElementById(svgId);
   if (svgEl) {
-    svgEl.querySelectorAll('path:not(.guide)').forEach(p => p.style.opacity = '');
+    const group = svgEl.querySelector('.stroke-group');
+    if (group) group.style.opacity = '';
   }
   document.getElementById(drawBtnsId).style.display = 'none';
-  document.getElementById(practiceBtnId).textContent = '✏️ Practice';
+  document.getElementById(practiceBtnId).textContent = 'Practice';
 }
 
 function toggleWSLearnPractice() {
@@ -3341,29 +3328,7 @@ function toggleWSLearnPractice() {
   }
 }
 
-function toggleWRPractice() {
-  const btn = document.getElementById('wr-practice-btn');
-  const active = btn.textContent.includes('Stop');
-  if (!active) {
-    enterPracticeMode('wr-stroke-svg', 'wr-canvas', wrCtx, 'wr-reveal-draw-btns', 'wr-practice-btn', ctx => wrCtx = ctx);
-    document.getElementById('wr-draw-btns').style.display = 'none'; // hide original draw btns
-    document.getElementById('wr-canvas').style.pointerEvents = '';
-  } else {
-    exitPracticeMode('wr-stroke-svg', 'wr-canvas', 'wr-reveal-draw-btns', 'wr-practice-btn', ctx => wrCtx = ctx);
-  }
-}
 
-function toggleWSPractice() {
-  const btn = document.getElementById('ws-practice-btn');
-  const active = btn.textContent.includes('Stop');
-  if (!active) {
-    enterPracticeMode('ws-stroke-svg', 'ws-canvas', wsCtx, 'ws-reveal-draw-btns', 'ws-practice-btn', ctx => wsCtx = ctx);
-    document.getElementById('ws-draw-btns').style.display = 'none';
-    document.getElementById('ws-canvas').style.pointerEvents = '';
-  } else {
-    exitPracticeMode('ws-stroke-svg', 'ws-canvas', 'ws-reveal-draw-btns', 'ws-practice-btn', ctx => wsCtx = ctx);
-  }
-}
 
 function gradeWR(grade){
   const item=batchNextItem(wrSession);
@@ -3551,9 +3516,6 @@ function showWSReviewItem(){
   document.getElementById('ws-canvas').style.pointerEvents='';
   document.getElementById('ws-examples').style.display='none';
   document.getElementById('ws-examples-wrap').innerHTML='';
-  document.getElementById('ws-practice-btn').style.display='none';
-  document.getElementById('ws-practice-btn').textContent='✏️ Practice';
-  document.getElementById('ws-reveal-draw-btns').style.display='none';
   setPageScroll(false);
   const strokeDiv=document.getElementById('ws-stroke-svg');
   if(strokeDiv){strokeDiv.style.display='none';strokeDiv.innerHTML='';}
@@ -3578,7 +3540,6 @@ function revealWSAnswer() {
     loadStrokeInto(item.kanji, 'ws-stroke-svg', 'ws-rev-anim-stop', 'ws-rev-anim-play', 'rev-ws', true);
     setTimeout(() => startAnim('ws-stroke-svg', 'rev-ws'), 100);
     showExamples(item, 'ws-examples-wrap', 'ws-examples');
-    document.getElementById('ws-practice-btn').style.display = 'block';
     setPageScroll(true);
   }
 }
