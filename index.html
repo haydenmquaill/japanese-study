@@ -27,7 +27,7 @@
   --radius:12px;--radius-sm:8px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow-x:hidden;}
+html,body{min-height:100%;overflow-x:hidden;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.25s,color 0.25s;}
 
 /* ── AUTH ── */
@@ -46,7 +46,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .auth-loading{text-align:center;color:var(--text2);font-size:0.875rem;padding:20px 0;}
 
 /* ── NAV ── */
-nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;gap:8px;}
+nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12px;display:flex;align-items:center;justify-content:space-between;height:54px;position:fixed;top:0;left:0;right:0;z-index:100;gap:8px;}
 .nav-title{font-size:1rem;font-weight:700;color:var(--accent);white-space:nowrap;flex-shrink:0;cursor:pointer;}
 .nav-tabs{display:flex;gap:3px;flex-shrink:0;}
 .nav-tab{padding:6px 12px;border-radius:var(--radius-sm);border:none;background:transparent;color:var(--text2);font-size:0.85rem;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
@@ -59,17 +59,22 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .nav-menu-dropdown.open{display:block;}
 .nav-menu-user{font-size:0.85rem;font-weight:600;color:var(--text);padding:6px 10px;}
 .nav-menu-email{font-size:0.72rem;color:var(--text3);padding:0 10px 6px;}
-.nav-menu-section{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);padding:6px 10px 2px;}
+.nav-menu-section{font-size:0.85rem;font-weight:600;color:var(--text);padding:8px 10px 4px;}
 .nav-menu-divider{border:none;border-top:1px solid var(--border);margin:4px 0;}
-.nav-menu-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius-sm);cursor:pointer;font-size:0.875rem;color:var(--text);transition:background 0.1s;}
+.nav-menu-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius-sm);cursor:pointer;font-size:0.78rem;color:var(--text);transition:background 0.1s;}
 .nav-menu-item:hover{background:var(--surface3);}
 .nav-menu-item.active{background:var(--accent-soft);color:var(--accent);font-weight:600;}
 .nav-menu-item.danger{color:var(--incorrect);}
 .nav-menu-item.danger:hover{background:rgba(192,57,43,0.1);}
+.mode-switch{display:flex;align-items:center;justify-content:space-between;width:100%;}
+.mode-switch-track{width:36px;height:20px;border-radius:99px;background:var(--surface3);border:1px solid var(--border);position:relative;transition:background 0.2s;flex-shrink:0;}
+.mode-switch-track.on{background:var(--accent);border-color:var(--accent);}
+.mode-switch-thumb{width:14px;height:14px;border-radius:50%;background:white;position:absolute;top:2px;left:2px;transition:transform 0.2s;}
+.mode-switch-track.on .mode-switch-thumb{transform:translateX(16px);}
 .theme-swatch{width:18px;height:18px;border-radius:50%;flex-shrink:0;border:2px solid var(--border);}
 
 /* ── SYNC BAR ── */
-.sync-bar{display:none;background:var(--surface2);border-bottom:1px solid var(--border);padding:5px 14px;font-size:0.75rem;color:var(--text2);text-align:center;}
+.sync-bar{display:none;background:var(--surface2);border-bottom:1px solid var(--border);padding:5px 14px;font-size:0.75rem;font-weight:600;color:var(--text2);text-align:center;position:fixed;top:54px;left:0;right:0;z-index:99;}
 .sync-bar.show{display:block;}
 .sync-bar.syncing{color:var(--accent);}
 .sync-bar.error{color:var(--incorrect);}
@@ -94,15 +99,16 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .level-bar-track{flex:1;height:7px;background:var(--surface3);border-radius:4px;overflow:hidden;}
 .level-bar-fill{height:100%;border-radius:4px;transition:width 0.4s ease;}
 .level-bar-count{width:30px;text-align:right;font-size:0.78rem;color:var(--text2);}
-.dash-toggle{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
-.dash-toggle-btn{font-size:0.75rem;padding:4px 10px;border-radius:99px;border:1px solid var(--border);background:none;color:var(--text2);cursor:pointer;transition:all 0.15s;}
+.dash-toggle{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px;}
+.dash-toggle::-webkit-scrollbar{display:none;}
+.dash-toggle-btn{font-size:0.75rem;padding:4px 10px;border-radius:99px;border:1px solid var(--border);background:none;color:var(--text2);cursor:pointer;transition:all 0.15s;flex-shrink:0;white-space:nowrap;}
 .dash-toggle-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600;}
 .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .quick-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all 0.15s;text-align:left;position:relative;}
 .quick-btn:hover{border-color:var(--accent);background:var(--surface2);}
 .quick-btn .qb-icon{font-size:1.4rem;margin-bottom:5px;}
 .quick-btn .qb-title{font-size:0.875rem;font-weight:600;}
-.quick-btn .qb-sub{font-size:0.75rem;color:var(--text2);margin-top:2px;}
+.quick-btn .qb-sub{font-size:0.75rem;font-weight:600;color:var(--text2);margin-top:2px;}
 .qb-count{position:absolute;top:10px;right:10px;font-size:0.68rem;background:var(--accent-soft);color:var(--accent);padding:2px 7px;border-radius:20px;font-weight:600;}
 
 /* ── QUICK START MODALS ── */
@@ -186,8 +192,9 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .study-examples .ex-label{font-size:0.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;}
 .study-examples .example-item{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:6px;}
 .study-examples .example-jp{font-size:0.875rem;line-height:1.6;margin-bottom:3px;}
-.study-examples .example-en{font-size:0.75rem;color:var(--text2);line-height:1.5;font-style:italic;}
-.modal-edit-btn{font-size:0.7rem;color:var(--accent);cursor:pointer;background:none;border:none;padding:0;}
+.study-examples .example-en{font-size:0.75rem;font-weight:600;color:var(--text2);line-height:1.5;font-style:italic;}
+.modal-edit-btn{font-size:0.68rem;color:var(--text2);cursor:pointer;background:var(--surface3);border:1px solid var(--border);border-radius:99px;padding:2px 8px;margin-left:6px;vertical-align:middle;transition:all 0.15s;}
+.modal-edit-btn:hover{border-color:var(--accent);color:var(--accent);}
 .stroke-toggle{display:inline-flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-left:6px;vertical-align:middle;}
 .stroke-toggle span{font-size:0.7rem;padding:2px 8px;cursor:pointer;color:var(--text3);background:none;transition:all 0.15s;white-space:nowrap;}
 .stroke-toggle span.active{background:var(--accent);color:#fff;font-weight:600;}
@@ -275,7 +282,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .feedback-notes{font-size:0.78rem;color:var(--accent);margin-top:4px;font-style:italic;}
 .feedback-level{font-size:0.78rem;margin-top:7px;}
 .feedback-synonyms{margin-top:8px;}
-.add-syn-inline{font-size:0.75rem;color:var(--accent);cursor:pointer;text-decoration:underline;}
+.add-syn-inline{font-size:0.75rem;font-weight:600;color:var(--accent);cursor:pointer;text-decoration:underline;}
 .syn-inline-row{display:flex;gap:6px;margin-top:6px;}
 .syn-inline-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:5px 8px;color:var(--text);font-size:0.8rem;outline:none;}
 .syn-inline-save{background:var(--accent);border:none;color:white;border-radius:var(--radius-sm);padding:5px 10px;cursor:pointer;font-size:0.8rem;}
@@ -296,11 +303,25 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .results-item:last-child{border-bottom:none;}
 .results-kanji{font-size:1.15rem;min-width:48px;}
 .results-reading{flex:1;color:var(--text2);}
+.results-icon{font-size:1.1rem;font-weight:700;line-height:1;}
 .results-btn-row{display:flex;gap:9px;margin-top:14px;}
 
 /* ── SETTINGS ── */
 .settings-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;}
 .settings-section h3{font-size:0.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:16px;}
+.settings-collapsible{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;}
+.settings-collapsible-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;font-size:0.85rem;font-weight:600;color:var(--text);user-select:none;}
+.settings-collapsible-header:hover{background:var(--surface2);}
+.settings-collapsible-body{padding:0 16px 16px;}
+.settings-chevron{font-size:0.7rem;color:var(--text3);transition:transform 0.2s;}
+.settings-chevron.open{transform:rotate(90deg);}
+.settings-sub-header{font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:12px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
+.settings-collapsible-body .settings-sub-header:first-child{margin-top:0;padding-top:0;border-top:none;}
+select.at-default{color:var(--text3);}
+select.at-default option{color:var(--text);}
+.graph-pill{font-size:0.78rem;padding:5px 12px;border-radius:99px;border:1px solid var(--border);background:none;color:var(--text2);cursor:pointer;transition:all 0.15s;user-select:none;}
+.graph-pill.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600;}
+.graph-pill:not(.active):hover{border-color:var(--accent);color:var(--accent);}
 .settings-field{margin-bottom:14px;}
 .settings-field label{display:block;font-size:0.78rem;color:var(--text2);margin-bottom:5px;}
 .settings-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-size:0.9rem;outline:none;}
@@ -349,7 +370,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 </div>
 
 <!-- MAIN APP -->
-<div id="main-app" style="display:none">
+<div id="main-app" style="display:none;padding-top:54px">
   <nav>
     <div class="nav-title" onclick="showView('dashboard')">日本語辞典</div>
     <div class="nav-tabs">
@@ -364,15 +385,20 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
         <div class="nav-menu-user" id="nav-menu-user"></div>
         <div class="nav-menu-email" id="nav-menu-email"></div>
         <div class="nav-menu-divider"></div>
-        <div class="nav-menu-section">Theme</div>
-        <div class="nav-menu-item" id="menu-theme-sumi" onclick="setTheme('sumi')"><div class="theme-swatch" style="background:linear-gradient(135deg,#0e0d0c 50%,#c0392b 50%)"></div>🖋️ Sumi</div>
-        <div class="nav-menu-item" id="menu-theme-sakura" onclick="setTheme('sakura')"><div class="theme-swatch" style="background:linear-gradient(135deg,#0a0c14 50%,#e8799a 50%)"></div>🌸 Sakura</div>
-        <div class="nav-menu-item" id="menu-theme-ai" onclick="setTheme('ai')"><div class="theme-swatch" style="background:linear-gradient(135deg,#080c14 50%,#c8a84a 50%)"></div>藍 Ai</div>
+        <div class="nav-menu-section">Display</div>
+        <div class="nav-menu-item" id="menu-theme-sumi" onclick="setTheme('sumi')"><div class="theme-swatch" style="background:linear-gradient(135deg,#0e0d0c 50%,#c0392b 50%)"></div> Sumi</div>
+        <div class="nav-menu-item" id="menu-theme-sakura" onclick="setTheme('sakura')"><div class="theme-swatch" style="background:linear-gradient(135deg,#0a0c14 50%,#e8799a 50%)"></div> Sakura</div>
+        <div class="nav-menu-item" id="menu-theme-ai" onclick="setTheme('ai')"><div class="theme-swatch" style="background:linear-gradient(135deg,#080c14 50%,#c8a84a 50%)"></div> Ai</div>
+        <div class="nav-menu-item" onclick="toggleMode()" id="menu-mode-btn">
+          <div class="mode-switch">
+            <span>Dark mode</span>
+            <div class="mode-switch-track" id="mode-switch-track"><div class="mode-switch-thumb"></div></div>
+          </div>
+        </div>
         <div class="nav-menu-divider"></div>
-        <div class="nav-menu-item" onclick="toggleMode()" id="menu-mode-btn">🌙 Dark mode</div>
-        <div class="nav-menu-divider"></div>
-        <div class="nav-menu-item" onclick="showView('settings');closeNavMenu()">⚙️ Settings</div>
-        <div class="nav-menu-item danger" onclick="signOut()">🚪 Sign out</div>
+        <div class="nav-menu-section">System</div>
+        <div class="nav-menu-item" onclick="showView('settings');closeNavMenu()"> Settings</div>
+        <div class="nav-menu-item danger" onclick="signOut()"> Sign out</div>
       </div>
     </div>
   </nav>
@@ -443,13 +469,13 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
           <div class="config-item"><label>Category</label><select id="qconfig-cat" onchange="updateQSubcat();updateQuizPoolInfo()"><option value="">All Categories</option></select></div>
           <div class="config-item"><label>Subcategory</label><select id="qconfig-subcat" onchange="updateQuizPoolInfo()"><option value="">All Subcategories</option></select></div>
           <div class="config-item"><label>Min Level</label>
-            <select id="qconfig-minlevel" onchange="updateQuizPoolInfo()">
+            <select id="qconfig-minlevel" onchange="syncMinMax('qconfig-minlevel','qconfig-maxlevel',true);updateQuizPoolInfo()">
               <option value="1" selected>1 — Fragile</option><option value="2">2 — Forming</option>
               <option value="3">3 — Stable</option><option value="4">4 — Strong</option><option value="5">5 — Cemented</option>
             </select>
           </div>
           <div class="config-item"><label>Max Level</label>
-            <select id="qconfig-maxlevel" onchange="updateQuizPoolInfo()">
+            <select id="qconfig-maxlevel" onchange="syncMinMax('qconfig-minlevel','qconfig-maxlevel',false);updateQuizPoolInfo()">
               <option value="1">1 — Fragile</option>
               <option value="2">2 — Forming</option>
               <option value="3">3 — Stable</option>
@@ -460,7 +486,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
           <div class="config-item"><label>Last Reviewed</label>
             <select id="qconfig-days" onchange="updateQuizPoolInfo()">
               <option value="0" selected>Anytime</option>
-              <option value="stale">Stale (14d / 60d)</option>
+              <option value="stale">Stale</option>
               <optgroup label="Recently reviewed">
                 <option value="recent_1">Today</option>
                 <option value="recent_3">Last 3 days</option>
@@ -642,7 +668,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
               <select id="wr-subcat" onchange="updateWRPoolInfo()"><option value="">All Subcategories</option></select>
             </div>
             <div class="config-item"><label>Min Level</label>
-              <select id="wr-minlevel" onchange="updateWRPoolInfo()">
+              <select id="wr-minlevel" onchange="syncMinMax('wr-minlevel','wr-maxlevel',true);updateWRPoolInfo()">
                 <option value="1" selected>1 — Fragile</option>
                 <option value="2">2 — Forming</option>
                 <option value="3">3 — Stable</option>
@@ -651,7 +677,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
               </select>
             </div>
             <div class="config-item"><label>Max Level</label>
-              <select id="wr-maxlevel" onchange="updateWRPoolInfo()">
+              <select id="wr-maxlevel" onchange="syncMinMax('wr-minlevel','wr-maxlevel',false);updateWRPoolInfo()">
                 <option value="1">1 — Fragile</option>
                 <option value="2">2 — Forming</option>
                 <option value="3">3 — Stable</option>
@@ -662,7 +688,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
             <div class="config-item"><label>Last Reviewed</label>
               <select id="wr-reviewed" onchange="updateWRPoolInfo()">
                 <option value="random" selected>Anytime</option>
-                <option value="stale">Stale (7d / 30d)</option>
+                <option value="stale">Stale</option>
                 <optgroup label="Recently reviewed">
                   <option value="today">Today</option>
                   <option value="3">Last 3 days</option>
@@ -872,45 +898,240 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
     </div>
   </div>
 
-<!-- SETTINGS -->
+  <!-- SETTINGS -->
 <div id="view-settings" class="view">
-  <div class="settings-section">
-    <h3>Profile</h3>
-    <div class="settings-field">
-      <label>Display Name</label>
-      <input class="settings-input" id="settings-name" type="text" placeholder="Your name">
-    </div>
-    <div class="settings-field">
-      <label>Email</label>
-      <input class="settings-input" id="settings-email" type="email" disabled style="opacity:0.5;cursor:not-allowed;">
-    </div>
-    <button class="settings-btn" onclick="saveDisplayName()">Save Name</button>
-    <div class="settings-msg" id="settings-name-msg"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+    <h2 style="font-size:1rem;font-weight:700;color:var(--text);margin:0;">Settings</h2>
+    <button class="settings-btn" id="settings-save-btn" onclick="saveAllSettings()" disabled style="opacity:0.4;transition:opacity 0.2s;">Save Changes</button>
   </div>
-  <div class="settings-section">
-    <h3>Change Password</h3>
-    <div class="settings-field">
-      <label>Current Password</label>
-      <input class="settings-input" id="settings-current-pw" type="password" placeholder="••••••••">
+  <div class="settings-msg" id="settings-save-msg" style="text-align:right;margin-bottom:12px;min-height:18px;"></div>
+
+  <!-- Profile -->
+  <div class="settings-collapsible" id="scol-profile">
+    <div class="settings-collapsible-header" onclick="toggleSettingsSection('profile')">
+      <span>Profile</span><span class="settings-chevron" id="schev-profile">▶</span>
     </div>
-    <div class="settings-field">
-      <label>New Password</label>
-      <input class="settings-input" id="settings-new-pw" type="password" placeholder="••••••••">
+    <div class="settings-collapsible-body" id="sbody-profile" style="display:none;">
+      <div class="settings-field">
+        <label>Display Name</label>
+        <input class="settings-input settings-trackable" id="settings-name" type="text" placeholder="Your name">
+      </div>
+      <div class="settings-field">
+        <label>Email</label>
+        <input class="settings-input" id="settings-email" type="email" disabled style="opacity:0.5;cursor:not-allowed;">
+      </div>
+      <div class="settings-field">
+        <label>Current Password</label>
+        <input class="settings-input settings-trackable" id="settings-current-pw" type="password" placeholder="••••••••">
+      </div>
+      <div class="settings-field">
+        <label>New Password</label>
+        <input class="settings-input settings-trackable" id="settings-new-pw" type="password" placeholder="••••••••">
+      </div>
+      <div class="settings-field">
+        <label>Confirm New Password</label>
+        <input class="settings-input settings-trackable" id="settings-confirm-pw" type="password" placeholder="••••••••">
+      </div>
     </div>
-    <div class="settings-field">
-      <label>Confirm New Password</label>
-      <input class="settings-input" id="settings-confirm-pw" type="password" placeholder="••••••••">
-    </div>
-    <button class="settings-btn" onclick="changePassword()">Update Password</button>
-    <div class="settings-msg" id="settings-pw-msg"></div>
   </div>
-  <div class="settings-section">
-    <h3>Account</h3>
-    <button class="settings-btn danger" onclick="signOut()">Sign Out</button>
+
+  <!-- General Configuration -->
+  <div class="settings-collapsible" id="scol-levelnames">
+    <div class="settings-collapsible-header" onclick="toggleSettingsSection('levelnames')">
+      <span>General Configuration</span><span class="settings-chevron" id="schev-levelnames">▶</span>
+    </div>
+    <div class="settings-collapsible-body" id="sbody-levelnames" style="display:none;">
+      <div class="settings-sub-header">Level Names</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="settings-field"><label>Level 0</label><input class="settings-input settings-trackable" id="level-name-0" type="text"></div>
+        <div class="settings-field"><label>Level 1</label><input class="settings-input settings-trackable" id="level-name-1" type="text"></div>
+        <div class="settings-field"><label>Level 2</label><input class="settings-input settings-trackable" id="level-name-2" type="text"></div>
+        <div class="settings-field"><label>Level 3</label><input class="settings-input settings-trackable" id="level-name-3" type="text"></div>
+        <div class="settings-field"><label>Level 4</label><input class="settings-input settings-trackable" id="level-name-4" type="text"></div>
+        <div class="settings-field"><label>Level 5</label><input class="settings-input settings-trackable" id="level-name-5" type="text"></div>
+      </div>
+      <div class="settings-sub-header">Home Graphs</div>
+      <div class="settings-field">
+        <label style="font-size:0.78rem;font-weight:600;color:var(--text);margin-bottom:8px;display:block;">Read Graph</label>
+        <div style="font-size:0.72rem;color:var(--text3);margin-bottom:6px;">Views</div>
+        <div id="graph-read-views" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;"></div>
+        <div style="font-size:0.72rem;color:var(--text3);margin-bottom:6px;">Default View</div>
+        <select class="settings-input settings-trackable" id="graph-read-default"></select>
+      </div>
+      <div class="settings-field">
+        <label style="font-size:0.78rem;font-weight:600;color:var(--text);margin-bottom:8px;display:block;">Write Graph</label>
+        <div style="font-size:0.72rem;color:var(--text3);margin-bottom:6px;">Views</div>
+        <div id="graph-write-views" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;"></div>
+        <div style="font-size:0.72rem;color:var(--text3);margin-bottom:6px;">Default View</div>
+        <select class="settings-input settings-trackable" id="graph-write-default"></select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stale Periods -->
+  <!-- Read Configuration -->
+  <div class="settings-collapsible" id="scol-readconfig">
+    <div class="settings-collapsible-header" onclick="toggleSettingsSection('readconfig')">
+      <span>Read Configuration</span><span class="settings-chevron" id="schev-readconfig">▶</span>
+    </div>
+    <div class="settings-collapsible-body" id="sbody-readconfig" style="display:none;">
+      <div class="settings-sub-header">Stale Periods (days)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div class="settings-field"><label id="read-stale-label-2"></label><input class="settings-input settings-trackable" id="read-stale-2" type="number" min="0.01" step="0.01"></div>
+        <div class="settings-field"><label id="read-stale-label-3"></label><input class="settings-input settings-trackable" id="read-stale-3" type="number" min="0.01" step="0.01"></div>
+        <div class="settings-field"><label id="read-stale-label-4"></label><input class="settings-input settings-trackable" id="read-stale-4" type="number" min="0.01" step="0.01"></div>
+        <div class="settings-field"><label id="read-stale-label-5"></label><input class="settings-input settings-trackable" id="read-stale-5" type="number" min="0.01" step="0.01"></div>
+      </div>
+      <div class="settings-sub-header">Review</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div class="settings-field"><label>Category</label>
+          <select class="settings-input settings-trackable" id="def-rr-cat">
+            <option value="">All Categories</option>
+          </select>
+        </div>
+        <div class="settings-field"><label>Subcategory</label>
+          <select class="settings-input settings-trackable" id="def-rr-subcat">
+            <option value="">All Subcategories</option>
+          </select>
+        </div>
+        <div class="settings-field"><label>Min Level</label>
+          <select class="settings-input settings-trackable" id="def-rr-minlevel">
+            <option value="1" selected>1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+          </select>
+        </div>
+        <div class="settings-field"><label>Max Level</label>
+          <select class="settings-input settings-trackable" id="def-rr-maxlevel">
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5" selected>5</option>
+          </select>
+        </div>
+        <div class="settings-field"><label>Last Reviewed</label>
+          <select class="settings-input settings-trackable" id="def-rr-days">
+            <option value="0" selected>Anytime</option>
+            <option value="stale">Stale</option>
+            <optgroup label="Recently reviewed">
+              <option value="recent_1">Today</option>
+              <option value="recent_3">Last 3 days</option>
+              <option value="recent_7">Last 7 days</option>
+              <option value="recent_14">Last 14 days</option>
+              <option value="recent_30">Last 30 days</option>
+            </optgroup>
+            <optgroup label="Not reviewed recently">
+              <option value="stale_7">Not in last 7 days</option>
+              <option value="stale_14">Not in last 14 days</option>
+              <option value="stale_30">Not in last 30 days</option>
+              <option value="stale_60">Not in last 60 days</option>
+              <option value="stale_never">Never reviewed</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="settings-field"><label>Items</label>
+          <input class="settings-input settings-trackable" id="def-rr-count" type="number" min="1" max="100" placeholder="20">
+        </div>
+      </div>
+      <div class="settings-sub-header">Study</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="settings-field"><label>Category</label>
+          <select class="settings-input settings-trackable" id="def-rs-cat">
+            <option value="">All Categories</option>
+          </select>
+        </div>
+        <div class="settings-field"><label>Subcategory</label>
+          <select class="settings-input settings-trackable" id="def-rs-subcat">
+            <option value="">All Subcategories</option>
+          </select>
+        </div>
+        <div class="settings-field" style="grid-column:1/-1"><label>Items</label>
+          <input class="settings-input settings-trackable" id="def-rs-count" type="number" min="1" max="999" placeholder="10">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Writing Configuration Defaults -->
+  <div class="settings-collapsible" id="scol-writeconfig">
+    <div class="settings-collapsible-header" onclick="toggleSettingsSection('writeconfig')">
+      <span>Write Configuration</span><span class="settings-chevron" id="schev-writeconfig">▶</span>
+    </div>
+    <div class="settings-collapsible-body" id="sbody-writeconfig" style="display:none;">
+      <div class="settings-sub-header">Stale Periods (days)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div class="settings-field"><label id="write-stale-label-2"></label><input class="settings-input settings-trackable" id="write-stale-2" type="number" min="0.01" step="0.01"></div>
+        <div class="settings-field"><label id="write-stale-label-3"></label><input class="settings-input settings-trackable" id="write-stale-3" type="number" min="0.01" step="0.01"></div>
+        <div class="settings-field"><label id="write-stale-label-4"></label><input class="settings-input settings-trackable" id="write-stale-4" type="number" min="0.01" step="0.01"></div>
+        <div class="settings-field"><label id="write-stale-label-5"></label><input class="settings-input settings-trackable" id="write-stale-5" type="number" min="0.01" step="0.01"></div>
+      </div>
+      <div class="settings-sub-header">Review</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div class="settings-field"><label>Category</label>
+          <select class="settings-input settings-trackable" id="def-wr-cat">
+            <option value="">All Categories</option>
+            <option value="Joyo">Joyo</option>
+            <option value="Jinmeiyo">Jinmeiyo</option>
+            <option value="Kanji Extended">Kanji Extended</option>
+          </select>
+        </div>
+        <div class="settings-field"><label>Subcategory</label>
+          <select class="settings-input settings-trackable" id="def-wr-subcat">
+            <option value="">All Subcategories</option>
+          </select>
+        </div>
+        <div class="settings-field"><label>Min Level</label>
+          <select class="settings-input settings-trackable" id="def-wr-minlevel">
+            <option value="1" selected>1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+          </select>
+        </div>
+        <div class="settings-field"><label>Max Level</label>
+          <select class="settings-input settings-trackable" id="def-wr-maxlevel">
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5" selected>5</option>
+          </select>
+        </div>
+        <div class="settings-field"><label>Last Reviewed</label>
+          <select class="settings-input settings-trackable" id="def-wr-reviewed">
+            <option value="random" selected>Anytime</option>
+            <option value="stale">Stale</option>
+            <optgroup label="Recently reviewed">
+              <option value="today">Today</option>
+              <option value="3">Last 3 days</option>
+              <option value="7">Last 7 days</option>
+              <option value="14">Last 14 days</option>
+              <option value="30">Last 30 days</option>
+            </optgroup>
+            <optgroup label="Not reviewed recently">
+              <option value="not1">Not today</option>
+              <option value="not3">Not in last 3 days</option>
+              <option value="not7">Not in last 7 days</option>
+              <option value="not14">Not in last 14 days</option>
+              <option value="not30">Not in last 30 days</option>
+              <option value="never">Never reviewed</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="settings-field"><label>Items</label>
+          <input class="settings-input settings-trackable" id="def-wr-count" type="number" min="1" max="200" placeholder="20">
+        </div>
+      </div>
+      <div class="settings-sub-header">Study</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="settings-field"><label>Category</label>
+          <select class="settings-input settings-trackable" id="def-ws-cat">
+            <option value="Joyo" selected>Joyo</option>
+            <option value="Jinmeiyo">Jinmeiyo</option>
+            <option value="Kanji Extended">Kanji Extended</option>
+          </select>
+        </div>
+        <div class="settings-field"><label>Subcategory</label>
+          <select class="settings-input settings-trackable" id="def-ws-subcat">
+            <option value="">All Subcategories</option>
+          </select>
+        </div>
+        <div class="settings-field" style="grid-column:1/-1"><label>Items</label>
+          <input class="settings-input settings-trackable" id="def-ws-count" type="number" min="1" max="999" placeholder="10">
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-
-<!-- QUICK START MODAL -->
+</div><!-- end main-app -->
 
 <!-- ITEM DETAIL MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
@@ -950,7 +1171,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
       <div class="examples-wrap" id="modal-examples-wrap"></div>
     </div>
     <div class="modal-field">
-      <div class="modal-field-label">Notes <button class="modal-edit-btn" onclick="toggleEdit('notes')">✏️ Edit</button></div>
+      <div class="modal-field-label"><span>Notes <button class="modal-edit-btn" onclick="toggleEdit('notes')">Edit</button></span></div>
       <div id="modal-notes-display" style="color:var(--text2);font-size:0.85rem;white-space:pre-line;"></div>
       <div id="modal-notes-edit" style="display:none">
         <textarea class="modal-edit-input" id="modal-notes-input" rows="3" style="resize:vertical;" placeholder="Your personal notes, mnemonics, warnings…"></textarea>
@@ -986,7 +1207,18 @@ let userWriteProgress = {};
 let userWriteLastQuizzed = {};
 let userSynonyms = {};
 let userNotes = {};
-let userSettings = { streak: 0, last_study_date: null, unlocked_levels: [] };
+let userSettings = {
+  streak: 0, last_study_date: null, unlocked_levels: [],
+  configuration: {
+    level_names: ['Locked','Fragile','Forming','Stable','Strong','Cemented'],
+    stale_days: { read: {"2":0.25,"3":0.5,"4":1,"5":60}, write: {"2":0.25,"3":0.5,"4":1,"5":30} },
+    config_defaults: {},
+    graph_views: {
+      read: { enabled: ['kanji','vocab','proper'], default: 'all' },
+      write: { enabled: ['Joyo','Jinmeiyo','Kanji Extended'], default: 'all' }
+    }
+  }
+};
 let unlockedLevels = new Set(); // WK level numbers that are unlocked
 let quizMode = 'review';
 let readMode = 'review';
@@ -1096,7 +1328,69 @@ let studyItemHadWrong = false, studyPromptWrongCount = 0;
 let currentModalId = null;
 let recentItemIds = new Set();
 
-const LEVEL_NAMES = ['Locked','Fragile','Forming','Stable','Strong','Cemented'];
+const DEFAULT_LEVEL_NAMES = ['Locked','Fragile','Forming','Stable','Strong','Cemented'];
+const DEFAULT_READ_STALE = {"2":0.25,"3":0.5,"4":1,"5":60};
+const DEFAULT_WRITE_STALE = {"2":0.25,"3":0.5,"4":1,"5":30};
+let LEVEL_NAMES = [...DEFAULT_LEVEL_NAMES];
+
+// Level dropdown IDs and their default values
+const LEVEL_DROP_DEFAULTS = {
+  'qconfig-minlevel': '1', 'qconfig-maxlevel': '5',
+  'wr-minlevel': '1',      'wr-maxlevel': '5',
+  'def-rr-minlevel': '1',  'def-rr-maxlevel': '5',
+  'def-wr-minlevel': '1',  'def-wr-maxlevel': '5',
+};
+
+function syncMinMax(minId, maxId, changedMin) {
+  const minSel = document.getElementById(minId);
+  const maxSel = document.getElementById(maxId);
+  if (!minSel || !maxSel) return;
+  const minVal = parseInt(minSel.value);
+  const maxVal = parseInt(maxSel.value);
+  if (changedMin) {
+    // Min changed — remove options from max that are below new min
+    Array.from(maxSel.options).forEach(o => o.disabled = parseInt(o.value) < minVal);
+    if (maxVal < minVal) { maxSel.value = minSel.value; updateSelectDefault(maxSel, maxSel.dataset.default); }
+  } else {
+    // Max changed — remove options from min that are above new max
+    Array.from(minSel.options).forEach(o => o.disabled = parseInt(o.value) > maxVal);
+    if (minVal > maxVal) { minSel.value = maxSel.value; updateSelectDefault(minSel, minSel.dataset.default); }
+  }
+}
+
+function initMinMaxPair(minId, maxId, onChangeFn) {
+  const minSel = document.getElementById(minId);
+  const maxSel = document.getElementById(maxId);
+  if (!minSel || !maxSel) return;
+  minSel.addEventListener('change', () => { syncMinMax(minId, maxId, true); onChangeFn?.(); });
+  maxSel.addEventListener('change', () => { syncMinMax(minId, maxId, false); onChangeFn?.(); });
+  syncMinMax(minId, maxId, true); // initial state
+}
+
+function rebuildLevelDropdowns() {
+  Object.entries(LEVEL_DROP_DEFAULTS).forEach(([id, defaultVal]) => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const current = sel.value || defaultVal;
+    sel.innerHTML = [1,2,3,4,5].map(l =>
+      `<option value="${l}">${LEVEL_NAMES[l]}</option>`
+    ).join('');
+    sel.value = current;
+    // Only grey settings selects, not config panel selects
+    if (id.startsWith('def-')) updateSelectDefault(sel, defaultVal);
+  });
+}
+
+function updateSelectDefault(sel, defaultVal) {
+  if (!sel) return;
+  sel.classList.toggle('at-default', sel.value === (defaultVal ?? sel.dataset.default ?? ''));
+}
+
+function initSelectDefaultTracking(sel, defaultVal) {
+  sel.dataset.default = defaultVal;
+  updateSelectDefault(sel, defaultVal);
+  sel.addEventListener('change', () => updateSelectDefault(sel, defaultVal));
+}
 const LEVEL_COLORS = ['#555570','#c0392b','#e67e22','#8e44ad','#2980b9','#27ae60'];
 const VOCAB_GROUPS = {
   'Nouns':              ['Nouns', 'Noun'],
@@ -1180,6 +1474,10 @@ async function launchApp() {
   updateNavUser();
   populateSettingsName();
   init();
+  applyConfigDefaults();
+  rebuildLevelDropdowns();
+  initMinMaxPair('qconfig-minlevel', 'qconfig-maxlevel', updateQuizPoolInfo);
+  initMinMaxPair('wr-minlevel', 'wr-maxlevel', updateWRPoolInfo);
   showSync('', '');
 }
 
@@ -1220,7 +1518,7 @@ async function loadUserProgress() {
     fetchAllRows('write_progress', 'item_id,level,last_quizzed', uid),
     fetchAllRows('synonyms', 'item_id,synonym', uid),
     fetchAllRows('notes', 'item_id,description,notes', uid),
-    sb.from('user_settings').select('streak,last_study_date,unlocked_levels').eq('user_id', uid).single(),
+    sb.from('user_settings').select('streak,last_study_date,unlocked_levels,configuration').eq('user_id', uid).single(),
     sb.from('progress').select('item_id').eq('user_id', uid)
       .gte('last_quizzed', new Date(Date.now() - 7*24*60*60*1000).toISOString())
       .lt('level', 5),
@@ -1238,7 +1536,18 @@ async function loadUserProgress() {
   userNotes = {};
   noteRows.forEach(r => userNotes[r.item_id] = { description: r.description, notes: r.notes });
   if (settingsRes.data) {
-    userSettings = settingsRes.data;
+    userSettings = { ...userSettings, ...settingsRes.data };
+    const cfg = settingsRes.data.configuration || {};
+    if (cfg.level_names) LEVEL_NAMES = cfg.level_names;
+    userSettings.configuration = {
+      level_names: cfg.level_names || DEFAULT_LEVEL_NAMES,
+      stale_days: cfg.stale_days || { read: DEFAULT_READ_STALE, write: DEFAULT_WRITE_STALE },
+      config_defaults: cfg.config_defaults || {},
+      graph_views: cfg.graph_views || {
+        read: { enabled: ['kanji','vocab','proper'], default: 'all' },
+        write: { enabled: ['Joyo','Jinmeiyo','Kanji Extended'], default: 'all' }
+      }
+    };
     unlockedLevels = new Set(settingsRes.data.unlocked_levels || []);
   }
   recentItemIds = new Set((recentRes.data || []).map(r => r.item_id));
@@ -1314,24 +1623,20 @@ async function updateStreak() {
   const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
   streak = last === yesterday ? streak + 1 : 1;
   userSettings = { ...userSettings, streak, last_study_date: today };
-  const levelsArr = unlockedLevels.size > 0
-    ? Array.from(unlockedLevels)
-    : (userSettings.unlocked_levels || [1]);
   await sb.rpc('upsert_user_settings', {
     p_streak: streak,
-    p_last_study_date: today,
-    p_unlocked_levels: levelsArr
+    p_last_study_date: today
   });
 }
 
 async function saveUnlockedLevels() {
-  if (unlockedLevels.size === 0) return; // never overwrite with empty
+  if (unlockedLevels.size === 0) return;
   const levelsArr = Array.from(unlockedLevels);
   userSettings.unlocked_levels = levelsArr;
   await sb.rpc('upsert_user_settings', {
     p_streak: userSettings.streak || 0,
     p_last_study_date: userSettings.last_study_date || new Date().toISOString().split('T')[0],
-    p_unlocked_levels: levelsArr
+    p_unlocked_levels: JSON.stringify(levelsArr)
   });
 }
 async function saveNote(itemId, description, notes) {
@@ -1372,19 +1677,18 @@ function savePrefs() {
 function updateMenuState() {
   const mode = document.documentElement.getAttribute('data-mode');
   const theme = document.documentElement.getAttribute('data-theme');
-  const mb = document.getElementById('menu-mode-btn');
-  if (mb) mb.textContent = mode === 'dark' ? '🌙 Dark mode' : '☀️ Light mode';
+  const track = document.getElementById('mode-switch-track');
+  if (track) track.classList.toggle('on', mode === 'dark');
   ['sumi','sakura','ai'].forEach(t => { const el = document.getElementById(`menu-theme-${t}`); if (el) el.classList.toggle('active', theme === t); });
 }
 function toggleMode() { const n = document.documentElement.getAttribute('data-mode')==='dark'?'light':'dark'; document.documentElement.setAttribute('data-mode',n); savePrefs(); updateMenuState(); }
-function setTheme(t) { document.documentElement.setAttribute('data-theme',t); savePrefs(); updateMenuState(); closeNavMenu(); }
+function setTheme(t) { document.documentElement.setAttribute('data-theme',t); savePrefs(); updateMenuState(); }
 function toggleNavMenu() { document.getElementById('nav-menu-dropdown').classList.toggle('open'); }
 function closeNavMenu() { document.getElementById('nav-menu-dropdown').classList.remove('open'); }
 document.addEventListener('click', e => { if (!e.target.closest('.nav-menu-wrap')) closeNavMenu(); });
 
 // ── INIT ──
 function init() {
-  setPageScroll(false);
   populateFilters();
   renderDashboard();
   renderDict();
@@ -1472,11 +1776,13 @@ function updateQSubcat() {
 }
 
 // ── VIEWS ──
-function setPageScroll(enabled) {
-  document.body.style.overflowY = enabled ? '' : 'hidden';
-}
 
 function showView(v) {
+  // Warn if navigating away from settings with unsaved changes
+  if (settingsDirty && document.getElementById('view-settings')?.classList.contains('active')) {
+    if (!confirm('You have unsaved changes. Leave without saving?')) return;
+    settingsDirty = false;
+  }
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
   // Map view names to IDs
@@ -1487,7 +1793,6 @@ function showView(v) {
   const idx = tabs.indexOf(viewId);
   if (idx >= 0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
   // Dictionary scrolls freely; all other views are self-contained
-  setPageScroll(viewId === 'dictionary');
   if (v === 'dashboard') setTimeout(renderDashboard, 0);
   if (v === 'dictionary') renderDict();
   if (v === 'read') { setReadMode(readMode); }
@@ -1504,11 +1809,37 @@ let writeToggle = 'all';
 const KANJI_CATS = new Set(['Joyo','Jinmeiyo','Kanji Extended']);
 const PROPER_CATS = new Set(['Surname','Given Name','Station','City','Town','Historical','Poetic','Prefecture','Landmark','Idiom']);
 
+// All possible read graph view options (All is always shown, not configurable)
+const READ_VIEW_OPTIONS = [
+  { key: 'kanji',  label: 'Kanji',        isDefault: true },
+  { key: 'vocab',  label: 'Vocabulary',   isDefault: true },
+  { key: 'proper', label: 'Proper Nouns', isDefault: true },
+  { key: 'Surname',      label: 'Surname',       isDefault: false },
+  { key: 'Given Name',   label: 'Given Name',    isDefault: false },
+  { key: 'Station',      label: 'Station',       isDefault: false },
+  { key: 'City',         label: 'City',          isDefault: false },
+  { key: 'Town',         label: 'Town',          isDefault: false },
+  { key: 'Historical',   label: 'Historical',    isDefault: false },
+  { key: 'Poetic',       label: 'Poetic',        isDefault: false },
+  { key: 'Prefecture',   label: 'Prefecture',    isDefault: false },
+  { key: 'Landmark',     label: 'Landmark',      isDefault: false },
+  { key: 'Idiom',        label: 'Idiom',         isDefault: false },
+  { key: 'Joyo',         label: 'Joyo',          isDefault: false },
+  { key: 'Jinmeiyo',     label: 'Jinmeiyo',      isDefault: false },
+  { key: 'Kanji Extended', label: 'Extended',    isDefault: false },
+];
+const WRITE_VIEW_OPTIONS = [
+  { key: 'Joyo',         label: 'Joyo',          isDefault: true },
+  { key: 'Jinmeiyo',     label: 'Jinmeiyo',      isDefault: true },
+  { key: 'Kanji Extended', label: 'Extended',    isDefault: true },
+];
+
 function getReadItems(toggle) {
   if (toggle === 'kanji') return items.filter(i => KANJI_CATS.has(i.category));
   if (toggle === 'vocab') return items.filter(i => i.category === 'Vocab');
   if (toggle === 'proper') return items.filter(i => PROPER_CATS.has(i.category));
-  return items;
+  if (toggle === 'all') return items;
+  return items.filter(i => i.category === toggle);
 }
 
 function getWriteItems(toggle) {
@@ -1516,21 +1847,68 @@ function getWriteItems(toggle) {
   return items.filter(i => i.category === toggle);
 }
 
-function setReadToggle(val) {
+function setReadToggle(val, btn) {
   readToggle = val;
   document.querySelectorAll('#read-toggle .dash-toggle-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  (btn || event?.target)?.classList.add('active');
   renderReadGraph();
 }
 
-function setWriteToggle(val) {
+function setWriteToggle(val, btn) {
   writeToggle = val;
   document.querySelectorAll('#write-toggle .dash-toggle-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  (btn || event?.target)?.classList.add('active');
   renderWriteGraph();
 }
 
+function renderDashboardToggles() {
+  const gv = userSettings.configuration?.graph_views || {};
+  const readEnabled = gv.read?.enabled || ['kanji','vocab','proper'];
+  const writeEnabled = gv.write?.enabled || ['Joyo','Jinmeiyo','Kanji Extended'];
+  const readDefault = gv.read?.default || 'all';
+  const writeDefault = gv.write?.default || 'all';
+
+  // Read toggle
+  const rt = document.getElementById('read-toggle');
+  if (rt) {
+    rt.innerHTML = '';
+    const allBtn = document.createElement('button');
+    allBtn.className = 'dash-toggle-btn' + (readDefault === 'all' ? ' active' : '');
+    allBtn.textContent = 'All';
+    allBtn.onclick = () => setReadToggle('all', allBtn);
+    rt.appendChild(allBtn);
+    READ_VIEW_OPTIONS.filter(o => readEnabled.includes(o.key)).forEach(o => {
+      const btn = document.createElement('button');
+      btn.className = 'dash-toggle-btn' + (readDefault === o.key ? ' active' : '');
+      btn.textContent = o.label;
+      btn.onclick = () => setReadToggle(o.key, btn);
+      rt.appendChild(btn);
+    });
+    readToggle = readDefault;
+  }
+
+  // Write toggle
+  const wt = document.getElementById('write-toggle');
+  if (wt) {
+    wt.innerHTML = '';
+    const allBtn = document.createElement('button');
+    allBtn.className = 'dash-toggle-btn' + (writeDefault === 'all' ? ' active' : '');
+    allBtn.textContent = 'All';
+    allBtn.onclick = () => setWriteToggle('all', allBtn);
+    wt.appendChild(allBtn);
+    WRITE_VIEW_OPTIONS.filter(o => writeEnabled.includes(o.key)).forEach(o => {
+      const btn = document.createElement('button');
+      btn.className = 'dash-toggle-btn' + (writeDefault === o.key ? ' active' : '');
+      btn.textContent = o.label;
+      btn.onclick = () => setWriteToggle(o.key, btn);
+      wt.appendChild(btn);
+    });
+    writeToggle = writeDefault;
+  }
+}
+
 function renderDashboard() {
+  renderDashboardToggles();
   renderReadStats();
   renderReadGraph();
   renderWriteStats();
@@ -1541,25 +1919,23 @@ function renderReadStats() {
   const studied = items.filter(i => i.level > 0).length;
   const fragile = items.filter(i => i.level === 1).length;
   const now = Date.now();
-  const c14 = new Date(now - 14*86400000).toISOString();
-  const c60 = new Date(now - 60*86400000).toISOString();
   const stale = items.filter(i => {
     if (i.level < 2) return false;
     const lq = i.last_quizzed || null;
-    return i.level === 5 ? (!lq || lq < c60) : (!lq || lq < c14);
+    return !lq || lq < getStaleCutoff(i.level, 'read');
   }).length;
   document.getElementById('stats-grid').innerHTML = `
     <div class="stat-card" onclick="startWeakItems()">
       <div class="num" style="color:var(--lvl-review)">${fragile.toLocaleString()}</div>
-      <div class="lbl">⚠️ At Risk</div>
+      <div class="lbl">At Risk</div>
     </div>
     <div class="stat-card" onclick="openQSModal('stale')">
       <div class="num" style="color:#e67e22">${stale.toLocaleString()}</div>
-      <div class="lbl">🕰️ Gone Stale</div>
+      <div class="lbl">Gone Stale</div>
     </div>
     <div class="stat-card" onclick="showView('dictionary')">
-      <div class="num" style="color:var(--accent)">${studied.toLocaleString()}</div>
-      <div class="lbl">📚 Items Studied</div>
+      <div class="num" style="color:#2980b9">${studied.toLocaleString()}</div>
+      <div class="lbl">Items Studied</div>
     </div>`;
 }
 
@@ -1575,30 +1951,37 @@ function renderReadGraph() {
     </div>`).join('');
 }
 
+function getStaleCutoff(level, type) {
+  const staleDays = userSettings.configuration?.stale_days || {};
+  const days = type === 'write'
+    ? (staleDays.write || DEFAULT_WRITE_STALE)
+    : (staleDays.read  || DEFAULT_READ_STALE);
+  const d = days[level] ?? days[String(level)] ?? (type === 'write' ? DEFAULT_WRITE_STALE[level] : DEFAULT_READ_STALE[level]);
+  return new Date(Date.now() - d * 86400000).toISOString();
+}
+
 function renderWriteStats() {
   const allKanji = items.filter(i => WRITE_KANJI_CATS.has(i.category));
   const studied = allKanji.filter(i => (userWriteProgress[i.id] ?? 0) > 0).length;
   const fragile = allKanji.filter(i => (userWriteProgress[i.id] ?? 0) === 1).length;
   const now = Date.now();
-  const c7 = new Date(now - 7*86400000).toISOString();
-  const c30 = new Date(now - 30*86400000).toISOString();
   const stale = allKanji.filter(i => {
     const lq = userWriteLastQuizzed[i.id]; const wl = userWriteProgress[i.id] ?? 0;
     if (wl === 0) return false;
-    return wl === 5 ? (!lq || lq < c30) : (!lq || lq < c7);
+    return !lq || lq < getStaleCutoff(wl, 'write');
   }).length;
   document.getElementById('write-stats-grid').innerHTML = `
     <div class="stat-card" onclick="startWeakWriters()">
       <div class="num" style="color:var(--lvl-review)">${fragile.toLocaleString()}</div>
-      <div class="lbl">⚠️ Fragile</div>
+      <div class="lbl">Fragile</div>
     </div>
     <div class="stat-card" onclick="openWriteReviewModal('stale')">
       <div class="num" style="color:#e67e22">${stale.toLocaleString()}</div>
-      <div class="lbl">🕰️ Gone Stale</div>
+      <div class="lbl">Gone Stale</div>
     </div>
     <div class="stat-card" onclick="showView('dictionary')">
-      <div class="num" style="color:var(--accent)">${studied.toLocaleString()}</div>
-      <div class="lbl">📚 Items Studied</div>
+      <div class="num" style="color:#2980b9">${studied.toLocaleString()}</div>
+      <div class="lbl">Items Studied</div>
     </div>`;
 }
 
@@ -1618,37 +2001,35 @@ function renderWriteGraph() {
 // ── QUICK START MODALS ──
 function getStalePool(includeEnlightened) {
   const cat = document.getElementById('qconfig-cat')?.value || '';
-  const now = Date.now();
-  const cutoff14 = new Date(now - 14*24*60*60*1000).toISOString();
-  const cutoff60 = new Date(now - 60*24*60*60*1000).toISOString();
   return items.filter(i => {
-    if (i.level < 2) return false; // exclude locked and review-level
+    if (i.level < 2) return false;
     if (!includeEnlightened && i.level === 5) return false;
     if (cat && i.category !== cat) return false;
     const lq = i.last_quizzed || null;
-    if (i.level === 5) return !lq || lq < cutoff60; // enlightened: 60 days
-    return !lq || lq < cutoff14; // levels 2-4: 14 days
+    return !lq || lq < getStaleCutoff(i.level, 'read');
   });
 }
 
 function resetReadConfig() {
-  document.getElementById('qconfig-cat').value = '';
-  document.getElementById('qconfig-subcat').value = '';
-  document.getElementById('qconfig-minlevel').value = '1';
-  document.getElementById('qconfig-maxlevel').value = '5';
-  document.getElementById('qconfig-days').value = '0';
-  document.getElementById('qconfig-count').value = '20';
+  const d = getConfigDefaults();
+  document.getElementById('qconfig-cat').value = d.rr_cat || '';
+  document.getElementById('qconfig-subcat').value = d.rr_subcat || '';
+  document.getElementById('qconfig-minlevel').value = d.rr_minlevel || '1';
+  document.getElementById('qconfig-maxlevel').value = d.rr_maxlevel || '5';
+  document.getElementById('qconfig-days').value = d.rr_days || '0';
+  document.getElementById('qconfig-count').value = d.rr_count || '20';
   updateQSubcat?.();
   updateQuizPoolInfo();
 }
 
 function resetWriteConfig() {
-  document.getElementById('wr-cat').value = '';
-  document.getElementById('wr-subcat').value = '';
-  document.getElementById('wr-minlevel').value = '1';
-  document.getElementById('wr-maxlevel').value = '5';
-  document.getElementById('wr-reviewed').value = 'random';
-  document.getElementById('wr-count').value = '20';
+  const d = getConfigDefaults();
+  document.getElementById('wr-cat').value = d.wr_cat || '';
+  document.getElementById('wr-subcat').value = d.wr_subcat || '';
+  document.getElementById('wr-minlevel').value = d.wr_minlevel || '1';
+  document.getElementById('wr-maxlevel').value = d.wr_maxlevel || '5';
+  document.getElementById('wr-reviewed').value = d.wr_reviewed || 'random';
+  document.getElementById('wr-count').value = d.wr_count || '20';
   updateWRSubcatFilter?.();
   updateWRPoolInfo();
 }
@@ -1764,7 +2145,7 @@ function renderDict() {
     return true;
   });
   document.getElementById('dict-count').textContent = `${filtered.length} item${filtered.length!==1?'s':''}`;
-  if (!filtered.length) { document.getElementById('dict-list').innerHTML = `<div class="empty-state"><div class="es-icon">🔍</div><div>No items found</div></div>`; return; }
+  if (!filtered.length) { document.getElementById('dict-list').innerHTML = `<div class="empty-state"><div>No items found</div></div>`; return; }
   document.getElementById('dict-list').innerHTML = filtered.slice(0,200).map(item => {
     const gBadge = item.gender ? `<span class="badge gender-badge-${item.gender}">${item.gender==='Male'?'♂':item.gender==='Female'?'♀':'⚥'} ${item.gender}</span>` : '';
     const locked = item.level === 0 && !isAvailableToStudy(item);
@@ -1953,48 +2334,289 @@ async function removeUserSynonym(id,syn) {
 }
 
 // ── SETTINGS ──
+let settingsDirty = false;
+
+function toggleSettingsSection(id) {
+  const body = document.getElementById(`sbody-${id}`);
+  const chev = document.getElementById(`schev-${id}`);
+  if (!body) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (chev) chev.classList.toggle('open', !isOpen);
+}
+
+function getConfigDefaults() {
+  return userSettings.configuration?.config_defaults || {};
+}
+
+function applyConfigDefaults() {
+  const d = getConfigDefaults();
+  // Read Review
+  if (d.rr_cat !== undefined) { const el = document.getElementById('qconfig-cat'); if (el) { el.value = d.rr_cat; updateQSubcat?.(); } }
+  if (d.rr_subcat !== undefined) { const el = document.getElementById('qconfig-subcat'); if (el) el.value = d.rr_subcat; }
+  if (d.rr_minlevel !== undefined) { const el = document.getElementById('qconfig-minlevel'); if (el) el.value = d.rr_minlevel; }
+  if (d.rr_maxlevel !== undefined) { const el = document.getElementById('qconfig-maxlevel'); if (el) el.value = d.rr_maxlevel; }
+  if (d.rr_days !== undefined) { const el = document.getElementById('qconfig-days'); if (el) el.value = d.rr_days; }
+  if (d.rr_count !== undefined) { const el = document.getElementById('qconfig-count'); if (el) el.value = d.rr_count; }
+  // Read Study
+  if (d.rs_cat !== undefined) { const el = document.getElementById('sconfig-cat'); if (el) { el.value = d.rs_cat; updateSSubcat?.(); } }
+  if (d.rs_subcat !== undefined) { const el = document.getElementById('sconfig-subcat'); if (el) el.value = d.rs_subcat; }
+  if (d.rs_count !== undefined) { const el = document.getElementById('sconfig-count'); if (el) el.value = d.rs_count; }
+  // Write Review
+  if (d.wr_cat !== undefined) { const el = document.getElementById('wr-cat'); if (el) { el.value = d.wr_cat; updateWRSubcat?.(); } }
+  if (d.wr_subcat !== undefined) { const el = document.getElementById('wr-subcat'); if (el) el.value = d.wr_subcat; }
+  if (d.wr_minlevel !== undefined) { const el = document.getElementById('wr-minlevel'); if (el) el.value = d.wr_minlevel; }
+  if (d.wr_maxlevel !== undefined) { const el = document.getElementById('wr-maxlevel'); if (el) el.value = d.wr_maxlevel; }
+  if (d.wr_reviewed !== undefined) { const el = document.getElementById('wr-reviewed'); if (el) el.value = d.wr_reviewed; }
+  if (d.wr_count !== undefined) { const el = document.getElementById('wr-count'); if (el) el.value = d.wr_count; }
+  // Write Study
+  if (d.ws_cat !== undefined) { const el = document.getElementById('ws-cat'); if (el) { el.value = d.ws_cat; updateWSSubcat?.(); } }
+  if (d.ws_subcat !== undefined) { const el = document.getElementById('ws-subcat'); if (el) el.value = d.ws_subcat; }
+  if (d.ws_count !== undefined) { const el = document.getElementById('ws-count'); if (el) el.value = d.ws_count; }
+}
+
 function populateSettingsName() {
   const name = currentUser?.user_metadata?.display_name || '';
   const nameInput = document.getElementById('settings-name');
   const emailInput = document.getElementById('settings-email');
-  if (nameInput) nameInput.value = name;
+  if (nameInput) { nameInput.placeholder = name || 'Your name'; nameInput.value = ''; }
   if (emailInput) emailInput.value = currentUser?.email || '';
+
+  // Level names
+  const ln = userSettings.configuration?.level_names || DEFAULT_LEVEL_NAMES;
+  [0,1,2,3,4,5].forEach(l => {
+    const el = document.getElementById(`level-name-${l}`);
+    if (!el) return;
+    el.placeholder = DEFAULT_LEVEL_NAMES[l];
+    el.value = ln[l] === DEFAULT_LEVEL_NAMES[l] ? '' : (ln[l] || '');
+  });
+
+  // Stale periods
+  const staleDays = userSettings.configuration?.stale_days || {};
+  ['read','write'].forEach(type => {
+    const defaults = type === 'read' ? DEFAULT_READ_STALE : DEFAULT_WRITE_STALE;
+    const saved = staleDays[type] || defaults;
+    [2,3,4,5].forEach(l => {
+      const input = document.getElementById(`${type}-stale-${l}`);
+      const label = document.getElementById(`${type}-stale-label-${l}`);
+      if (label) label.textContent = LEVEL_NAMES[l];
+      if (!input) return;
+      const val = saved[l] ?? saved[String(l)];
+      input.placeholder = defaults[l];
+      input.value = val == defaults[l] ? '' : val;
+    });
+  });
+
+  // Config defaults
+  const d = getConfigDefaults();
+  const setDef = (id, key, placeholder) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const val = d[key];
+    if (el.tagName === 'SELECT') {
+      el.value = val !== undefined ? val : (el.querySelector('[selected]')?.value || el.options[0]?.value || '');
+    } else {
+      el.placeholder = placeholder || '';
+      el.value = val !== undefined ? val : '';
+    }
+  };
+  setDef('def-rr-cat','rr_cat'); setDef('def-rr-subcat','rr_subcat');
+  setDef('def-rr-minlevel','rr_minlevel'); setDef('def-rr-maxlevel','rr_maxlevel');
+  setDef('def-rr-days','rr_days'); setDef('def-rr-count','rr_count','20');
+  setDef('def-rs-cat','rs_cat'); setDef('def-rs-subcat','rs_subcat');
+  setDef('def-rs-count','rs_count','10');
+  setDef('def-wr-cat','wr_cat'); setDef('def-wr-subcat','wr_subcat');
+  setDef('def-wr-minlevel','wr_minlevel'); setDef('def-wr-maxlevel','wr_maxlevel');
+  setDef('def-wr-reviewed','wr_reviewed'); setDef('def-wr-count','wr_count','20');
+  setDef('def-ws-cat','ws_cat'); setDef('def-ws-subcat','ws_subcat');
+  setDef('def-ws-count','ws_count','10');
+
+  // Populate read config category options from items
+  ['def-rr-cat','def-rs-cat'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel || sel.options.length > 1) return;
+    const cats = [...new Set(items.map(i => i.category))].sort();
+    cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o); });
+    if (d[id === 'def-rr-cat' ? 'rr_cat' : 'rs_cat']) sel.value = d[id === 'def-rr-cat' ? 'rr_cat' : 'rs_cat'];
+  });
+
+  // Graph views
+  populateGraphViewPills('read');
+  populateGraphViewPills('write');
+
+  // Reset dirty state
+  settingsDirty = false;
+  const btn = document.getElementById('settings-save-btn');
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.4'; }
+  const msg = document.getElementById('settings-save-msg');
+  if (msg) msg.textContent = '';
+  document.querySelectorAll('.settings-trackable').forEach(el => {
+    el.addEventListener('input', markSettingsDirty);
+    el.addEventListener('change', markSettingsDirty);
+  });
+  // Grey out selects that are at their default value
+  const settingsSelectDefaults = {
+    'def-rr-minlevel':'1','def-rr-maxlevel':'5','def-rr-days':'0',
+    'def-wr-minlevel':'1','def-wr-maxlevel':'5','def-wr-reviewed':'random',
+    'def-rr-cat':'','def-rr-subcat':'','def-rs-cat':'','def-rs-subcat':'',
+    'def-wr-cat':'','def-wr-subcat':'','def-ws-cat':'Joyo','def-ws-subcat':''
+  };
+  Object.entries(settingsSelectDefaults).forEach(([id, def]) => {
+    const sel = document.getElementById(id);
+    if (sel) initSelectDefaultTracking(sel, def);
+  });
+  // Also rebuild and grey level dropdowns
+  rebuildLevelDropdowns();
+  // Init min/max pairing for settings selects
+  initMinMaxPair('def-rr-minlevel', 'def-rr-maxlevel', () => markSettingsDirty());
+  initMinMaxPair('def-wr-minlevel', 'def-wr-maxlevel', () => markSettingsDirty());
 }
-async function saveDisplayName() {
-  const name = document.getElementById('settings-name').value.trim();
-  const msg = document.getElementById('settings-name-msg');
-  msg.textContent = '';
-  const { data, error } = await sb.auth.updateUser({ data: { display_name: name } });
-  if (error) { msg.textContent = error.message; msg.className = 'settings-msg error'; return; }
-  currentUser = data.user;
-  updateNavUser();
-  msg.textContent = 'Display name updated!';
-  msg.className = 'settings-msg success';
-  setTimeout(() => msg.textContent = '', 2000);
+
+function populateGraphViewPills(type) {
+  const gv = userSettings.configuration?.graph_views || {};
+  const saved = gv[type] || {};
+  const options = type === 'read' ? READ_VIEW_OPTIONS : WRITE_VIEW_OPTIONS;
+  const enabled = saved.enabled || options.filter(o => o.isDefault).map(o => o.key);
+  const defaultView = saved.default || 'all';
+
+  // Pills
+  const container = document.getElementById(`graph-${type}-views`);
+  if (container) {
+    container.innerHTML = '';
+    options.forEach(o => {
+      const pill = document.createElement('button');
+      pill.className = 'graph-pill' + (enabled.includes(o.key) ? ' active' : '');
+      pill.textContent = o.label;
+      pill.type = 'button';
+      pill.dataset.key = o.key;
+      pill.onclick = () => {
+        pill.classList.toggle('active');
+        markSettingsDirty();
+        updateGraphDefaultSelect(type);
+      };
+      container.appendChild(pill);
+    });
+  }
+
+  // Default view select
+  updateGraphDefaultSelect(type, defaultView);
 }
-async function changePassword() {
+
+function updateGraphDefaultSelect(type, forceDefault) {
+  const sel = document.getElementById(`graph-${type}-default`);
+  if (!sel) return;
+  const container = document.getElementById(`graph-${type}-views`);
+  const activePills = container ? [...container.querySelectorAll('.graph-pill.active')].map(p => p.dataset.key) : [];
+  const prev = forceDefault || sel.value;
+  sel.innerHTML = '<option value="all">All</option>';
+  const options = type === 'read' ? READ_VIEW_OPTIONS : WRITE_VIEW_OPTIONS;
+  options.filter(o => activePills.includes(o.key)).forEach(o => {
+    const opt = document.createElement('option');
+    opt.value = o.key; opt.textContent = o.label;
+    sel.appendChild(opt);
+  });
+  sel.value = prev && (prev === 'all' || activePills.includes(prev)) ? prev : 'all';
+  updateSelectDefault(sel, 'all');
+}
+
+function markSettingsDirty() {
+  if (settingsDirty) return;
+  settingsDirty = true;
+  const btn = document.getElementById('settings-save-btn');
+  if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+}
+
+async function saveAllSettings() {
+  const msg = document.getElementById('settings-save-msg');
+  const btn = document.getElementById('settings-save-btn');
+  if (msg) { msg.textContent = 'Saving…'; msg.className = 'settings-msg'; }
+
+  // Display name
+  const existingName = currentUser?.user_metadata?.display_name || '';
+  const name = document.getElementById('settings-name').value.trim() || existingName;
+  if (name !== existingName) {
+    const { data, error } = await sb.auth.updateUser({ data: { display_name: name } });
+    if (error) { if (msg) { msg.textContent = error.message; msg.className = 'settings-msg error'; } return; }
+    currentUser = data.user;
+    updateNavUser();
+  }
+
+  // Password change
   const current = document.getElementById('settings-current-pw').value;
   const newPw = document.getElementById('settings-new-pw').value;
   const confirm = document.getElementById('settings-confirm-pw').value;
-  const msg = document.getElementById('settings-pw-msg');
-  msg.textContent = '';
-  if (newPw.length < 6) { msg.textContent = 'Password must be at least 6 characters'; msg.className = 'settings-msg error'; return; }
-  if (newPw !== confirm) { msg.textContent = 'Passwords do not match'; msg.className = 'settings-msg error'; return; }
-  // Verify current password
-  const { error: signInError } = await sb.auth.signInWithPassword({ email: currentUser.email, password: current });
-  if (signInError) { msg.textContent = 'Current password is incorrect'; msg.className = 'settings-msg error'; return; }
-  const { error } = await sb.auth.updateUser({ password: newPw });
-  if (error) { msg.textContent = error.message; msg.className = 'settings-msg error'; return; }
-  msg.textContent = 'Password updated!';
-  msg.className = 'settings-msg success';
-  document.getElementById('settings-current-pw').value = '';
-  document.getElementById('settings-new-pw').value = '';
-  document.getElementById('settings-confirm-pw').value = '';
-  setTimeout(() => msg.textContent = '', 2000);
+  if (current || newPw || confirm) {
+    if (newPw.length < 6) { if (msg) { msg.textContent = 'Password must be at least 6 characters'; msg.className = 'settings-msg error'; } return; }
+    if (newPw !== confirm) { if (msg) { msg.textContent = 'Passwords do not match'; msg.className = 'settings-msg error'; } return; }
+    const { error: signInError } = await sb.auth.signInWithPassword({ email: currentUser.email, password: current });
+    if (signInError) { if (msg) { msg.textContent = 'Current password is incorrect'; msg.className = 'settings-msg error'; } return; }
+    const { error } = await sb.auth.updateUser({ password: newPw });
+    if (error) { if (msg) { msg.textContent = error.message; msg.className = 'settings-msg error'; } return; }
+    document.getElementById('settings-current-pw').value = '';
+    document.getElementById('settings-new-pw').value = '';
+    document.getElementById('settings-confirm-pw').value = '';
+  }
+
+  // Level names
+  const ln = [0,1,2,3,4,5].map(l => document.getElementById(`level-name-${l}`)?.value.trim() || DEFAULT_LEVEL_NAMES[l]);
+  LEVEL_NAMES = ln;
+  rebuildLevelDropdowns();
+  ['read','write'].forEach(type => [2,3,4,5].forEach(l => {
+    const label = document.getElementById(`${type}-stale-label-${l}`);
+    if (label) label.textContent = LEVEL_NAMES[l];
+  }));
+
+  // Stale periods
+  const rd = {}; const wd = {};
+  [2,3,4,5].forEach(l => {
+    rd[l] = parseFloat(document.getElementById(`read-stale-${l}`).value) || DEFAULT_READ_STALE[l];
+    wd[l] = parseFloat(document.getElementById(`write-stale-${l}`).value) || DEFAULT_WRITE_STALE[l];
+  });
+
+  // Config defaults
+  const getVal = (id) => { const el = document.getElementById(id); return el ? (el.value || undefined) : undefined; };
+  const getNum = (id) => { const el = document.getElementById(id); return el?.value ? parseInt(el.value) : undefined; };
+  const cfg_defaults = {};
+  const defMap = {
+    rr_cat:'def-rr-cat', rr_subcat:'def-rr-subcat', rr_minlevel:'def-rr-minlevel', rr_maxlevel:'def-rr-maxlevel',
+    rr_days:'def-rr-days', rr_count:'def-rr-count', rs_cat:'def-rs-cat', rs_subcat:'def-rs-subcat', rs_count:'def-rs-count',
+    wr_cat:'def-wr-cat', wr_subcat:'def-wr-subcat', wr_minlevel:'def-wr-minlevel', wr_maxlevel:'def-wr-maxlevel',
+    wr_reviewed:'def-wr-reviewed', wr_count:'def-wr-count', ws_cat:'def-ws-cat', ws_subcat:'def-ws-subcat', ws_count:'def-ws-count'
+  };
+  Object.entries(defMap).forEach(([key, id]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const val = el.value;
+    if (val !== '' && val !== undefined) cfg_defaults[key] = val;
+  });
+
+  // Graph views
+  const readPills = [...(document.getElementById('graph-read-views')?.querySelectorAll('.graph-pill.active') || [])].map(p => p.dataset.key);
+  const writePills = [...(document.getElementById('graph-write-views')?.querySelectorAll('.graph-pill.active') || [])].map(p => p.dataset.key);
+  const graph_views = {
+    read:  { enabled: readPills,  default: document.getElementById('graph-read-default')?.value  || 'all' },
+    write: { enabled: writePills, default: document.getElementById('graph-write-default')?.value || 'all' }
+  };
+
+  const configuration = { level_names: ln, stale_days: { read: rd, write: wd }, config_defaults: cfg_defaults, graph_views };
+  userSettings.configuration = configuration;
+
+  const { error: rpcError } = await sb.rpc('upsert_user_settings', {
+    p_streak: userSettings.streak || 0,
+    p_last_study_date: userSettings.last_study_date || new Date().toISOString().split('T')[0],
+    p_configuration: configuration
+  });
+  if (rpcError) { if (msg) { msg.textContent = rpcError.message; msg.className = 'settings-msg error'; } return; }
+
+  // Success
+  settingsDirty = false;
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.4'; }
+  if (msg) { msg.textContent = 'Saved ✓'; msg.className = 'settings-msg success'; setTimeout(() => { if (msg) msg.textContent = ''; }, 2000); }
+  populateSettingsName();
+  renderDashboardToggles();
 }
 
-// ── LEVENSHTEIN ──
-function levenshtein(a,b){const m=a.length,n=b.length;const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);return dp[m][n];}
+// ── LEVENSHTEIN ──const m=a.length,n=b.length;const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);return dp[m][n];}
 function normMeaning(s){return s.toLowerCase().trim().replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ');}
 function checkMeaning(input,item){
   const inp=normMeaning(input);
@@ -2054,11 +2676,7 @@ function getQuizPool(){
     if(daysVal==='0') return true; // any time
     if(daysVal==='stale_never') return !lq; // never reviewed
     if(daysVal==='stale') {
-      // Stale: levels 2-4 not reviewed in 14d, level 5 not reviewed in 60d
-      const cutoff14 = new Date(Date.now() - 14*24*60*60*1000).toISOString();
-      const cutoff60 = new Date(Date.now() - 60*24*60*60*1000).toISOString();
-      if(i.level === 5) return !lq || lq < cutoff60;
-      return !lq || lq < cutoff14;
+      return !lq || lq < getStaleCutoff(i.level, 'read');
     }
     if(daysVal.startsWith('recent_')){
       const days = parseInt(daysVal.split('_')[1]);
@@ -2136,7 +2754,6 @@ function showPrompt(){
   input.disabled=false;
   if(prompt.mode==='reading')attachWanakana(input);else detachWanakana(input);
   document.getElementById('quiz-feedback').classList.remove('show');
-  setPageScroll(false);
   document.getElementById('btn-submit').style.display='';
   document.getElementById('btn-next').style.display='none';
   document.getElementById('answer-hint').textContent='';
@@ -2232,7 +2849,6 @@ function finaliseItem(lastCorrect, correctAnswer){
   const desc=currentItem.description||'';document.getElementById('feedback-description').textContent=desc;
   document.getElementById('feedback-notes').textContent=currentItem.notes?'📝 '+currentItem.notes:'';
   showExamples(currentItem,'feedback-examples-wrap','feedback-examples');
-  setPageScroll(true);
 
   const lc=currentItem.level-prevLevel;
   const arrow=lc>0?'↑':lc<0?'↓':'→';
@@ -2324,8 +2940,8 @@ async function showResults(endedEarly=false){
   document.getElementById('results-score').textContent=Math.round((correct/(total||1))*100)+'%';
   document.getElementById('results-fraction').textContent=`${correct} / ${total} correct`;
   document.getElementById('results-breakdown').innerHTML=results.map(r=>{
-    const icon=r.correct?'<span style="color:var(--correct)">○</span>':'<span style="color:var(--incorrect)">✕</span>';
-    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div style="font-size:0.75rem;color:${LEVEL_COLORS[r.item.level]}">${LEVEL_NAMES[r.item.level]}</div><div class="results-icon">${icon}</div></div>`;
+    const icon=r.correct?'<span style="color:var(--correct);font-weight:700;font-size:1.1rem;">○</span>':'<span style="color:var(--incorrect);font-weight:700;font-size:1.1rem;">✕</span>';
+    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div style="font-size:0.75rem;font-weight:600;color:${LEVEL_COLORS[r.item.level]}">${LEVEL_NAMES[r.item.level]}</div><div class="results-icon">${icon}</div></div>`;
   }).join('');
   renderDashboard();
   await saveLevelBatch(results.map(r=>({item_id:r.item.id,level:r.item.level})));
@@ -2372,7 +2988,6 @@ function wsNextBatch(){
   document.getElementById('ws-review-wrap').style.display = 'none';
   document.getElementById('ws-learn-wrap').style.display = 'block';
   wsLearnIdx = 0;
-  setPageScroll(true);
   showWSLearnItem();
 }
 async function endQuiz(){
@@ -2519,7 +3134,6 @@ function startStudyBatch(){
   document.getElementById('study-quiz-wrap').style.display='none';
   document.getElementById('study-learn-wrap').style.display='block';
   document.getElementById('study-config-panel').style.display='none';
-  setPageScroll(true);
   showStudyCard();
 }
 
@@ -2571,7 +3185,6 @@ function beginStudyQuiz(){
   studySession.failedThisRound=[];
   document.getElementById('study-learn-wrap').style.display='none';
   document.getElementById('study-quiz-wrap').style.display='block';
-  setPageScroll(false);
   startStudyItem();
 }
 
@@ -2615,7 +3228,6 @@ function showStudyPrompt() {
   document.getElementById('study-feedback').classList.remove('show');
   document.getElementById('study-feedback-examples').style.display = 'none';
   document.getElementById('study-feedback-examples-wrap').innerHTML = '';
-  setPageScroll(false);
   document.getElementById('study-btn-submit').style.display='';
   document.getElementById('study-btn-next').style.display='none';
   document.getElementById('study-answer-hint').textContent='';
@@ -2699,7 +3311,6 @@ function finaliseStudyItem(correctAnswer){
   document.getElementById('study-feedback-description').textContent=item.description||'';
   document.getElementById('study-feedback-notes').textContent=item.notes?'📝 '+item.notes:'';
   showExamples(item,'study-feedback-examples-wrap','study-feedback-examples');
-  setPageScroll(true);
   document.getElementById('study-btn-submit').style.display='none';
   // Check what's next for button label
   const s=studySession;
@@ -2748,8 +3359,8 @@ async function showStudyResults(endedEarly=false){
   document.getElementById('study-results-score').textContent=total?Math.round((correct/total)*100)+'%':'—';
   document.getElementById('study-results-fraction').textContent=`${correct} / ${total} first try correct`;
   document.getElementById('study-results-breakdown').innerHTML=results.map(r=>{
-    const icon=r.correct?'<span style="color:var(--correct)">○</span>':'<span style="color:var(--incorrect)">✕</span>';
-    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div style="font-size:0.75rem;color:${LEVEL_COLORS[r.item.level]}">${LEVEL_NAMES[r.item.level]}</div><div>${icon}</div></div>`;
+    const icon=r.correct?'<span style="color:var(--correct);font-weight:700;font-size:1.1rem;">○</span>':'<span style="color:var(--incorrect);font-weight:700;font-size:1.1rem;">✕</span>';
+    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div style="font-size:0.75rem;font-weight:600;color:${LEVEL_COLORS[r.item.level]}">${LEVEL_NAMES[r.item.level]}</div><div>${icon}</div></div>`;
   }).join('');
   renderDashboard();
   await saveLevelBatch(results.map(r=>({item_id:r.item.id,level:r.item.level})));
@@ -3170,7 +3781,7 @@ function getWRPool() {
     if (wl < minLevel || wl > maxLevel) return false;
     const lq = userWriteLastQuizzed[i.id] ? new Date(userWriteLastQuizzed[i.id]).getTime() : null;
     if (filter === 'random') return true;
-    if (filter === 'stale') { const c7 = now - 7*day; const c30 = now - 30*day; return wl === 5 ? (!lq||lq<c30) : (!lq||lq<c7); }
+    if (filter === 'stale') { return wl === 5 ? (!lq||lq<getStaleCutoff(5,'write')) : (!lq||lq<getStaleCutoff(wl,'write')); }
     if (filter === 'today') return lq && lq >= new Date().setHours(0,0,0,0);
     if (filter === 'never') return !lq;
     if (filter.startsWith('not')) { const days = parseInt(filter.replace('not','')); return !lq || lq < now - days*day; }
@@ -3221,7 +3832,6 @@ function showWRItem(){
   document.getElementById('wr-canvas').style.pointerEvents='';
   document.getElementById('wr-examples').style.display='none';
   document.getElementById('wr-examples-wrap').innerHTML='';
-  setPageScroll(false);
   const strokeDiv=document.getElementById('wr-stroke-svg');
   if(strokeDiv){strokeDiv.style.display='none';strokeDiv.innerHTML='';}
   resetAnim('wr-stroke-svg','rev-wr');
@@ -3246,7 +3856,6 @@ function revealWRAnswer() {
     setTimeout(() => startAnim('wr-stroke-svg', 'rev-wr'), 100);
     // Show examples
     showExamples(item, 'wr-examples-wrap', 'wr-examples');
-    setPageScroll(true);
   }
 }
 
@@ -3353,8 +3962,8 @@ async function showWRResults(endedEarly=false){
   document.getElementById('wr-results-score').textContent=total?Math.round((correct/total)*100)+'%':'—';
   document.getElementById('wr-results-fraction').textContent=`${correct} / ${total} first try correct`;
   document.getElementById('wr-results-breakdown').innerHTML=results.map(r=>{
-    const icon=r.grade===3?'<span style="color:var(--correct)">○</span>':r.grade===1?'<span style="color:var(--incorrect)">✕</span>':'<span style="color:orange">△</span>';
-    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getReadingHtml(r.item)}</div><div style="font-size:0.75rem;color:${LEVEL_COLORS[r.newLevel]}">${LEVEL_NAMES[r.newLevel]}</div><div>${icon}</div></div>`;
+    const icon=r.grade===3?'<span style="color:var(--correct);font-weight:700;font-size:1.1rem;">○</span>':r.grade===1?'<span style="color:var(--incorrect);font-weight:700;font-size:1.1rem;">✕</span>':'<span style="color:orange;font-weight:700;font-size:1.1rem;">△</span>';
+    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getReadingHtml(r.item)}</div><div style="font-size:0.75rem;font-weight:600;color:${LEVEL_COLORS[r.newLevel]}">${LEVEL_NAMES[r.newLevel]}</div><div>${icon}</div></div>`;
   }).join('');
   renderDashboard();
   await Promise.all(results.map(r=>saveWriteLevel(r.item.id,r.newLevel)));
@@ -3412,7 +4021,6 @@ function startWSSession() {
   document.getElementById('ws-results').style.display = 'none';
   document.getElementById('ws-review-wrap').style.display = 'none';
   document.getElementById('ws-learn-wrap').style.display = 'block';
-  setPageScroll(true);
   showWSLearnItem();
 }
 
@@ -3459,7 +4067,6 @@ function wsLearnNav(dir) {
     wsSession.failedThisRound = [];
     wsSession.isRepeatRound = false;
     document.getElementById('ws-learn-wrap').style.display = 'none';
-    setPageScroll(false);
     showWSReviewItem(); return;
   }
   wsLearnIdx = Math.max(0, Math.min(batch.length - 1, wsLearnIdx + dir));
@@ -3497,7 +4104,6 @@ function showWSReviewItem(){
   document.getElementById('ws-canvas').style.pointerEvents='';
   document.getElementById('ws-examples').style.display='none';
   document.getElementById('ws-examples-wrap').innerHTML='';
-  setPageScroll(false);
   const strokeDiv=document.getElementById('ws-stroke-svg');
   if(strokeDiv){strokeDiv.style.display='none';strokeDiv.innerHTML='';}
   resetAnim('ws-stroke-svg','rev-ws');
@@ -3521,7 +4127,6 @@ function revealWSAnswer() {
     loadStrokeInto(item.kanji, 'ws-stroke-svg', 'ws-rev-anim-stop', 'ws-rev-anim-play', 'rev-ws', true);
     setTimeout(() => startAnim('ws-stroke-svg', 'rev-ws'), 100);
     showExamples(item, 'ws-examples-wrap', 'ws-examples');
-    setPageScroll(true);
   }
 }
 
@@ -3577,8 +4182,8 @@ async function showWSResults(endedEarly=false){
   document.getElementById('ws-results-score').textContent=total?Math.round((correct/total)*100)+'%':'—';
   document.getElementById('ws-results-fraction').textContent=`${correct} / ${total} first try correct`;
   document.getElementById('ws-results-breakdown').innerHTML=results.map(r=>{
-    const icon=r.grade===3?'<span style="color:var(--correct)">○</span>':r.grade===1?'<span style="color:var(--incorrect)">✕</span>':'<span style="color:orange">△</span>';
-    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getReadingHtml(r.item)}</div><div style="font-size:0.75rem;color:${LEVEL_COLORS[r.newLevel]}">${LEVEL_NAMES[r.newLevel]}</div><div>${icon}</div></div>`;
+    const icon=r.grade===3?'<span style="color:var(--correct);font-weight:700;font-size:1.1rem;">○</span>':r.grade===1?'<span style="color:var(--incorrect);font-weight:700;font-size:1.1rem;">✕</span>':'<span style="color:orange;font-weight:700;font-size:1.1rem;">△</span>';
+    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getReadingHtml(r.item)}</div><div style="font-size:0.75rem;font-weight:600;color:${LEVEL_COLORS[r.newLevel]}">${LEVEL_NAMES[r.newLevel]}</div><div>${icon}</div></div>`;
   }).join('');
   renderDashboard();
   await Promise.all(results.filter(r=>r.newLevel!==undefined).map(r=>saveWriteLevel(r.item.id,r.newLevel)));
