@@ -132,8 +132,8 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .search-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;color:var(--text);font-size:0.95rem;outline:none;transition:border-color 0.15s;}
 .search-input:focus{border-color:var(--accent);}
 .search-input::placeholder{color:var(--text3);}
-.filter-row{display:flex;gap:8px;flex-wrap:wrap;}
-.filter-sel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text);font-size:0.82rem;outline:none;cursor:pointer;flex:1;min-width:110px;}
+.filter-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.filter-sel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text);font-size:0.82rem;outline:none;cursor:pointer;width:100%;}
 .filter-sel:focus{border-color:var(--accent);}
 .dict-count{font-size:0.78rem;color:var(--text2);margin-bottom:8px;}
 .dict-list{display:flex;flex-direction:column;gap:7px;}
@@ -179,10 +179,13 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
 .stroke-num{font-size:10px;fill:var(--text3);font-family:sans-serif;}
 .stroke-anim path{stroke-dasharray:1000;stroke-dashoffset:1000;animation:drawStroke 0.6s ease forwards;}
 @keyframes drawStroke{to{stroke-dashoffset:0;}}position:absolute;top:12px;right:12px;background:var(--surface3);border:none;color:var(--text2);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;}
-.modal-kanji{font-size:2.8rem;margin-bottom:6px;}
+.modal-reading{font-size:1rem;color:var(--text2);margin-bottom:4px;}
 .modal-divider{border:none;border-top:1px solid var(--border);margin:10px 0;}
 .modal-field{margin-bottom:10px;}
 .modal-field-label{font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;}
+.modal-sub-header{font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;}
+.modal-close{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text2);cursor:pointer;font-size:0.85rem;padding:4px 8px;flex-shrink:0;transition:all 0.15s;}
+.modal-close:hover{border-color:var(--accent);color:var(--accent);}
 .modal-field-value{font-size:0.875rem;}
 .examples-wrap{display:flex;flex-direction:column;gap:8px;margin-top:2px;}
 .example-item{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;}
@@ -409,23 +412,13 @@ select.at-default option{color:var(--text);}
     <div class="section-title">Reading Progress</div>
     <div class="stats-grid" id="stats-grid"></div>
     <div class="level-breakdown">
-      <div class="dash-toggle" id="read-toggle">
-        <button class="dash-toggle-btn active" onclick="setReadToggle('all')">All</button>
-        <button class="dash-toggle-btn" onclick="setReadToggle('kanji')">Kanji</button>
-        <button class="dash-toggle-btn" onclick="setReadToggle('vocab')">Vocabulary</button>
-        <button class="dash-toggle-btn" onclick="setReadToggle('proper')">Proper Nouns</button>
-      </div>
+      <div class="dash-toggle" id="read-toggle"></div>
       <div class="level-bars" id="level-bars"></div>
     </div>
     <div class="section-title" style="margin-top:18px;">Writing Progress</div>
     <div class="stats-grid" id="write-stats-grid"></div>
     <div class="level-breakdown">
-      <div class="dash-toggle" id="write-toggle">
-        <button class="dash-toggle-btn active" onclick="setWriteToggle('all')">All</button>
-        <button class="dash-toggle-btn" onclick="setWriteToggle('Joyo')">Joyo</button>
-        <button class="dash-toggle-btn" onclick="setWriteToggle('Jinmeiyo')">Jinmeiyo</button>
-        <button class="dash-toggle-btn" onclick="setWriteToggle('Kanji Extended')">Extended</button>
-      </div>
+      <div class="dash-toggle" id="write-toggle"></div>
       <div class="level-bars" id="write-level-bars"></div>
     </div>
   </div>
@@ -433,17 +426,37 @@ select.at-default option{color:var(--text);}
   <!-- DICTIONARY -->
   <div id="view-dictionary" class="view">
     <div class="dict-controls">
-      <input class="search-input" id="dict-search" placeholder='Search kanji, reading, meaning… use "quotes" for exact match' oninput="renderDict()">
+      <input class="search-input" id="dict-search" placeholder="Search…" oninput="renderDict()">
+      <div style="font-size:0.72rem;color:var(--text3);margin-top:-2px;">Search by kanji, reading or meaning. Use "quotes" for exact match.</div>
       <div class="filter-row">
-        <select class="filter-sel" id="filter-cat" onchange="updateSubcatFilter();updatePosFilter();updateTagFilter();renderDict()"><option value="">All Categories</option></select>
-        <select class="filter-sel" id="filter-subcat" onchange="updatePosFilter();updateTagFilter();renderDict()"><option value="">All Subcategories</option></select>
+        <select class="filter-sel" id="filter-cat" onchange="updateDictFilters();renderDict()"><option value="">All Categories</option></select>
+        <select class="filter-sel" id="filter-subcat" onchange="updateDictGroupFilter();updatePosFilter();updateTagFilter();renderDict()"><option value="">All Subcategories</option></select>
+        <select class="filter-sel" id="filter-group" onchange="renderDict()" style="display:none"><option value="">All Groups</option></select>
         <select class="filter-sel" id="filter-pos" onchange="updateTagFilter();renderDict()" style="display:none"><option value="">All Parts of Speech</option></select>
         <select class="filter-sel" id="filter-tag" onchange="renderDict()" style="display:none"><option value="">All Tags</option></select>
         <select class="filter-sel" id="filter-level" onchange="renderDict()">
-          <option value="">All Levels</option>
-          <option value="0">0 — Locked</option><option value="1">1 — Review</option>
-          <option value="2">2 — Forming</option><option value="3">3 — Stable</option>
-          <option value="4">4 — Strong</option><option value="5">5 — Cemented</option>
+          <option value="">All Read Levels</option>
+        </select>
+        <select class="filter-sel" id="filter-write-level" onchange="renderDict()" style="display:none">
+          <option value="">All Write Levels</option>
+        </select>
+        <select class="filter-sel" id="filter-last-reviewed" onchange="renderDict()">
+          <option value="">Any Time</option>
+          <option value="stale">Stale</option>
+          <optgroup label="Recently reviewed">
+            <option value="recent_1">Today</option>
+            <option value="recent_3">Last 3 days</option>
+            <option value="recent_7">Last 7 days</option>
+            <option value="recent_14">Last 14 days</option>
+            <option value="recent_30">Last 30 days</option>
+          </optgroup>
+          <optgroup label="Not reviewed recently">
+            <option value="stale_7">Not in last 7 days</option>
+            <option value="stale_14">Not in last 14 days</option>
+            <option value="stale_30">Not in last 30 days</option>
+            <option value="stale_60">Not in last 60 days</option>
+            <option value="stale_never">Never reviewed</option>
+          </optgroup>
         </select>
       </div>
     </div>
@@ -467,7 +480,8 @@ select.at-default option{color:var(--text);}
       <div class="quiz-config">
         <div class="config-grid">
           <div class="config-item"><label>Category</label><select id="qconfig-cat" onchange="updateQSubcat();updateQuizPoolInfo()"><option value="">All Categories</option></select></div>
-          <div class="config-item"><label>Subcategory</label><select id="qconfig-subcat" onchange="updateQuizPoolInfo()"><option value="">All Subcategories</option></select></div>
+          <div class="config-item"><label>Subcategory</label><select id="qconfig-subcat" onchange="updateQGroup();updateQuizPoolInfo()"><option value="">All Subcategories</option></select></div>
+          <div class="config-item" id="qconfig-group-wrap" style="display:none"><label>Group</label><select id="qconfig-group" onchange="updateQuizPoolInfo()"><option value="">All Groups</option></select></div>
           <div class="config-item"><label>Min Level</label>
             <select id="qconfig-minlevel" onchange="syncMinMax('qconfig-minlevel','qconfig-maxlevel',true);updateQuizPoolInfo()">
               <option value="1" selected>1 — Fragile</option><option value="2">2 — Forming</option>
@@ -561,10 +575,10 @@ select.at-default option{color:var(--text);}
       <div class="quiz-config">
         <div class="config-grid">
           <div class="config-item"><label>Category</label><select id="sconfig-cat" onchange="updateSSubcat();updateStudyPoolInfo()"><option value="">All Categories</option></select></div>
-          <div class="config-item"><label>Subcategory</label><select id="sconfig-subcat" onchange="updateStudyPoolInfo()"><option value="">All Subcategories</option></select></div>
+          <div class="config-item"><label>Subcategory</label><select id="sconfig-subcat" onchange="updateSGroup();updateStudyPoolInfo()"><option value="">All Subcategories</option></select></div>
+          <div class="config-item" id="sconfig-group-wrap" style="display:none"><label>Group</label><select id="sconfig-group" onchange="updateStudyPoolInfo()"><option value="">All Groups</option></select></div>
           <div class="config-item" style="grid-column:1/-1"><label>Items</label>
             <input type="number" id="sconfig-count" value="10" min="1" max="999" oninput="updateStudyPoolInfo()">
-          </div>
           </div>
         </div>
       </div>
@@ -657,7 +671,7 @@ select.at-default option{color:var(--text);}
         <div class="quiz-config">
           <div class="config-grid">
             <div class="config-item"><label>Category</label>
-              <select id="wr-cat" onchange="updateWRSubcat();updateWRPoolInfo()">
+              <select id="wr-cat" onchange="updateWRSubcatFilter();updateWRPoolInfo()">
                 <option value="">All Categories</option>
                 <option value="Joyo">Joyo</option>
                 <option value="Jinmeiyo">Jinmeiyo</option>
@@ -898,7 +912,7 @@ select.at-default option{color:var(--text);}
     </div>
   </div>
 
-  <!-- SETTINGS -->
+  <!-- Settings -->
 <div id="view-settings" class="view">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
     <h2 style="font-size:1rem;font-weight:700;color:var(--text);margin:0;">Settings</h2>
@@ -968,7 +982,6 @@ select.at-default option{color:var(--text);}
     </div>
   </div>
 
-  <!-- Stale Periods -->
   <!-- Read Configuration -->
   <div class="settings-collapsible" id="scol-readconfig">
     <div class="settings-collapsible-header" onclick="toggleSettingsSection('readconfig')">
@@ -985,7 +998,7 @@ select.at-default option{color:var(--text);}
       <div class="settings-sub-header">Review</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
         <div class="settings-field"><label>Category</label>
-          <select class="settings-input settings-trackable" id="def-rr-cat">
+          <select class="settings-input settings-trackable" id="def-rr-cat" onchange="updateSettingsSubcat('def-rr-cat','def-rr-subcat');markSettingsDirty();">
             <option value="">All Categories</option>
           </select>
         </div>
@@ -1031,7 +1044,7 @@ select.at-default option{color:var(--text);}
       <div class="settings-sub-header">Study</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
         <div class="settings-field"><label>Category</label>
-          <select class="settings-input settings-trackable" id="def-rs-cat">
+          <select class="settings-input settings-trackable" id="def-rs-cat" onchange="updateSettingsSubcat('def-rs-cat','def-rs-subcat');markSettingsDirty();">
             <option value="">All Categories</option>
           </select>
         </div>
@@ -1043,11 +1056,14 @@ select.at-default option{color:var(--text);}
         <div class="settings-field" style="grid-column:1/-1"><label>Items</label>
           <input class="settings-input settings-trackable" id="def-rs-count" type="number" min="1" max="999" placeholder="10">
         </div>
+        <div class="settings-field" style="grid-column:1/-1"><label>Batch Size</label>
+          <input class="settings-input settings-trackable" id="def-rs-batch" type="number" min="1" max="10" placeholder="4">
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Writing Configuration Defaults -->
+  <!-- Write Configuration -->
   <div class="settings-collapsible" id="scol-writeconfig">
     <div class="settings-collapsible-header" onclick="toggleSettingsSection('writeconfig')">
       <span>Write Configuration</span><span class="settings-chevron" id="schev-writeconfig">▶</span>
@@ -1063,7 +1079,7 @@ select.at-default option{color:var(--text);}
       <div class="settings-sub-header">Review</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
         <div class="settings-field"><label>Category</label>
-          <select class="settings-input settings-trackable" id="def-wr-cat">
+          <select class="settings-input settings-trackable" id="def-wr-cat" onchange="updateSettingsWriteGroup('def-wr-cat','def-wr-subcat');markSettingsDirty();">
             <option value="">All Categories</option>
             <option value="Joyo">Joyo</option>
             <option value="Jinmeiyo">Jinmeiyo</option>
@@ -1113,7 +1129,7 @@ select.at-default option{color:var(--text);}
       <div class="settings-sub-header">Study</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
         <div class="settings-field"><label>Category</label>
-          <select class="settings-input settings-trackable" id="def-ws-cat">
+          <select class="settings-input settings-trackable" id="def-ws-cat" onchange="updateSettingsWriteGroup('def-ws-cat','def-ws-subcat');markSettingsDirty();">
             <option value="Joyo" selected>Joyo</option>
             <option value="Jinmeiyo">Jinmeiyo</option>
             <option value="Kanji Extended">Kanji Extended</option>
@@ -1127,6 +1143,9 @@ select.at-default option{color:var(--text);}
         <div class="settings-field" style="grid-column:1/-1"><label>Items</label>
           <input class="settings-input settings-trackable" id="def-ws-count" type="number" min="1" max="999" placeholder="10">
         </div>
+        <div class="settings-field" style="grid-column:1/-1"><label>Batch Size</label>
+          <input class="settings-input settings-trackable" id="def-ws-batch" type="number" min="1" max="10" placeholder="4">
+        </div>
       </div>
     </div>
   </div>
@@ -1136,26 +1155,32 @@ select.at-default option{color:var(--text);}
 <!-- ITEM DETAIL MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal">
-    <button class="modal-close" onclick="closeModalBtn()">✕</button>
-    <div class="modal-kanji" id="modal-kanji"></div>
-    <div id="modal-reading-wrap"></div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
+      <div>
+        <div id="modal-kanji" style="font-size:2rem;line-height:1;font-weight:500;margin-bottom:2px;"></div>
+        <div id="modal-reading-wrap"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    </div>
     <hr class="modal-divider">
     <div id="modal-readings-section" style="display:none">
-      <div style="font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Readings</div>
+      <div class="modal-sub-header">Readings</div>
       <div class="modal-readings-grid" id="modal-readings-grid"></div>
       <hr class="modal-divider">
     </div>
-    <div class="modal-field"><div class="modal-field-label">Meaning</div><div class="modal-field-value" id="modal-meaning"></div></div>
-    <div class="modal-field"><div class="modal-field-label">Category</div><div class="modal-field-value" id="modal-category"></div></div>
+    <div class="modal-field"><div class="modal-sub-header">Meaning</div><div class="modal-field-value" id="modal-meaning"></div></div>
+    <div class="modal-field"><div class="modal-sub-header">Category</div><div class="modal-field-value" id="modal-category"></div></div>
     <div class="modal-field" id="modal-stroke-field" style="display:none">
-      <div class="modal-field-label">Stroke Order
-        <div class="stroke-toggle" id="stroke-anim-toggle" onclick="toggleStrokeAnim()">
-          <span id="stroke-anim-stop" class="active">■</span>
-          <span id="stroke-anim-play">▶</span>
-        </div>
-        <div class="stroke-toggle" id="stroke-speed-toggle" onclick="toggleStrokeSpeed()">
-          <span id="stroke-speed-normal" class="active">Fast</span>
-          <span id="stroke-speed-slow">Slow</span>
+      <div class="modal-sub-header" style="display:flex;align-items:center;justify-content:space-between;">Stroke Order
+        <div style="display:flex;gap:6px;">
+          <div class="stroke-toggle" id="stroke-anim-toggle" onclick="toggleStrokeAnim()">
+            <span id="stroke-anim-stop" class="active">■</span>
+            <span id="stroke-anim-play">▶</span>
+          </div>
+          <div class="stroke-toggle" id="stroke-speed-toggle" onclick="toggleStrokeSpeed()">
+            <span id="stroke-speed-normal" class="active">Fast</span>
+            <span id="stroke-speed-slow">Slow</span>
+          </div>
         </div>
       </div>
       <div id="modal-stroke-wrap" style="display:flex;align-items:center;justify-content:center;min-height:60px;">
@@ -1163,15 +1188,15 @@ select.at-default option{color:var(--text);}
       </div>
     </div>
     <div class="modal-field" id="modal-desc-field">
-      <div class="modal-field-label">Description</div>
+      <div class="modal-sub-header">Description</div>
       <div id="modal-description" style="color:var(--text2);font-size:0.85rem;white-space:pre-line;line-height:1.5;"></div>
     </div>
     <div class="modal-field" id="modal-examples-field" style="display:none">
-      <div class="modal-field-label">Example Sentences</div>
+      <div class="modal-sub-header">Example Sentences</div>
       <div class="examples-wrap" id="modal-examples-wrap"></div>
     </div>
     <div class="modal-field">
-      <div class="modal-field-label"><span>Notes <button class="modal-edit-btn" onclick="toggleEdit('notes')">Edit</button></span></div>
+      <div class="modal-sub-header"><span>Notes <button class="modal-edit-btn" onclick="toggleEdit('notes')">Edit</button></span></div>
       <div id="modal-notes-display" style="color:var(--text2);font-size:0.85rem;white-space:pre-line;"></div>
       <div id="modal-notes-edit" style="display:none">
         <textarea class="modal-edit-input" id="modal-notes-input" rows="3" style="resize:vertical;" placeholder="Your personal notes, mnemonics, warnings…"></textarea>
@@ -1179,7 +1204,7 @@ select.at-default option{color:var(--text);}
       </div>
     </div>
     <div class="modal-field">
-      <div class="modal-field-label">User Synonyms</div>
+      <div class="modal-sub-header">User Synonyms</div>
       <div class="synonym-list" id="modal-synonym-list"></div>
       <button class="add-synonym-btn" id="modal-add-syn-btn" onclick="toggleSynInput()">+ Add synonym</button>
       <div class="synonym-input-row" id="modal-syn-row" style="display:none">
@@ -1188,7 +1213,8 @@ select.at-default option{color:var(--text);}
       </div>
     </div>
     <hr class="modal-divider">
-    <div class="modal-field"><div class="modal-field-label">Level</div><div class="level-selector" id="modal-level-selector"></div></div>
+    <div class="modal-field"><div class="modal-sub-header">Reading Level</div><div class="level-selector" id="modal-level-selector"></div></div>
+    <div class="modal-field" id="modal-write-level-field" style="display:none"><div class="modal-sub-header">Writing Level</div><div class="level-selector" id="modal-write-level-selector"></div></div>
   </div>
 </div>
 
@@ -1214,7 +1240,7 @@ let userSettings = {
     stale_days: { read: {"2":0.25,"3":0.5,"4":1,"5":60}, write: {"2":0.25,"3":0.5,"4":1,"5":30} },
     config_defaults: {},
     graph_views: {
-      read: { enabled: ['kanji','vocab','proper'], default: 'all' },
+      read: { enabled: ['kanji','vocab','names','places'], default: 'all' },
       write: { enabled: ['Joyo','Jinmeiyo','Kanji Extended'], default: 'all' }
     }
   }
@@ -1224,11 +1250,16 @@ let quizMode = 'review';
 let readMode = 'review';
 // ── SHARED BATCH REVIEW ENGINE ──
 // Used by read review, read study review, write review, write study review
-const BATCH_SIZE = 4;
+let BATCH_SIZE = 4;
+let WRITE_BATCH_SIZE = 4;
 
-function createBatchSession(allItems, shuffleItems=true) {
+function getReadBatchSize() { return parseInt(userSettings.configuration?.config_defaults?.read_batch_size) || BATCH_SIZE; }
+function getWriteBatchSize() { return parseInt(userSettings.configuration?.config_defaults?.write_batch_size) || WRITE_BATCH_SIZE; }
+
+function createBatchSession(allItems, shuffleItems=true, batchSize=null) {
   return {
     allItems: shuffleItems ? shuffle([...allItems]) : [...allItems],
+    batchSize: batchSize || BATCH_SIZE,
     batchOffset: 0,
     currentBatch: [],
     currentQueue: [],
@@ -1300,8 +1331,9 @@ function batchAdvance(s, passed, isWrong) {
 }
 
 function batchStartNext(s) {
+  const size = s.batchSize || BATCH_SIZE;
   const remaining = s.allItems.slice(s.batchOffset);
-  s.currentBatch = remaining.slice(0, BATCH_SIZE);
+  s.currentBatch = remaining.slice(0, size);
   s.currentQueue = shuffle([...s.currentBatch]);
   s.currentIdx = 0;
   s.failedThisRound = [];
@@ -1309,8 +1341,9 @@ function batchStartNext(s) {
 }
 
 function batchProgress(s) {
-  const totalBatches = Math.ceil(s.allItems.length / BATCH_SIZE);
-  const batchNum = Math.floor(s.batchOffset / BATCH_SIZE) + 1;
+  const size = s.batchSize || BATCH_SIZE;
+  const totalBatches = Math.ceil(s.allItems.length / size);
+  const batchNum = Math.floor(s.batchOffset / size) + 1;
   return { batchNum, totalBatches, isRepeat: s.isRepeatRound || false };
 }
 
@@ -1393,14 +1426,14 @@ function initSelectDefaultTracking(sel, defaultVal) {
 }
 const LEVEL_COLORS = ['#555570','#c0392b','#e67e22','#8e44ad','#2980b9','#27ae60'];
 const VOCAB_GROUPS = {
-  'Nouns':              ['Nouns', 'Noun'],
-  'Verbs':              ['Verbs'],
-  'Adjectives':         ['Adjectives'],
-  'Adverbs':            ['Adverbs'],
-  'Expressions':        ['Expressions'],
-  'Particles & Grammar':['Particles & Grammar'],
-  'Onomatopoeia':       ['Onomatopoeia'],
-  'Other':              ['Other'],
+  'Nouns':                ['Nouns'],
+  'Verbs':                ['Verbs'],
+  'Adjectives':           ['Adjectives'],
+  'Adverbs':              ['Adverbs'],
+  'Expressions':          ['Expressions'],
+  'Particles & Grammar':  ['Particles & Grammar'],
+  'Prefixes & Suffixes':  ['Prefixes & Suffixes'],
+  'Onomatopoeia':         ['Onomatopoeia'],
 };
 
 // ── AUTH ──
@@ -1469,15 +1502,21 @@ async function launchApp() {
   document.getElementById('main-app').style.display = 'block';
   loadPrefs();
   showSync('Loading…', 'syncing');
-  await Promise.all([loadData(), loadUserProgress()]);
-  applyProgress();
-  updateNavUser();
-  populateSettingsName();
-  init();
-  applyConfigDefaults();
-  rebuildLevelDropdowns();
-  initMinMaxPair('qconfig-minlevel', 'qconfig-maxlevel', updateQuizPoolInfo);
-  initMinMaxPair('wr-minlevel', 'wr-maxlevel', updateWRPoolInfo);
+  try {
+    await Promise.all([loadData(), loadUserProgress()]);
+    applyProgress();
+    updateNavUser();
+    populateSettingsName();
+    init();
+    applyConfigDefaults();
+    rebuildLevelDropdowns();
+    initMinMaxPair('qconfig-minlevel', 'qconfig-maxlevel', updateQuizPoolInfo);
+    initMinMaxPair('wr-minlevel', 'wr-maxlevel', updateWRPoolInfo);
+  } catch(e) {
+    showSync('Load error: ' + e.message, 'error');
+    console.error('launchApp error:', e);
+    return;
+  }
   showSync('', '');
 }
 
@@ -1544,7 +1583,7 @@ async function loadUserProgress() {
       stale_days: cfg.stale_days || { read: DEFAULT_READ_STALE, write: DEFAULT_WRITE_STALE },
       config_defaults: cfg.config_defaults || {},
       graph_views: cfg.graph_views || {
-        read: { enabled: ['kanji','vocab','proper'], default: 'all' },
+        read: { enabled: ['kanji','vocab','names','places'], default: 'all' },
         write: { enabled: ['Joyo','Jinmeiyo','Kanji Extended'], default: 'all' }
       }
     };
@@ -1553,7 +1592,10 @@ async function loadUserProgress() {
   recentItemIds = new Set((recentRes.data || []).map(r => r.item_id));
 }
 
+let kanjiLookup = {}; // kanji char → item (for kanji categories only)
+
 function applyProgress() {
+  kanjiLookup = {};
   items.forEach(item => {
     item.level = userProgress[item.id] ?? 0;
     item.user_synonyms = userSynonyms[item.id] || [];
@@ -1562,6 +1604,7 @@ function applyProgress() {
       if (userNotes[item.id].description !== null) item.description = userNotes[item.id].description;
       if (userNotes[item.id].notes !== null) item.notes = userNotes[item.id].notes;
     }
+    if (item.category === 'Kanji') kanjiLookup[item.kanji] = item;
   });
 }
 
@@ -1705,34 +1748,100 @@ function populateFilters() {
     sel.innerHTML = '<option value="">All Categories</option>';
     cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o); });
   });
-  updatePosFilter();
-  updateTagFilter();
+  // Populate level filter with LEVEL_NAMES
+  const levelSel = document.getElementById('filter-level');
+  if (levelSel) {
+    levelSel.innerHTML = '<option value="">All Read Levels</option>';
+    LEVEL_NAMES.forEach((n,l) => { const o = document.createElement('option'); o.value = l; o.textContent = n; levelSel.appendChild(o); });
+  }
+  const wlSel = document.getElementById('filter-write-level');
+  if (wlSel) {
+    wlSel.innerHTML = '<option value="">All Write Levels</option>';
+    LEVEL_NAMES.forEach((n,l) => { const o = document.createElement('option'); o.value = l; o.textContent = n; wlSel.appendChild(o); });
+  }
+  updateDictFilters();
 }
 
 function getSubcats(cat) {
   if (cat === 'Vocab') return Object.keys(VOCAB_GROUPS);
   const subcats = [...new Set(items.filter(i => !cat || i.category === cat).map(i => i.subcategory))];
+  const kanjiOrder = ['Joyo','Jinmeiyo','Kanji Extended'];
   return subcats.sort((a, b) => {
-    // Sort "Category N-M" ranges numerically by start number
     const rA = a.match(/(\d+)-(\d+)$/);
     const rB = b.match(/(\d+)-(\d+)$/);
     if (rA && rB) return parseInt(rA[1]) - parseInt(rB[1]);
     if (rA) return -1;
     if (rB) return 1;
+    const iA = kanjiOrder.indexOf(a); const iB = kanjiOrder.indexOf(b);
+    if (iA >= 0 && iB >= 0) return iA - iB;
     return a.localeCompare(b);
   });
 }
+
 function subcatMatches(item, subcat) {
   if (!subcat) return true;
   if (item.category === 'Vocab' && VOCAB_GROUPS[subcat]) return VOCAB_GROUPS[subcat].includes(item.subcategory);
   return item.subcategory === subcat;
 }
+
+function updateDictFilters() {
+  const cat = document.getElementById('filter-cat').value;
+  const subcat = document.getElementById('filter-subcat');
+  const group = document.getElementById('filter-group');
+  const pos = document.getElementById('filter-pos');
+  const tag = document.getElementById('filter-tag');
+  const writeLevel = document.getElementById('filter-write-level');
+
+  // Subcategory
+  subcat.innerHTML = '<option value="">All Subcategories</option>';
+  getSubcats(cat).forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; subcat.appendChild(o); });
+  subcat.value = '';
+
+  // Group — show for Kanji, Names, Places; hide for Vocab and All
+  const showGroup = cat === 'Kanji' || cat === 'Names' || cat === 'Places';
+  group.style.display = showGroup ? '' : 'none';
+  group.value = '';
+
+  // POS — only for Vocab
+  pos.style.display = cat === 'Vocab' ? '' : 'none';
+  pos.value = '';
+
+  // Tags — only for Vocab
+  tag.style.display = cat === 'Vocab' ? '' : 'none';
+  tag.value = '';
+
+  // Write level — only for Kanji
+  writeLevel.style.display = cat === 'Kanji' ? '' : 'none';
+  writeLevel.value = '';
+
+  updateDictGroupFilter();
+  updatePosFilter();
+  updateTagFilter();
+}
+
+function updateDictGroupFilter() {
+  const cat = document.getElementById('filter-cat').value;
+  const subcat = document.getElementById('filter-subcat').value;
+  const sel = document.getElementById('filter-group');
+  if (!sel || sel.style.display === 'none') return;
+  const groups = [...new Set(
+    items.filter(i => i.category === cat && (!subcat || i.subcategory === subcat) && i.group)
+         .map(i => i.group)
+  )].sort((a, b) => {
+    const rA = a.match(/(\d+)-(\d+)$/);
+    const rB = b.match(/(\d+)-(\d+)$/);
+    if (rA && rB) return parseInt(rA[1]) - parseInt(rB[1]);
+    return a.localeCompare(b);
+  });
+  sel.innerHTML = '<option value="">All Groups</option>';
+  groups.forEach(g => { const o = document.createElement('option'); o.value = g; o.textContent = g; sel.appendChild(o); });
+}
+
 function updatePosFilter() {
   const cat = document.getElementById('filter-cat').value;
   const subcat = document.getElementById('filter-subcat').value;
   const sel = document.getElementById('filter-pos');
   if (cat !== 'Vocab') { sel.style.display = 'none'; sel.value = ''; return; }
-  // Build POS list from vocab items matching current subcategory selection
   const posSet = [...new Set(
     items.filter(i => i.category === 'Vocab' && i.pos && (!subcat || subcatMatches(i, subcat)))
          .map(i => i.pos)
@@ -1748,7 +1857,6 @@ function updateTagFilter() {
   const pos = document.getElementById('filter-pos').value;
   const sel = document.getElementById('filter-tag');
   if (cat !== 'Vocab') { sel.style.display = 'none'; sel.value = ''; return; }
-  // Build tag list from matching vocab items
   const tagSet = [...new Set(
     items.filter(i => i.category === 'Vocab'
       && (!subcat || subcatMatches(i, subcat))
@@ -1762,17 +1870,32 @@ function updateTagFilter() {
 }
 
 function updateSubcatFilter() {
-  const cat = document.getElementById('filter-cat').value;
-  const sel = document.getElementById('filter-subcat');
-  sel.innerHTML = '<option value="">All Subcategories</option>';
-  getSubcats(cat).forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+  updateDictFilters();
 }
 function updateQSubcat() {
   const cat = document.getElementById('qconfig-cat').value;
   const sel = document.getElementById('qconfig-subcat');
   sel.innerHTML = '<option value="">All Subcategories</option>';
   getSubcats(cat).forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+  document.getElementById('qconfig-group').innerHTML = '<option value="">All Groups</option>';
+  document.getElementById('qconfig-group-wrap').style.display = 'none';
   updateQuizPoolInfo();
+}
+
+function updateQGroup() {
+  const cat = document.getElementById('qconfig-cat').value;
+  const subcat = document.getElementById('qconfig-subcat').value;
+  const wrap = document.getElementById('qconfig-group-wrap');
+  const sel = document.getElementById('qconfig-group');
+  if (!subcat) { wrap.style.display = 'none'; sel.innerHTML = '<option value="">All Groups</option>'; return; }
+  const groups = [...new Set(items.filter(i => (!cat||i.category===cat) && i.subcategory===subcat && i.group).map(i=>i.group))].sort((a,b)=>{
+    const ra=a.match(/(\d+)-(\d+)$/); const rb=b.match(/(\d+)-(\d+)$/);
+    return (ra&&rb)?parseInt(ra[1])-parseInt(rb[1]):a.localeCompare(b);
+  });
+  if (!groups.length) { wrap.style.display = 'none'; return; }
+  sel.innerHTML = '<option value="">All Groups</option>';
+  groups.forEach(g => { const o = document.createElement('option'); o.value = g; o.textContent = g; sel.appendChild(o); });
+  wrap.style.display = '';
 }
 
 // ── VIEWS ──
@@ -1806,45 +1929,58 @@ function showView(v) {
 let readToggle = 'all';
 let writeToggle = 'all';
 
-const KANJI_CATS = new Set(['Joyo','Jinmeiyo','Kanji Extended']);
-const PROPER_CATS = new Set(['Surname','Given Name','Station','City','Town','Historical','Poetic','Prefecture','Landmark','Idiom']);
+const KANJI_CATS = new Set(['Kanji']);
+const PROPER_CATS = new Set(['Names','Places']);
 
 // All possible read graph view options (All is always shown, not configurable)
 const READ_VIEW_OPTIONS = [
-  { key: 'kanji',  label: 'Kanji',        isDefault: true },
-  { key: 'vocab',  label: 'Vocabulary',   isDefault: true },
-  { key: 'proper', label: 'Proper Nouns', isDefault: true },
-  { key: 'Surname',      label: 'Surname',       isDefault: false },
-  { key: 'Given Name',   label: 'Given Name',    isDefault: false },
-  { key: 'Station',      label: 'Station',       isDefault: false },
-  { key: 'City',         label: 'City',          isDefault: false },
-  { key: 'Town',         label: 'Town',          isDefault: false },
-  { key: 'Historical',   label: 'Historical',    isDefault: false },
-  { key: 'Poetic',       label: 'Poetic',        isDefault: false },
-  { key: 'Prefecture',   label: 'Prefecture',    isDefault: false },
-  { key: 'Landmark',     label: 'Landmark',      isDefault: false },
-  { key: 'Idiom',        label: 'Idiom',         isDefault: false },
-  { key: 'Joyo',         label: 'Joyo',          isDefault: false },
-  { key: 'Jinmeiyo',     label: 'Jinmeiyo',      isDefault: false },
-  { key: 'Kanji Extended', label: 'Extended',    isDefault: false },
+  { key: 'kanji',               label: 'Kanji',               isDefault: true },
+  { key: 'vocab',               label: 'Vocab',               isDefault: true },
+  { key: 'names',               label: 'Names',               isDefault: true },
+  { key: 'places',              label: 'Places',              isDefault: true },
+  // Kanji subcategories
+  { key: 'Joyo',                label: 'Joyo',                isDefault: false },
+  { key: 'Jinmeiyo',            label: 'Jinmeiyo',            isDefault: false },
+  { key: 'Kanji Extended',      label: 'Extended',            isDefault: false },
+  // Names subcategories
+  { key: 'Surname',             label: 'Surname',             isDefault: false },
+  { key: 'Given Name',          label: 'Given Name',          isDefault: false },
+  // Places subcategories
+  { key: 'Prefecture',          label: 'Prefecture',          isDefault: false },
+  { key: 'City',                label: 'City',                isDefault: false },
+  { key: 'Town',                label: 'Town',                isDefault: false },
+  { key: 'Station',             label: 'Station',             isDefault: false },
+  { key: 'Landmark',            label: 'Landmark',            isDefault: false },
+  { key: 'Historical',          label: 'Historical',          isDefault: false },
+  // Vocab subcategories
+  { key: 'Nouns',               label: 'Nouns',               isDefault: false },
+  { key: 'Verbs',               label: 'Verbs',               isDefault: false },
+  { key: 'Adjectives',          label: 'Adjectives',          isDefault: false },
+  { key: 'Adverbs',             label: 'Adverbs',             isDefault: false },
+  { key: 'Expressions',         label: 'Expressions',         isDefault: false },
+  { key: 'Particles & Grammar', label: 'Particles & Grammar', isDefault: false },
+  { key: 'Prefixes & Suffixes', label: 'Prefixes & Suffixes', isDefault: false },
+  { key: 'Onomatopoeia',        label: 'Onomatopoeia',        isDefault: false },
 ];
 const WRITE_VIEW_OPTIONS = [
-  { key: 'Joyo',         label: 'Joyo',          isDefault: true },
-  { key: 'Jinmeiyo',     label: 'Jinmeiyo',      isDefault: true },
-  { key: 'Kanji Extended', label: 'Extended',    isDefault: true },
+  { key: 'Joyo',         label: 'Joyo',      isDefault: true },
+  { key: 'Jinmeiyo',     label: 'Jinmeiyo',  isDefault: true },
+  { key: 'Kanji Extended', label: 'Extended', isDefault: true },
 ];
 
 function getReadItems(toggle) {
-  if (toggle === 'kanji') return items.filter(i => KANJI_CATS.has(i.category));
-  if (toggle === 'vocab') return items.filter(i => i.category === 'Vocab');
-  if (toggle === 'proper') return items.filter(i => PROPER_CATS.has(i.category));
-  if (toggle === 'all') return items;
-  return items.filter(i => i.category === toggle);
+  if (toggle === 'kanji')  return items.filter(i => i.category === 'Kanji');
+  if (toggle === 'vocab')  return items.filter(i => i.category === 'Vocab');
+  if (toggle === 'names')  return items.filter(i => i.category === 'Names');
+  if (toggle === 'places') return items.filter(i => i.category === 'Places');
+  if (toggle === 'all')    return items;
+  // subcategory-level toggle (e.g. Joyo, Surname etc)
+  return items.filter(i => i.subcategory === toggle);
 }
 
 function getWriteItems(toggle) {
-  if (toggle === 'all') return items.filter(i => WRITE_KANJI_CATS.has(i.category));
-  return items.filter(i => i.category === toggle);
+  if (toggle === 'all') return items.filter(i => i.category === 'Kanji');
+  return items.filter(i => i.category === 'Kanji' && i.subcategory === toggle);
 }
 
 function setReadToggle(val, btn) {
@@ -1863,7 +1999,7 @@ function setWriteToggle(val, btn) {
 
 function renderDashboardToggles() {
   const gv = userSettings.configuration?.graph_views || {};
-  const readEnabled = gv.read?.enabled || ['kanji','vocab','proper'];
+  const readEnabled = gv.read?.enabled || ['kanji','vocab','names','places'];
   const writeEnabled = gv.write?.enabled || ['Joyo','Jinmeiyo','Kanji Extended'];
   const readDefault = gv.read?.default || 'all';
   const writeDefault = gv.write?.default || 'all';
@@ -1926,15 +2062,15 @@ function renderReadStats() {
   }).length;
   document.getElementById('stats-grid').innerHTML = `
     <div class="stat-card" onclick="startWeakItems()">
-      <div class="num" style="color:var(--lvl-review)">${fragile.toLocaleString()}</div>
+      <div class="num" style="color:var(--lvl-review)">${fragile}</div>
       <div class="lbl">At Risk</div>
     </div>
     <div class="stat-card" onclick="openQSModal('stale')">
-      <div class="num" style="color:#e67e22">${stale.toLocaleString()}</div>
+      <div class="num" style="color:#e67e22">${stale}</div>
       <div class="lbl">Gone Stale</div>
     </div>
     <div class="stat-card" onclick="showView('dictionary')">
-      <div class="num" style="color:#2980b9">${studied.toLocaleString()}</div>
+      <div class="num" style="color:#2980b9">${studied}</div>
       <div class="lbl">Items Studied</div>
     </div>`;
 }
@@ -1947,16 +2083,15 @@ function renderReadGraph() {
     <div class="level-bar-row">
       <div class="level-bar-label"><div class="level-dot" style="background:${LEVEL_COLORS[l]}"></div><span style="color:${LEVEL_COLORS[l]}">${LEVEL_NAMES[l]}</span></div>
       <div class="level-bar-track"><div class="level-bar-fill" style="width:${(c/maxCount)*100}%;background:${LEVEL_COLORS[l]}"></div></div>
-      <div class="level-bar-count">${c.toLocaleString()}</div>
+      <div class="level-bar-count">${c}</div>
     </div>`).join('');
 }
 
 function getStaleCutoff(level, type) {
   const staleDays = userSettings.configuration?.stale_days || {};
-  const days = type === 'write'
-    ? (staleDays.write || DEFAULT_WRITE_STALE)
-    : (staleDays.read  || DEFAULT_READ_STALE);
-  const d = days[level] ?? days[String(level)] ?? (type === 'write' ? DEFAULT_WRITE_STALE[level] : DEFAULT_READ_STALE[level]);
+  const defaults = type === 'write' ? DEFAULT_WRITE_STALE : DEFAULT_READ_STALE;
+  const saved = staleDays[type] || {};
+  const d = saved[level] ?? saved[String(level)] ?? defaults[level] ?? defaults[String(level)] ?? (type === 'write' ? 1 : 14);
   return new Date(Date.now() - d * 86400000).toISOString();
 }
 
@@ -1967,20 +2102,20 @@ function renderWriteStats() {
   const now = Date.now();
   const stale = allKanji.filter(i => {
     const lq = userWriteLastQuizzed[i.id]; const wl = userWriteProgress[i.id] ?? 0;
-    if (wl === 0) return false;
+    if (wl < 2) return false;
     return !lq || lq < getStaleCutoff(wl, 'write');
   }).length;
   document.getElementById('write-stats-grid').innerHTML = `
     <div class="stat-card" onclick="startWeakWriters()">
-      <div class="num" style="color:var(--lvl-review)">${fragile.toLocaleString()}</div>
+      <div class="num" style="color:var(--lvl-review)">${fragile}</div>
       <div class="lbl">Fragile</div>
     </div>
     <div class="stat-card" onclick="openWriteReviewModal('stale')">
-      <div class="num" style="color:#e67e22">${stale.toLocaleString()}</div>
+      <div class="num" style="color:#e67e22">${stale}</div>
       <div class="lbl">Gone Stale</div>
     </div>
     <div class="stat-card" onclick="showView('dictionary')">
-      <div class="num" style="color:#2980b9">${studied.toLocaleString()}</div>
+      <div class="num" style="color:#2980b9">${studied}</div>
       <div class="lbl">Items Studied</div>
     </div>`;
 }
@@ -1993,10 +2128,9 @@ function renderWriteGraph() {
     <div class="level-bar-row">
       <div class="level-bar-label"><div class="level-dot" style="background:${LEVEL_COLORS[l]}"></div><span style="color:${LEVEL_COLORS[l]}">${LEVEL_NAMES[l]}</span></div>
       <div class="level-bar-track"><div class="level-bar-fill" style="width:${(c/maxCount)*100}%;background:${LEVEL_COLORS[l]}"></div></div>
-      <div class="level-bar-count">${c.toLocaleString()}</div>
+      <div class="level-bar-count">${c}</div>
     </div>`).join('');
 }
-
 
 // ── QUICK START MODALS ──
 function getStalePool(includeEnlightened) {
@@ -2014,6 +2148,8 @@ function resetReadConfig() {
   const d = getConfigDefaults();
   document.getElementById('qconfig-cat').value = d.rr_cat || '';
   document.getElementById('qconfig-subcat').value = d.rr_subcat || '';
+  document.getElementById('qconfig-group').value = '';
+  document.getElementById('qconfig-group-wrap').style.display = 'none';
   document.getElementById('qconfig-minlevel').value = d.rr_minlevel || '1';
   document.getElementById('qconfig-maxlevel').value = d.rr_maxlevel || '5';
   document.getElementById('qconfig-days').value = d.rr_days || '0';
@@ -2038,6 +2174,10 @@ function openQSModal(mode) {
   showView('review');
   resetReadConfig();
   if (mode === 'stale') {
+    document.getElementById('qconfig-cat').value = '';
+    document.getElementById('qconfig-subcat').value = '';
+    document.getElementById('qconfig-group').value = '';
+    document.getElementById('qconfig-group-wrap').style.display = 'none';
     document.getElementById('qconfig-minlevel').value = '2';
     document.getElementById('qconfig-maxlevel').value = '5';
     document.getElementById('qconfig-days').value = 'stale';
@@ -2068,6 +2208,7 @@ function openWriteReviewModal(type) {
     document.getElementById('wr-reviewed').value = 'stale';
     document.getElementById('wr-minlevel').value = '2';
     document.getElementById('wr-maxlevel').value = '5';
+    syncMinMax('wr-minlevel', 'wr-maxlevel', true);
   }
   updateWRPoolInfo();
 }
@@ -2114,25 +2255,45 @@ function getMeanings(item) {
   return [];
 }
 
-function getCatCount(cat) {
-  if (!cat) return items.length;
-  return items.filter(i => i.category === cat).length;
-}
-
 function renderDict() {
   document.getElementById('dict-skeleton')?.remove();
   const q = document.getElementById('dict-search').value.toLowerCase();
   const cat = document.getElementById('filter-cat').value;
   const subcat = document.getElementById('filter-subcat').value;
+  const group = document.getElementById('filter-group').value;
   const level = document.getElementById('filter-level').value;
+  const writeLevel = document.getElementById('filter-write-level').value;
   const pos = document.getElementById('filter-pos').value;
   const tag = document.getElementById('filter-tag').value;
+  const lastReviewed = document.getElementById('filter-last-reviewed').value;
+  const now = Date.now();
   let filtered = items.filter(i => {
     if (cat && i.category !== cat) return false;
     if (subcat && !subcatMatches(i, subcat)) return false;
+    if (group && i.group !== group) return false;
     if (pos && i.pos !== pos) return false;
-    if (tag && !(i.tags||[]).includes(tag)) return false;
+    if (tag && !(i.tags||[]).map(t=>t.trim()).includes(tag)) return false;
     if (level !== '' && i.level !== parseInt(level)) return false;
+    if (writeLevel !== '') {
+      const wl = userWriteProgress[i.id] ?? 0;
+      if (wl !== parseInt(writeLevel)) return false;
+    }
+    if (lastReviewed) {
+      const readLq = i.last_quizzed || null;
+      const writeLq = userWriteLastQuizzed[i.id] || null;
+      const lq = readLq && writeLq ? (readLq > writeLq ? readLq : writeLq) : (readLq || writeLq);
+      if (lastReviewed === 'stale_never') { if (lq) return false; }
+      else if (lastReviewed === 'stale') { if (!(!lq || lq < getStaleCutoff(i.level, 'read'))) return false; }
+      else if (lastReviewed.startsWith('recent_')) {
+        const days = parseInt(lastReviewed.split('_')[1]);
+        const cutoff = new Date(now - days*86400000).toISOString();
+        if (!lq || lq < cutoff) return false;
+      } else if (lastReviewed.startsWith('stale_')) {
+        const days = parseInt(lastReviewed.split('_')[1]);
+        const cutoff = new Date(now - days*86400000).toISOString();
+        if (lq && lq >= cutoff) return false;
+      }
+    }
     if (q) {
       const exact = q.startsWith('"') && q.endsWith('"') && q.length > 2;
       const term = exact ? q.slice(1,-1) : q;
@@ -2155,7 +2316,7 @@ function renderDict() {
       <div class="info">
         <div class="reading">${getDisplayReading(item)}</div>
         <div class="meaning">${getDisplayMeaning(item).slice(0,60)}</div>
-        <div class="badge-row"><span class="badge level-badge-${item.level}">${LEVEL_NAMES[item.level]}</span>${lockBadge}<span class="badge cat-badge">${item.category}</span>${item.category!=='Given Name'?`<span class="badge cat-badge">${item.subcategory}</span>`:''} ${gBadge}</div>
+        <div class="badge-row"><span class="badge level-badge-${item.level}">${LEVEL_NAMES[item.level]}</span>${lockBadge}<span class="badge cat-badge">${item.category}</span><span class="badge cat-badge">${item.subcategory}</span>${item.group?`<span class="badge cat-badge">${item.group}</span>`:''} ${gBadge}</div>
       </div></div>`;
   }).join('')+(filtered.length>200?`<div class="empty-state" style="padding:16px">Showing 200 of ${filtered.length} — refine your search</div>`:'');
   // Force repaint — without this, filter changes don't visually update until tab switch
@@ -2186,10 +2347,9 @@ async function loadStrokeOrder(kanji) {
   const field = document.getElementById('modal-stroke-field');
   const wrap = document.getElementById('modal-stroke-svg');
 
-  // Only show for single kanji characters in Joyo/Jinmeiyo/Kanji Extended
+  // Only show for single kanji characters in Kanji category
   const item = items.find(i => i.id === currentModalId);
-  const kanjiCats = new Set(['Joyo','Jinmeiyo','Kanji Extended']);
-  if (!item || !kanjiCats.has(item.category) || [...kanji].length !== 1) {
+  if (!item || item.category !== 'Kanji' || [...kanji].length !== 1) {
     field.style.display = 'none';
     return;
   }
@@ -2260,10 +2420,10 @@ function openModal(id) {
     rw.innerHTML = '';
   } else {
     document.getElementById('modal-readings-section').style.display = 'none';
-    rw.innerHTML = `<div style="font-size:1.1rem;color:var(--text2);margin-bottom:3px;">${item.reading||''}</div>${item.romaji?`<div style="font-size:0.875rem;color:var(--text3);margin-bottom:10px;">${item.romaji}</div>`:''}`;
+    rw.innerHTML = `<div class="modal-reading">${item.reading||''}</div>${item.romaji?`<div style="font-size:0.875rem;color:var(--text3);margin-bottom:10px;">${item.romaji}</div>`:''}`;
   }
   document.getElementById('modal-meaning').textContent = getDisplayMeaning(item);
-  document.getElementById('modal-category').textContent = `${item.category} › ${item.subcategory}${item.pos ? ' › ' + item.pos : ''}${item.gender && item.gender !== item.subcategory ? ' › '+item.gender : ''}`;
+  document.getElementById('modal-category').textContent = `${item.category} › ${item.subcategory}${item.group ? ' › ' + item.group : ''}${item.pos ? ' · ' + item.pos : ''}${item.gender && item.gender !== item.subcategory ? ' · '+item.gender : ''}`;
   // Description (read-only)
   const descEl = document.getElementById('modal-description');
   descEl.textContent = item.description || '';
@@ -2277,7 +2437,18 @@ function openModal(id) {
   renderModalSynonyms(item);
   document.getElementById('modal-syn-row').style.display = 'none';
   document.getElementById('modal-level-selector').innerHTML = LEVEL_NAMES.map((n,l) =>
-    `<div class="level-opt${item.level===l?' active':''}" style="${item.level===l?`background:${LEVEL_COLORS[l]}22;border-color:${LEVEL_COLORS[l]};color:${LEVEL_COLORS[l]};border-width:2px;`:''}" onclick="setItemLevel(${l})">${l} — ${n}</div>`).join('');
+    `<div class="level-opt${item.level===l?' active':''}" style="${item.level===l?`background:${LEVEL_COLORS[l]}22;border-color:${LEVEL_COLORS[l]};color:${LEVEL_COLORS[l]};border-width:2px;`:''}" onclick="setItemLevel(${l})">${n}</div>`).join('');
+  // Write level — only for Kanji
+  const writeField = document.getElementById('modal-write-level-field');
+  const writeSel = document.getElementById('modal-write-level-selector');
+  if (item.category === 'Kanji') {
+    writeField.style.display = 'block';
+    const wl = userWriteProgress[item.id] ?? 0;
+    writeSel.innerHTML = LEVEL_NAMES.map((n,l) =>
+      `<div class="level-opt${wl===l?' active':''}" style="${wl===l?`background:${LEVEL_COLORS[l]}22;border-color:${LEVEL_COLORS[l]};color:${LEVEL_COLORS[l]};border-width:2px;`:''}">${n}</div>`).join('');
+  } else {
+    writeField.style.display = 'none';
+  }
   document.getElementById('modal-overlay').classList.add('open');
 }
 function renderModalSynonyms(item) {
@@ -2306,7 +2477,7 @@ async function setItemLevel(level) {
   const item=items.find(i=>i.id===currentModalId); if(!item) return;
   item.level=level;
   document.getElementById('modal-level-selector').innerHTML=LEVEL_NAMES.map((n,l)=>
-    `<div class="level-opt${item.level===l?' active':''}" style="${item.level===l?`background:${LEVEL_COLORS[l]}22;border-color:${LEVEL_COLORS[l]};color:${LEVEL_COLORS[l]};border-width:2px;`:''}" onclick="setItemLevel(${l})">${l} — ${n}</div>`).join('');
+    `<div class="level-opt${item.level===l?' active':''}" style="${item.level===l?`background:${LEVEL_COLORS[l]}22;border-color:${LEVEL_COLORS[l]};color:${LEVEL_COLORS[l]};border-width:2px;`:''}" onclick="setItemLevel(${l})">${n}</div>`).join('');
   renderDashboard();
   await saveLevel(item.id, level);
   showSync('Saved ✓','success'); setTimeout(()=>showSync('',''),1500);
@@ -2420,16 +2591,18 @@ function populateSettingsName() {
       el.value = val !== undefined ? val : '';
     }
   };
-  setDef('def-rr-cat','rr_cat'); setDef('def-rr-subcat','rr_subcat');
+  setDef('def-rr-cat','rr_cat'); updateSettingsSubcat('def-rr-cat','def-rr-subcat'); setDef('def-rr-subcat','rr_subcat');
   setDef('def-rr-minlevel','rr_minlevel'); setDef('def-rr-maxlevel','rr_maxlevel');
   setDef('def-rr-days','rr_days'); setDef('def-rr-count','rr_count','20');
-  setDef('def-rs-cat','rs_cat'); setDef('def-rs-subcat','rs_subcat');
+  setDef('def-rs-cat','rs_cat'); updateSettingsSubcat('def-rs-cat','def-rs-subcat'); setDef('def-rs-subcat','rs_subcat');
   setDef('def-rs-count','rs_count','10');
-  setDef('def-wr-cat','wr_cat'); setDef('def-wr-subcat','wr_subcat');
+  setDef('def-rs-batch','read_batch_size','4');
+  setDef('def-wr-cat','wr_cat'); updateSettingsWriteGroup('def-wr-cat','def-wr-subcat'); setDef('def-wr-subcat','wr_subcat');
   setDef('def-wr-minlevel','wr_minlevel'); setDef('def-wr-maxlevel','wr_maxlevel');
   setDef('def-wr-reviewed','wr_reviewed'); setDef('def-wr-count','wr_count','20');
-  setDef('def-ws-cat','ws_cat'); setDef('def-ws-subcat','ws_subcat');
+  setDef('def-ws-cat','ws_cat'); updateSettingsWriteGroup('def-ws-cat','def-ws-subcat'); setDef('def-ws-subcat','ws_subcat');
   setDef('def-ws-count','ws_count','10');
+  setDef('def-ws-batch','write_batch_size','4');
 
   // Populate read config category options from items
   ['def-rr-cat','def-rs-cat'].forEach(id => {
@@ -2519,6 +2692,26 @@ function updateGraphDefaultSelect(type, forceDefault) {
   updateSelectDefault(sel, 'all');
 }
 
+function updateSettingsWriteGroup(catId, groupId) {
+  const subcat = document.getElementById(catId)?.value || '';
+  const sel = document.getElementById(groupId);
+  if (!sel) return;
+  const groups = [...new Set(items.filter(i => i.category === 'Kanji' && (!subcat || i.subcategory === subcat)).map(i => i.group))].sort((a,b) => {
+    const ra = a.match(/(\d+)-(\d+)$/); const rb = b.match(/(\d+)-(\d+)$/);
+    return (ra && rb) ? parseInt(ra[1]) - parseInt(rb[1]) : a.localeCompare(b);
+  });
+  sel.innerHTML = '<option value="">All Groups</option>';
+  groups.forEach(g => { const o = document.createElement('option'); o.value = g; o.textContent = g; sel.appendChild(o); });
+}
+
+function updateSettingsSubcat(catId, subcatId) {
+  const cat = document.getElementById(catId)?.value || '';
+  const sel = document.getElementById(subcatId);
+  if (!sel) return;
+  sel.innerHTML = '<option value="">All Subcategories</option>';
+  getSubcats(cat).forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+}
+
 function markSettingsDirty() {
   if (settingsDirty) return;
   settingsDirty = true;
@@ -2579,9 +2772,9 @@ async function saveAllSettings() {
   const cfg_defaults = {};
   const defMap = {
     rr_cat:'def-rr-cat', rr_subcat:'def-rr-subcat', rr_minlevel:'def-rr-minlevel', rr_maxlevel:'def-rr-maxlevel',
-    rr_days:'def-rr-days', rr_count:'def-rr-count', rs_cat:'def-rs-cat', rs_subcat:'def-rs-subcat', rs_count:'def-rs-count',
+    rr_days:'def-rr-days', rr_count:'def-rr-count', rs_cat:'def-rs-cat', rs_subcat:'def-rs-subcat', rs_count:'def-rs-count', read_batch_size:'def-rs-batch',
     wr_cat:'def-wr-cat', wr_subcat:'def-wr-subcat', wr_minlevel:'def-wr-minlevel', wr_maxlevel:'def-wr-maxlevel',
-    wr_reviewed:'def-wr-reviewed', wr_count:'def-wr-count', ws_cat:'def-ws-cat', ws_subcat:'def-ws-subcat', ws_count:'def-ws-count'
+    wr_reviewed:'def-wr-reviewed', wr_count:'def-wr-count', ws_cat:'def-ws-cat', ws_subcat:'def-ws-subcat', ws_count:'def-ws-count', write_batch_size:'def-ws-batch'
   };
   Object.entries(defMap).forEach(([key, id]) => {
     const el = document.getElementById(id);
@@ -2629,7 +2822,7 @@ function checkMeaning(input,item){
 // ── PROMPTS ──
 function buildPrompts(item) {
   // Onomatopoeia — kanji field IS the kana, so only quiz meaning
-  if (item.category === 'Onomatopoeia') {
+  if (item.subcategory === 'Onomatopoeia') {
     return getMeanings(item).length
       ? [{type:'meaning', label:'Meaning', mode:'meaning'}]
       : [{type:'reading', label:'Reading', mode:'reading'}];
@@ -2642,7 +2835,7 @@ function buildPrompts(item) {
     return pool.length?shuffle(pool):[{type:'reading',label:'Reading',mode:'reading'}];
   }
   const prompts=[{type:'reading',label:'Reading',mode:'reading'}];
-  if((item.category==='Vocab'||item.category==='Idiom')&&getMeanings(item).length)
+  if((item.category==='Vocab')&&getMeanings(item).length)
     prompts.push({type:'meaning',label:'Meaning',mode:'meaning'});
   return prompts;
 }
@@ -2665,12 +2858,14 @@ function setQuizMode(mode){ quizMode=mode; updateQuizPoolInfo(); }
 function getQuizPool(){
   const cat=document.getElementById('qconfig-cat')?.value||'';
   const subcat=document.getElementById('qconfig-subcat')?.value||'';
+  const group=document.getElementById('qconfig-group')?.value||'';
   const minLevel=parseInt(document.getElementById('qconfig-minlevel')?.value||'1');
   const maxLevel=parseInt(document.getElementById('qconfig-maxlevel')?.value||'5');
   const daysVal=document.getElementById('qconfig-days')?.value||'0';
   return items.filter(i=>{
     if(cat&&i.category!==cat)return false;
     if(subcat&&!subcatMatches(i,subcat))return false;
+    if(group&&i.group!==group)return false;
     if(i.level<minLevel||i.level>maxLevel)return false;
     const lq = i.last_quizzed || null;
     if(daysVal==='0') return true; // any time
@@ -2742,7 +2937,7 @@ function showPrompt(){
   lbl.textContent=prompt.label;
   lbl.className='quiz-prompt-label '+(prompt.mode==='reading'?'reading':'meaning');
   document.getElementById('quiz-prompt').textContent=item.kanji;
-  document.getElementById('quiz-hint').textContent=`${item.category} › ${item.pos || item.subcategory}`;
+  document.getElementById('quiz-hint').textContent=`${item.subcategory}${item.pos ? ' · ' + item.pos : ''}`;
   const ge=document.getElementById('quiz-gender-hint');
   if(item.gender){const icon=item.gender==='Male'?'♂':item.gender==='Female'?'♀':'⚥';const color=item.gender==='Male'?'#2980b9':item.gender==='Female'?'#e8799a':'#27ae60';ge.textContent=`${icon} ${item.gender}`;ge.style.cssText=`color:${color};background:${color}22;border:1px solid ${color}44;display:inline-block;`;}
   else{ge.textContent='';ge.style.display='';}
@@ -2944,7 +3139,7 @@ async function showResults(endedEarly=false){
     return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div style="font-size:0.75rem;font-weight:600;color:${LEVEL_COLORS[r.item.level]}">${LEVEL_NAMES[r.item.level]}</div><div class="results-icon">${icon}</div></div>`;
   }).join('');
   renderDashboard();
-  await saveLevelBatch(results.map(r=>({item_id:r.item.id,level:r.item.level})));
+  saveLevelBatch(results.map(r=>({item_id:r.item.id,level:r.item.level})));
 }
 
 function backToConfig(){
@@ -3008,33 +3203,18 @@ function getKanjiComponents(str) {
   });
 }
 
-function getWKLevel(item) {
-  // Returns batch key for a kanji item, or null
-  const kanji_cats = new Set(['Joyo', 'Jinmeiyo', 'Kanji Extended']);
-  if (!kanji_cats.has(item.category)) return null;
-  const m = item.subcategory.match(/^(.+) (\d+)-(\d+)$/);
-  if (!m) return null;
-  const lo = parseInt(m[2]);
-  const batchNum = Math.ceil(lo / 200);
-  return `${item.category}:${batchNum}`;
-}
-
 function isAvailableToStudy(item) {
   if (item.level > 0) return true;
 
-  const kanji_cats = new Set(['Joyo', 'Jinmeiyo', 'Kanji Extended']);
-  if (kanji_cats.has(item.category)) {
+  if (item.category === 'Kanji') {
     return isBatchUnlocked(item);
   }
-
-  // Onomatopoeia — pure kana, no prerequisites
-  if (item.category === 'Onomatopoeia') return true;
 
   // Everything else — unlock if ANY kanji component has been studied (level > 0)
   const components = getKanjiComponents(item.kanji);
   if (!components.length) return true; // kana-only item
   return components.some(ch => {
-    const kanjiItem = items.find(i => i.kanji === ch && kanji_cats.has(i.category));
+    const kanjiItem = kanjiLookup[ch];
     if (!kanjiItem) return true; // unknown kanji — don't block
     return kanjiItem.level > 0;
   });
@@ -3043,15 +3223,13 @@ function isAvailableToStudy(item) {
 function checkAndUnlockNewLevels() {
   let newUnlocks = [];
 
-  // Each category has its own independent unlock chain
-  // Batch N+1 unlocks when any kanji from batch N has been studied
-  const categories = [
-    { name: 'Joyo', max: 11 },       // up to Joyo 2001-2200
-    { name: 'Jinmeiyo', max: 5 },    // up to Jinmeiyo 801-1000
-    { name: 'Kanji Extended', max: 5 }, // up to Extended 801-1000
+  const subcategories = [
+    { name: 'Joyo', max: 11 },
+    { name: 'Jinmeiyo', max: 5 },
+    { name: 'Kanji Extended', max: 5 },
   ];
 
-  for (const { name, max } of categories) {
+  for (const { name, max } of subcategories) {
     for (let batch = 1; batch <= max; batch++) {
       const nextBatch = batch + 1;
       const batchKey = `${name}:${nextBatch}`;
@@ -3060,8 +3238,9 @@ function checkAndUnlockNewLevels() {
       const lo = (batch - 1) * 200 + 1;
       const hi = batch * 200;
       const batchKanji = items.filter(i =>
-        i.category === name &&
-        i.subcategory === `${name} ${lo}-${hi}`
+        i.category === 'Kanji' &&
+        i.subcategory === name &&
+        i.group === `${name} ${lo}-${hi}`
       );
       if (!batchKanji.length) continue;
 
@@ -3076,38 +3255,51 @@ function checkAndUnlockNewLevels() {
 }
 
 function isBatchUnlocked(item) {
-  if (item.category !== 'Joyo' && item.category !== 'Jinmeiyo' && item.category !== 'Kanji Extended') return false;
-  // Batch 1 of each category always unlocked
-  const m = item.subcategory.match(/^(.+) (\d+)-(\d+)$/);
+  if (item.category !== 'Kanji') return false;
+  // Batch 1 of each subcategory always unlocked
+  const m = item.group?.match(/^(.+) (\d+)-(\d+)$/);
   if (!m) return false;
-  const catName = m[1];
+  const subcatName = m[1];
   const lo = parseInt(m[2]);
-  if (lo === 1) return true; // first batch always unlocked
+  if (lo === 1) return true;
   const batchNum = Math.ceil(lo / 200);
-  return unlockedLevels.has(`${catName}:${batchNum}`);
+  return unlockedLevels.has(`${subcatName}:${batchNum}`);
 }
 
 // ── STUDY CONFIG ──
 function updateSSubcat() {
   const cat = document.getElementById('sconfig-cat').value;
   const sel = document.getElementById('sconfig-subcat');
-  const field = sel.closest('.config-item');
-  // Hide subcategory for kanji categories — batch gate handles ordering
-  if (['Joyo', 'Jinmeiyo', 'Kanji Extended'].includes(cat)) {
-    if (field) field.style.display = 'none';
-    sel.value = '';
-    return;
-  }
-  if (field) field.style.display = '';
   sel.innerHTML = '<option value="">All Subcategories</option>';
   getSubcats(cat).forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+  document.getElementById('sconfig-group').innerHTML = '<option value="">All Groups</option>';
+  document.getElementById('sconfig-group-wrap').style.display = 'none';
 }
+
+function updateSGroup() {
+  const cat = document.getElementById('sconfig-cat').value;
+  const subcat = document.getElementById('sconfig-subcat').value;
+  const wrap = document.getElementById('sconfig-group-wrap');
+  const sel = document.getElementById('sconfig-group');
+  if (!subcat) { wrap.style.display = 'none'; sel.innerHTML = '<option value="">All Groups</option>'; return; }
+  const groups = [...new Set(items.filter(i => (!cat||i.category===cat) && i.subcategory===subcat && i.group).map(i=>i.group))].sort((a,b)=>{
+    const ra=a.match(/(\d+)-(\d+)$/); const rb=b.match(/(\d+)-(\d+)$/);
+    return (ra&&rb)?parseInt(ra[1])-parseInt(rb[1]):a.localeCompare(b);
+  });
+  if (!groups.length) { wrap.style.display = 'none'; return; }
+  sel.innerHTML = '<option value="">All Groups</option>';
+  groups.forEach(g => { const o = document.createElement('option'); o.value = g; o.textContent = g; sel.appendChild(o); });
+  wrap.style.display = '';
+}
+
 function getStudyPool() {
   const cat = document.getElementById('sconfig-cat')?.value || '';
   const subcat = document.getElementById('sconfig-subcat')?.value || '';
+  const group = document.getElementById('sconfig-group')?.value || '';
   return items.filter(i => {
     if (cat && i.category !== cat) return false;
     if (subcat && !subcatMatches(i, subcat)) return false;
+    if (group && i.group !== group) return false;
     if (i.level !== 0) return false;
     return isAvailableToStudy(i);
   });
@@ -3122,7 +3314,7 @@ function updateStudyPoolInfo() {
 function startStudy(){
   const pool=getStudyPool();if(!pool.length)return;
   const count=Math.min(parseInt(document.getElementById('sconfig-count').value)||10,pool.length);
-  studySession=createBatchSession(pool.slice(0,count));
+  studySession=createBatchSession(pool.slice(0,count), true, getReadBatchSize());
   batchStartNext(studySession);
   document.getElementById('study-config-panel').style.display='none';
   document.getElementById('study-results').classList.remove('show');
@@ -3363,7 +3555,7 @@ async function showStudyResults(endedEarly=false){
     return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div style="font-size:0.75rem;font-weight:600;color:${LEVEL_COLORS[r.item.level]}">${LEVEL_NAMES[r.item.level]}</div><div>${icon}</div></div>`;
   }).join('');
   renderDashboard();
-  await saveLevelBatch(results.map(r=>({item_id:r.item.id,level:r.item.level})));
+  if (!endedEarly) saveLevelBatch(results.map(r=>({item_id:r.item.id,level:r.item.level})));
 }
 function endStudyLearn(){
   if(!confirm('End session? Current batch progress will be lost.'))return;
@@ -3375,14 +3567,13 @@ function backToStudyConfig() {
   document.getElementById('study-quiz-wrap').style.display='none';
   document.getElementById('study-learn-wrap').style.display='none';
   document.getElementById('study-config-panel').style.display='block';
-  updateStudyPoolInfo();
+  setTimeout(updateStudyPoolInfo, 0);
 }
 async function endStudyQuiz(){
   if(!confirm('End session? Current batch progress will be lost.'))return;
   document.getElementById('study-quiz-wrap').style.display='none';
   backToStudyConfig();
 }
-
 
 // ── READ TAB ──
 function setReadMode(mode) {
@@ -3406,7 +3597,7 @@ function setReadMode(mode) {
 }
 
 // ── WRITE TAB ──
-const WRITE_KANJI_CATS = new Set(['Joyo','Jinmeiyo','Kanji Extended']);
+const WRITE_KANJI_CATS = new Set(['Kanji']);
 
 // ── SHARED WRITE STATE ──
 const WRITE_SLOW = true;
@@ -3429,8 +3620,9 @@ function setWriteMode(mode) {
 }
 
 function initWriteTab() {
-  // Just update toggle state — each section maintains its own state
   setWriteMode(writeMode || 'review');
+  updateWRSubcatFilter();
+  updateWSSubcat();
   updateWRPoolInfo();
   updateWSPoolInfo();
 }
@@ -3756,12 +3948,12 @@ let wsSession = null;
 function updateWRSubcatFilter() {
   const cat = document.getElementById('wr-cat').value;
   const sel = document.getElementById('wr-subcat');
-  const subcats = [...new Set(items.filter(i => i.category === cat).map(i => i.subcategory))].sort((a,b) => {
+  const groups = [...new Set(items.filter(i => i.category === 'Kanji' && (!cat || i.subcategory === cat)).map(i => i.group))].sort((a,b) => {
     const ma = a.match(/(\d+)-(\d+)$/); const mb = b.match(/(\d+)-(\d+)$/);
     return (ma && mb) ? parseInt(ma[1]) - parseInt(mb[1]) : a.localeCompare(b);
   });
-  sel.innerHTML = '<option value="">All Subcategories</option>';
-  subcats.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+  sel.innerHTML = '<option value="">All Groups</option>';
+  groups.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
   updateWRPoolInfo();
 }
 
@@ -3773,19 +3965,21 @@ function getWRPool() {
   const filter = document.getElementById('wr-reviewed').value;
   const now = Date.now(); const day = 86400000;
   return items.filter(i => {
-    if (!WRITE_KANJI_CATS.has(i.category)) return false;
-    if (cat && i.category !== cat) return false;
-    if (subcat && i.subcategory !== subcat) return false;
+    if (i.category !== 'Kanji') return false;
+    if (cat && i.subcategory !== cat) return false;
+    if (subcat && i.group !== subcat) return false;
     const wl = userWriteProgress[i.id] ?? 0;
     if (wl === 0) return false;
     if (wl < minLevel || wl > maxLevel) return false;
-    const lq = userWriteLastQuizzed[i.id] ? new Date(userWriteLastQuizzed[i.id]).getTime() : null;
+    const lqRaw = userWriteLastQuizzed[i.id];
+    const lq = lqRaw ? new Date(lqRaw).toISOString() : null;
     if (filter === 'random') return true;
-    if (filter === 'stale') { return wl === 5 ? (!lq||lq<getStaleCutoff(5,'write')) : (!lq||lq<getStaleCutoff(wl,'write')); }
-    if (filter === 'today') return lq && lq >= new Date().setHours(0,0,0,0);
+    if (filter === 'stale') { return !lq || (wl === 5 ? lq<getStaleCutoff(5,'write') : lq<getStaleCutoff(wl,'write')); }
+    const lqMs = lqRaw ? new Date(lqRaw).getTime() : null;
+    if (filter === 'today') return lqMs && lqMs >= new Date().setHours(0,0,0,0);
     if (filter === 'never') return !lq;
-    if (filter.startsWith('not')) { const days = parseInt(filter.replace('not','')); return !lq || lq < now - days*day; }
-    const days = parseInt(filter); return lq && lq >= now - days*day;
+    if (filter.startsWith('not')) { const days = parseInt(filter.replace('not','')); return !lqMs || lqMs < now - days*day; }
+    const days = parseInt(filter); return lqMs && lqMs >= now - days*day;
   });
 }
 
@@ -3915,8 +4109,6 @@ function toggleWSLearnPractice() {
   }
 }
 
-
-
 function gradeWR(grade){
   const item=batchNextItem(wrSession);
   const passed=(grade===3);
@@ -3969,7 +4161,6 @@ async function showWRResults(endedEarly=false){
   await Promise.all(results.map(r=>saveWriteLevel(r.item.id,r.newLevel)));
 }
 
-
 function showWRConfig() {
   document.getElementById('wr-active').style.display = 'none';
   document.getElementById('wr-results').style.display = 'none';
@@ -3988,19 +4179,19 @@ let wsEverWrong = {};
 function updateWSSubcat() {
   const cat = document.getElementById('ws-cat').value;
   const sel = document.getElementById('ws-subcat');
-  const subcats = [...new Set(items.filter(i => i.category === cat).map(i => i.subcategory))].sort((a,b) => {
+  const groups = [...new Set(items.filter(i => i.category === 'Kanji' && (!cat || i.subcategory === cat)).map(i => i.group))].sort((a,b) => {
     const ma = a.match(/(\d+)-(\d+)$/); const mb = b.match(/(\d+)-(\d+)$/);
     return (ma && mb) ? parseInt(ma[1]) - parseInt(mb[1]) : a.localeCompare(b);
   });
-  sel.innerHTML = '<option value="">All Subcategories</option>';
-  subcats.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+  sel.innerHTML = '<option value="">All Groups</option>';
+  groups.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
   updateWSPoolInfo();
 }
 
 function getWSPool() {
   const cat = document.getElementById('ws-cat').value;
   const subcat = document.getElementById('ws-subcat').value;
-  return items.filter(i => WRITE_KANJI_CATS.has(i.category) && (!cat||i.category===cat) && (!subcat||i.subcategory===subcat) && (userWriteProgress[i.id]??0)===0);
+  return items.filter(i => i.category === 'Kanji' && (!cat||i.subcategory===cat) && (!subcat||i.group===subcat) && (userWriteProgress[i.id]??0)===0);
 }
 
 function updateWSPoolInfo() {
@@ -4014,7 +4205,7 @@ function updateWSPoolInfo() {
 function startWSSession() {
   const count = parseInt(document.getElementById('ws-count').value) || 10;
   const pool = getWSPool().slice(0, count);
-  wsSession = createBatchSession(pool, false); // preserve learn order
+  wsSession = createBatchSession(pool, false, getWriteBatchSize()); // preserve learn order
   batchStartNext(wsSession);
   wsLearnIdx = 0;
   document.getElementById('ws-config-panel').style.display = 'none';
@@ -4189,19 +4380,12 @@ async function showWSResults(endedEarly=false){
   await Promise.all(results.filter(r=>r.newLevel!==undefined).map(r=>saveWriteLevel(r.item.id,r.newLevel)));
 }
 
-
 function showWSConfig() {
   document.getElementById('ws-learn-wrap').style.display = 'none';
   document.getElementById('ws-review-wrap').style.display = 'none';
   document.getElementById('ws-results').style.display = 'none';
   document.getElementById('ws-config-panel').style.display = 'block';
   updateWSPoolInfo();
-}
-
-// ── WRITE DASHBOARD ──
-function renderWriteDashboard() {
-  renderWriteStats();
-  renderWriteGraph();
 }
 
 // ── WRITE DB ──
