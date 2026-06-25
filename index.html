@@ -662,7 +662,7 @@ nav{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:0 12p
             <div class="config-item"><label>Last Reviewed</label>
               <select id="wr-reviewed" onchange="updateWRPoolInfo()">
                 <option value="random" selected>Anytime</option>
-                <option value="stale">Stale (14d / 60d)</option>
+                <option value="stale">Stale (7d / 30d)</option>
                 <optgroup label="Recently reviewed">
                   <option value="today">Today</option>
                   <option value="3">Last 3 days</option>
@@ -1580,12 +1580,12 @@ function renderWriteStats() {
   const studied = allKanji.filter(i => (userWriteProgress[i.id] ?? 0) > 0).length;
   const fragile = allKanji.filter(i => (userWriteProgress[i.id] ?? 0) === 1).length;
   const now = Date.now();
-  const c14 = new Date(now - 14*86400000).toISOString();
-  const c60 = new Date(now - 60*86400000).toISOString();
+  const c7 = new Date(now - 7*86400000).toISOString();
+  const c30 = new Date(now - 30*86400000).toISOString();
   const stale = allKanji.filter(i => {
     const lq = userWriteLastQuizzed[i.id]; const wl = userWriteProgress[i.id] ?? 0;
     if (wl === 0) return false;
-    return wl === 5 ? (!lq || lq < c60) : (!lq || lq < c14);
+    return wl === 5 ? (!lq || lq < c30) : (!lq || lq < c7);
   }).length;
   document.getElementById('write-stats-grid').innerHTML = `
     <div class="stat-card" onclick="startWeakWriters()">
@@ -3170,7 +3170,7 @@ function getWRPool() {
     if (wl < minLevel || wl > maxLevel) return false;
     const lq = userWriteLastQuizzed[i.id] ? new Date(userWriteLastQuizzed[i.id]).getTime() : null;
     if (filter === 'random') return true;
-    if (filter === 'stale') { const c14 = now - 14*day; const c60 = now - 60*day; return wl === 5 ? (!lq||lq<c60) : (!lq||lq<c14); }
+    if (filter === 'stale') { const c7 = now - 7*day; const c30 = now - 30*day; return wl === 5 ? (!lq||lq<c30) : (!lq||lq<c7); }
     if (filter === 'today') return lq && lq >= new Date().setHours(0,0,0,0);
     if (filter === 'never') return !lq;
     if (filter.startsWith('not')) { const days = parseInt(filter.replace('not','')); return !lq || lq < now - days*day; }
