@@ -1528,10 +1528,7 @@ function updateNavUser() {
 }
 
 async function loadData() {
-  // Use signed URL with cache bust to always get fresh data
-  const { data: urlData, error: urlError } = await sb.storage.from('study-data').createSignedUrl('data.json', 60);
-  if (urlError) throw new Error('Could not get storage URL: ' + urlError.message);
-  const response = await fetch(urlData.signedUrl + '&t=' + Date.now());
+  const response = await fetch('data/data.json');
   if (!response.ok) throw new Error('Could not fetch data.json: ' + response.status);
   const json = JSON.parse(await response.text());
   items = json.items;
@@ -2332,9 +2329,7 @@ let kanjiVG = null;
 async function loadKanjiVG() {
   if (kanjiVG) return;
   try {
-    const { data: urlData } = await sb.storage.from('study-data').createSignedUrl('kanjivg.json', 3600);
-    if (!urlData?.signedUrl) return;
-    const res = await fetch(urlData.signedUrl);
+    const res = await fetch('data/kanjivg.json');
     if (!res.ok) return;
     kanjiVG = await res.json();
     console.log(`KanjiVG loaded: ${Object.keys(kanjiVG).length} kanji`);
