@@ -485,7 +485,7 @@ select.at-default option{color:var(--text);}
           <div class="config-item"><label>Min Level</label>
             <select id="qconfig-minlevel" onchange="syncMinMax('qconfig-minlevel','qconfig-maxlevel',true);updateQuizPoolInfo()">
               <option value="1" selected>1 — Fragile</option><option value="2">2 — Forming</option>
-              <option value="3">3 — Stable</option><option value="4">4 — Strong</option><option value="5">5 — Cemented</option>
+              <option value="3">3 — Stable</option><option value="4">4 — Strong</option><option value="5">5 — Enduring</option><option value="6">6 — Cemented</option>
             </select>
           </div>
           <div class="config-item"><label>Max Level</label>
@@ -494,7 +494,7 @@ select.at-default option{color:var(--text);}
               <option value="2">2 — Forming</option>
               <option value="3">3 — Stable</option>
               <option value="4">4 — Strong</option>
-              <option value="5" selected>5 — Cemented</option>
+              <option value="5">5 — Enduring</option><option value="6" selected>6 — Cemented</option>
             </select>
           </div>
           <div class="config-item"><label>Last Reviewed</label>
@@ -687,7 +687,7 @@ select.at-default option{color:var(--text);}
                 <option value="2">2 — Forming</option>
                 <option value="3">3 — Stable</option>
                 <option value="4">4 — Strong</option>
-                <option value="5">5 — Cemented</option>
+                <option value="5">5 — Enduring</option><option value="6">6 — Cemented</option>
               </select>
             </div>
             <div class="config-item"><label>Max Level</label>
@@ -696,7 +696,7 @@ select.at-default option{color:var(--text);}
                 <option value="2">2 — Forming</option>
                 <option value="3">3 — Stable</option>
                 <option value="4">4 — Strong</option>
-                <option value="5" selected>5 — Cemented</option>
+                <option value="5">5 — Enduring</option><option value="6" selected>6 — Cemented</option>
               </select>
             </div>
             <div class="config-item"><label>Last Reviewed</label>
@@ -963,6 +963,7 @@ select.at-default option{color:var(--text);}
         <div class="settings-field"><label>Level 3</label><input class="settings-input settings-trackable" id="level-name-3" type="text"></div>
         <div class="settings-field"><label>Level 4</label><input class="settings-input settings-trackable" id="level-name-4" type="text"></div>
         <div class="settings-field"><label>Level 5</label><input class="settings-input settings-trackable" id="level-name-5" type="text"></div>
+        <div class="settings-field"><label>Level 6</label><input class="settings-input settings-trackable" id="level-name-6" type="text"></div>
       </div>
       <div class="settings-sub-header">Home Graphs</div>
       <div class="settings-field">
@@ -994,6 +995,7 @@ select.at-default option{color:var(--text);}
         <div class="settings-field"><label id="read-stale-label-3"></label><input class="settings-input settings-trackable" id="read-stale-3" type="number" min="0.01" step="0.01"></div>
         <div class="settings-field"><label id="read-stale-label-4"></label><input class="settings-input settings-trackable" id="read-stale-4" type="number" min="0.01" step="0.01"></div>
         <div class="settings-field"><label id="read-stale-label-5"></label><input class="settings-input settings-trackable" id="read-stale-5" type="number" min="0.01" step="0.01"></div>
+        <div class="settings-field"><label id="read-stale-label-6"></label><input class="settings-input settings-trackable" id="read-stale-6" type="number" min="0.01" step="0.01"></div>
       </div>
       <div class="settings-sub-header">Review</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
@@ -1014,7 +1016,7 @@ select.at-default option{color:var(--text);}
         </div>
         <div class="settings-field"><label>Max Level</label>
           <select class="settings-input settings-trackable" id="def-rr-maxlevel">
-            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5" selected>5</option>
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6" selected>6</option>
           </select>
         </div>
         <div class="settings-field"><label>Last Reviewed</label>
@@ -1075,6 +1077,16 @@ select.at-default option{color:var(--text);}
         <div class="settings-field"><label id="write-stale-label-3"></label><input class="settings-input settings-trackable" id="write-stale-3" type="number" min="0.01" step="0.01"></div>
         <div class="settings-field"><label id="write-stale-label-4"></label><input class="settings-input settings-trackable" id="write-stale-4" type="number" min="0.01" step="0.01"></div>
         <div class="settings-field"><label id="write-stale-label-5"></label><input class="settings-input settings-trackable" id="write-stale-5" type="number" min="0.01" step="0.01"></div>
+        <div class="settings-field"><label id="write-stale-label-6"></label><input class="settings-input settings-trackable" id="write-stale-6" type="number" min="0.01" step="0.01"></div>
+      </div>
+      <div class="settings-sub-header">Promotion Streak Gate</div>
+      <div style="font-size:0.72rem;color:var(--text3);margin-bottom:8px;">Correct-in-a-row required to promote off each rung. 0 or 1 = promote normally (no gate). Applies to both reading and writing.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div class="settings-field"><label id="streak-label-2"></label><input class="settings-input settings-trackable" id="promote-streak-2" type="number" min="0" step="1"></div>
+        <div class="settings-field"><label id="streak-label-3"></label><input class="settings-input settings-trackable" id="promote-streak-3" type="number" min="0" step="1"></div>
+        <div class="settings-field"><label id="streak-label-4"></label><input class="settings-input settings-trackable" id="promote-streak-4" type="number" min="0" step="1"></div>
+        <div class="settings-field"><label id="streak-label-5"></label><input class="settings-input settings-trackable" id="promote-streak-5" type="number" min="0" step="1"></div>
+        <div class="settings-field"><label id="streak-label-6"></label><input class="settings-input settings-trackable" id="promote-streak-6" type="number" min="0" step="1"></div>
       </div>
       <div class="settings-sub-header">Review</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
@@ -1098,7 +1110,7 @@ select.at-default option{color:var(--text);}
         </div>
         <div class="settings-field"><label>Max Level</label>
           <select class="settings-input settings-trackable" id="def-wr-maxlevel">
-            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5" selected>5</option>
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6" selected>6</option>
           </select>
         </div>
         <div class="settings-field"><label>Last Reviewed</label>
@@ -1228,6 +1240,43 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 let items = [];
 let currentUser = null;
 let userProgress = {};
+let userStreak = {};
+let userWriteStreak = {};
+// Rung-streak gate (mirrors the DB logic in migration.sql so mid-quiz display matches).
+// Generic counter: resets to 0 on any rung change, +1 when a review keeps the same rung.
+// A rung "gates" promotion when its configured threshold is >= 2: a correct answer holds
+// the item on that rung until the streak reaches the threshold, then it promotes.
+// Threshold 0 or 1 = no gate (promote normally). Per-rung, so future rungs can gate too.
+// Defaults: rung 5 -> 4, all others -> 0 (no gate).
+const DEFAULT_PROMOTE_STREAK = {"2":0,"3":0,"4":0,"5":4,"6":0};
+// Return the promotion-streak threshold configured for a given rung.
+function gateThreshold(rung) {
+  const cfg = userSettings.configuration?.promote_streak || DEFAULT_PROMOTE_STREAK;
+  const v = cfg[rung] ?? cfg[String(rung)] ?? DEFAULT_PROMOTE_STREAK[rung] ?? DEFAULT_PROMOTE_STREAK[String(rung)] ?? 0;
+  return Number(v) || 0;
+}
+// Given current level, requested level, and current streak, return
+// { level, streak } after applying the generic counter + per-rung gate.
+function applyRungGate(current, requested, streak) {
+  current = current ?? 0; streak = streak ?? 0;
+  const threshold = gateThreshold(current);
+  if (threshold >= 2 && requested > current) {
+    const next = streak + 1;
+    if (next >= threshold) return { level: requested, streak: 0 };
+    return { level: current, streak: next };  // hold on this rung, keep counting
+  }
+  if (requested === current) return { level: requested, streak: streak + 1 };
+  return { level: requested, streak: 0 };
+}
+// Streak badge: shown when the in-a-row streak is > 0 on a rung that is meaningful —
+// i.e. a rung that itself gates promotion, or the rung directly above a gating rung
+// (where the counter keeps ticking after promotion, e.g. the top rung).
+function streakBadge(level, streak) {
+  if ((streak ?? 0) <= 0) return '';
+  const meaningful = gateThreshold(level) >= 2 || gateThreshold(level - 1) >= 2;
+  if (!meaningful) return '';
+  return `<span class="badge" style="background:var(--accent-soft);color:var(--accent)" title="Correct in a row at this rung">×${streak}</span>`;
+}
 let userLastQuizzed = {};
 let userWriteProgress = {};
 let userWriteLastQuizzed = {};
@@ -1236,8 +1285,9 @@ let userNotes = {};
 let userSettings = {
   streak: 0, last_study_date: null, unlocked_levels: [],
   configuration: {
-    level_names: ['Locked','Fragile','Forming','Stable','Strong','Cemented'],
-    stale_days: { read: {"2":0.25,"3":0.5,"4":1,"5":60}, write: {"2":0.25,"3":0.5,"4":1,"5":30} },
+    level_names: ['Locked','Fragile','Forming','Stable','Strong','Enduring','Cemented'],
+    stale_days: { read: {"2":0.5,"3":1,"4":3,"5":7,"6":60}, write: {"2":0.5,"3":1,"4":3,"5":7,"6":30} },
+    promote_streak: {"2":0,"3":0,"4":0,"5":4,"6":0},
     config_defaults: {},
     graph_views: {
       read: { enabled: ['kanji','vocab','names','places'], default: 'all' },
@@ -1361,17 +1411,17 @@ let studyItemHadWrong = false, studyPromptWrongCount = 0;
 let currentModalId = null;
 let recentItemIds = new Set();
 
-const DEFAULT_LEVEL_NAMES = ['Locked','Fragile','Forming','Stable','Strong','Cemented'];
-const DEFAULT_READ_STALE = {"2":0.25,"3":0.5,"4":1,"5":60};
-const DEFAULT_WRITE_STALE = {"2":0.25,"3":0.5,"4":1,"5":30};
+const DEFAULT_LEVEL_NAMES = ['Locked','Fragile','Forming','Stable','Strong','Enduring','Cemented'];
+const DEFAULT_READ_STALE = {"2":0.5,"3":1,"4":3,"5":7,"6":60};
+const DEFAULT_WRITE_STALE = {"2":0.5,"3":1,"4":3,"5":7,"6":30};
 let LEVEL_NAMES = [...DEFAULT_LEVEL_NAMES];
 
 // Level dropdown IDs and their default values
 const LEVEL_DROP_DEFAULTS = {
-  'qconfig-minlevel': '1', 'qconfig-maxlevel': '5',
-  'wr-minlevel': '1',      'wr-maxlevel': '5',
-  'def-rr-minlevel': '1',  'def-rr-maxlevel': '5',
-  'def-wr-minlevel': '1',  'def-wr-maxlevel': '5',
+  'qconfig-minlevel': '1', 'qconfig-maxlevel': '6',
+  'wr-minlevel': '1',      'wr-maxlevel': '6',
+  'def-rr-minlevel': '1',  'def-rr-maxlevel': '6',
+  'def-wr-minlevel': '1',  'def-wr-maxlevel': '6',
 };
 
 function syncMinMax(minId, maxId, changedMin) {
@@ -1405,7 +1455,7 @@ function rebuildLevelDropdowns() {
     const sel = document.getElementById(id);
     if (!sel) return;
     const current = sel.value || defaultVal;
-    sel.innerHTML = [1,2,3,4,5].map(l =>
+    sel.innerHTML = [1,2,3,4,5,6].map(l =>
       `<option value="${l}">${LEVEL_NAMES[l]}</option>`
     ).join('');
     sel.value = current;
@@ -1424,7 +1474,7 @@ function initSelectDefaultTracking(sel, defaultVal) {
   updateSelectDefault(sel, defaultVal);
   sel.addEventListener('change', () => updateSelectDefault(sel, defaultVal));
 }
-const LEVEL_COLORS = ['#555570','#c0392b','#e67e22','#8e44ad','#2980b9','#27ae60'];
+const LEVEL_COLORS = ['#555570','#c0392b','#e67e22','#8e44ad','#2980b9','#16a085','#27ae60'];
 const VOCAB_GROUPS = {
   'Nouns':                ['Nouns'],
   'Verbs':                ['Verbs'],
@@ -1550,8 +1600,8 @@ async function fetchAllRows(table, columns, userId) {
 async function loadUserProgress() {
   const uid = currentUser.id;
   const [progressRows, writeProgressRows, synonymRows, noteRows, settingsRes, recentRes] = await Promise.all([
-    fetchAllRows('progress', 'item_id,level,last_quizzed', uid),
-    fetchAllRows('write_progress', 'item_id,level,last_quizzed', uid),
+    fetchAllRows('progress', 'item_id,level,last_quizzed,streak', uid),
+    fetchAllRows('write_progress', 'item_id,level,last_quizzed,streak', uid),
     fetchAllRows('synonyms', 'item_id,synonym', uid),
     fetchAllRows('notes', 'item_id,description,notes', uid),
     sb.from('user_settings').select('streak,last_study_date,unlocked_levels,configuration').eq('user_id', uid).single(),
@@ -1561,10 +1611,14 @@ async function loadUserProgress() {
   ]);
   userProgress = {};
   progressRows.forEach(r => userProgress[r.item_id] = r.level);
+  userStreak = {};
+  progressRows.forEach(r => userStreak[r.item_id] = r.streak ?? 0);
   userLastQuizzed = {};
   progressRows.forEach(r => { if (r.last_quizzed) userLastQuizzed[r.item_id] = r.last_quizzed; });
   userWriteProgress = {};
   writeProgressRows.forEach(r => userWriteProgress[r.item_id] = r.level);
+  userWriteStreak = {};
+  writeProgressRows.forEach(r => userWriteStreak[r.item_id] = r.streak ?? 0);
   userWriteLastQuizzed = {};
   writeProgressRows.forEach(r => { if (r.last_quizzed) userWriteLastQuizzed[r.item_id] = r.last_quizzed; });
   userSynonyms = {};
@@ -1578,6 +1632,7 @@ async function loadUserProgress() {
     userSettings.configuration = {
       level_names: cfg.level_names || DEFAULT_LEVEL_NAMES,
       stale_days: cfg.stale_days || { read: DEFAULT_READ_STALE, write: DEFAULT_WRITE_STALE },
+      promote_streak: cfg.promote_streak || DEFAULT_PROMOTE_STREAK,
       config_defaults: cfg.config_defaults || {},
       graph_views: cfg.graph_views || {
         read: { enabled: ['kanji','vocab','names','places'], default: 'all' },
@@ -1607,9 +1662,22 @@ function applyProgress() {
 
 // ── DB WRITES ──
 async function saveLevel(itemId, level) {
-  const { error } = await sb.rpc('upsert_progress', { p_item_id: itemId, p_level: level });
-  if (error) console.error('saveLevel:', error);
-  else userProgress[itemId] = level;
+  const current = userProgress[itemId] ?? 0;
+  const g = applyRungGate(current, level, userStreak[itemId]);
+  userStreak[itemId] = g.streak;
+  const { data, error } = await sb.rpc('upsert_progress', { p_item_id: itemId, p_level: level, p_threshold: gateThreshold(current) });
+  if (error) {
+    console.error('saveLevel:', error);
+    userProgress[itemId] = g.level;
+    const it0 = items.find(i => i.id === itemId); if (it0) it0.level = g.level;
+    return;
+  }
+  // The gate may commit a different level than requested (e.g. hold at rung 5).
+  // Trust the DB's returned level as authoritative; fall back to mirror if null.
+  const committed = (typeof data === 'number') ? data : g.level;
+  userProgress[itemId] = committed;
+  const it = items.find(i => i.id === itemId);
+  if (it) it.level = committed;
 }
 
 async function saveLastQuizzed(itemIds) {
@@ -2074,7 +2142,7 @@ function renderReadStats() {
 
 function renderReadGraph() {
   const pool = getReadItems(readToggle);
-  const counts = [0,1,2,3,4,5].map(l => pool.filter(i => i.level === l).length);
+  const counts = [0,1,2,3,4,5,6].map(l => pool.filter(i => i.level === l).length);
   const maxCount = Math.max(...counts, 1);
   document.getElementById('level-bars').innerHTML = counts.map((c, l) => `
     <div class="level-bar-row">
@@ -2119,7 +2187,7 @@ function renderWriteStats() {
 
 function renderWriteGraph() {
   const pool = getWriteItems(writeToggle);
-  const counts = [0,1,2,3,4,5].map(l => pool.filter(i => (userWriteProgress[i.id] ?? 0) === l).length);
+  const counts = [0,1,2,3,4,5,6].map(l => pool.filter(i => (userWriteProgress[i.id] ?? 0) === l).length);
   const maxCount = Math.max(...counts, 1);
   document.getElementById('write-level-bars').innerHTML = counts.map((c, l) => `
     <div class="level-bar-row">
@@ -2134,7 +2202,7 @@ function getStalePool(includeEnlightened) {
   const cat = document.getElementById('qconfig-cat')?.value || '';
   return items.filter(i => {
     if (i.level < 2) return false;
-    if (!includeEnlightened && i.level === 5) return false;
+    if (!includeEnlightened && i.level === 6) return false;
     if (cat && i.category !== cat) return false;
     const lq = i.last_quizzed || null;
     return !lq || lq < getStaleCutoff(i.level, 'read');
@@ -2148,7 +2216,7 @@ function resetReadConfig() {
   document.getElementById('qconfig-group').value = '';
   document.getElementById('qconfig-group-wrap').style.display = 'none';
   document.getElementById('qconfig-minlevel').value = d.rr_minlevel || '1';
-  document.getElementById('qconfig-maxlevel').value = d.rr_maxlevel || '5';
+  document.getElementById('qconfig-maxlevel').value = d.rr_maxlevel || '6';
   document.getElementById('qconfig-days').value = d.rr_days || '0';
   document.getElementById('qconfig-count').value = d.rr_count || '20';
   updateQSubcat?.();
@@ -2160,7 +2228,7 @@ function resetWriteConfig() {
   document.getElementById('wr-cat').value = d.wr_cat || '';
   document.getElementById('wr-subcat').value = d.wr_subcat || '';
   document.getElementById('wr-minlevel').value = d.wr_minlevel || '1';
-  document.getElementById('wr-maxlevel').value = d.wr_maxlevel || '5';
+  document.getElementById('wr-maxlevel').value = d.wr_maxlevel || '6';
   document.getElementById('wr-reviewed').value = d.wr_reviewed || 'random';
   document.getElementById('wr-count').value = d.wr_count || '20';
   updateWRSubcatFilter?.();
@@ -2176,7 +2244,7 @@ function openQSModal(mode) {
     document.getElementById('qconfig-group').value = '';
     document.getElementById('qconfig-group-wrap').style.display = 'none';
     document.getElementById('qconfig-minlevel').value = '2';
-    document.getElementById('qconfig-maxlevel').value = '5';
+    document.getElementById('qconfig-maxlevel').value = '6';
     document.getElementById('qconfig-days').value = 'stale';
   }
   updateQuizPoolInfo();
@@ -2204,7 +2272,7 @@ function openWriteReviewModal(type) {
   if (type === 'stale') {
     document.getElementById('wr-reviewed').value = 'stale';
     document.getElementById('wr-minlevel').value = '2';
-    document.getElementById('wr-maxlevel').value = '5';
+    document.getElementById('wr-maxlevel').value = '6';
     syncMinMax('wr-minlevel', 'wr-maxlevel', true);
   }
   updateWRPoolInfo();
@@ -2313,7 +2381,7 @@ function renderDict() {
       <div class="info">
         <div class="reading">${getDisplayReading(item)}</div>
         <div class="meaning">${getDisplayMeaning(item).slice(0,60)}</div>
-        <div class="badge-row"><span class="badge level-badge-${item.level}">${LEVEL_NAMES[item.level]}</span>${lockBadge}<span class="badge cat-badge">${item.category}</span><span class="badge cat-badge">${item.subcategory}</span>${item.group?`<span class="badge cat-badge">${item.group}</span>`:''} ${gBadge}</div>
+        <div class="badge-row"><span class="badge level-badge-${item.level}">${LEVEL_NAMES[item.level]}</span>${streakBadge(item.level, userStreak[item.id])}${lockBadge}<span class="badge cat-badge">${item.category}</span><span class="badge cat-badge">${item.subcategory}</span>${item.group?`<span class="badge cat-badge">${item.group}</span>`:''} ${gBadge}</div>
       </div></div>`;
   }).join('')+(filtered.length>200?`<div class="empty-state" style="padding:16px">Showing 200 of ${filtered.length} — refine your search</div>`:'');
   // Force repaint — without this, filter changes don't visually update until tab switch
@@ -2471,21 +2539,25 @@ async function saveEdit(f) {
 async function setItemLevel(level) {
   const item=items.find(i=>i.id===currentModalId); if(!item) return;
   item.level=level;
+  userProgress[item.id]=level;
+  userStreak[item.id]=0;
   document.getElementById('modal-level-selector').innerHTML=LEVEL_NAMES.map((n,l)=>
     `<div class="level-opt${item.level===l?' active':''}" style="${item.level===l?`background:${LEVEL_COLORS[l]}22;border-color:${LEVEL_COLORS[l]};color:${LEVEL_COLORS[l]};border-width:2px;`:''}" onclick="setItemLevel(${l})">${n}</div>`).join('');
   renderDashboard();
-  await saveLevel(item.id, level);
+  const { error } = await sb.rpc('force_read_level', { p_item_id: item.id, p_level: level });
+  if (error) console.error('setItemLevel:', error);
   showSync('Saved ✓','success'); setTimeout(()=>showSync('',''),1500);
 }
 async function setItemWriteLevel(level) {
   if (!currentModalId) return;
   userWriteProgress[currentModalId] = level;
+  userWriteStreak[currentModalId] = 0;
   document.getElementById('modal-write-level-selector').innerHTML=LEVEL_NAMES.map((n,l)=>
     `<div class="level-opt${level===l?' active':''}" style="${level===l?`background:${LEVEL_COLORS[l]}22;border-color:${LEVEL_COLORS[l]};color:${LEVEL_COLORS[l]};border-width:2px;`:''}" onclick="setItemWriteLevel(${l})">${n}</div>`).join('');
   renderWriteStats();
-  const { error } = await sb.rpc('upsert_write_progress', { p_item_id: currentModalId, p_level: level });
+  const { error } = await sb.rpc('force_write_level', { p_item_id: currentModalId, p_level: level, p_user_id: currentUser.id });
   if (error) console.error('setItemWriteLevel:', error);
-  else showSync('Saved ✓','success'); setTimeout(()=>showSync('',''),1500);
+  else { showSync('Saved ✓','success'); setTimeout(()=>showSync('',''),1500); }
 }
 function toggleSynInput() { const r=document.getElementById('modal-syn-row'); r.style.display=r.style.display==='none'?'flex':'none'; if(r.style.display==='flex') document.getElementById('modal-syn-input').focus(); }
 async function saveSynonym() {
@@ -2560,7 +2632,7 @@ function populateSettingsName() {
 
   // Level names
   const ln = userSettings.configuration?.level_names || DEFAULT_LEVEL_NAMES;
-  [0,1,2,3,4,5].forEach(l => {
+  [0,1,2,3,4,5,6].forEach(l => {
     const el = document.getElementById(`level-name-${l}`);
     if (!el) return;
     el.placeholder = DEFAULT_LEVEL_NAMES[l];
@@ -2572,7 +2644,7 @@ function populateSettingsName() {
   ['read','write'].forEach(type => {
     const defaults = type === 'read' ? DEFAULT_READ_STALE : DEFAULT_WRITE_STALE;
     const saved = staleDays[type] || defaults;
-    [2,3,4,5].forEach(l => {
+    [2,3,4,5,6].forEach(l => {
       const input = document.getElementById(`${type}-stale-${l}`);
       const label = document.getElementById(`${type}-stale-label-${l}`);
       if (label) label.textContent = LEVEL_NAMES[l];
@@ -2581,6 +2653,18 @@ function populateSettingsName() {
       input.placeholder = defaults[l];
       input.value = val == defaults[l] ? '' : val;
     });
+  });
+
+  // Promotion streak thresholds
+  const promoteStreak = userSettings.configuration?.promote_streak || DEFAULT_PROMOTE_STREAK;
+  [2,3,4,5,6].forEach(l => {
+    const input = document.getElementById(`promote-streak-${l}`);
+    const label = document.getElementById(`streak-label-${l}`);
+    if (label) label.textContent = LEVEL_NAMES[l];
+    if (!input) return;
+    const val = promoteStreak[l] ?? promoteStreak[String(l)] ?? DEFAULT_PROMOTE_STREAK[l];
+    input.placeholder = DEFAULT_PROMOTE_STREAK[l];
+    input.value = (val == DEFAULT_PROMOTE_STREAK[l]) ? '' : val;
   });
 
   // Config defaults
@@ -2634,8 +2718,8 @@ function populateSettingsName() {
   });
   // Grey out selects that are at their default value
   const settingsSelectDefaults = {
-    'def-rr-minlevel':'1','def-rr-maxlevel':'5','def-rr-days':'0',
-    'def-wr-minlevel':'1','def-wr-maxlevel':'5','def-wr-reviewed':'random',
+    'def-rr-minlevel':'1','def-rr-maxlevel':'6','def-rr-days':'0',
+    'def-wr-minlevel':'1','def-wr-maxlevel':'6','def-wr-reviewed':'random',
     'def-rr-cat':'','def-rr-subcat':'','def-rs-cat':'','def-rs-subcat':'',
     'def-wr-cat':'','def-wr-subcat':'','def-ws-cat':'Joyo','def-ws-subcat':''
   };
@@ -2756,19 +2840,30 @@ async function saveAllSettings() {
   }
 
   // Level names
-  const ln = [0,1,2,3,4,5].map(l => document.getElementById(`level-name-${l}`)?.value.trim() || DEFAULT_LEVEL_NAMES[l]);
+  const ln = [0,1,2,3,4,5,6].map(l => document.getElementById(`level-name-${l}`)?.value.trim() || DEFAULT_LEVEL_NAMES[l]);
   LEVEL_NAMES = ln;
   rebuildLevelDropdowns();
-  ['read','write'].forEach(type => [2,3,4,5].forEach(l => {
+  ['read','write'].forEach(type => [2,3,4,5,6].forEach(l => {
     const label = document.getElementById(`${type}-stale-label-${l}`);
     if (label) label.textContent = LEVEL_NAMES[l];
   }));
+  [2,3,4,5,6].forEach(l => {
+    const label = document.getElementById(`streak-label-${l}`);
+    if (label) label.textContent = LEVEL_NAMES[l];
+  });
 
   // Stale periods
   const rd = {}; const wd = {};
-  [2,3,4,5].forEach(l => {
+  [2,3,4,5,6].forEach(l => {
     rd[l] = parseFloat(document.getElementById(`read-stale-${l}`).value) || DEFAULT_READ_STALE[l];
     wd[l] = parseFloat(document.getElementById(`write-stale-${l}`).value) || DEFAULT_WRITE_STALE[l];
+  });
+
+  // Promotion streak thresholds (blank -> default; 0 allowed = no gate)
+  const ps = {};
+  [2,3,4,5,6].forEach(l => {
+    const raw = document.getElementById(`promote-streak-${l}`).value;
+    ps[l] = (raw === '' || raw === undefined) ? DEFAULT_PROMOTE_STREAK[l] : Math.max(0, parseInt(raw) || 0);
   });
 
   // Config defaults
@@ -2796,7 +2891,7 @@ async function saveAllSettings() {
     write: { enabled: writePills, default: document.getElementById('graph-write-default')?.value || 'all' }
   };
 
-  const configuration = { level_names: ln, stale_days: { read: rd, write: wd }, config_defaults: cfg_defaults, graph_views };
+  const configuration = { level_names: ln, stale_days: { read: rd, write: wd }, promote_streak: ps, config_defaults: cfg_defaults, graph_views };
   userSettings.configuration = configuration;
 
   const { error: rpcError } = await sb.rpc('upsert_user_settings', {
@@ -2865,7 +2960,7 @@ function getQuizPool(){
   const subcat=document.getElementById('qconfig-subcat')?.value||'';
   const group=document.getElementById('qconfig-group')?.value||'';
   const minLevel=parseInt(document.getElementById('qconfig-minlevel')?.value||'1');
-  const maxLevel=parseInt(document.getElementById('qconfig-maxlevel')?.value||'5');
+  const maxLevel=parseInt(document.getElementById('qconfig-maxlevel')?.value||'6');
   const daysVal=document.getElementById('qconfig-days')?.value||'0';
   return items.filter(i=>{
     if(cat&&i.category!==cat)return false;
@@ -3039,8 +3134,16 @@ function finaliseItem(lastCorrect, correctAnswer){
   // Apply level change only when item is done
   if(passed){
     const everWrong=quizSession.everWrong[currentItem.id]||false;
-    if(!everWrong){currentItem.level=Math.min(5,currentItem.level+1);}
-    else if(!currentItem._levelDropped){currentItem.level=Math.max(1,currentItem.level-1);currentItem._levelDropped=true;}
+    if(!everWrong){
+      const g=applyRungGate(currentItem.level, Math.min(6,currentItem.level+1), userStreak[currentItem.id]);
+      currentItem.level=g.level; userStreak[currentItem.id]=g.streak;
+    }
+    else if(!currentItem._levelDropped){
+      const dropped=Math.max(1,currentItem.level-2);
+      const g=applyRungGate(currentItem.level, dropped, userStreak[currentItem.id]);
+      currentItem.level=g.level; userStreak[currentItem.id]=g.streak;
+      currentItem._levelDropped=true;
+    }
   }
 
   re.textContent=requeued?(itemEverWrong?'✕ Incorrect — try again':'△ Close — try again'):(!(quizSession.everWrong[currentItem.id]))?'○ Correct!':'○ Got it!';
@@ -3053,7 +3156,7 @@ function finaliseItem(lastCorrect, correctAnswer){
   const lc=currentItem.level-prevLevel;
   const arrow=lc>0?'↑':lc<0?'↓':'→';
   if(!requeued){
-    document.getElementById('feedback-level').innerHTML=`<span style="color:${LEVEL_COLORS[currentItem.level]}">${arrow} ${LEVEL_NAMES[prevLevel]} → ${LEVEL_NAMES[currentItem.level]}</span>`;
+    document.getElementById('feedback-level').innerHTML=`<span style="color:${LEVEL_COLORS[currentItem.level]}">${arrow} ${LEVEL_NAMES[prevLevel]} → ${LEVEL_NAMES[currentItem.level]}</span>${streakBadge(currentItem.level, userStreak[currentItem.id])}`;
   }else{
     document.getElementById('feedback-level').innerHTML='';
   }
@@ -3062,7 +3165,7 @@ function finaliseItem(lastCorrect, correctAnswer){
   if(!requeued){
     if(lc>0)fb2.classList.add('feedback-levelup');
     setTimeout(()=>fb2.classList.remove('feedback-levelup'),400);
-    if(currentItem.level===5&&prevLevel<5){
+    if(currentItem.level===6&&prevLevel<6){
       const overlay=document.getElementById('enlightened-overlay');
       overlay.className='enlightened-overlay burst';
       setTimeout(()=>overlay.className='enlightened-overlay',1000);
@@ -3141,7 +3244,7 @@ async function showResults(endedEarly=false){
   document.getElementById('results-fraction').textContent=`${correct} / ${total} correct`;
   document.getElementById('results-breakdown').innerHTML=results.map(r=>{
     const icon=r.correct?'<span style="color:var(--correct);font-weight:700;font-size:1.1rem;">○</span>':'<span style="color:var(--incorrect);font-weight:700;font-size:1.1rem;">✕</span>';
-    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div style="font-size:0.75rem;font-weight:600;color:${LEVEL_COLORS[r.item.level]}">${LEVEL_NAMES[r.item.level]}</div><div class="results-icon">${icon}</div></div>`;
+    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div style="font-size:0.75rem;font-weight:600;color:${LEVEL_COLORS[r.item.level]}">${LEVEL_NAMES[r.item.level]}${streakBadge(r.item.level, userStreak[r.item.id])}</div><div class="results-icon">${icon}</div></div>`;
   }).join('');
   renderDashboard();
   saveLevelBatch(results.map(r=>({item_id:r.item.id,level:r.item.level})));
@@ -3494,7 +3597,7 @@ function finaliseStudyItem(correctAnswer){
   const item=studyCurrentItem;
   const everWrong=studyItemHadWrong;
   if(!everWrong){
-    item.level=item.level===0?2:Math.min(5,item.level+1);
+    item.level=item.level===0?2:Math.min(6,item.level+1);
   }else{
     item.level=item.level===0?1:Math.max(1,item.level-1);
   }
@@ -3557,7 +3660,7 @@ async function showStudyResults(endedEarly=false){
   document.getElementById('study-results-fraction').textContent=`${correct} / ${total} first try correct`;
   document.getElementById('study-results-breakdown').innerHTML=results.map(r=>{
     const icon=r.correct?'<span style="color:var(--correct);font-weight:700;font-size:1.1rem;">○</span>':'<span style="color:var(--incorrect);font-weight:700;font-size:1.1rem;">✕</span>';
-    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div style="font-size:0.75rem;font-weight:600;color:${LEVEL_COLORS[r.item.level]}">${LEVEL_NAMES[r.item.level]}</div><div>${icon}</div></div>`;
+    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getDisplayReading(r.item)}</div><div style="font-size:0.75rem;font-weight:600;color:${LEVEL_COLORS[r.item.level]}">${LEVEL_NAMES[r.item.level]}${streakBadge(r.item.level, userStreak[r.item.id])}</div><div>${icon}</div></div>`;
   }).join('');
   renderDashboard();
   if (!endedEarly) saveLevelBatch(results.map(r=>({item_id:r.item.id,level:r.item.level})));
@@ -3979,7 +4082,7 @@ function getWRPool() {
     const lqRaw = userWriteLastQuizzed[i.id];
     const lq = lqRaw ? new Date(lqRaw).toISOString() : null;
     if (filter === 'random') return true;
-    if (filter === 'stale') { return !lq || (wl === 5 ? lq<getStaleCutoff(5,'write') : lq<getStaleCutoff(wl,'write')); }
+    if (filter === 'stale') { return !lq || (wl === 6 ? lq<getStaleCutoff(6,'write') : lq<getStaleCutoff(wl,'write')); }
     const lqMs = lqRaw ? new Date(lqRaw).getTime() : null;
     if (filter === 'today') return lqMs && lqMs >= new Date().setHours(0,0,0,0);
     if (filter === 'never') return !lq;
@@ -4140,9 +4243,9 @@ async function showWRResults(endedEarly=false){
     const current=userWriteProgress[item.id]??1;
     const everWrong=wrSession.everWrong[item.id]||false;
     let newLevel;
-    if(grade===3){newLevel=everWrong?Math.max(1,current-1):Math.min(5,current+1);}
-    else if(grade===1){newLevel=Math.max(1,current-1);}
-    else{newLevel=current===0?1:current;}
+    if(grade===3){newLevel=everWrong?Math.max(1,current-2):Math.min(6,current+1);}
+    else if(grade===1){newLevel=Math.max(1,current-2);}
+    else{newLevel=current===0?1:Math.max(1,current-1);}
     return {item,grade,newLevel};
   });
   const correct=results.filter(r=>r.grade===3&&!wrSession.everWrong[r.item.id]).length;
@@ -4153,17 +4256,19 @@ async function showWRResults(endedEarly=false){
   const moreBatches=wrSession.batchOffset<wrSession.allItems.length;
   if(endedEarly||!moreBatches){nextBtn.style.display='none';emptyEl.style.display=moreBatches?'none':'block';}
   else{nextBtn.style.display='';emptyEl.style.display='none';}
+  // Save first so the gate decides the committed level, then display that.
+  await Promise.all(results.map(async r=>{ r.committedLevel = await saveWriteLevel(r.item.id, r.newLevel); }));
   // Now show screen
   document.getElementById('wr-active').style.display='none';
   document.getElementById('wr-results').style.display='block';
   document.getElementById('wr-results-score').textContent=total?Math.round((correct/total)*100)+'%':'—';
   document.getElementById('wr-results-fraction').textContent=`${correct} / ${total} first try correct`;
   document.getElementById('wr-results-breakdown').innerHTML=results.map(r=>{
+    const shownLevel=(r.committedLevel!==undefined)?r.committedLevel:r.newLevel;
     const icon=r.grade===3?'<span style="color:var(--correct);font-weight:700;font-size:1.1rem;">○</span>':r.grade===1?'<span style="color:var(--incorrect);font-weight:700;font-size:1.1rem;">✕</span>':'<span style="color:orange;font-weight:700;font-size:1.1rem;">△</span>';
-    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getReadingHtml(r.item)}</div><div style="font-size:0.75rem;font-weight:600;color:${LEVEL_COLORS[r.newLevel]}">${LEVEL_NAMES[r.newLevel]}</div><div>${icon}</div></div>`;
+    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getReadingHtml(r.item)}</div><div style="font-size:0.75rem;font-weight:600;color:${LEVEL_COLORS[shownLevel]}">${LEVEL_NAMES[shownLevel]}${streakBadge(shownLevel, userWriteStreak[r.item.id])}</div><div>${icon}</div></div>`;
   }).join('');
   renderDashboard();
-  await Promise.all(results.map(r=>saveWriteLevel(r.item.id,r.newLevel)));
 }
 
 function showWRConfig() {
@@ -4358,9 +4463,9 @@ async function showWSResults(endedEarly=false){
     const current=userWriteProgress[item.id]??0;
     const everWrong=wsSession.everWrong[item.id]||false;
     let newLevel;
-    if(grade===3){newLevel=current===0?(everWrong?1:2):(everWrong?Math.max(1,current-1):Math.min(5,current+1));}
-    else if(grade===1){newLevel=current===0?1:Math.max(1,current-1);}
-    else{newLevel=current===0?1:current;}
+    if(grade===3){newLevel=current===0?(everWrong?1:2):(everWrong?Math.max(1,current-2):Math.min(6,current+1));}
+    else if(grade===1){newLevel=current===0?1:Math.max(1,current-2);}
+    else{newLevel=current===0?1:Math.max(1,current-1);}
     return {item,grade,newLevel};
   });
   const correct=results.filter(r=>r.grade===3&&!wsSession.everWrong[r.item.id]).length;
@@ -4371,6 +4476,10 @@ async function showWSResults(endedEarly=false){
   const moreBatches=wsSession.batchOffset<wsSession.allItems.length;
   if(endedEarly||!moreBatches){nextBtn.style.display='none';emptyEl.style.display=moreBatches?'none':'block';}
   else{nextBtn.style.display='';emptyEl.style.display='none';}
+  // Save first so the gate can decide the committed level, then display that.
+  await Promise.all(results.filter(r=>r.newLevel!==undefined).map(async r=>{
+    r.committedLevel = await saveWriteLevel(r.item.id, r.newLevel);
+  }));
   // Now show screen
   document.getElementById('ws-learn-wrap').style.display='none';
   document.getElementById('ws-review-wrap').style.display='none';
@@ -4378,11 +4487,11 @@ async function showWSResults(endedEarly=false){
   document.getElementById('ws-results-score').textContent=total?Math.round((correct/total)*100)+'%':'—';
   document.getElementById('ws-results-fraction').textContent=`${correct} / ${total} first try correct`;
   document.getElementById('ws-results-breakdown').innerHTML=results.map(r=>{
+    const shownLevel=(r.committedLevel!==undefined)?r.committedLevel:r.newLevel;
     const icon=r.grade===3?'<span style="color:var(--correct);font-weight:700;font-size:1.1rem;">○</span>':r.grade===1?'<span style="color:var(--incorrect);font-weight:700;font-size:1.1rem;">✕</span>':'<span style="color:orange;font-weight:700;font-size:1.1rem;">△</span>';
-    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getReadingHtml(r.item)}</div><div style="font-size:0.75rem;font-weight:600;color:${LEVEL_COLORS[r.newLevel]}">${LEVEL_NAMES[r.newLevel]}</div><div>${icon}</div></div>`;
+    return `<div class="results-item"><div class="results-kanji">${r.item.kanji}</div><div class="results-reading">${getReadingHtml(r.item)}</div><div style="font-size:0.75rem;font-weight:600;color:${LEVEL_COLORS[shownLevel]}">${LEVEL_NAMES[shownLevel]}${streakBadge(shownLevel, userWriteStreak[r.item.id])}</div><div>${icon}</div></div>`;
   }).join('');
   renderDashboard();
-  await Promise.all(results.filter(r=>r.newLevel!==undefined).map(r=>saveWriteLevel(r.item.id,r.newLevel)));
 }
 
 function showWSConfig() {
@@ -4395,13 +4504,20 @@ function showWSConfig() {
 
 // ── WRITE DB ──
 async function saveWriteLevel(itemId, level) {
-  // Update in memory immediately so pool counts reflect new levels right away
-  userWriteProgress[itemId] = level;
+  const current = userWriteProgress[itemId] ?? 0;
+  const g = applyRungGate(current, level, userWriteStreak[itemId]);
+  // Optimistically reflect the gate's decision so pool counts + streak display update now.
+  userWriteProgress[itemId] = g.level;
+  userWriteStreak[itemId] = g.streak;
   userWriteLastQuizzed[itemId] = new Date().toISOString();
-  const { error } = await sb.rpc('upsert_write_progress', {
-    p_item_id: itemId, p_last_quizzed: new Date().toISOString(), p_level: level, p_user_id: currentUser.id
+  const { data, error } = await sb.rpc('upsert_write_progress', {
+    p_item_id: itemId, p_last_quizzed: new Date().toISOString(), p_level: level, p_user_id: currentUser.id, p_threshold: gateThreshold(current)
   });
-  if (error) console.error('saveWriteLevel:', error);
+  if (error) { console.error('saveWriteLevel:', error); return g.level; }
+  // DB is authoritative for level; trust its returned committed level.
+  const committed = (typeof data === 'number') ? data : g.level;
+  userWriteProgress[itemId] = committed;
+  return committed;
 }
 
 async function saveWriteLastQuizzed(itemIds) {
