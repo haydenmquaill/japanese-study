@@ -21,7 +21,7 @@ and its own secrets — nothing is shared between the two apps.
 2. **Extensions.** Dashboard → Database → Extensions: enable **pg_cron** and **pg_net**.
    The migration needs both and will fail without them.
 
-3. **Migration.** SQL Editor → run `supabase/migrations/001_push_notifications.sql`.
+3. **Migrations.** SQL Editor → run `supabase/migrations/001_push_notifications.sql`, then `002_read_notifications.sql`.
 
 4. **Secrets.** Edge Functions → Secrets, add four:
    - `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` — from step 1
@@ -53,9 +53,12 @@ and its own secrets — nothing is shared between the two apps.
 ```sql
 select * from js_push_subs;                  -- your devices (one row per device)
 select * from js_push_queue;                 -- should empty within seconds of anything queueing
-select js_write_stale_count(auth.uid());     -- what the stale notifications are counting
-select js_unlocked_today(auth.uid());        -- what the daily goal is counting
-select * from js_push_state;                 -- what's already been sent, and when
+-- what each notification is counting (auth.uid() is null in the SQL Editor, so use your id)
+select user_id,
+       js_write_stale_count(user_id)   as write_stale,  js_unlocked_today(user_id)      as write_new_today,
+       js_read_stale_count(user_id)    as read_stale,   js_read_unlocked_today(user_id) as read_new_today
+  from (select distinct user_id from js_push_subs) s;
+select * from js_push_state;                 -- what's already been sent, per kind, and when
 select * from cron.job where jobname = 'js-notify';
 select * from cron.job_run_details order by start_time desc limit 10;
 ```

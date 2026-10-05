@@ -1174,12 +1174,26 @@ select.at-default option{color:var(--text);}
       <div style="font-size:0.72rem;color:var(--text3);margin-bottom:8px;" id="push-device-status">—</div>
       <div style="display:flex;gap:9px;margin-bottom:16px;" id="push-device-btns"></div>
 
-      <div class="settings-sub-header">Stale Items</div>
-      <div style="font-size:0.72rem;color:var(--text3);margin-bottom:8px;">A one-off alert when your stale kanji count climbs past the number below, then an hourly reminder while any remain. Both respect quiet hours.</div>
+      <div class="settings-sub-header">General</div>
+      <div style="font-size:0.72rem;color:var(--text3);margin-bottom:8px;">Stale notifications only go out between the two hours below. The daily goal reminder is sent once at its hour, and only if you're short. All times AEST, 24-hour clock.</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
         <div class="settings-field"><label>All notifications</label>
           <select class="settings-input settings-trackable" id="notif-enabled"><option value="1">On</option><option value="0">Off</option></select>
         </div>
+        <div class="settings-field"><label>Goal reminder at (hour)</label>
+          <input class="settings-input settings-trackable" id="notif-goal-hour" type="number" min="0" max="23" step="1">
+        </div>
+        <div class="settings-field"><label>Stale alerts from (hour)</label>
+          <input class="settings-input settings-trackable" id="notif-quiet-from" type="number" min="0" max="23" step="1">
+        </div>
+        <div class="settings-field"><label>Stale alerts until (hour)</label>
+          <input class="settings-input settings-trackable" id="notif-quiet-to" type="number" min="0" max="23" step="1">
+        </div>
+      </div>
+
+      <div class="settings-sub-header">Writing</div>
+      <div style="font-size:0.72rem;color:var(--text3);margin-bottom:8px;">A one-off alert when stale kanji climb past the count below, then an hourly reminder while any remain. The goal counts new kanji unlocked today (level 0 → 1+), not revision.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
         <div class="settings-field"><label>Stale alert</label>
           <select class="settings-input settings-trackable" id="notif-stale-alert"><option value="1">On</option><option value="0">Off</option></select>
         </div>
@@ -1189,30 +1203,31 @@ select.at-default option{color:var(--text);}
         <div class="settings-field"><label>Hourly reminder</label>
           <select class="settings-input settings-trackable" id="notif-stale-nag"><option value="1">On</option><option value="0">Off</option></select>
         </div>
-      </div>
-
-      <div class="settings-sub-header">Daily Goal</div>
-      <div style="font-size:0.72rem;color:var(--text3);margin-bottom:8px;">Counts new kanji unlocked today (level 0 → 1+), not revision. Sent once a day, and only if you are short.</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
         <div class="settings-field"><label>Goal reminder</label>
           <select class="settings-input settings-trackable" id="notif-goal-reminder"><option value="1">On</option><option value="0">Off</option></select>
         </div>
         <div class="settings-field"><label>New kanji per day</label>
           <input class="settings-input settings-trackable" id="notif-daily-goal" type="number" min="1" step="1">
         </div>
-        <div class="settings-field"><label>Remind at (hour)</label>
-          <input class="settings-input settings-trackable" id="notif-goal-hour" type="number" min="0" max="23" step="1">
-        </div>
       </div>
 
-      <div class="settings-sub-header">Quiet Hours</div>
-      <div style="font-size:0.72rem;color:var(--text3);margin-bottom:8px;">Stale notifications only go out between these hours, AEST. 24-hour clock.</div>
+      <div class="settings-sub-header">Reading</div>
+      <div style="font-size:0.72rem;color:var(--text3);margin-bottom:8px;">Same as writing, across every category (vocab, kanji, names, places).</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
-        <div class="settings-field"><label>From (hour)</label>
-          <input class="settings-input settings-trackable" id="notif-quiet-from" type="number" min="0" max="23" step="1">
+        <div class="settings-field"><label>Stale alert</label>
+          <select class="settings-input settings-trackable" id="notif-read-stale-alert"><option value="1">On</option><option value="0">Off</option></select>
         </div>
-        <div class="settings-field"><label>Until (hour)</label>
-          <input class="settings-input settings-trackable" id="notif-quiet-to" type="number" min="0" max="23" step="1">
+        <div class="settings-field"><label>Alert at (stale count)</label>
+          <input class="settings-input settings-trackable" id="notif-read-stale-threshold" type="number" min="1" step="1">
+        </div>
+        <div class="settings-field"><label>Hourly reminder</label>
+          <select class="settings-input settings-trackable" id="notif-read-stale-nag"><option value="1">On</option><option value="0">Off</option></select>
+        </div>
+        <div class="settings-field"><label>Goal reminder</label>
+          <select class="settings-input settings-trackable" id="notif-read-goal-reminder"><option value="1">On</option><option value="0">Off</option></select>
+        </div>
+        <div class="settings-field"><label>New items per day</label>
+          <input class="settings-input settings-trackable" id="notif-read-daily-goal" type="number" min="1" step="1">
         </div>
       </div>
     </div>
@@ -1349,8 +1364,10 @@ let userSettings = {
       read: { enabled: ['kanji','vocab','names','places'], default: 'all' },
       write: { enabled: ['Joyo','Jinmeiyo','Kanji Extended'], default: 'all' }
     },
-    notifications: { enabled:true, stale_alert:true, stale_threshold:10, stale_nag:true,
-                     quiet_from:7, quiet_to:21, goal_reminder:true, daily_goal:10, goal_hour:19 }
+    notifications: { enabled:true, quiet_from:7, quiet_to:21, goal_hour:19,
+                     stale_alert:true, stale_threshold:10, stale_nag:true, goal_reminder:true, daily_goal:10,
+                     read_stale_alert:true, read_stale_threshold:10, read_stale_nag:true,
+                     read_goal_reminder:true, read_daily_goal:10 }
   }
 };
 let unlockedLevels = new Set(); // WK level numbers that are unlocked
@@ -1475,8 +1492,23 @@ const DEFAULT_WRITE_STALE = {"2":0.5,"3":1,"4":3,"5":7,"6":30};
 // Push notification settings. Must stay in step with js_notif_prefs() in
 // supabase/migrations/001_push_notifications.sql, which applies the same defaults
 // server-side for anything the page hasn't written.
-const DEFAULT_NOTIFS = { enabled:true, stale_alert:true, stale_threshold:10, stale_nag:true,
-                         quiet_from:7, quiet_to:21, goal_reminder:true, daily_goal:10, goal_hour:19 };
+// Shared keys, then writing (unprefixed, from before reading had its own), then reading.
+const DEFAULT_NOTIFS = { enabled:true, quiet_from:7, quiet_to:21, goal_hour:19,
+                         stale_alert:true, stale_threshold:10, stale_nag:true, goal_reminder:true, daily_goal:10,
+                         read_stale_alert:true, read_stale_threshold:10, read_stale_nag:true,
+                         read_goal_reminder:true, read_daily_goal:10 };
+// Settings → Notifications inputs and the keys they save to.
+const NOTIF_BOOL_FIELDS = [
+  ['notif-enabled','enabled'],
+  ['notif-stale-alert','stale_alert'], ['notif-stale-nag','stale_nag'], ['notif-goal-reminder','goal_reminder'],
+  ['notif-read-stale-alert','read_stale_alert'], ['notif-read-stale-nag','read_stale_nag'],
+  ['notif-read-goal-reminder','read_goal_reminder']
+];
+const NOTIF_NUM_FIELDS = [
+  ['notif-goal-hour','goal_hour'], ['notif-quiet-from','quiet_from'], ['notif-quiet-to','quiet_to'],
+  ['notif-stale-threshold','stale_threshold'], ['notif-daily-goal','daily_goal'],
+  ['notif-read-stale-threshold','read_stale_threshold'], ['notif-read-daily-goal','read_daily_goal']
+];
 let LEVEL_NAMES = [...DEFAULT_LEVEL_NAMES];
 
 // Level dropdown IDs and their default values
@@ -2723,16 +2755,13 @@ function populateSettingsName() {
 
   // Notifications
   const nf = { ...DEFAULT_NOTIFS, ...(userSettings.configuration?.notifications || {}) };
-  [['notif-stale-threshold','stale_threshold'], ['notif-quiet-from','quiet_from'],
-   ['notif-quiet-to','quiet_to'], ['notif-daily-goal','daily_goal'],
-   ['notif-goal-hour','goal_hour']].forEach(([id, key]) => {
+  NOTIF_NUM_FIELDS.forEach(([id, key]) => {
     const el = document.getElementById(id);
     if (!el) return;
     el.placeholder = DEFAULT_NOTIFS[key];
     el.value = nf[key] == DEFAULT_NOTIFS[key] ? '' : nf[key];
   });
-  [['notif-enabled','enabled'], ['notif-stale-alert','stale_alert'],
-   ['notif-stale-nag','stale_nag'], ['notif-goal-reminder','goal_reminder']].forEach(([id, key]) => {
+  NOTIF_BOOL_FIELDS.forEach(([id, key]) => {
     const el = document.getElementById(id);
     if (el) el.value = nf[key] ? '1' : '0';
   });
@@ -2984,17 +3013,9 @@ async function saveAllSettings() {
     const v = document.getElementById(id)?.value;
     return v === undefined || v === null || v === '' ? dflt : v === '1';
   };
-  const notifications = {
-    enabled:        boolOf('notif-enabled',        DEFAULT_NOTIFS.enabled),
-    stale_alert:    boolOf('notif-stale-alert',    DEFAULT_NOTIFS.stale_alert),
-    stale_threshold: numOr('notif-stale-threshold', DEFAULT_NOTIFS.stale_threshold),
-    stale_nag:      boolOf('notif-stale-nag',      DEFAULT_NOTIFS.stale_nag),
-    quiet_from:      numOr('notif-quiet-from',      DEFAULT_NOTIFS.quiet_from),
-    quiet_to:        numOr('notif-quiet-to',        DEFAULT_NOTIFS.quiet_to),
-    goal_reminder:  boolOf('notif-goal-reminder',  DEFAULT_NOTIFS.goal_reminder),
-    daily_goal:      numOr('notif-daily-goal',      DEFAULT_NOTIFS.daily_goal),
-    goal_hour:       numOr('notif-goal-hour',       DEFAULT_NOTIFS.goal_hour)
-  };
+  const notifications = {};
+  NOTIF_BOOL_FIELDS.forEach(([id, key]) => notifications[key] = boolOf(id, DEFAULT_NOTIFS[key]));
+  NOTIF_NUM_FIELDS.forEach(([id, key]) => notifications[key] = numOr(id, DEFAULT_NOTIFS[key]));
 
   const configuration = { level_names: ln, stale_days: { read: rd, write: wd }, promote_streak: ps, config_defaults: cfg_defaults, graph_views, notifications };
   userSettings.configuration = configuration;
