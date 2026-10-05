@@ -1163,6 +1163,60 @@ select.at-default option{color:var(--text);}
       </div>
     </div>
   </div>
+
+  <!-- Notifications -->
+  <div class="settings-collapsible" id="scol-notifications">
+    <div class="settings-collapsible-header" onclick="toggleSettingsSection('notifications')">
+      <span>Notifications</span><span class="settings-chevron" id="schev-notifications">▶</span>
+    </div>
+    <div class="settings-collapsible-body" id="sbody-notifications" style="display:none;">
+      <div class="settings-sub-header">This Device</div>
+      <div style="font-size:0.72rem;color:var(--text3);margin-bottom:8px;" id="push-device-status">—</div>
+      <div style="display:flex;gap:9px;margin-bottom:16px;" id="push-device-btns"></div>
+
+      <div class="settings-sub-header">Stale Items</div>
+      <div style="font-size:0.72rem;color:var(--text3);margin-bottom:8px;">A one-off alert when your stale kanji count climbs past the number below, then an hourly reminder while any remain. Both respect quiet hours.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div class="settings-field"><label>All notifications</label>
+          <select class="settings-input settings-trackable" id="notif-enabled"><option value="1">On</option><option value="0">Off</option></select>
+        </div>
+        <div class="settings-field"><label>Stale alert</label>
+          <select class="settings-input settings-trackable" id="notif-stale-alert"><option value="1">On</option><option value="0">Off</option></select>
+        </div>
+        <div class="settings-field"><label>Alert at (stale count)</label>
+          <input class="settings-input settings-trackable" id="notif-stale-threshold" type="number" min="1" step="1">
+        </div>
+        <div class="settings-field"><label>Hourly reminder</label>
+          <select class="settings-input settings-trackable" id="notif-stale-nag"><option value="1">On</option><option value="0">Off</option></select>
+        </div>
+      </div>
+
+      <div class="settings-sub-header">Daily Goal</div>
+      <div style="font-size:0.72rem;color:var(--text3);margin-bottom:8px;">Counts new kanji unlocked today (level 0 → 1+), not revision. Sent once a day, and only if you are short.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div class="settings-field"><label>Goal reminder</label>
+          <select class="settings-input settings-trackable" id="notif-goal-reminder"><option value="1">On</option><option value="0">Off</option></select>
+        </div>
+        <div class="settings-field"><label>New kanji per day</label>
+          <input class="settings-input settings-trackable" id="notif-daily-goal" type="number" min="1" step="1">
+        </div>
+        <div class="settings-field"><label>Remind at (hour)</label>
+          <input class="settings-input settings-trackable" id="notif-goal-hour" type="number" min="0" max="23" step="1">
+        </div>
+      </div>
+
+      <div class="settings-sub-header">Quiet Hours</div>
+      <div style="font-size:0.72rem;color:var(--text3);margin-bottom:8px;">Stale notifications only go out between these hours, AEST. 24-hour clock.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div class="settings-field"><label>From (hour)</label>
+          <input class="settings-input settings-trackable" id="notif-quiet-from" type="number" min="0" max="23" step="1">
+        </div>
+        <div class="settings-field"><label>Until (hour)</label>
+          <input class="settings-input settings-trackable" id="notif-quiet-to" type="number" min="0" max="23" step="1">
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 </div><!-- end main-app -->
 
@@ -1294,7 +1348,9 @@ let userSettings = {
     graph_views: {
       read: { enabled: ['kanji','vocab','names','places'], default: 'all' },
       write: { enabled: ['Joyo','Jinmeiyo','Kanji Extended'], default: 'all' }
-    }
+    },
+    notifications: { enabled:true, stale_alert:true, stale_threshold:10, stale_nag:true,
+                     quiet_from:7, quiet_to:21, goal_reminder:true, daily_goal:10, goal_hour:19 }
   }
 };
 let unlockedLevels = new Set(); // WK level numbers that are unlocked
@@ -1416,6 +1472,11 @@ let recentItemIds = new Set();
 const DEFAULT_LEVEL_NAMES = ['Locked','Fragile','Forming','Stable','Strong','Enduring','Cemented'];
 const DEFAULT_READ_STALE = {"2":0.5,"3":1,"4":3,"5":7,"6":60};
 const DEFAULT_WRITE_STALE = {"2":0.5,"3":1,"4":3,"5":7,"6":30};
+// Push notification settings. Must stay in step with js_notif_prefs() in
+// supabase/migrations/001_push_notifications.sql, which applies the same defaults
+// server-side for anything the page hasn't written.
+const DEFAULT_NOTIFS = { enabled:true, stale_alert:true, stale_threshold:10, stale_nag:true,
+                         quiet_from:7, quiet_to:21, goal_reminder:true, daily_goal:10, goal_hour:19 };
 let LEVEL_NAMES = [...DEFAULT_LEVEL_NAMES];
 
 // Level dropdown IDs and their default values
@@ -1639,7 +1700,10 @@ async function loadUserProgress() {
       graph_views: cfg.graph_views || {
         read: { enabled: ['kanji','vocab','names','places'], default: 'all' },
         write: { enabled: ['Joyo','Jinmeiyo','Kanji Extended'], default: 'all' }
-      }
+      },
+      // Merged rather than defaulted, so a setting added later still gets its default
+      // on an account whose saved notifications object predates it.
+      notifications: { ...DEFAULT_NOTIFS, ...(cfg.notifications || {}) }
     };
     unlockedLevels = new Set(settingsRes.data.unlocked_levels || []);
   }
@@ -2657,6 +2721,23 @@ function populateSettingsName() {
     });
   });
 
+  // Notifications
+  const nf = { ...DEFAULT_NOTIFS, ...(userSettings.configuration?.notifications || {}) };
+  [['notif-stale-threshold','stale_threshold'], ['notif-quiet-from','quiet_from'],
+   ['notif-quiet-to','quiet_to'], ['notif-daily-goal','daily_goal'],
+   ['notif-goal-hour','goal_hour']].forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.placeholder = DEFAULT_NOTIFS[key];
+    el.value = nf[key] == DEFAULT_NOTIFS[key] ? '' : nf[key];
+  });
+  [['notif-enabled','enabled'], ['notif-stale-alert','stale_alert'],
+   ['notif-stale-nag','stale_nag'], ['notif-goal-reminder','goal_reminder']].forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = nf[key] ? '1' : '0';
+  });
+  renderPushDevice();
+
   // Promotion streak thresholds
   const promoteStreak = userSettings.configuration?.promote_streak || DEFAULT_PROMOTE_STREAK;
   [2,3,4,5,6].forEach(l => {
@@ -2893,7 +2974,29 @@ async function saveAllSettings() {
     write: { enabled: writePills, default: document.getElementById('graph-write-default')?.value || 'all' }
   };
 
-  const configuration = { level_names: ln, stale_days: { read: rd, write: wd }, promote_streak: ps, config_defaults: cfg_defaults, graph_views };
+  // Notifications. Blank number field = fall back to the default, same as every other
+  // settings field here; the selects are explicit On/Off so they are read directly.
+  const numOr = (id, dflt) => {
+    const v = document.getElementById(id)?.value;
+    return v === '' || v === undefined || v === null || isNaN(Number(v)) ? dflt : Number(v);
+  };
+  const boolOf = (id, dflt) => {
+    const v = document.getElementById(id)?.value;
+    return v === undefined || v === null || v === '' ? dflt : v === '1';
+  };
+  const notifications = {
+    enabled:        boolOf('notif-enabled',        DEFAULT_NOTIFS.enabled),
+    stale_alert:    boolOf('notif-stale-alert',    DEFAULT_NOTIFS.stale_alert),
+    stale_threshold: numOr('notif-stale-threshold', DEFAULT_NOTIFS.stale_threshold),
+    stale_nag:      boolOf('notif-stale-nag',      DEFAULT_NOTIFS.stale_nag),
+    quiet_from:      numOr('notif-quiet-from',      DEFAULT_NOTIFS.quiet_from),
+    quiet_to:        numOr('notif-quiet-to',        DEFAULT_NOTIFS.quiet_to),
+    goal_reminder:  boolOf('notif-goal-reminder',  DEFAULT_NOTIFS.goal_reminder),
+    daily_goal:      numOr('notif-daily-goal',      DEFAULT_NOTIFS.daily_goal),
+    goal_hour:       numOr('notif-goal-hour',       DEFAULT_NOTIFS.goal_hour)
+  };
+
+  const configuration = { level_names: ln, stale_days: { read: rd, write: wd }, promote_streak: ps, config_defaults: cfg_defaults, graph_views, notifications };
   userSettings.configuration = configuration;
 
   const { error: rpcError } = await sb.rpc('upsert_user_settings', {
@@ -4558,6 +4661,110 @@ async function saveWriteLastQuizzed(itemIds) {
 }
 
 // ── WRITE TAB END ──
+
+// ── PUSH NOTIFICATIONS ──
+// Turning this device on saves a push subscription to js_push_subs; what actually gets
+// sent is decided server-side by js_notify_tick() from the settings above. See
+// supabase/migrations/001_push_notifications.sql and supabase/functions/js-push/.
+//
+// ⚠ Paste the public key from Documents\JS secrets\push-keys.txt here. It must be the
+//   same keypair as the VAPID_PUBLIC_KEY / VAPID_PRIVATE_KEY secrets on the js-push
+//   Edge Function, or every send fails. Changing keys means every device must turn
+//   notifications on again.
+const VAPID_PUBLIC = 'BGJhHDy4v3u6_w4GtHa89XE7-9QtVI3fs5Kk9WZwW56QJx-7U-O1jXkhLkcDm4JaF3DXIPwyCoBxa0KORhwu6O8';
+
+function pushSupported() { return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window; }
+
+function b64uBytes(s) {
+  const b = atob((s + '='.repeat((4 - s.length % 4) % 4)).replace(/-/g, '+').replace(/_/g, '/'));
+  return Uint8Array.from(b, c => c.charCodeAt(0));
+}
+
+async function pushState() {
+  if (!pushSupported()) return { supported: false };
+  try {
+    const reg = await navigator.serviceWorker.getRegistration();
+    const sub = reg && await reg.pushManager.getSubscription();
+    return { supported: true, on: !!sub && Notification.permission === 'granted', perm: Notification.permission };
+  } catch (e) { return { supported: false }; }
+}
+
+async function pushOn() {
+  const reg = await navigator.serviceWorker.register('./sw.js');
+  await navigator.serviceWorker.ready;
+  const perm = await Notification.requestPermission();
+  if (perm !== 'granted') throw new Error(perm === 'denied'
+    ? 'Notifications are blocked for this site. Allow them in your browser’s site settings, then try again.'
+    : 'Notifications weren’t allowed.');
+  const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64uBytes(VAPID_PUBLIC) });
+  const j = sub.toJSON();
+  const { error } = await sb.rpc('js_push_subscribe', { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth });
+  if (error) throw new Error(error.message);
+}
+
+async function pushOff() {
+  const reg = await navigator.serviceWorker.getRegistration();
+  const sub = reg && await reg.pushManager.getSubscription();
+  if (sub) {
+    await sb.rpc('js_push_unsubscribe', { p_endpoint: sub.endpoint }).catch(() => {});
+    await sub.unsubscribe();
+  }
+}
+
+async function renderPushDevice() {
+  const statusEl = document.getElementById('push-device-status');
+  const btnsEl = document.getElementById('push-device-btns');
+  if (!statusEl || !btnsEl) return;
+  const d = await pushState();
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  const btn = (id, label, fn) => `<button class="settings-btn" id="${id}" type="button" style="flex:0;padding:8px 14px;font-size:0.78rem;" onclick="${fn}">${label}</button>`;
+
+  if (!d.supported) {
+    statusEl.textContent = ios && !standalone
+      ? 'On iPhone, add this app to your Home Screen first (Share → Add to Home Screen), then turn notifications on from there.'
+      : 'This browser doesn’t support notifications.';
+    btnsEl.innerHTML = '';
+  } else if (d.perm === 'denied') {
+    statusEl.textContent = 'Blocked for this site. Allow notifications in your browser’s site settings, then reload.';
+    btnsEl.innerHTML = '';
+  } else if (d.on) {
+    statusEl.textContent = 'On for this device.';
+    btnsEl.innerHTML = btn('push-off-btn', 'Turn off here', 'togglePushDevice(false)') + btn('push-test-btn', 'Send test', 'sendTestPush()');
+  } else {
+    statusEl.textContent = 'Off for this device.';
+    btnsEl.innerHTML = btn('push-on-btn', 'Turn on', 'togglePushDevice(true)');
+  }
+}
+
+async function togglePushDevice(on) {
+  const statusEl = document.getElementById('push-device-status');
+  try {
+    if (VAPID_PUBLIC.startsWith('PASTE_')) throw new Error('VAPID_PUBLIC hasn’t been set in index.html yet.');
+    if (on) await pushOn(); else await pushOff();
+  } catch (e) {
+    if (statusEl) statusEl.textContent = e.message;
+    return;
+  }
+  renderPushDevice();
+}
+
+async function sendTestPush() {
+  const statusEl = document.getElementById('push-device-status');
+  const { error } = await sb.rpc('js_push_test');
+  if (statusEl) statusEl.textContent = error
+    ? error.message
+    : 'Test queued — it should arrive in a few seconds. If nothing comes, check the js-push function logs.';
+}
+
+// The service worker shows notifications when the app is closed; while it's open on
+// screen it hands them to the page instead, and tapping one sends us its link.
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+  navigator.serviceWorker.addEventListener('message', e => {
+    if (e.data && e.data.type === 'open' && e.data.url) location.href = e.data.url;
+  });
+}
 
 // ── START ──
 loadPrefs();
